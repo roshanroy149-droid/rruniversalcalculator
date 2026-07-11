@@ -42,8 +42,21 @@
 // ---- BMI ----
 (function(){
   if(!document.getElementById('bmiH')) return;
+  const unitSel = document.getElementById('bmiUnit');
+  const cmWrap = document.getElementById('bmiCmWrap');
+  const ftWrap = document.getElementById('bmiFtWrap');
+
+  function getHeightMeters(){
+    if(unitSel.value === 'ft'){
+      const ft = parseFloat(document.getElementById('bmiFt').value)||0;
+      const inches = parseFloat(document.getElementById('bmiIn').value)||0;
+      const totalInches = (ft*12)+inches;
+      return totalInches*0.0254;
+    }
+    return (parseFloat(document.getElementById('bmiH').value)||0)/100;
+  }
   function calcBMI(){
-    const h = (parseFloat(document.getElementById('bmiH').value)||0)/100;
+    const h = getHeightMeters();
     const w = parseFloat(document.getElementById('bmiW').value)||0;
     const bmi = h>0 ? w/(h*h) : 0;
     document.getElementById('bmiVal').textContent = bmi.toFixed(1);
@@ -56,7 +69,13 @@
     }
     document.getElementById('bmiCat').textContent = cat;
   }
-  ['bmiH','bmiW'].forEach(id=>document.getElementById(id).addEventListener('input',calcBMI));
+  unitSel.addEventListener('change',()=>{
+    const isFt = unitSel.value === 'ft';
+    cmWrap.style.display = isFt ? 'none' : 'flex';
+    ftWrap.style.display = isFt ? 'grid' : 'none';
+    calcBMI();
+  });
+  ['bmiH','bmiW','bmiFt','bmiIn'].forEach(id=>document.getElementById(id).addEventListener('input',calcBMI));
   calcBMI();
 })();
 
