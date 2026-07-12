@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Percentage Calculator — Find X% of Y or What % A is of B | RR Universal Calculator</title>
-<meta name="description" content="Free percentage calculator for two common problems: finding X percent of a number, and figuring out what percent one number is of another.">
-<link rel="canonical" href="https://rruniversalcalculator.netlify.app/percentage-calculator.html">
+<title>GPA Calculator — 4.0, 5.0, and 10.0 Scales | RR Universal Calculator</title>
+<meta name="description" content="Free GPA calculator supporting 4.0, 5.0 (weighted), and 10.0 grading scales. Add courses with grades and credit hours to get your GPA instantly.">
+<link rel="canonical" href="https://rruniversalcalculator.netlify.app/gpa-calculator.html">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
@@ -16,7 +16,7 @@
 <header>
   <div class="wrap">
     <div class="headbar">
-      <a class="logo" href="index.html">RR UNIVERSAL CALCULATOR<span>.</span></a>
+      <a class="logo" href="index.html"><span>RR</span> Universal Calculator</a>
       <div class="tagline">18 TOOLS · 0 SIGN-UP</div>
     </div>
   </div>
@@ -44,45 +44,54 @@
 </header>
 
 <div class="wrap">
-  <div class="crumb"><a href="index.html">RR Universal Calculator</a> / Percentage Calculator</div>
+  <div class="crumb"><a href="index.html">RR Universal Calculator</a> / GPA Calculator</div>
 
   <section class="hero">
-    <div class="eyebrow">// 01 · PERCENTAGE CALCULATOR</div>
-    <h1>Two common percent problems, solved together.</h1>
-    <p>Find X percent of a number, or figure out what percent one number is of another — both update live.</p>
+    <div class="eyebrow">// 14 · GPA CALCULATOR</div>
+    <h1>Your GPA, weighted by credit hours.</h1>
+    <p>Add each course with its grade and credit hours — the GPA updates live as you go, on whichever scale your school uses.</p>
   </section>
 
   <div class="ad-slot">AD SLOT — 728×90 · leaderboard</div>
 
-  <section class="tool" id="percent">
-    <div class="card">
-      <div>
-        <div class="field"><label>X percent of Y — X</label><input type="number" id="pX" value="20"></div>
-        <div class="field"><label>X percent of Y — Y</label><input type="number" id="pY" value="150"></div>
-        <div class="field" style="margin-top:18px;"><label>A is what % of B — A</label><input type="number" id="pA" value="30"></div>
-        <div class="field"><label>A is what % of B — B</label><input type="number" id="pB" value="120"></div>
-      </div>
-      <div class="readout">
-        <div class="r-row"><span class="r-label">X% of Y</span><span class="r-value" id="pOut1">0</span></div>
-        <div class="r-row"><span class="r-label">A is % of B</span><span class="r-value" id="pOut2">0%</span></div>
+  <section class="tool" id="gpa">
+    <div class="field" style="max-width:260px;margin-bottom:20px;">
+      <label>Grading scale</label>
+      <select id="gpaScale">
+        <option value="4">4.0 scale</option>
+        <option value="5">5.0 scale (weighted)</option>
+        <option value="10">10.0 scale</option>
+      </select>
+    </div>
+    <div id="gpaRows"></div>
+    <div class="btn-row">
+      <button type="button" class="ghost" id="gpaAddRow">+ Add course</button>
+    </div>
+    <div class="card" style="margin-top:20px;grid-template-columns:1fr;">
+      <div class="readout" style="background:linear-gradient(160deg, var(--readout-bg-hi), var(--readout-bg));">
+        <div class="r-row"><span class="r-label">Total credit hours</span><span class="r-value" id="gpaCredits">0</span></div>
+        <div class="r-row"><span class="r-label">Your GPA</span><span class="r-value" id="gpaResult">0.00</span></div>
       </div>
     </div>
   </section>
 
+
   <div class="ad-slot">AD SLOT — 300×250 · in-content</div>
 
   <section class="article">
-    <h3>How do you calculate X percent of Y?</h3>
-    <p>Multiply Y by X, then divide by 100. For example, 20% of 150 is (150 × 20) ÷ 100 = 30.</p>
-    <h3>How do you find what percent A is of B?</h3>
-    <p>Divide A by B, then multiply by 100. For example, 30 is what percent of 120? (30 ÷ 120) × 100 = 25%.</p>
-    <h3>Where does this come up in real life?</h3>
-    <p>Discounts, tax rates, grade calculations, tip splitting, and comparing changes over time all reduce to one of these two percent problems.</p>
+    <h3>How is GPA calculated?</h3>
+    <p>Each course's grade is converted to grade points on your selected scale, multiplied by that course's credit hours, then all of those are summed and divided by total credit hours — so higher-credit courses count more toward the final GPA.</p>
+    <h3>What do the different scales mean?</h3>
+    <p>The 4.0 scale is the most common in the US (A=4.0 down to F=0). The 5.0 scale is typically used for weighted GPAs that give extra credit for honors or AP-level courses. The 10.0 scale is common in India and parts of Europe, often based on percentage marks converted to points.</p>
+    <h3>Can I remove a course I added by mistake?</h3>
+    <p>Yes — each course row has a remove button once there's more than one row, so you can delete any entry and the GPA recalculates immediately.</p>
+
   </section>
 
   <nav class="more-tools">
     <h2>More calculators</h2>
     <ul>
+      <li><a href="percentage-calculator.html">Percentage Calculator</a></li>
       <li><a href="age-calculator.html">Age Calculator</a></li>
       <li><a href="currency-converter.html">Currency Converter</a></li>
       <li><a href="bmi-calculator.html">BMI Calculator</a></li>
@@ -95,7 +104,6 @@
       <li><a href="unit-converter.html">Unit Converter</a></li>
       <li><a href="discount-calculator.html">Discount Calculator</a></li>
       <li><a href="investment-calculator.html">Investment Calculator</a></li>
-      <li><a href="gpa-calculator.html">GPA Calculator</a></li>
       <li><a href="scientific-calculator.html">Scientific Calculator</a></li>
       <li><a href="tip-calculator.html">Tip Calculator</a></li>
       <li><a href="password-generator.html">Password Generator</a></li>
@@ -106,7 +114,7 @@
   <div class="ad-slot">AD SLOT — 728×90 · footer leaderboard</div>
 
   <footer>
-    <p>RR UNIVERSAL CALCULATOR · built for quick answers · no data leaves your browser</p>
+    <p>RR Universal Calculator · built for quick answers</p>
   </footer>
 </div>
 

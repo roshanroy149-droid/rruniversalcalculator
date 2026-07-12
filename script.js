@@ -701,3 +701,334 @@
   }
   document.getElementById('wcText').addEventListener('input',calcWords);
 })();
+
+// ---- Days Between Dates ----
+(function(){
+  const startEl = document.getElementById('daysStart');
+  if(!startEl) return;
+  const endEl = document.getElementById('daysEnd');
+  const bizCheck = document.getElementById('daysExcludeWeekends');
+
+  function calc(){
+    const s = startEl.value ? new Date(startEl.value+'T00:00:00') : null;
+    const e = endEl.value ? new Date(endEl.value+'T00:00:00') : null;
+    if(!s || !e){ return; }
+    let d1 = s, d2 = e;
+    if(d1 > d2){ const t=d1; d1=d2; d2=t; }
+
+    const msPerDay = 86400000;
+    const totalDays = Math.round((d2-d1)/msPerDay);
+    const weeks = (totalDays/7).toFixed(1);
+
+    // Y/M/D breakdown
+    let y = d2.getFullYear()-d1.getFullYear();
+    let m = d2.getMonth()-d1.getMonth();
+    let day = d2.getDate()-d1.getDate();
+    if(day<0){ m--; day += new Date(d2.getFullYear(), d2.getMonth(), 0).getDate(); }
+    if(m<0){ y--; m+=12; }
+
+    // business days
+    let biz = 0;
+    const cursor = new Date(d1);
+    while(cursor < d2){
+      const dow = cursor.getDay();
+      if(dow!==0 && dow!==6) biz++;
+      cursor.setDate(cursor.getDate()+1);
+    }
+
+    document.getElementById('daysTotal').textContent = totalDays.toLocaleString();
+    document.getElementById('daysWeeks').textContent = weeks;
+    document.getElementById('daysYMD').textContent = y+'y '+m+'m '+day+'d';
+    document.getElementById('daysBusiness').textContent = biz.toLocaleString();
+  }
+
+  startEl.addEventListener('input', calc);
+  endEl.addEventListener('input', calc);
+  if(bizCheck) bizCheck.addEventListener('change', calc);
+
+  // sensible defaults: today and 30 days from today
+  const today = new Date();
+  const future = new Date(today.getTime()+30*86400000);
+  startEl.value = today.toISOString().slice(0,10);
+  endEl.value = future.toISOString().slice(0,10);
+  calc();
+})();
+
+// ---- Mortgage calculator ----
+(function(){
+  const priceEl = document.getElementById('mtgPrice');
+  if(!priceEl) return;
+  const curEl = document.getElementById('mtgCur');
+  const downEl = document.getElementById('mtgDown');
+  const rateEl = document.getElementById('mtgRate');
+  const termEl = document.getElementById('mtgTerm');
+  const taxEl = document.getElementById('mtgTax');
+  const insEl = document.getElementById('mtgInsurance');
+  const pmiRateEl = document.getElementById('mtgPmiRate');
+
+  function calc(){
+    const cur = curEl.value;
+    const price = parseFloat(priceEl.value)||0;
+    const down = parseFloat(downEl.value)||0;
+    const principal = Math.max(price-down, 0);
+    const annualRate = parseFloat(rateEl.value)||0;
+    const years = parseFloat(termEl.value)||1;
+    const n = Math.round(years*12);
+    const r = annualRate/100/12;
+
+    const pi = (r===0 || n<=0) ? (n>0?principal/n:0) : principal*r/(1-Math.pow(1+r,-n));
+
+    const downPct = price>0 ? down/price*100 : 0;
+    const pmiAnnualRate = parseFloat(pmiRateEl.value)||0;
+    const pmiMonthly = downPct < 20 ? (principal*pmiAnnualRate/100)/12 : 0;
+
+    const taxMonthly = (parseFloat(taxEl.value)||0)/12;
+    const insMonthly = (parseFloat(insEl.value)||0)/12;
+
+    const extras = taxMonthly+insMonthly+pmiMonthly;
+    const total = pi+extras;
+    const totalInterest = pi*n - principal;
+
+    document.getElementById('mtgPI').textContent = cur+pi.toFixed(2);
+    document.getElementById('mtgExtras').textContent = cur+extras.toFixed(2);
+    document.getElementById('mtgTotal').textContent = cur+total.toFixed(2);
+    document.getElementById('mtgTotalInterest').textContent = cur+Math.max(totalInterest,0).toFixed(2);
+  }
+
+  [priceEl, curEl, downEl, rateEl, termEl, taxEl, insEl, pmiRateEl].forEach(el=>{
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+  calc();
+})();
+
+// ---- GST / VAT calculator ----
+(function(){
+  const amtEl = document.getElementById('gstAmt');
+  if(!amtEl) return;
+  const presetEl = document.getElementById('gstPreset');
+  const customWrap = document.getElementById('gstCustomWrap');
+  const customRateEl = document.getElementById('gstCustomRate');
+  const modeSeg = document.getElementById('gstModeSeg');
+  let mode = 'add';
+
+  function getRate(){
+    if(presetEl.value === 'custom') return parseFloat(customRateEl.value)||0;
+    if(presetEl.value === '5ca') return 5;
+    return parseFloat(presetEl.value)||0;
+  }
+
+  function calc(){
+    customWrap.style.display = presetEl.value==='custom' ? '' : 'none';
+    const amt = parseFloat(amtEl.value)||0;
+    const rate = getRate();
+    let base, tax, total;
+    if(mode==='add'){
+      base = amt;
+      tax = amt*rate/100;
+      total = base+tax;
+    } else {
+      total = amt;
+      base = amt/(1+rate/100);
+      tax = total-base;
+    }
+    document.getElementById('gstBase').textContent = base.toFixed(2);
+    document.getElementById('gstTax').textContent = tax.toFixed(2);
+    document.getElementById('gstTotal').textContent = total.toFixed(2);
+  }
+
+  amtEl.addEventListener('input', calc);
+  presetEl.addEventListener('change', calc);
+  customRateEl.addEventListener('input', calc);
+  modeSeg.addEventListener('click', (e)=>{
+    const btn = e.target.closest('button');
+    if(!btn) return;
+    mode = btn.dataset.mode;
+    modeSeg.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    calc();
+  });
+  calc();
+})();
+
+// ---- Calorie / BMR calculator ----
+(function(){
+  const ageEl = document.getElementById('calAge');
+  if(!ageEl) return;
+  const weightEl = document.getElementById('calWeight');
+  const unitEl = document.getElementById('calHeightUnit');
+  const cmWrap = document.getElementById('calCmWrap');
+  const ftWrap = document.getElementById('calFtWrap');
+  const cmEl = document.getElementById('calHeightCm');
+  const ftEl = document.getElementById('calHeightFt');
+  const inEl = document.getElementById('calHeightIn');
+  const activityEl = document.getElementById('calActivity');
+  const sexSeg = document.getElementById('calSexSeg');
+  let sex = 'male';
+
+  function getHeightCm(){
+    if(unitEl.value==='ft'){
+      const ft = parseFloat(ftEl.value)||0;
+      const inch = parseFloat(inEl.value)||0;
+      return (ft*12+inch)*2.54;
+    }
+    return parseFloat(cmEl.value)||0;
+  }
+
+  function calc(){
+    const isFt = unitEl.value==='ft';
+    cmWrap.style.display = isFt ? 'none' : 'flex';
+    ftWrap.style.display = isFt ? 'grid' : 'none';
+
+    const age = parseFloat(ageEl.value)||0;
+    const weight = parseFloat(weightEl.value)||0;
+    const height = getHeightCm();
+    const activity = parseFloat(activityEl.value)||1.2;
+
+    let bmr = 10*weight + 6.25*height - 5*age;
+    bmr += (sex==='male') ? 5 : -161;
+    bmr = Math.max(bmr, 0);
+
+    const tdee = bmr*activity;
+
+    document.getElementById('calBMR').textContent = Math.round(bmr).toLocaleString()+' kcal';
+    document.getElementById('calTDEE').textContent = Math.round(tdee).toLocaleString()+' kcal';
+    document.getElementById('calLoss').textContent = Math.round(Math.max(tdee-500,0)).toLocaleString()+' kcal';
+    document.getElementById('calGain').textContent = Math.round(tdee+500).toLocaleString()+' kcal';
+  }
+
+  sexSeg.addEventListener('click', (e)=>{
+    const btn = e.target.closest('button');
+    if(!btn) return;
+    sex = btn.dataset.sex;
+    sexSeg.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    calc();
+  });
+  [ageEl, weightEl, unitEl, cmEl, ftEl, inEl, activityEl].forEach(el=>{
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+  calc();
+})();
+
+// ---- Discount calculator ----
+(function(){
+  const tabs = document.getElementById('discTabs');
+  if(!tabs) return;
+
+  tabs.addEventListener('click', (e)=>{
+    const btn = e.target.closest('button');
+    if(!btn) return;
+    tabs.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+    document.getElementById('panel-'+btn.dataset.tab).classList.add('active');
+  });
+
+  function cur(){ return document.getElementById('discCur').value; }
+
+  function calcSale(){
+    const c = cur();
+    const original = parseFloat(document.getElementById('discOriginal').value)||0;
+    const pct = parseFloat(document.getElementById('discPct').value)||0;
+    const saved = original*pct/100;
+    const salePrice = original-saved;
+    document.getElementById('discSaved').textContent = c+saved.toFixed(2);
+    document.getElementById('discSalePrice').textContent = c+salePrice.toFixed(2);
+  }
+  function calcOriginal(){
+    const c = cur();
+    const sale = parseFloat(document.getElementById('discSale').value)||0;
+    const pct = parseFloat(document.getElementById('discPct2').value)||0;
+    const original = pct<100 ? sale/(1-pct/100) : 0;
+    const saved = original-sale;
+    document.getElementById('discOriginalOut').textContent = c+original.toFixed(2);
+    document.getElementById('discSavedOut').textContent = c+Math.max(saved,0).toFixed(2);
+  }
+
+  ['discOriginal','discPct','discCur'].forEach(id=>{
+    const el = document.getElementById(id);
+    el.addEventListener('input', ()=>{calcSale(); calcOriginal();});
+    el.addEventListener('change', ()=>{calcSale(); calcOriginal();});
+  });
+  ['discSale','discPct2'].forEach(id=>{
+    const el = document.getElementById(id);
+    el.addEventListener('input', calcOriginal);
+  });
+  calcSale();
+  calcOriginal();
+})();
+
+// ---- GPA calculator ----
+(function(){
+  const rowsWrap = document.getElementById('gpaRows');
+  if(!rowsWrap) return;
+  const addBtn = document.getElementById('gpaAddRow');
+  const scaleEl = document.getElementById('gpaScale');
+
+  const gradePoints = {
+    4:  [['A',4.0],['A-',3.7],['B+',3.3],['B',3.0],['B-',2.7],['C+',2.3],['C',2.0],['C-',1.7],['D',1.0],['F',0.0]],
+    5:  [['A',5.0],['A-',4.7],['B+',4.3],['B',4.0],['B-',3.7],['C+',3.3],['C',3.0],['C-',2.7],['D',2.0],['F',0.0]],
+    10: [['O/A+',10],['A',9],['B+',8],['B',7],['C+',6],['C',5],['D',4],['F',0]]
+  };
+
+  let rowId = 0;
+  function addRow(credits){
+    rowId++;
+    const id = 'gpaRow'+rowId;
+    const scale = scaleEl.value;
+    const opts = gradePoints[scale].map(([label])=>`<option value="${label}">${label}</option>`).join('');
+    const row = document.createElement('div');
+    row.className = 'row3';
+    row.id = id;
+    row.style.marginBottom = '10px';
+    row.innerHTML = `
+      <div class="field"><label>Course</label><input type="text" class="gpaCourseName" placeholder="e.g. Calculus I"></div>
+      <div class="field"><label>Grade</label><select class="gpaGrade">${opts}</select></div>
+      <div class="field"><label>Credit hours</label><input type="number" class="gpaCredits" value="${credits||3}" min="0" step="0.5"></div>
+    `;
+    const removeBtn = document.createElement('button');
+    removeBtn.type = 'button';
+    removeBtn.className = 'ghost';
+    removeBtn.textContent = 'Remove';
+    removeBtn.style.marginBottom = '14px';
+    removeBtn.addEventListener('click', ()=>{ row.remove(); calc(); });
+    row.querySelector('.gpaCredits').closest('.field').after(removeBtn);
+    rowsWrap.appendChild(row);
+    row.querySelectorAll('input,select').forEach(el=>{
+      el.addEventListener('input', calc);
+      el.addEventListener('change', calc);
+    });
+  }
+
+  function rebuildGradeOptions(){
+    const scale = scaleEl.value;
+    const opts = gradePoints[scale].map(([label])=>`<option value="${label}">${label}</option>`).join('');
+    document.querySelectorAll('.gpaGrade').forEach(sel=>{ sel.innerHTML = opts; });
+    calc();
+  }
+
+  function calc(){
+    const scale = scaleEl.value;
+    const map = Object.fromEntries(gradePoints[scale]);
+    let totalCredits = 0, totalPoints = 0;
+    document.querySelectorAll('#gpaRows .row3').forEach(row=>{
+      const grade = row.querySelector('.gpaGrade').value;
+      const credits = parseFloat(row.querySelector('.gpaCredits').value)||0;
+      const points = map[grade] !== undefined ? map[grade] : 0;
+      totalCredits += credits;
+      totalPoints += credits*points;
+    });
+    const gpa = totalCredits>0 ? totalPoints/totalCredits : 0;
+    document.getElementById('gpaCredits').textContent = totalCredits.toString();
+    document.getElementById('gpaResult').textContent = gpa.toFixed(2);
+  }
+
+  addBtn.addEventListener('click', ()=>addRow());
+  scaleEl.addEventListener('change', rebuildGradeOptions);
+
+  addRow(3);
+  addRow(4);
+  calc();
+})();

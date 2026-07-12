@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Loan Payment Calculator — Monthly Payment and Total Interest | RR Universal Calculator</title>
-<meta name="description" content="Free loan payment calculator. Enter loan amount, interest rate, and term to see your monthly payment, total paid, and total interest.">
-<link rel="canonical" href="https://rruniversalcalculator.netlify.app/loan-calculator.html">
+<title>Discount Calculator — Sale Price & Savings | RR Universal Calculator</title>
+<meta name="description" content="Free discount calculator. Find the sale price and amount saved from a percentage discount, or work backward to find the original price.">
+<link rel="canonical" href="https://rruniversalcalculator.netlify.app/discount-calculator.html">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
@@ -16,7 +16,7 @@
 <header>
   <div class="wrap">
     <div class="headbar">
-      <a class="logo" href="index.html">RR UNIVERSAL CALCULATOR<span>.</span></a>
+      <a class="logo" href="index.html"><span>RR</span> Universal Calculator</a>
       <div class="tagline">18 TOOLS · 0 SIGN-UP</div>
     </div>
   </div>
@@ -44,21 +44,20 @@
 </header>
 
 <div class="wrap">
-  <div class="crumb"><a href="index.html">RR Universal Calculator</a> / Loan Calculator</div>
+  <div class="crumb"><a href="index.html">RR Universal Calculator</a> / Discount Calculator</div>
 
   <section class="hero">
-    <div class="eyebrow">// 05 · LOAN PAYMENT CALCULATOR</div>
-    <h1>Monthly payment and total interest for a fixed-rate loan.</h1>
-    <p>Enter the loan amount in any currency, an annual rate, and a term in months or years, to see the level monthly payment and total cost.</p>
+    <div class="eyebrow">// 12 · DISCOUNT CALCULATOR</div>
+    <h1>What does that percentage off actually save you?</h1>
+    <p>Enter a price and discount to see the sale price, or work backward from a sale price to find the original.</p>
   </section>
 
   <div class="ad-slot">AD SLOT — 728×90 · leaderboard</div>
 
-  <section class="tool" id="loan">
-    <div class="card">
-      <div>
-        <div class="field"><label>Currency</label>
-          <select id="loanCur">
+  <section class="tool" id="discount">
+    <div class="field" style="max-width:260px;margin-bottom:20px;">
+      <label>Currency</label>
+      <select id="discCur">
             <option value="$">USD ($)</option>
             <option value="€">EUR (€)</option>
             <option value="£">GBP (£)</option>
@@ -77,38 +76,51 @@
             <option value="HK$">HKD (HK$)</option>
             <option value="₩">KRW (₩)</option>
             <option value="kr">SEK/NOK (kr)</option>
-          </select>
+      </select>
+    </div>
+    <div class="tabs" id="discTabs">
+      <button class="active" data-tab="sale">Find sale price</button>
+      <button data-tab="original">Find original price</button>
+    </div>
+
+    <div class="tab-panel active" id="panel-sale">
+      <div class="card">
+        <div>
+          <div class="field"><label>Original price</label><input type="number" id="discOriginal" value="1000" step="0.01"></div>
+          <div class="field"><label>Discount (%)</label><input type="number" id="discPct" value="25" step="1"></div>
         </div>
-        <div class="field"><label>Loan amount</label><input type="number" id="loanAmt" value="20000"></div>
-        <div class="field"><label>Annual interest rate (%)</label><input type="number" id="loanRate" value="6.5" step="0.01"></div>
-        <div class="field">
-          <label>Tenure — enter in <span id="loanTenureUnitLabel">months</span></label>
-          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
-            <input type="number" id="loanTerm" value="60" style="flex:1;min-width:100px;">
-            <div class="seg" id="loanTenureSeg">
-              <button type="button" class="active" data-unit="months">Months</button>
-              <button type="button" data-unit="years">Years</button>
-            </div>
-          </div>
+        <div class="readout">
+          <div class="r-row"><span class="r-label">You save</span><span class="r-value" id="discSaved">0</span></div>
+          <div class="r-row"><span class="r-label">Sale price</span><span class="r-value" id="discSalePrice">0</span></div>
         </div>
       </div>
-      <div class="readout">
-        <div class="r-row"><span class="r-label">Monthly payment</span><span class="r-value" id="loanPay">$0</span></div>
-        <div class="r-row"><span class="r-label">Total paid</span><span class="r-value" id="loanTotal">$0</span></div>
-        <div class="r-row"><span class="r-label">Total interest</span><span class="r-value" id="loanInt">$0</span></div>
+    </div>
+
+    <div class="tab-panel" id="panel-original">
+      <div class="card">
+        <div>
+          <div class="field"><label>Sale price (after discount)</label><input type="number" id="discSale" value="750" step="0.01"></div>
+          <div class="field"><label>Discount applied (%)</label><input type="number" id="discPct2" value="25" step="1"></div>
+        </div>
+        <div class="readout">
+          <div class="r-row"><span class="r-label">Original price</span><span class="r-value" id="discOriginalOut">0</span></div>
+          <div class="r-row"><span class="r-label">You saved</span><span class="r-value" id="discSavedOut">0</span></div>
+        </div>
       </div>
     </div>
   </section>
 
+
   <div class="ad-slot">AD SLOT — 300×250 · in-content</div>
 
   <section class="article">
-    <h3>How is the loan payment formula calculated?</h3>
-    <p>This uses the standard fixed-rate amortization formula: it converts your annual rate to a monthly rate, then solves for a level payment that pays off the balance exactly across the full term.</p>
-    <h3>Does this include taxes, insurance, or fees?</h3>
-    <p>No — this is principal and interest only. Mortgages and some auto loans often bundle in taxes, insurance, or other fees, which would raise your actual monthly payment above this number.</p>
-    <h3>Why does total interest matter?</h3>
-    <p>Two loans with the same monthly payment can cost very differently over time depending on the rate and term — comparing total interest, not just the monthly number, shows the real cost.</p>
+    <h3>How is the sale price calculated?</h3>
+    <p>The discount percentage is multiplied by the original price to get the amount saved, then subtracted from the original price for the sale price.</p>
+    <h3>How does "find original price" work in reverse?</h3>
+    <p>If a sale price reflects a known discount percentage, the original price is the sale price divided by (1 minus the discount as a decimal) — this undoes the discount math to recover the starting price.</p>
+    <h3>Does this handle stacked discounts, like 20% off an already-discounted item?</h3>
+    <p>Not automatically — stacked discounts apply sequentially, not additively (20% off, then another 10% off, is not the same as 30% off). Run the sale price through the calculator twice, once per discount, to get an accurate stacked result.</p>
+
   </section>
 
   <nav class="more-tools">
@@ -118,13 +130,13 @@
       <li><a href="age-calculator.html">Age Calculator</a></li>
       <li><a href="currency-converter.html">Currency Converter</a></li>
       <li><a href="bmi-calculator.html">BMI Calculator</a></li>
+      <li><a href="loan-calculator.html">Loan / EMI Calculator</a></li>
       <li><a href="mortgage-calculator.html">Mortgage Calculator</a></li>
       <li><a href="tax-calculator.html">Tax Calculator</a></li>
       <li><a href="gst-vat-calculator.html">GST / VAT Calculator</a></li>
       <li><a href="days-calculator.html">Days Between Dates</a></li>
       <li><a href="calorie-calculator.html">Calorie / BMR Calculator</a></li>
       <li><a href="unit-converter.html">Unit Converter</a></li>
-      <li><a href="discount-calculator.html">Discount Calculator</a></li>
       <li><a href="investment-calculator.html">Investment Calculator</a></li>
       <li><a href="gpa-calculator.html">GPA Calculator</a></li>
       <li><a href="scientific-calculator.html">Scientific Calculator</a></li>
@@ -137,7 +149,7 @@
   <div class="ad-slot">AD SLOT — 728×90 · footer leaderboard</div>
 
   <footer>
-    <p>RR UNIVERSAL CALCULATOR · built for quick answers · no data leaves your browser</p>
+    <p>RR Universal Calculator · built for quick answers</p>
   </footer>
 </div>
 

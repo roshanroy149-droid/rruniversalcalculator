@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Loan Payment Calculator — Monthly Payment and Total Interest | RR Universal Calculator</title>
-<meta name="description" content="Free loan payment calculator. Enter loan amount, interest rate, and term to see your monthly payment, total paid, and total interest.">
-<link rel="canonical" href="https://rruniversalcalculator.netlify.app/loan-calculator.html">
+<title>Mortgage Calculator — Monthly Payment with Taxes, Insurance & PMI | RR Universal Calculator</title>
+<meta name="description" content="Free mortgage calculator. Estimate your monthly home loan payment including principal, interest, property tax, insurance, and PMI.">
+<link rel="canonical" href="https://rruniversalcalculator.netlify.app/mortgage-calculator.html">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
@@ -16,7 +16,7 @@
 <header>
   <div class="wrap">
     <div class="headbar">
-      <a class="logo" href="index.html">RR UNIVERSAL CALCULATOR<span>.</span></a>
+      <a class="logo" href="index.html"><span>RR</span> Universal Calculator</a>
       <div class="tagline">18 TOOLS · 0 SIGN-UP</div>
     </div>
   </div>
@@ -44,21 +44,21 @@
 </header>
 
 <div class="wrap">
-  <div class="crumb"><a href="index.html">RR Universal Calculator</a> / Loan Calculator</div>
+  <div class="crumb"><a href="index.html">RR Universal Calculator</a> / Mortgage Calculator</div>
 
   <section class="hero">
-    <div class="eyebrow">// 05 · LOAN PAYMENT CALCULATOR</div>
-    <h1>Monthly payment and total interest for a fixed-rate loan.</h1>
-    <p>Enter the loan amount in any currency, an annual rate, and a term in months or years, to see the level monthly payment and total cost.</p>
+    <div class="eyebrow">// 06 · MORTGAGE CALCULATOR</div>
+    <h1>Your real monthly mortgage payment, not just principal and interest.</h1>
+    <p>Enter home price, down payment, rate, and term to see the full monthly payment — including property tax, insurance, and PMI where it applies.</p>
   </section>
 
   <div class="ad-slot">AD SLOT — 728×90 · leaderboard</div>
 
-  <section class="tool" id="loan">
+  <section class="tool" id="mortgage">
     <div class="card">
       <div>
         <div class="field"><label>Currency</label>
-          <select id="loanCur">
+          <select id="mtgCur">
             <option value="$">USD ($)</option>
             <option value="€">EUR (€)</option>
             <option value="£">GBP (£)</option>
@@ -79,36 +79,40 @@
             <option value="kr">SEK/NOK (kr)</option>
           </select>
         </div>
-        <div class="field"><label>Loan amount</label><input type="number" id="loanAmt" value="20000"></div>
-        <div class="field"><label>Annual interest rate (%)</label><input type="number" id="loanRate" value="6.5" step="0.01"></div>
-        <div class="field">
-          <label>Tenure — enter in <span id="loanTenureUnitLabel">months</span></label>
-          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
-            <input type="number" id="loanTerm" value="60" style="flex:1;min-width:100px;">
-            <div class="seg" id="loanTenureSeg">
-              <button type="button" class="active" data-unit="months">Months</button>
-              <button type="button" data-unit="years">Years</button>
-            </div>
-          </div>
+        <div class="row2">
+          <div class="field"><label>Home price</label><input type="number" id="mtgPrice" value="400000" step="1000"></div>
+          <div class="field"><label>Down payment</label><input type="number" id="mtgDown" value="80000" step="1000"></div>
         </div>
+        <div class="row2">
+          <div class="field"><label>Interest rate (annual %)</label><input type="number" id="mtgRate" value="6.5" step="0.01"></div>
+          <div class="field"><label>Loan term (years)</label><input type="number" id="mtgTerm" value="30" min="1"></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label>Property tax (per year)</label><input type="number" id="mtgTax" value="4800" step="100"></div>
+          <div class="field"><label>Home insurance (per year)</label><input type="number" id="mtgInsurance" value="1400" step="100"></div>
+        </div>
+        <div class="field"><label>PMI rate (annual %, applies if down payment &lt; 20%)</label><input type="number" id="mtgPmiRate" value="0.5" step="0.01"></div>
       </div>
       <div class="readout">
-        <div class="r-row"><span class="r-label">Monthly payment</span><span class="r-value" id="loanPay">$0</span></div>
-        <div class="r-row"><span class="r-label">Total paid</span><span class="r-value" id="loanTotal">$0</span></div>
-        <div class="r-row"><span class="r-label">Total interest</span><span class="r-value" id="loanInt">$0</span></div>
+        <div class="r-row"><span class="r-label">Principal &amp; interest</span><span class="r-value" id="mtgPI">0</span></div>
+        <div class="r-row"><span class="r-label">Tax + insurance + PMI</span><span class="r-value" id="mtgExtras">0</span></div>
+        <div class="r-row"><span class="r-label">Total monthly payment</span><span class="r-value" id="mtgTotal">0</span></div>
+        <div class="r-row"><span class="r-label">Total interest over loan</span><span class="r-value" id="mtgTotalInterest">0</span></div>
       </div>
     </div>
   </section>
 
+
   <div class="ad-slot">AD SLOT — 300×250 · in-content</div>
 
   <section class="article">
-    <h3>How is the loan payment formula calculated?</h3>
-    <p>This uses the standard fixed-rate amortization formula: it converts your annual rate to a monthly rate, then solves for a level payment that pays off the balance exactly across the full term.</p>
-    <h3>Does this include taxes, insurance, or fees?</h3>
-    <p>No — this is principal and interest only. Mortgages and some auto loans often bundle in taxes, insurance, or other fees, which would raise your actual monthly payment above this number.</p>
-    <h3>Why does total interest matter?</h3>
-    <p>Two loans with the same monthly payment can cost very differently over time depending on the rate and term — comparing total interest, not just the monthly number, shows the real cost.</p>
+    <h3>What's included in the monthly payment?</h3>
+    <p>Principal and interest are calculated with the standard fixed-rate amortization formula on the loan amount (home price minus down payment). Property tax and home insurance are simply divided by 12 and added on top, and PMI is estimated as a percentage of the loan balance per year, also divided by 12.</p>
+    <h3>What is PMI and when does it apply?</h3>
+    <p>Private Mortgage Insurance is typically required when the down payment is below 20% of the home price, since the lender is taking on more risk. This calculator applies your entered PMI rate automatically whenever the down payment is under that 20% threshold, and shows zero otherwise.</p>
+    <h3>Does this account for changing interest rates or extra payments?</h3>
+    <p>No — this models a standard fixed-rate mortgage with no extra principal payments. Adjustable-rate mortgages, biweekly payment schedules, or extra prepayments would all change the real total interest paid.</p>
+
   </section>
 
   <nav class="more-tools">
@@ -118,7 +122,7 @@
       <li><a href="age-calculator.html">Age Calculator</a></li>
       <li><a href="currency-converter.html">Currency Converter</a></li>
       <li><a href="bmi-calculator.html">BMI Calculator</a></li>
-      <li><a href="mortgage-calculator.html">Mortgage Calculator</a></li>
+      <li><a href="loan-calculator.html">Loan / EMI Calculator</a></li>
       <li><a href="tax-calculator.html">Tax Calculator</a></li>
       <li><a href="gst-vat-calculator.html">GST / VAT Calculator</a></li>
       <li><a href="days-calculator.html">Days Between Dates</a></li>
@@ -137,7 +141,7 @@
   <div class="ad-slot">AD SLOT — 728×90 · footer leaderboard</div>
 
   <footer>
-    <p>RR UNIVERSAL CALCULATOR · built for quick answers · no data leaves your browser</p>
+    <p>RR Universal Calculator · built for quick answers</p>
   </footer>
 </div>
 
