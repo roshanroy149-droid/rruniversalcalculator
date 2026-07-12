@@ -20,7 +20,7 @@
 <link rel="stylesheet" href="style.css">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7800403656727097" crossorigin="anonymous"></script>
 </head>
-<body>
+<body data-page-cat="everyday">
 
 <header>
   <div class="wrap">
@@ -29,26 +29,32 @@
       <div class="tagline">18 TOOLS · 0 SIGN-UP</div>
     </div>
   </div>
-  <nav class="ruler">
+  <nav class="ruler cat-ruler">
     <a class="tick" href="index.html">HOME</a>
-    <a class="tick" href="percentage-calculator.html">PERCENT</a>
-    <a class="tick" href="age-calculator.html">AGE</a>
-    <a class="tick" href="currency-converter.html">CURRENCY</a>
-    <a class="tick" href="bmi-calculator.html">BMI</a>
-    <a class="tick" href="loan-calculator.html">LOAN / EMI</a>
-    <a class="tick" href="mortgage-calculator.html">MORTGAGE</a>
-    <a class="tick" href="tax-calculator.html">TAX</a>
-    <a class="tick" href="gst-vat-calculator.html">GST / VAT</a>
-    <a class="tick" href="days-calculator.html">DAYS</a>
-    <a class="tick" href="calorie-calculator.html">CALORIE</a>
-    <a class="tick" href="unit-converter.html">UNITS</a>
-    <a class="tick" href="discount-calculator.html">DISCOUNT</a>
-    <a class="tick" href="investment-calculator.html">INVESTMENT</a>
-    <a class="tick" href="gpa-calculator.html">GPA</a>
-    <a class="tick" href="scientific-calculator.html">SCIENTIFIC</a>
-    <a class="tick" href="tip-calculator.html">TIP</a>
-    <a class="tick" href="password-generator.html">PASSWORD</a>
-    <a class="tick" href="word-counter.html">WORD COUNT</a>
+    <button class="tick cat-tab" type="button" data-cat="finance">FINANCE</button>
+    <button class="tick cat-tab" type="button" data-cat="health">HEALTH</button>
+    <button class="tick cat-tab" type="button" data-cat="education">EDUCATION</button>
+    <button class="tick cat-tab" type="button" data-cat="everyday">EVERYDAY</button>
+  </nav>
+  <nav class="ruler sub-ruler" id="subRuler">
+    <a class="tick sub-tick" data-cat="finance" href="currency-converter.html">CURRENCY</a>
+    <a class="tick sub-tick" data-cat="finance" href="loan-calculator.html">LOAN / EMI</a>
+    <a class="tick sub-tick" data-cat="finance" href="mortgage-calculator.html">MORTGAGE</a>
+    <a class="tick sub-tick" data-cat="finance" href="tax-calculator.html">TAX</a>
+    <a class="tick sub-tick" data-cat="finance" href="gst-vat-calculator.html">GST / VAT</a>
+    <a class="tick sub-tick" data-cat="finance" href="investment-calculator.html">INVESTMENT</a>
+    <a class="tick sub-tick" data-cat="finance" href="discount-calculator.html">DISCOUNT</a>
+    <a class="tick sub-tick" data-cat="finance" href="tip-calculator.html">TIP</a>
+    <a class="tick sub-tick" data-cat="health" href="bmi-calculator.html">BMI</a>
+    <a class="tick sub-tick" data-cat="health" href="calorie-calculator.html">CALORIE</a>
+    <a class="tick sub-tick" data-cat="education" href="gpa-calculator.html">GPA</a>
+    <a class="tick sub-tick" data-cat="education" href="scientific-calculator.html">SCIENTIFIC</a>
+    <a class="tick sub-tick" data-cat="everyday" href="percentage-calculator.html">PERCENT</a>
+    <a class="tick sub-tick" data-cat="everyday" href="age-calculator.html">AGE</a>
+    <a class="tick sub-tick" data-cat="everyday" href="days-calculator.html">DAYS</a>
+    <a class="tick sub-tick" data-cat="everyday" href="unit-converter.html">UNITS</a>
+    <a class="tick sub-tick" data-cat="everyday" href="password-generator.html">PASSWORD</a>
+    <a class="tick sub-tick" data-cat="everyday" href="word-counter.html">WORD COUNT</a>
   </nav>
 </header>
 
@@ -56,7 +62,7 @@
   <div class="crumb"><a href="index.html">TallyBench</a> / Days Between Dates</div>
 
   <section class="hero">
-    <div class="hero-icon-row">
+    <div class="hero-icon-row cat-utility">
       <div class="hero-icon"><svg><use href="icons.svg#icon-days"/></svg></div>
       <div class="eyebrow">// 09 · DAYS BETWEEN DATES CALCULATOR</div>
     </div>

@@ -29,26 +29,32 @@
       <div class="tagline">18 TOOLS · 0 SIGN-UP</div>
     </div>
   </div>
-  <nav class="ruler">
+  <nav class="ruler cat-ruler">
     <a class="tick" href="index.html">HOME</a>
-    <a class="tick" href="percentage-calculator.html">PERCENT</a>
-    <a class="tick" href="age-calculator.html">AGE</a>
-    <a class="tick" href="currency-converter.html">CURRENCY</a>
-    <a class="tick" href="bmi-calculator.html">BMI</a>
-    <a class="tick" href="loan-calculator.html">LOAN / EMI</a>
-    <a class="tick" href="mortgage-calculator.html">MORTGAGE</a>
-    <a class="tick" href="tax-calculator.html">TAX</a>
-    <a class="tick" href="gst-vat-calculator.html">GST / VAT</a>
-    <a class="tick" href="days-calculator.html">DAYS</a>
-    <a class="tick" href="calorie-calculator.html">CALORIE</a>
-    <a class="tick" href="unit-converter.html">UNITS</a>
-    <a class="tick" href="discount-calculator.html">DISCOUNT</a>
-    <a class="tick" href="investment-calculator.html">INVESTMENT</a>
-    <a class="tick" href="gpa-calculator.html">GPA</a>
-    <a class="tick" href="scientific-calculator.html">SCIENTIFIC</a>
-    <a class="tick" href="tip-calculator.html">TIP</a>
-    <a class="tick" href="password-generator.html">PASSWORD</a>
-    <a class="tick" href="word-counter.html">WORD COUNT</a>
+    <button class="tick cat-tab" type="button" data-cat="finance">FINANCE</button>
+    <button class="tick cat-tab" type="button" data-cat="health">HEALTH</button>
+    <button class="tick cat-tab" type="button" data-cat="education">EDUCATION</button>
+    <button class="tick cat-tab" type="button" data-cat="everyday">EVERYDAY</button>
+  </nav>
+  <nav class="ruler sub-ruler" id="subRuler">
+    <a class="tick sub-tick" data-cat="finance" href="currency-converter.html">CURRENCY</a>
+    <a class="tick sub-tick" data-cat="finance" href="loan-calculator.html">LOAN / EMI</a>
+    <a class="tick sub-tick" data-cat="finance" href="mortgage-calculator.html">MORTGAGE</a>
+    <a class="tick sub-tick" data-cat="finance" href="tax-calculator.html">TAX</a>
+    <a class="tick sub-tick" data-cat="finance" href="gst-vat-calculator.html">GST / VAT</a>
+    <a class="tick sub-tick" data-cat="finance" href="investment-calculator.html">INVESTMENT</a>
+    <a class="tick sub-tick" data-cat="finance" href="discount-calculator.html">DISCOUNT</a>
+    <a class="tick sub-tick" data-cat="finance" href="tip-calculator.html">TIP</a>
+    <a class="tick sub-tick" data-cat="health" href="bmi-calculator.html">BMI</a>
+    <a class="tick sub-tick" data-cat="health" href="calorie-calculator.html">CALORIE</a>
+    <a class="tick sub-tick" data-cat="education" href="gpa-calculator.html">GPA</a>
+    <a class="tick sub-tick" data-cat="education" href="scientific-calculator.html">SCIENTIFIC</a>
+    <a class="tick sub-tick" data-cat="everyday" href="percentage-calculator.html">PERCENT</a>
+    <a class="tick sub-tick" data-cat="everyday" href="age-calculator.html">AGE</a>
+    <a class="tick sub-tick" data-cat="everyday" href="days-calculator.html">DAYS</a>
+    <a class="tick sub-tick" data-cat="everyday" href="unit-converter.html">UNITS</a>
+    <a class="tick sub-tick" data-cat="everyday" href="password-generator.html">PASSWORD</a>
+    <a class="tick sub-tick" data-cat="everyday" href="word-counter.html">WORD COUNT</a>
   </nav>
 </header>
 
@@ -64,8 +70,8 @@
       <div class="hero-graphic" aria-hidden="true">
         <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
           <g transform="rotate(-8 190 118)">
-            <rect x="25" y="100" width="330" height="28" rx="4" fill="#FFFFFF" stroke="#D7D8CE" stroke-width="1.5"/>
-            <g stroke="#6B7280" stroke-width="1.2">
+            <rect x="25" y="100" width="330" height="28" rx="4" fill="#FFFFFF" stroke="#E3DDCE" stroke-width="1.5"/>
+            <g stroke="#6E6455" stroke-width="1.2">
               <line x1="40" y1="100" x2="40" y2="86"/>
               <line x1="54" y1="100" x2="54" y2="93"/>
               <line x1="68" y1="100" x2="68" y2="93"/>
@@ -81,17 +87,17 @@
               <line x1="208" y1="100" x2="208" y2="86"/>
               <line x1="222" y1="100" x2="222" y2="93"/>
             </g>
-            <circle cx="140" cy="114" r="17" fill="#F7F7F2" stroke="#D7D8CE" stroke-width="1.5"/>
-            <circle cx="170" cy="114" r="17" fill="#F7F7F2" stroke="#D7D8CE" stroke-width="1.5"/>
+            <circle cx="140" cy="114" r="17" fill="#FBF8F1" stroke="#E3DDCE" stroke-width="1.5"/>
+            <circle cx="170" cy="114" r="17" fill="#FBF8F1" stroke="#E3DDCE" stroke-width="1.5"/>
             <rect x="30" y="70" width="9" height="88" rx="2.5" fill="#3D5A73"/>
-            <rect x="228" y="94" width="52" height="40" rx="5" fill="#E8590C" fill-opacity="0.12" stroke="#E8590C" stroke-width="1.5"/>
-            <rect x="268" y="74" width="9" height="90" rx="2.5" fill="#E8590C"/>
+            <rect x="228" y="94" width="52" height="40" rx="5" fill="#C08A34" fill-opacity="0.12" stroke="#C08A34" stroke-width="1.5"/>
+            <rect x="268" y="74" width="9" height="90" rx="2.5" fill="#C08A34"/>
           </g>
-          <line x1="272" y1="188" x2="272" y2="206" stroke="#D7D8CE" stroke-width="1.5" stroke-dasharray="3 3"/>
-          <circle cx="272" cy="188" r="3" fill="#E8590C"/>
-          <rect x="205" y="206" width="140" height="66" rx="8" fill="#1B2426"/>
-          <text x="275" y="226" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="9" letter-spacing="1.5" fill="#8A9A9E">TOOLS ON THE BENCH</text>
-          <text x="275" y="256" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="28" font-weight="700" fill="#F4E9C1">18</text>
+          <line x1="272" y1="188" x2="272" y2="206" stroke="#E3DDCE" stroke-width="1.5" stroke-dasharray="3 3"/>
+          <circle cx="272" cy="188" r="3" fill="#C08A34"/>
+          <rect x="205" y="206" width="140" height="66" rx="8" fill="#14120F"/>
+          <text x="275" y="226" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="9" letter-spacing="1.5" fill="#9C9284">TOOLS ON THE BENCH</text>
+          <text x="275" y="256" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="28" font-weight="700" fill="#F2D9A0">18</text>
         </svg>
       </div>
     </div>
@@ -101,92 +107,92 @@
 
   <section style="padding:40px 0;">
     <div class="tool-grid">
-      <a class="tool-card-link" href="percentage-calculator.html">
+      <a class="tool-card-link cat-utility" href="percentage-calculator.html">
         <div class="tcl-top"><div class="tcl-icon"><svg><use href="icons.svg#icon-percent"/></svg></div><div class="tcl-num">01</div></div>
         <h3>Percentage Calculator</h3>
         <p>Find X% of Y, or what percent A is of B.</p>
       </a>
-      <a class="tool-card-link" href="age-calculator.html">
+      <a class="tool-card-link cat-utility" href="age-calculator.html">
         <div class="tcl-top"><div class="tcl-icon"><svg><use href="icons.svg#icon-age"/></svg></div><div class="tcl-num">02</div></div>
         <h3>Age Calculator</h3>
         <p>Exact age in years, months, and days.</p>
       </a>
-      <a class="tool-card-link" href="currency-converter.html">
+      <a class="tool-card-link cat-finance" href="currency-converter.html">
         <div class="tcl-top"><div class="tcl-icon"><svg><use href="icons.svg#icon-currency"/></svg></div><div class="tcl-num">03</div></div>
         <h3>Currency Converter</h3>
         <p>Live exchange rates between world currencies.</p>
       </a>
-      <a class="tool-card-link" href="bmi-calculator.html">
+      <a class="tool-card-link cat-health" href="bmi-calculator.html">
         <div class="tcl-top"><div class="tcl-icon"><svg><use href="icons.svg#icon-bmi"/></svg></div><div class="tcl-num">04</div></div>
         <h3>BMI Calculator</h3>
         <p>Body mass index from height and weight.</p>
       </a>
-      <a class="tool-card-link" href="loan-calculator.html">
+      <a class="tool-card-link cat-finance" href="loan-calculator.html">
         <div class="tcl-top"><div class="tcl-icon"><svg><use href="icons.svg#icon-loan"/></svg></div><div class="tcl-num">05</div></div>
         <h3>Loan / EMI Calculator</h3>
         <p>Monthly payment and total interest, any currency, years or months.</p>
       </a>
-      <a class="tool-card-link" href="mortgage-calculator.html">
+      <a class="tool-card-link cat-finance" href="mortgage-calculator.html">
         <div class="tcl-top"><div class="tcl-icon"><svg><use href="icons.svg#icon-mortgage"/></svg></div><div class="tcl-num">06</div></div>
         <h3>Mortgage Calculator</h3>
         <p>Monthly payment with property tax, insurance, and PMI.</p>
       </a>
-      <a class="tool-card-link" href="tax-calculator.html">
+      <a class="tool-card-link cat-finance" href="tax-calculator.html">
         <div class="tcl-top"><div class="tcl-icon"><svg><use href="icons.svg#icon-tax"/></svg></div><div class="tcl-num">07</div></div>
         <h3>Tax Calculator</h3>
         <p>Income tax estimate by country, with deductions and regimes.</p>
       </a>
-      <a class="tool-card-link" href="gst-vat-calculator.html">
+      <a class="tool-card-link cat-finance" href="gst-vat-calculator.html">
         <div class="tcl-top"><div class="tcl-icon"><svg><use href="icons.svg#icon-gst"/></svg></div><div class="tcl-num">08</div></div>
         <h3>GST / VAT Calculator</h3>
         <p>Add or remove GST/VAT for 8+ countries.</p>
       </a>
-      <a class="tool-card-link" href="days-calculator.html">
+      <a class="tool-card-link cat-utility" href="days-calculator.html">
         <div class="tcl-top"><div class="tcl-icon"><svg><use href="icons.svg#icon-days"/></svg></div><div class="tcl-num">09</div></div>
         <h3>Days Between Dates</h3>
         <p>Exact days, weeks, and business days between two dates.</p>
       </a>
-      <a class="tool-card-link" href="calorie-calculator.html">
+      <a class="tool-card-link cat-health" href="calorie-calculator.html">
         <div class="tcl-top"><div class="tcl-icon"><svg><use href="icons.svg#icon-calorie"/></svg></div><div class="tcl-num">10</div></div>
         <h3>Calorie / BMR Calculator</h3>
         <p>BMR and daily calorie needs by activity level.</p>
       </a>
-      <a class="tool-card-link" href="unit-converter.html">
+      <a class="tool-card-link cat-utility" href="unit-converter.html">
         <div class="tcl-top"><div class="tcl-icon"><svg><use href="icons.svg#icon-units"/></svg></div><div class="tcl-num">11</div></div>
         <h3>Unit Converter</h3>
         <p>Length, weight, volume, area, speed, time, data, and temperature.</p>
       </a>
-      <a class="tool-card-link" href="discount-calculator.html">
+      <a class="tool-card-link cat-finance" href="discount-calculator.html">
         <div class="tcl-top"><div class="tcl-icon"><svg><use href="icons.svg#icon-discount"/></svg></div><div class="tcl-num">12</div></div>
         <h3>Discount Calculator</h3>
         <p>Sale price, savings, or the original price in reverse.</p>
       </a>
-      <a class="tool-card-link" href="investment-calculator.html">
+      <a class="tool-card-link cat-finance" href="investment-calculator.html">
         <div class="tcl-top"><div class="tcl-icon"><svg><use href="icons.svg#icon-investment"/></svg></div><div class="tcl-num">13</div></div>
         <h3>Investment Calculator</h3>
         <p>SIP, SWP, and compound growth projections.</p>
       </a>
-      <a class="tool-card-link" href="gpa-calculator.html">
+      <a class="tool-card-link cat-education" href="gpa-calculator.html">
         <div class="tcl-top"><div class="tcl-icon"><svg><use href="icons.svg#icon-gpa"/></svg></div><div class="tcl-num">14</div></div>
         <h3>GPA Calculator</h3>
         <p>GPA on the 4.0, 5.0, or 10.0 scale, by credit hours.</p>
       </a>
-      <a class="tool-card-link" href="scientific-calculator.html">
+      <a class="tool-card-link cat-education" href="scientific-calculator.html">
         <div class="tcl-top"><div class="tcl-icon"><svg><use href="icons.svg#icon-scientific"/></svg></div><div class="tcl-num">15</div></div>
         <h3>Scientific Calculator</h3>
         <p>Trig, logs, powers, roots, and memory keys.</p>
       </a>
-      <a class="tool-card-link" href="tip-calculator.html">
+      <a class="tool-card-link cat-finance" href="tip-calculator.html">
         <div class="tcl-top"><div class="tcl-icon"><svg><use href="icons.svg#icon-tip"/></svg></div><div class="tcl-num">16</div></div>
         <h3>Tip Calculator</h3>
         <p>Split a bill by percentage and number of people.</p>
       </a>
-      <a class="tool-card-link" href="password-generator.html">
+      <a class="tool-card-link cat-utility" href="password-generator.html">
         <div class="tcl-top"><div class="tcl-icon"><svg><use href="icons.svg#icon-password"/></svg></div><div class="tcl-num">17</div></div>
         <h3>Password Generator</h3>
         <p>Strong random passwords, generated locally.</p>
       </a>
-      <a class="tool-card-link" href="word-counter.html">
+      <a class="tool-card-link cat-utility" href="word-counter.html">
         <div class="tcl-top"><div class="tcl-icon"><svg><use href="icons.svg#icon-words"/></svg></div><div class="tcl-num">18</div></div>
         <h3>Word Counter</h3>
         <p>Live word, character, and sentence counts.</p>

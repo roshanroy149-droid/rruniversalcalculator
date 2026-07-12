@@ -1,9 +1,49 @@
-// ---- Ruler nav active-state highlight (based on current page) ----
+// ---- Two-tier category nav (category tabs + collapsible sub-row) ----
 (function(){
   const path = window.location.pathname.split('/').pop() || 'index.html';
-  document.querySelectorAll('.tick').forEach(t=>{
-    const href = t.getAttribute('href');
-    if(href === path || (path==='' && href==='index.html')) t.classList.add('active');
+  const catTabs = document.querySelectorAll('.cat-tab');
+  const subRuler = document.getElementById('subRuler');
+  const subTicks = document.querySelectorAll('.sub-tick');
+  if(!catTabs.length || !subRuler) return;
+
+  // Mark the plain HOME link active if we're on the homepage
+  document.querySelectorAll('.tick[href]').forEach(t=>{
+    if(t.getAttribute('href') === path) t.classList.add('active');
+  });
+
+  function openCategory(cat, scroll){
+    catTabs.forEach(tab=>tab.classList.toggle('cat-open', tab.dataset.cat === cat));
+    subTicks.forEach(tick=>tick.classList.toggle('cat-visible', tick.dataset.cat === cat));
+    subRuler.classList.add('open');
+    if(scroll) subRuler.scrollLeft = 0;
+  }
+
+  function closeAll(){
+    catTabs.forEach(tab=>tab.classList.remove('cat-open'));
+    subRuler.classList.remove('open');
+  }
+
+  // Mark the current page's sub-tick as active (works once its category is shown)
+  subTicks.forEach(tick=>{
+    if(tick.getAttribute('href') === path) tick.classList.add('active');
+  });
+
+  // Auto-open the category this page belongs to, so the current tool is visible on load
+  const pageCat = document.body.dataset.pageCat;
+  if(pageCat){
+    openCategory(pageCat, false);
+  }
+
+  catTabs.forEach(tab=>{
+    tab.addEventListener('click', ()=>{
+      const cat = tab.dataset.cat;
+      const alreadyOpen = tab.classList.contains('cat-open');
+      if(alreadyOpen){
+        closeAll();
+      } else {
+        openCategory(cat, true);
+      }
+    });
   });
 })();
 
