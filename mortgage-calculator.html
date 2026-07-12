@@ -22,6 +22,7 @@
 <meta name="twitter:title" content="Mortgage Calculator — Monthly Payment with Taxes, Insurance & PMI">
 <meta name="twitter:description" content="Free mortgage calculator. Estimate your monthly home loan payment including principal, interest, property tax, insurance, and PMI.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7800403656727097" crossorigin="anonymous"></script>
@@ -95,7 +96,7 @@
   <div class="wrap">
     <div class="headbar">
       <a class="logo" href="index.html">TALLYBENCH<span>.</span></a>
-      <div class="tagline">18 TOOLS · 0 SIGN-UP</div>
+      <div class="tagline">22 TOOLS · 0 SIGN-UP</div>
     </div>
   </div>
   <nav class="ruler cat-ruler">
@@ -114,6 +115,10 @@
     <a class="tick sub-tick" data-cat="finance" href="investment-calculator.html">INVESTMENT</a>
     <a class="tick sub-tick" data-cat="finance" href="discount-calculator.html">DISCOUNT</a>
     <a class="tick sub-tick" data-cat="finance" href="tip-calculator.html">TIP</a>
+    <a class="tick sub-tick" data-cat="finance" href="fd-calculator.html">FD</a>
+    <a class="tick sub-tick" data-cat="finance" href="rd-calculator.html">RD</a>
+    <a class="tick sub-tick" data-cat="finance" href="ppf-calculator.html">PPF</a>
+    <a class="tick sub-tick" data-cat="finance" href="hra-calculator.html">HRA</a>
     <a class="tick sub-tick" data-cat="health" href="bmi-calculator.html">BMI</a>
     <a class="tick sub-tick" data-cat="health" href="calorie-calculator.html">CALORIE</a>
     <a class="tick sub-tick" data-cat="education" href="gpa-calculator.html">GPA</a>
@@ -187,6 +192,16 @@
     </div>
   </section>
 
+
+  <section style="padding:32px 0;border-bottom:1px solid var(--paper-line);" id="mtgScheduleWrap">
+    <h2 style="font-family:'Space Grotesk',sans-serif;font-size:20px;margin:0 0 6px;">Amortization schedule</h2>
+    <p style="color:var(--graphite);font-size:13px;margin:0 0 16px;">How each year's payments split between principal and interest, and how the balance falls.</p>
+    <div id="mtgChart" style="margin-bottom:16px;"></div>
+    <div class="table-scroll">
+      <table class="bracket-table" style="margin-top:0;"><thead><tr><th>Year</th><th>Principal paid</th><th>Interest paid</th><th>Balance</th></tr></thead><tbody id="mtgScheduleBody"></tbody></table>
+    </div>
+  </section>
+
   <section class="article">
     <h3>What's included in the monthly payment?</h3>
     <p>Principal and interest are calculated with the standard fixed-rate amortization formula on the loan amount (home price minus down payment). Property tax and home insurance are simply divided by 12 and added on top, and PMI is estimated as a percentage of the loan balance per year, also divided by 12.</p>
@@ -221,6 +236,10 @@
       <li><a href="tip-calculator.html">Tip Calculator</a></li>
       <li><a href="password-generator.html">Password Generator</a></li>
       <li><a href="word-counter.html">Word Counter</a></li>
+      <li><a href="fd-calculator.html">FD Calculator</a></li>
+      <li><a href="rd-calculator.html">RD Calculator</a></li>
+      <li><a href="ppf-calculator.html">PPF Calculator</a></li>
+      <li><a href="hra-calculator.html">HRA Calculator</a></li>
     </ul>
   </nav>
 

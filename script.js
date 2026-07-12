@@ -1079,3 +1079,327 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js').catch(() => {});
   });
 }
+
+// ---- Shared: amortization schedule + SVG chart renderer ----
+function buildAmortization(P, annualRate, months){
+  const r = annualRate/100/12;
+  const pay = (r===0||months<=0) ? (months>0?P/months:0) : P*r/(1-Math.pow(1+r,-months));
+  let bal = P; const years = [];
+  let yp=0, yi=0;
+  for(let m=1;m<=months;m++){
+    const interest = bal*r;
+    const principal = Math.min(pay-interest, bal);
+    bal = Math.max(bal-principal,0);
+    yp+=principal; yi+=interest;
+    if(m%12===0 || m===months){
+      years.push({year:Math.ceil(m/12), principal:yp, interest:yi, balance:bal});
+      yp=0; yi=0;
+    }
+  }
+  return {pay, years};
+}
+
+function renderAmortChart(containerId, years, P, cur){
+  const el = document.getElementById(containerId);
+  if(!el || !years.length) return;
+  const W=700, H=220, pad=40;
+  const maxBal = P;
+  const n = years.length;
+  const x = i => pad + (i/(Math.max(n-1,1)))*(W-pad-16);
+  const y = v => H-30 - (v/maxBal)*(H-50);
+  let path = `M ${x(0)} ${y(years[0].balance+years[0].principal)}`;
+  years.forEach((yr,i)=>{ path += ` L ${x(i)} ${y(yr.balance)}`; });
+  const lastX = x(n-1);
+  const gridLines = [0.25,0.5,0.75,1].map(f=>
+    `<line x1="${pad}" y1="${y(maxBal*f)}" x2="${W-16}" y2="${y(maxBal*f)}" stroke="var(--paper-line)" stroke-width="1"/>
+     <text x="${pad-6}" y="${y(maxBal*f)+4}" text-anchor="end" font-size="9" font-family="JetBrains Mono,monospace" fill="var(--graphite)">${Math.round(maxBal*f/1000)}k</text>`
+  ).join('');
+  el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;background:var(--card-hi);border:1px solid var(--paper-line);border-radius:6px;">
+    ${gridLines}
+    <path d="${path} L ${lastX} ${y(0)} L ${x(0)} ${y(0)} Z" fill="rgba(192,138,52,0.15)"/>
+    <path d="${path}" fill="none" stroke="var(--orange)" stroke-width="2"/>
+    <text x="${pad}" y="14" font-size="10" font-family="JetBrains Mono,monospace" fill="var(--graphite)">REMAINING BALANCE (${cur.trim()}) BY YEAR</text>
+    <text x="${pad}" y="${H-8}" font-size="9" font-family="JetBrains Mono,monospace" fill="var(--graphite)">Year 1</text>
+    <text x="${lastX}" y="${H-8}" text-anchor="end" font-size="9" font-family="JetBrains Mono,monospace" fill="var(--graphite)">Year ${years[n-1].year}</text>
+  </svg>`;
+}
+
+function renderAmortTable(bodyId, years, cur){
+  const tbody = document.getElementById(bodyId);
+  if(!tbody) return;
+  const f = v => cur + Math.round(v).toLocaleString();
+  tbody.innerHTML = years.map(y=>
+    `<tr><td>${y.year}</td><td>${f(y.principal)}</td><td>${f(y.interest)}</td><td>${f(y.balance)}</td></tr>`
+  ).join('');
+}
+
+// ---- Loan amortization hookup ----
+(function(){
+  if(!document.getElementById('loanScheduleBody')) return;
+  function update(){
+    const cur = document.getElementById('loanCur').value;
+    const P = parseFloat(document.getElementById('loanAmt').value)||0;
+    const rate = parseFloat(document.getElementById('loanRate').value)||0;
+    const termInput = parseFloat(document.getElementById('loanTerm').value)||0;
+    const seg = document.getElementById('loanTenureSeg');
+    const unit = seg ? (seg.querySelector('.active')?.dataset.unit||'months') : 'months';
+    const months = Math.round(unit==='years' ? termInput*12 : termInput);
+    if(P<=0||months<=0) return;
+    const {years} = buildAmortization(P, rate, months);
+    renderAmortChart('loanChart', years, P, cur);
+    renderAmortTable('loanScheduleBody', years, cur);
+  }
+  ['loanAmt','loanRate','loanTerm','loanCur'].forEach(id=>{
+    const el=document.getElementById(id);
+    el.addEventListener('input',update); el.addEventListener('change',update);
+  });
+  const seg=document.getElementById('loanTenureSeg');
+  if(seg) seg.addEventListener('click',()=>setTimeout(update,0));
+  update();
+})();
+
+// ---- Mortgage amortization hookup ----
+(function(){
+  if(!document.getElementById('mtgScheduleBody')) return;
+  function update(){
+    const cur = document.getElementById('mtgCur').value;
+    const price = parseFloat(document.getElementById('mtgPrice').value)||0;
+    const down = parseFloat(document.getElementById('mtgDown').value)||0;
+    const P = Math.max(price-down,0);
+    const rate = parseFloat(document.getElementById('mtgRate').value)||0;
+    const years = parseFloat(document.getElementById('mtgTerm').value)||0;
+    const months = Math.round(years*12);
+    if(P<=0||months<=0) return;
+    const {years:sched} = buildAmortization(P, rate, months);
+    renderAmortChart('mtgChart', sched, P, cur);
+    renderAmortTable('mtgScheduleBody', sched, cur);
+  }
+  ['mtgPrice','mtgDown','mtgRate','mtgTerm','mtgCur'].forEach(id=>{
+    const el=document.getElementById(id);
+    el.addEventListener('input',update); el.addEventListener('change',update);
+  });
+  update();
+})();
+
+// ---- Investment year-by-year growth table ----
+(function(){
+  const tbody = document.getElementById('invGrowthBody');
+  if(!tbody) return;
+  function cur(){ return document.getElementById('invCur') ? document.getElementById('invCur').value : '₹'; }
+  function fm(v){ return cur()+Math.round(v).toLocaleString(); }
+  function activeTab(){
+    const t = document.querySelector('#invTabs button.active');
+    return t ? t.dataset.tab : 'sip';
+  }
+  function update(){
+    const tab = activeTab();
+    let rows = [];
+    if(tab==='sip'){
+      const amt = parseFloat(document.getElementById('sipAmt').value)||0;
+      const rate = (parseFloat(document.getElementById('sipRate').value)||0)/100/12;
+      const yrs = parseInt(document.getElementById('sipYears').value)||0;
+      let val=0;
+      for(let y=1;y<=yrs;y++){
+        for(let m=0;m<12;m++){ val = (val+amt)*(1+rate); }
+        rows.push({year:y, invested:amt*12*y, value:val});
+      }
+    } else if(tab==='compound'){
+      const P = parseFloat(document.getElementById('cmpPrincipal').value)||0;
+      const rate = (parseFloat(document.getElementById('cmpRate').value)||0)/100;
+      const freq = parseFloat(document.getElementById('cmpFreq').value)||12;
+      const yrs = parseInt(document.getElementById('cmpYears').value)||0;
+      for(let y=1;y<=yrs;y++){
+        const val = P*Math.pow(1+rate/freq, freq*y);
+        rows.push({year:y, invested:P, value:val});
+      }
+    } else { // swp
+      const P = parseFloat(document.getElementById('swpPrincipal').value)||0;
+      const wd = parseFloat(document.getElementById('swpWithdraw').value)||0;
+      const rate = (parseFloat(document.getElementById('swpRate').value)||0)/100/12;
+      const yrs = parseInt(document.getElementById('swpYears').value)||0;
+      let bal=P, withdrawn=0;
+      for(let y=1;y<=yrs;y++){
+        for(let m=0;m<12;m++){
+          bal = bal*(1+rate);
+          const take = Math.min(wd, bal);
+          bal -= take; withdrawn += take;
+        }
+        rows.push({year:y, invested:withdrawn, value:bal, swp:true});
+      }
+    }
+    const isSwp = tab==='swp';
+    const thead = tbody.closest('table').querySelector('thead tr');
+    thead.innerHTML = isSwp
+      ? '<th>Year</th><th>Withdrawn (cumulative)</th><th>Balance</th><th>—</th>'
+      : '<th>Year</th><th>Invested (cumulative)</th><th>Value</th><th>Growth</th>';
+    tbody.innerHTML = rows.map(r=>{
+      const growth = r.swp ? '' : fm(r.value - r.invested);
+      return `<tr><td>${r.year}</td><td>${fm(r.invested)}</td><td>${fm(r.value)}</td><td>${growth||'—'}</td></tr>`;
+    }).join('');
+  }
+  document.querySelectorAll('#invGrowthWrap, #panel-sip input, #panel-swp input, #panel-compound input, #panel-compound select, #invCur').forEach(el=>{
+    el.addEventListener('input', update); el.addEventListener('change', update);
+  });
+  const tabs = document.getElementById('invTabs');
+  if(tabs) tabs.addEventListener('click', ()=>setTimeout(update,0));
+  update();
+})();
+
+// ---- Generic: copy-result + share-link buttons on every readout ----
+(function(){
+  const readouts = document.querySelectorAll('.readout');
+  if(!readouts.length) return;
+
+  // Restore inputs from URL params on load
+  const params = new URLSearchParams(window.location.search);
+  let restored = false;
+  params.forEach((val, key)=>{
+    const el = document.getElementById(key);
+    if(el && (el.tagName==='INPUT' || el.tagName==='SELECT')){
+      el.value = val; restored = true;
+    }
+  });
+  if(restored){
+    document.querySelectorAll('input,select').forEach(el=>{
+      el.dispatchEvent(new Event('input',{bubbles:true}));
+      el.dispatchEvent(new Event('change',{bubbles:true}));
+    });
+  }
+
+  readouts.forEach(r=>{
+    const bar = document.createElement('div');
+    bar.style.cssText = 'display:flex;gap:8px;margin-top:12px;';
+    const copyBtn = document.createElement('button');
+    copyBtn.type='button'; copyBtn.className='ghost';
+    copyBtn.style.cssText='font-size:10px;padding:6px 10px;border-color:rgba(242,236,221,0.3);color:rgba(242,236,221,0.7);';
+    copyBtn.textContent='Copy result';
+    copyBtn.addEventListener('click',()=>{
+      const text = Array.from(r.querySelectorAll('.r-row')).map(row=>{
+        const l=row.querySelector('.r-label'), v=row.querySelector('.r-value');
+        return (l?l.textContent+': ':'')+(v?v.textContent:'');
+      }).filter(Boolean).join('\n') || r.textContent.trim();
+      navigator.clipboard.writeText(text).then(()=>{
+        copyBtn.textContent='Copied!'; setTimeout(()=>copyBtn.textContent='Copy result',1500);
+      });
+    });
+    const shareBtn = document.createElement('button');
+    shareBtn.type='button'; shareBtn.className='ghost';
+    shareBtn.style.cssText=copyBtn.style.cssText;
+    shareBtn.textContent='Share link';
+    shareBtn.addEventListener('click',()=>{
+      const p = new URLSearchParams();
+      document.querySelectorAll('input[id],select[id]').forEach(el=>{
+        if(el.type==='checkbox'||el.type==='range') return;
+        if(el.value!=='') p.set(el.id, el.value);
+      });
+      const url = window.location.origin + window.location.pathname + '?' + p.toString();
+      navigator.clipboard.writeText(url).then(()=>{
+        shareBtn.textContent='Link copied!'; setTimeout(()=>shareBtn.textContent='Share link',1500);
+      });
+    });
+    bar.appendChild(copyBtn); bar.appendChild(shareBtn);
+    r.appendChild(bar);
+  });
+})();
+
+// ---- FD calculator ----
+(function(){
+  if(!document.getElementById('fdAmt')) return;
+  function calc(){
+    const P = parseFloat(document.getElementById('fdAmt').value)||0;
+    const r = (parseFloat(document.getElementById('fdRate').value)||0)/100;
+    const t = parseFloat(document.getElementById('fdYears').value)||0;
+    const n = parseFloat(document.getElementById('fdFreq').value)||4;
+    const maturity = P*Math.pow(1+r/n, n*t);
+    document.getElementById('fdInvested').textContent = '₹'+Math.round(P).toLocaleString('en-IN');
+    document.getElementById('fdInterest').textContent = '₹'+Math.round(maturity-P).toLocaleString('en-IN');
+    document.getElementById('fdMaturity').textContent = '₹'+Math.round(maturity).toLocaleString('en-IN');
+  }
+  ['fdAmt','fdRate','fdYears','fdFreq'].forEach(id=>{
+    const el=document.getElementById(id);
+    el.addEventListener('input',calc); el.addEventListener('change',calc);
+  });
+  calc();
+})();
+
+// ---- RD calculator ----
+(function(){
+  if(!document.getElementById('rdAmt')) return;
+  function calc(){
+    const R = parseFloat(document.getElementById('rdAmt').value)||0;
+    const rate = (parseFloat(document.getElementById('rdRate').value)||0)/100;
+    const months = parseInt(document.getElementById('rdMonths').value)||0;
+    // Each installment compounds quarterly for its remaining months
+    let maturity = 0;
+    const iq = rate/4;
+    for(let m=1;m<=months;m++){
+      const quartersLeft = (months - m + 1)/3;
+      maturity += R*Math.pow(1+iq, quartersLeft);
+    }
+    const invested = R*months;
+    document.getElementById('rdInvested').textContent = '₹'+Math.round(invested).toLocaleString('en-IN');
+    document.getElementById('rdInterest').textContent = '₹'+Math.round(maturity-invested).toLocaleString('en-IN');
+    document.getElementById('rdMaturity').textContent = '₹'+Math.round(maturity).toLocaleString('en-IN');
+  }
+  ['rdAmt','rdRate','rdMonths'].forEach(id=>{
+    const el=document.getElementById(id);
+    el.addEventListener('input',calc);
+  });
+  calc();
+})();
+
+// ---- PPF calculator ----
+(function(){
+  if(!document.getElementById('ppfAmt')) return;
+  function calc(){
+    const A = Math.min(parseFloat(document.getElementById('ppfAmt').value)||0, 150000);
+    const r = (parseFloat(document.getElementById('ppfRate').value)||0)/100;
+    const yrs = Math.max(parseInt(document.getElementById('ppfYears').value)||15, 1);
+    let bal = 0;
+    for(let y=0;y<yrs;y++){ bal = (bal + A)*(1+r); }
+    const invested = A*yrs;
+    document.getElementById('ppfInvested').textContent = '₹'+Math.round(invested).toLocaleString('en-IN');
+    document.getElementById('ppfInterest').textContent = '₹'+Math.round(bal-invested).toLocaleString('en-IN');
+    document.getElementById('ppfMaturity').textContent = '₹'+Math.round(bal).toLocaleString('en-IN');
+  }
+  ['ppfAmt','ppfRate','ppfYears'].forEach(id=>{
+    const el=document.getElementById(id);
+    el.addEventListener('input',calc);
+  });
+  calc();
+})();
+
+// ---- HRA exemption calculator ----
+(function(){
+  if(!document.getElementById('hraBasic')) return;
+  let city = 'metro';
+  const seg = document.getElementById('hraCitySeg');
+  function calc(){
+    const basic = parseFloat(document.getElementById('hraBasic').value)||0;
+    const received = parseFloat(document.getElementById('hraReceived').value)||0;
+    const rent = parseFloat(document.getElementById('hraRent').value)||0;
+    const t1 = received;
+    const t2 = Math.max(rent - 0.10*basic, 0);
+    const t3 = (city==='metro'?0.50:0.40)*basic;
+    const exempt = Math.min(t1,t2,t3);
+    const taxable = Math.max(received-exempt,0);
+    let rule = '—';
+    if(exempt===t1) rule='Actual HRA received';
+    else if(exempt===t2) rule='Rent − 10% of basic';
+    else rule=(city==='metro'?'50%':'40%')+' of basic';
+    document.getElementById('hraExempt').textContent = '₹'+Math.round(exempt).toLocaleString('en-IN');
+    document.getElementById('hraTaxable').textContent = '₹'+Math.round(taxable).toLocaleString('en-IN');
+    document.getElementById('hraRule').textContent = rule;
+  }
+  seg.addEventListener('click',(e)=>{
+    const btn=e.target.closest('button'); if(!btn) return;
+    city = btn.dataset.city;
+    seg.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    calc();
+  });
+  ['hraBasic','hraReceived','hraRent'].forEach(id=>{
+    document.getElementById(id).addEventListener('input',calc);
+  });
+  calc();
+})();

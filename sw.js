@@ -1,4 +1,4 @@
-const CACHE_NAME = 'tallybench-v1';
+const CACHE_NAME = 'tallybench-v2';
 const CORE_ASSETS = [
   '/',
   '/index.html',
@@ -23,7 +23,11 @@ const CORE_ASSETS = [
   '/scientific-calculator.html',
   '/tip-calculator.html',
   '/password-generator.html',
-  '/word-counter.html'
+  '/word-counter.html',
+  '/fd-calculator.html',
+  '/rd-calculator.html',
+  '/ppf-calculator.html',
+  '/hra-calculator.html'
 ];
 
 self.addEventListener('install', (event) => {
