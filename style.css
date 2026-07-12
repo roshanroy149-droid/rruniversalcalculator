@@ -387,3 +387,41 @@ footer p{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--graph
   transition:border-color .15s, transform .15s;
 }
 .more-tools a:hover{border-color:var(--steel);transform:translateY(-1px);}
+
+/* TOOL CARD ICONS (homepage) */
+.tool-card-link{display:flex;flex-direction:column;gap:2px;}
+.tcl-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.tcl-icon{
+  width:34px;height:34px;padding:7px;box-sizing:border-box;
+  border-radius:var(--radius-sm);
+  background:rgba(61,90,115,0.08);
+  color:var(--steel);
+  flex-shrink:0;
+}
+.tool-card-link:nth-child(-n+3) .tcl-icon{background:rgba(232,89,12,0.10);color:var(--orange);}
+.tcl-icon svg{width:100%;height:100%;display:block;}
+.tool-card-link .tcl-num{margin-bottom:0;}
+
+/* PAGE HERO ICON (tool pages) */
+.hero-icon-row{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.hero-icon{
+  width:40px;height:40px;padding:9px;box-sizing:border-box;
+  border-radius:var(--radius);
+  background:linear-gradient(160deg, rgba(232,89,12,0.14), rgba(61,90,115,0.10));
+  color:var(--orange);
+  box-shadow:var(--shadow-sm);
+  flex-shrink:0;
+}
+.hero-icon svg{width:100%;height:100%;display:block;}
+.hero-icon-row .eyebrow{margin-bottom:0;}
+
+/* HOMEPAGE HERO ILLUSTRATION */
+.hero-flex{display:flex;align-items:center;gap:40px;justify-content:space-between;}
+.hero-flex .hero-copy{flex:1 1 420px;min-width:280px;}
+.hero-graphic{flex:0 0 auto;width:340px;max-width:40vw;}
+.hero-graphic svg{width:100%;height:auto;display:block;}
+@media(max-width:780px){
+  .hero-flex{flex-direction:column;align-items:flex-start;gap:24px;}
+  .hero-graphic{width:260px;max-width:70vw;align-self:center;}
+}
+
