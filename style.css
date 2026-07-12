@@ -238,6 +238,55 @@ footer p{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--graph
 }
 .tool-card-link p{font-size:13px;color:var(--graphite);margin:0;line-height:1.5;}
 
+/* SCIENTIFIC CALCULATOR */
+.sci-wrap{max-width:420px;margin:0 auto;}
+.sci-display{
+  background:var(--readout-bg);
+  border-radius:var(--radius);
+  padding:18px 16px;
+  margin-bottom:12px;
+}
+.sci-expr{
+  font-family:'JetBrains Mono',monospace;font-size:12px;color:#8A9A9E;
+  min-height:16px;overflow-x:auto;white-space:nowrap;
+}
+.sci-val{
+  font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:700;color:var(--readout-fg);
+  overflow-x:auto;white-space:nowrap;text-align:right;
+}
+.sci-mode{display:flex;gap:8px;margin-bottom:10px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--graphite);}
+.sci-mode button{
+  background:transparent;color:var(--graphite);border:1px solid var(--paper-line);
+  padding:5px 10px;font-size:10px;
+}
+.sci-mode button.active{background:var(--steel);color:#fff;border-color:var(--steel);}
+.sci-grid{
+  display:grid;grid-template-columns:repeat(5,1fr);gap:6px;
+}
+.sci-grid button{
+  background:var(--card);color:var(--ink);border:1px solid var(--paper-line);
+  padding:12px 4px;font-size:12px;text-transform:none;font-family:'JetBrains Mono',monospace;
+}
+.sci-grid button:hover{border-color:var(--steel);opacity:1;}
+.sci-grid button.op{background:var(--steel);color:#fff;border-color:var(--steel);}
+.sci-grid button.eq{background:var(--orange);color:#fff;border-color:var(--orange);}
+.sci-grid button.wide{grid-column:span 2;}
+/* TABS (investment calculator, tax calculator) */
+.tabs{display:flex;gap:8px;margin-bottom:22px;flex-wrap:wrap;}
+.tabs button{
+  background:var(--card);color:var(--graphite);border:1px solid var(--paper-line);
+  padding:9px 16px;font-size:11px;
+}
+.tabs button.active{background:var(--ink);color:#fff;border-color:var(--ink);}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+.bracket-table{width:100%;border-collapse:collapse;margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:12px;}
+.bracket-table th,.bracket-table td{text-align:left;padding:6px 10px;border-bottom:1px solid var(--paper-line);}
+.bracket-table th{color:var(--graphite);font-weight:500;text-transform:uppercase;font-size:10px;letter-spacing:0.05em;}
+.disclaimer{
+  background:var(--card);border-left:3px solid var(--orange);
+  padding:12px 16px;font-size:13px;color:var(--graphite);line-height:1.6;margin-bottom:24px;border-radius:var(--radius);
+}
 /* MORE TOOLS LIST (internal linking on tool pages) */
 .more-tools{padding:40px 0;}
 .more-tools h2{font-family:'Space Grotesk',sans-serif;font-size:18px;margin:0 0 14px;}

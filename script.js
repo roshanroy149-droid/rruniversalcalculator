@@ -102,17 +102,21 @@
 (function(){
   if(!document.getElementById('loanAmt')) return;
   function calcLoan(){
+    const cur = document.getElementById('loanCur').value;
     const P = parseFloat(document.getElementById('loanAmt').value)||0;
     const annual = parseFloat(document.getElementById('loanRate').value)||0;
     const n = parseInt(document.getElementById('loanTerm').value)||1;
     const r = annual/100/12;
     const pay = r===0 ? P/n : P*r/(1-Math.pow(1+r,-n));
     const total = pay*n;
-    document.getElementById('loanPay').textContent = '$'+pay.toFixed(2);
-    document.getElementById('loanTotal').textContent = '$'+total.toFixed(2);
-    document.getElementById('loanInt').textContent = '$'+(total-P).toFixed(2);
+    document.getElementById('loanPay').textContent = cur+pay.toFixed(2);
+    document.getElementById('loanTotal').textContent = cur+total.toFixed(2);
+    document.getElementById('loanInt').textContent = cur+(total-P).toFixed(2);
   }
-  ['loanAmt','loanRate','loanTerm'].forEach(id=>document.getElementById(id).addEventListener('input',calcLoan));
+  ['loanAmt','loanRate','loanTerm','loanCur'].forEach(id=>{
+    document.getElementById(id).addEventListener('input',calcLoan);
+    document.getElementById(id).addEventListener('change',calcLoan);
+  });
   calcLoan();
 })();
 
@@ -241,6 +245,308 @@
     toEl.value = tmp;
     convert();
   });
+})();
+
+// ---- Scientific calculator ----
+(function(){
+  const grid = document.getElementById('sciGrid');
+  if(!grid) return;
+  const exprEl = document.getElementById('sciExpr');
+  const valEl = document.getElementById('sciVal');
+  const degBtn = document.getElementById('sciDeg');
+  const radBtn = document.getElementById('sciRad');
+
+  let current = '0';
+  let previous = null;
+  let operator = null;
+  let resetNext = false;
+  let memory = 0;
+  let lastAnswer = 0;
+  let degMode = true;
+
+  const opSymbol = {add:'+', sub:'−', mul:'×', div:'÷', pow:'xʸ'};
+
+  function fmt(n){
+    if(!isFinite(n)) return 'Error';
+    if(Math.abs(n) < 1e-12) n = 0;
+    const s = parseFloat(n.toPrecision(12)).toString();
+    return s;
+  }
+  function render(){
+    valEl.textContent = current;
+    exprEl.textContent = previous!==null ? previous+' '+(opSymbol[operator]||'') : '\u00A0';
+  }
+  function inputDigit(d){
+    if(resetNext){ current = d; resetNext=false; }
+    else { current = current==='0' ? d : current+d; }
+    render();
+  }
+  function inputDot(){
+    if(resetNext){ current='0.'; resetNext=false; render(); return; }
+    if(!current.includes('.')) current+='.';
+    render();
+  }
+  function clearAll(){ current='0'; previous=null; operator=null; resetNext=false; render(); }
+  function backspace(){ current = current.length>1 ? current.slice(0,-1) : '0'; render(); }
+  function toggleSign(){ current = fmt(parseFloat(current)*-1); render(); }
+  function percent(){ current = fmt(parseFloat(current)/100); render(); }
+
+  function compute(){
+    if(previous===null || operator===null) return parseFloat(current);
+    const a = parseFloat(previous), b = parseFloat(current);
+    let r;
+    switch(operator){
+      case 'add': r=a+b; break;
+      case 'sub': r=a-b; break;
+      case 'mul': r=a*b; break;
+      case 'div': r=b===0 ? NaN : a/b; break;
+      case 'pow': r=Math.pow(a,b); break;
+      default: r=b;
+    }
+    return r;
+  }
+  function setOperator(op){
+    if(previous!==null && !resetNext){
+      current = fmt(compute());
+    }
+    previous = current;
+    operator = op;
+    resetNext = true;
+    render();
+  }
+  function equals(){
+    if(operator===null) return;
+    const r = compute();
+    lastAnswer = r;
+    current = fmt(r);
+    previous = null;
+    operator = null;
+    resetNext = true;
+    render();
+  }
+  function toRad(v){ return degMode ? v*Math.PI/180 : v; }
+  function unary(fn){
+    const v = parseFloat(current);
+    current = fmt(fn(v));
+    resetNext = true;
+    render();
+  }
+  function factorial(n){
+    n = Math.round(n);
+    if(n<0) return NaN;
+    if(n>170) return Infinity;
+    let r=1;
+    for(let i=2;i<=n;i++) r*=i;
+    return r;
+  }
+
+  const actions = {
+    ac: clearAll,
+    back: backspace,
+    sign: toggleSign,
+    pct: percent,
+    dot: inputDot,
+    eq: equals,
+    add: ()=>setOperator('add'),
+    sub: ()=>setOperator('sub'),
+    mul: ()=>setOperator('mul'),
+    div: ()=>setOperator('div'),
+    pow: ()=>setOperator('pow'),
+    sq: ()=>unary(v=>v*v),
+    cube: ()=>unary(v=>v*v*v),
+    sqrt: ()=>unary(v=>Math.sqrt(v)),
+    cbrt: ()=>unary(v=>Math.cbrt(v)),
+    inv: ()=>unary(v=> v===0 ? NaN : 1/v),
+    fact: ()=>unary(factorial),
+    sin: ()=>unary(v=>Math.sin(toRad(v))),
+    cos: ()=>unary(v=>Math.cos(toRad(v))),
+    tan: ()=>unary(v=>Math.tan(toRad(v))),
+    log: ()=>unary(v=>Math.log10(v)),
+    ln: ()=>unary(v=>Math.log(v)),
+    pi: ()=>{ current = fmt(Math.PI); resetNext=true; render(); },
+    e: ()=>{ current = fmt(Math.E); resetNext=true; render(); },
+    ans: ()=>{ current = fmt(lastAnswer); resetNext=true; render(); },
+    mc: ()=>{ memory = 0; },
+    mr: ()=>{ current = fmt(memory); resetNext=true; render(); },
+    'm+': ()=>{ memory += parseFloat(current); },
+    'm-': ()=>{ memory -= parseFloat(current); }
+  };
+
+  grid.addEventListener('click', (e)=>{
+    const btn = e.target.closest('button');
+    if(!btn) return;
+    if(btn.dataset.num !== undefined){ inputDigit(btn.dataset.num); return; }
+    const act = btn.dataset.act;
+    if(act && actions[act]) actions[act]();
+  });
+
+  degBtn.addEventListener('click', ()=>{ degMode=true; degBtn.classList.add('active'); radBtn.classList.remove('active'); });
+  radBtn.addEventListener('click', ()=>{ degMode=false; radBtn.classList.add('active'); degBtn.classList.remove('active'); });
+
+  render();
+})();
+// ---- Investment calculator (SIP / SWP / Compound growth) ----
+(function(){
+  const tabs = document.getElementById('invTabs');
+  if(!tabs) return;
+
+  tabs.addEventListener('click', (e)=>{
+    const btn = e.target.closest('button');
+    if(!btn) return;
+    tabs.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+    document.getElementById('panel-'+btn.dataset.tab).classList.add('active');
+  });
+
+  function money(n){ return '$'+n.toLocaleString(undefined,{maximumFractionDigits:0}); }
+
+  // SIP
+  function calcSIP(){
+    const P = parseFloat(document.getElementById('sipAmt').value)||0;
+    const annual = parseFloat(document.getElementById('sipRate').value)||0;
+    const years = parseFloat(document.getElementById('sipYears').value)||0;
+    const n = Math.round(years*12);
+    const r = annual/100/12;
+    const maturity = r===0 ? P*n : P*((Math.pow(1+r,n)-1)/r)*(1+r);
+    const invested = P*n;
+    document.getElementById('sipInvested').textContent = money(invested);
+    document.getElementById('sipReturns').textContent = money(Math.max(maturity-invested,0));
+    document.getElementById('sipMaturity').textContent = money(maturity);
+  }
+  ['sipAmt','sipRate','sipYears'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.addEventListener('input', calcSIP);
+  });
+  if(document.getElementById('sipAmt')) calcSIP();
+
+  // SWP
+  function calcSWP(){
+    let bal = parseFloat(document.getElementById('swpPrincipal').value)||0;
+    const withdraw = parseFloat(document.getElementById('swpWithdraw').value)||0;
+    const annual = parseFloat(document.getElementById('swpRate').value)||0;
+    const years = parseFloat(document.getElementById('swpYears').value)||0;
+    const months = Math.round(years*12);
+    const r = annual/100/12;
+    let totalWithdrawn = 0;
+    let depletedAt = null;
+    for(let m=1; m<=months; m++){
+      bal = bal*(1+r) - withdraw;
+      totalWithdrawn += withdraw;
+      if(bal <= 0){ depletedAt = m; bal = 0; break; }
+    }
+    document.getElementById('swpWithdrawn').textContent = money(totalWithdrawn);
+    document.getElementById('swpBalance').textContent = money(Math.max(bal,0));
+    document.getElementById('swpStatus').textContent = depletedAt
+      ? 'Funds depleted at month '+depletedAt+' of '+months
+      : 'Balance lasts full '+years+'-year term';
+  }
+  ['swpPrincipal','swpWithdraw','swpRate','swpYears'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.addEventListener('input', calcSWP);
+  });
+  if(document.getElementById('swpPrincipal')) calcSWP();
+
+  // Compound growth
+  function calcCompound(){
+    const P = parseFloat(document.getElementById('cmpPrincipal').value)||0;
+    const annual = parseFloat(document.getElementById('cmpRate').value)||0;
+    const years = parseFloat(document.getElementById('cmpYears').value)||0;
+    const n = parseFloat(document.getElementById('cmpFreq').value)||1;
+    const maturity = P*Math.pow(1+(annual/100)/n, n*years);
+    document.getElementById('cmpPrincipalOut').textContent = money(P);
+    document.getElementById('cmpInterest').textContent = money(Math.max(maturity-P,0));
+    document.getElementById('cmpMaturity').textContent = money(maturity);
+  }
+  ['cmpPrincipal','cmpRate','cmpYears','cmpFreq'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el){ el.addEventListener('input', calcCompound); el.addEventListener('change', calcCompound); }
+  });
+  if(document.getElementById('cmpPrincipal')) calcCompound();
+})();
+
+// ---- Tax calculator ----
+(function(){
+  const countrySel = document.getElementById('taxCountry');
+  if(!countrySel) return;
+
+  // brackets: [ceiling, rate] pairs, ceiling=Infinity for top bracket. Rates as decimals.
+  const schemes = {
+    us: { symbol:'$', brackets:[[11925,0.10],[48475,0.12],[103350,0.22],[197300,0.24],[250525,0.32],[626350,0.35],[Infinity,0.37]] },
+    ca: { symbol:'C$', brackets:[[57375,0.15],[114750,0.205],[177882,0.26],[253414,0.29],[Infinity,0.33]] },
+    uk: { symbol:'£', brackets:[[12570,0],[50270,0.20],[125140,0.40],[Infinity,0.45]] },
+    de: { symbol:'€', brackets:[[11604,0],[66760,0.30],[277825,0.42],[Infinity,0.45]] },
+    fr: { symbol:'€', brackets:[[11497,0],[29315,0.11],[83823,0.30],[180294,0.41],[Infinity,0.45]] },
+    in: { symbol:'₹', brackets:[[400000,0],[800000,0.05],[1200000,0.10],[1600000,0.15],[2000000,0.20],[2400000,0.25],[Infinity,0.30]], indiaRules:true },
+    au: { symbol:'A$', brackets:[[18200,0],[45000,0.16],[135000,0.30],[190000,0.37],[Infinity,0.45]] },
+    sg: { symbol:'S$', brackets:[[20000,0],[30000,0.02],[40000,0.035],[80000,0.07],[120000,0.115],[160000,0.15],[200000,0.18],[240000,0.19],[280000,0.195],[320000,0.20],[Infinity,0.24]] },
+    ae: { symbol:'AED ', brackets:[[Infinity,0]] }
+  };
+
+  const incomeEl = document.getElementById('taxIncome');
+  const curLabel = document.getElementById('taxCurLabel');
+  const amtEl = document.getElementById('taxAmt');
+  const takeHomeEl = document.getElementById('taxTakeHome');
+  const effEl = document.getElementById('taxEffRate');
+  const tbody = document.getElementById('taxTableBody');
+
+  function calcBracketTax(income, brackets){
+    let tax = 0, lower = 0;
+    const rows = [];
+    for(const [ceiling, rate] of brackets){
+      if(income > lower){
+        const taxableInBand = Math.min(income, ceiling) - lower;
+        const bandTax = taxableInBand*rate;
+        tax += bandTax;
+        rows.push({lower, ceiling, rate, bandTax, taxableInBand});
+      } else {
+        rows.push({lower, ceiling, rate, bandTax:0, taxableInBand:0});
+      }
+      lower = ceiling;
+      if(income <= ceiling) { /* keep listing remaining brackets at 0 for context, but stop expanding further ones beyond a couple */ }
+    }
+    return {tax, rows};
+  }
+
+  function fmtMoney(sym, n){
+    return sym+Math.round(n).toLocaleString();
+  }
+  function fmtBand(sym, lower, ceiling){
+    const upper = ceiling===Infinity ? '+' : fmtMoney(sym, ceiling);
+    return fmtMoney(sym, lower)+' – '+upper;
+  }
+
+  function calc(){
+    const country = countrySel.value;
+    const scheme = schemes[country];
+    curLabel.textContent = scheme.symbol.trim();
+    const income = parseFloat(incomeEl.value)||0;
+
+    let { tax, rows } = calcBracketTax(income, scheme.brackets);
+
+    if(scheme.indiaRules){
+      if(income <= 1200000){
+        tax = 0; // Section 87A rebate zeroes tax up to 12L taxable income
+      } else {
+        tax = tax*1.04; // 4% health & education cess
+      }
+    }
+
+    const takeHome = Math.max(income-tax,0);
+    const effRate = income>0 ? (tax/income*100) : 0;
+
+    amtEl.textContent = fmtMoney(scheme.symbol, tax);
+    takeHomeEl.textContent = fmtMoney(scheme.symbol, takeHome);
+    effEl.textContent = effRate.toFixed(2)+'%';
+
+    tbody.innerHTML = rows.map(r=>{
+      return '<tr><td>'+fmtBand(scheme.symbol, r.lower, r.ceiling)+'</td><td>'+(r.rate*100).toFixed(1)+'%</td><td>'+fmtMoney(scheme.symbol, r.bandTax)+'</td></tr>';
+    }).join('');
+  }
+
+  countrySel.addEventListener('change', calc);
+  incomeEl.addEventListener('input', calc);
+  calc();
 })();
 
 // ---- Password generator ----

@@ -17,7 +17,7 @@
   <div class="wrap">
     <div class="headbar">
       <a class="logo" href="index.html">RR UNIVERSAL CALCULATOR<span>.</span></a>
-      <div class="tagline">9 TOOLS · 0 SIGN-UP</div>
+      <div class="tagline">12 TOOLS · 0 SIGN-UP</div>
     </div>
   </div>
   <nav class="ruler">
@@ -29,6 +29,9 @@
     <a class="tick" href="loan-calculator.html">LOAN</a>
     <a class="tick" href="unit-converter.html">UNITS</a>
     <a class="tick" href="currency-converter.html">CURRENCY</a>
+    <a class="tick" href="scientific-calculator.html">SCIENTIFIC</a>
+    <a class="tick" href="investment-calculator.html">INVESTMENT</a>
+    <a class="tick" href="tax-calculator.html">TAX</a>
     <a class="tick" href="password-generator.html">PASSWORD</a>
     <a class="tick" href="word-counter.html">WORD COUNT</a>
   </nav>
@@ -48,7 +51,21 @@
   <section class="tool" id="loan">
     <div class="card">
       <div>
-        <div class="field"><label>Loan amount ($)</label><input type="number" id="loanAmt" value="20000"></div>
+        <div class="field"><label>Currency</label>
+          <select id="loanCur">
+            <option value="$">USD ($)</option>
+            <option value="€">EUR (€)</option>
+            <option value="£">GBP (£)</option>
+            <option value="₹">INR (₹)</option>
+            <option value="¥">JPY (¥)</option>
+            <option value="A$">AUD (A$)</option>
+            <option value="C$">CAD (C$)</option>
+            <option value="CHF ">CHF</option>
+            <option value="R$">BRL (R$)</option>
+            <option value="AED ">AED</option>
+          </select>
+        </div>
+        <div class="field"><label>Loan amount</label><input type="number" id="loanAmt" value="20000"></div>
         <div class="field"><label>Annual interest rate (%)</label><input type="number" id="loanRate" value="6.5" step="0.01"></div>
         <div class="field"><label>Term (months)</label><input type="number" id="loanTerm" value="60"></div>
       </div>
@@ -82,6 +99,9 @@
       <li><a href="password-generator.html">Password Generator</a></li>
       <li><a href="word-counter.html">Word Counter</a></li>
       <li><a href="currency-converter.html">Currency Converter</a></li>
+      <li><a href="scientific-calculator.html">Scientific Calculator</a></li>
+      <li><a href="investment-calculator.html">Investment Calculator</a></li>
+      <li><a href="tax-calculator.html">Tax Calculator</a></li>
     </ul>
   </nav>
 
