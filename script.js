@@ -173,7 +173,7 @@
   populateUnits();
 })();
 
-// ---- Currency converter (live rates via frankfurter.app, ECB data) ----
+// ---- Currency converter (live rates via frankfurter.dev, ECB data) ----
 (function(){
   if(!document.getElementById('curAmt')) return;
   const amtEl = document.getElementById('curAmt');
@@ -183,7 +183,10 @@
   const rateEl = document.getElementById('curRateLine');
   const dateEl = document.getElementById('curDate');
   const swapBtn = document.getElementById('curSwap');
-  const fallbackCurrencies = ['USD','EUR','GBP','INR','JPY','AUD','CAD','CHF','CNY','SGD','AED','NZD','ZAR','SEK','NOK','MXN','BRL','HKD','KRW','THB'];
+  const fallbackCurrencies = ['USD','EUR','GBP','INR','JPY','AUD','CAD','CHF','CNY','SGD','NZD','ZAR','SEK','NOK','MXN','BRL','HKD','KRW','THB','PLN'];
+
+  let ratesUSD = null;   // all rates relative to 1 USD
+  let asOfDate = '';
 
   function fillSelect(select, list, def){
     select.innerHTML = list.map(c=>`<option value="${c}">${c}</option>`).join('');
@@ -193,31 +196,30 @@
   function convert(){
     const amt = parseFloat(amtEl.value)||0;
     const from = fromEl.value, to = toEl.value;
-    if(!from || !to){ return; }
-    if(from === to){
-      outEl.textContent = amt.toFixed(2)+' '+to;
-      rateEl.textContent = '1 '+from+' = 1 '+to;
+    if(!from || !to) return;
+    if(!ratesUSD){
+      outEl.textContent = 'Rate unavailable';
+      rateEl.textContent = 'Exchange rate data has not loaded yet.';
       return;
     }
-    outEl.textContent = 'Loading…';
-    fetch(`https://api.frankfurter.app/latest?amount=${amt}&from=${from}&to=${to}`)
-      .then(r=>r.json())
-      .then(data=>{
-        const value = data.rates[to];
-        outEl.textContent = value.toFixed(2)+' '+to;
-        rateEl.textContent = '1 '+from+' = '+ (amt? (value/amt).toFixed(4) : '0') +' '+to;
-        dateEl.textContent = 'Rates as of '+data.date+' · source: European Central Bank via frankfurter.app';
-      })
-      .catch(()=>{
-        outEl.textContent = 'Rate unavailable';
-        rateEl.textContent = 'Could not reach the exchange rate service — check your connection and try again.';
-      });
+    if(!(from in ratesUSD) || !(to in ratesUSD)){
+      outEl.textContent = 'Unsupported pair';
+      rateEl.textContent = '';
+      return;
+    }
+    const rate = ratesUSD[to]/ratesUSD[from];
+    const value = amt*rate;
+    outEl.textContent = value.toFixed(2)+' '+to;
+    rateEl.textContent = '1 '+from+' = '+rate.toFixed(4)+' '+to;
+    dateEl.textContent = 'Rates as of '+asOfDate+' · source: European Central Bank via frankfurter.dev';
   }
 
-  fetch('https://api.frankfurter.app/currencies')
-    .then(r=>r.json())
+  fetch('https://api.frankfurter.dev/v1/latest?base=USD')
+    .then(r=>{ if(!r.ok) throw new Error('bad response'); return r.json(); })
     .then(data=>{
-      const codes = Object.keys(data);
+      ratesUSD = Object.assign({USD:1}, data.rates);
+      asOfDate = data.date;
+      const codes = Object.keys(ratesUSD).sort();
       fillSelect(fromEl, codes, 'USD');
       fillSelect(toEl, codes, 'INR');
       convert();
@@ -225,7 +227,9 @@
     .catch(()=>{
       fillSelect(fromEl, fallbackCurrencies, 'USD');
       fillSelect(toEl, fallbackCurrencies, 'INR');
-      convert();
+      outEl.textContent = 'Rate unavailable';
+      rateEl.textContent = 'Could not reach the exchange rate service — check your connection and try again.';
+      dateEl.textContent = '';
     });
 
   amtEl.addEventListener('input', convert);
