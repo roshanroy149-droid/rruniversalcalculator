@@ -25,6 +25,69 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7800403656727097" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What's the difference between the two modes?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "\"Add tax to amount\" treats your entered amount as the pre-tax base and adds tax on top. \"Amount already includes tax\" treats your entered amount as the final, tax-inclusive price and works backward to show what the base price and tax portion were."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why do the preset rates vary so much by country?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "GST and VAT rates and structures are set independently by each country or economic bloc, and many countries \u2014 India especially \u2014 use multiple slabs for different categories of goods and services rather than one flat rate. Pick the closest preset or enter a custom rate if yours isn't listed."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this the same as sales tax in the US?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not quite \u2014 GST/VAT is typically applied at each stage of production with credits for tax already paid, while US sales tax is usually collected once at the final point of sale and varies by state and city. This calculator's flat add/remove math works for either, as long as you use the correct combined rate."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I know if a price already includes tax?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "In India, MRP (Maximum Retail Price) on packaged goods is required to be tax-inclusive \u2014 so if you're back-calculating GST from an MRP, use 'Amount already includes tax.' A quoted B2B price before invoicing, on the other hand, is usually tax-exclusive."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does my invoice show CGST and SGST separately instead of one GST figure?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "For transactions within the same Indian state, GST is split evenly into CGST (central) and SGST (state) \u2014 an 18% GST bill would show as 9% CGST + 9% SGST. This calculator gives you the combined total; halve it for each component if you need the split."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "GST / VAT Calculator \u2014 TallyBench",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any (runs in browser)",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "url": "https://tallybench.com/gst-vat-calculator.html"
+}
+</script>
 </head>
 <body data-page-cat="finance">
 
@@ -123,7 +186,11 @@
     <p>GST and VAT rates and structures are set independently by each country or economic bloc, and many countries — India especially — use multiple slabs for different categories of goods and services rather than one flat rate. Pick the closest preset or enter a custom rate if yours isn't listed.</p>
     <h3>Is this the same as sales tax in the US?</h3>
     <p>Not quite — GST/VAT is typically applied at each stage of production with credits for tax already paid, while US sales tax is usually collected once at the final point of sale and varies by state and city. This calculator's flat add/remove math works for either, as long as you use the correct combined rate.</p>
-
+    <h3>How do I know if a price already includes tax?</h3>
+    <p>In India, MRP (Maximum Retail Price) on packaged goods is required to be tax-inclusive — so if you're back-calculating GST from an MRP, use 'Amount already includes tax.' A quoted B2B price before invoicing, on the other hand, is usually tax-exclusive.</p>
+    <h3>Why does my invoice show CGST and SGST separately instead of one GST figure?</h3>
+    <p>For transactions within the same Indian state, GST is split evenly into CGST (central) and SGST (state) — an 18% GST bill would show as 9% CGST + 9% SGST. This calculator gives you the combined total; halve it for each component if you need the split.</p>
+    <p><strong>Worked example:</strong> a ₹2,000 item with 18% GST added comes to ₹2,360 total (₹360 tax). Working backward from a ₹2,360 tax-inclusive price at 18% gives a base of ₹2,000 exactly — switch the mode toggle above to see both directions match.</p>
   </section>
 
   <nav class="more-tools">
@@ -152,7 +219,7 @@
   <div class="ad-slot">AD SLOT — 728×90 · footer leaderboard</div>
 
   <footer>
-    <p>TallyBench · built for quick answers</p>
+    <p>TallyBench · built for quick answers · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
   </footer>
 </div>
 

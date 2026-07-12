@@ -25,6 +25,69 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7800403656727097" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How is the sale price calculated?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The discount percentage is multiplied by the original price to get the amount saved, then subtracted from the original price for the sale price."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does \"find original price\" work in reverse?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "If a sale price reflects a known discount percentage, the original price is the sale price divided by (1 minus the discount as a decimal) \u2014 this undoes the discount math to recover the starting price."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does this handle stacked discounts, like 20% off an already-discounted item?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not automatically \u2014 stacked discounts apply sequentially, not additively (20% off, then another 10% off, is not the same as 30% off). Run the sale price through the calculator twice, once per discount, to get an accurate stacked result."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I calculate two discounts applied one after another?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Stacked discounts multiply, not add \u2014 20% off followed by another 10% off is NOT 30% off. Run the first discount through the calculator, take that sale price, then run it through again as the new 'original price' with the second discount percentage."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What's the actual percentage saved when two discounts stack?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Two stacked discounts of 20% and 10% leave you paying 80%\u00d790% = 72% of the original price \u2014 a combined 28% off, not 30%. The gap grows the more discounts are stacked, which is why store 'up to 50% off, plus extra 20% off' promotions save less than the headline number suggests."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Discount Calculator \u2014 TallyBench",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any (runs in browser)",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "url": "https://tallybench.com/discount-calculator.html"
+}
+</script>
 </head>
 <body data-page-cat="finance">
 
@@ -144,7 +207,11 @@
     <p>If a sale price reflects a known discount percentage, the original price is the sale price divided by (1 minus the discount as a decimal) — this undoes the discount math to recover the starting price.</p>
     <h3>Does this handle stacked discounts, like 20% off an already-discounted item?</h3>
     <p>Not automatically — stacked discounts apply sequentially, not additively (20% off, then another 10% off, is not the same as 30% off). Run the sale price through the calculator twice, once per discount, to get an accurate stacked result.</p>
-
+    <h3>How do I calculate two discounts applied one after another?</h3>
+    <p>Stacked discounts multiply, not add — 20% off followed by another 10% off is NOT 30% off. Run the first discount through the calculator, take that sale price, then run it through again as the new 'original price' with the second discount percentage.</p>
+    <h3>What's the actual percentage saved when two discounts stack?</h3>
+    <p>Two stacked discounts of 20% and 10% leave you paying 80%×90% = 72% of the original price — a combined 28% off, not 30%. The gap grows the more discounts are stacked, which is why store 'up to 50% off, plus extra 20% off' promotions save less than the headline number suggests.</p>
+    <p><strong>Worked example:</strong> a $200 item with 30% off comes to $140 (you save $60). Working backward, a $140 sale price with a known 30% discount recovers the original $200 exactly — try both tabs above with these numbers to confirm.</p>
   </section>
 
   <nav class="more-tools">
@@ -173,7 +240,7 @@
   <div class="ad-slot">AD SLOT — 728×90 · footer leaderboard</div>
 
   <footer>
-    <p>TallyBench · built for quick answers</p>
+    <p>TallyBench · built for quick answers · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
   </footer>
 </div>
 

@@ -25,6 +25,85 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7800403656727097" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Why doesn't this match my payslip or tax software exactly?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Real tax bills depend on filing status details, credits, dependents, and sub-national taxes (state, provincial, cantonal) that this tool doesn't model. It calculates the national/federal bracket structure on your taxable income after the deductions you enter, which is a solid estimate, not a filing-ready number."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Old regime vs new regime in India \u2014 which should I pick?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "New regime has lower rates and a bigger standard deduction (\u20b975,000) but doesn't allow 80C, 80D, HRA, or home loan interest deductions. Old regime has higher rates but lets you claim those deductions. If you have significant 80C investments, HRA, or a home loan, toggle to old regime and enter them \u2014 the calculator will show which comes out ahead."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why is India's rebate different between regimes?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Section 87A zeroes out tax entirely up to \u20b912,00,000 taxable income under the new regime, but only up to \u20b95,00,000 under the old regime \u2014 both are applied automatically based on your regime choice, along with the 4% health and education cess on whatever tax remains."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What counts as \"other income\"?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Interest, rental income, freelance or business income, dividends \u2014 anything beyond your salary that's taxed as ordinary income in your country. It's added to salary to get gross income before deductions are applied."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does the UAE show zero regardless of income?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The UAE does not levy a personal income tax on salaries at the federal level, so the estimate is correctly zero for any amount entered."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why is my actual tax bill different from this estimate?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "This models the national/federal bracket structure and the most common deductions, but real returns often include additional credits, state/provincial tax, and situational adjustments (dependents, other credits) this tool doesn't cover \u2014 treat this as a solid planning estimate, not a filing number."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How much difference can deductions actually make?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "In India's old regime, maxing out Section 80C (\u20b91.5L) alone can shift someone from the 20% bracket into paying meaningfully less tax on the same gross income \u2014 try toggling the regime and adjusting the deduction fields above to see the real difference on your own numbers."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Tax Calculator \u2014 TallyBench",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any (runs in browser)",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "url": "https://tallybench.com/tax-calculator.html"
+}
+</script>
 </head>
 <body data-page-cat="finance">
 
@@ -180,6 +259,11 @@
     <p>Interest, rental income, freelance or business income, dividends — anything beyond your salary that's taxed as ordinary income in your country. It's added to salary to get gross income before deductions are applied.</p>
     <h3>Why does the UAE show zero regardless of income?</h3>
     <p>The UAE does not levy a personal income tax on salaries at the federal level, so the estimate is correctly zero for any amount entered.</p>
+    <h3>Why is my actual tax bill different from this estimate?</h3>
+    <p>This models the national/federal bracket structure and the most common deductions, but real returns often include additional credits, state/provincial tax, and situational adjustments (dependents, other credits) this tool doesn't cover — treat this as a solid planning estimate, not a filing number.</p>
+    <h3>How much difference can deductions actually make?</h3>
+    <p>In India's old regime, maxing out Section 80C (₹1.5L) alone can shift someone from the 20% bracket into paying meaningfully less tax on the same gross income — try toggling the regime and adjusting the deduction fields above to see the real difference on your own numbers.</p>
+    <p><strong>Worked example:</strong> in the US, a single filer earning $75,000 with the standard $15,000 deduction has $60,000 taxable income, landing a federal tax bill of roughly $8,114 — about 10.8% of gross income, well below the top marginal rate of 22% since only the income above each threshold is taxed at that threshold's rate.</p>
   </section>
 
   <nav class="more-tools">
@@ -208,7 +292,7 @@
   <div class="ad-slot">AD SLOT — 728×90 · footer leaderboard</div>
 
   <footer>
-    <p>TallyBench · built for quick answers · estimates only, not tax advice</p>
+    <p>TallyBench · built for quick answers · estimates only, not tax advice · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
   </footer>
 </div>
 

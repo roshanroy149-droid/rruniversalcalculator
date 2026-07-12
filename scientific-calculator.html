@@ -25,6 +25,69 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7800403656727097" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Does this handle order of operations like a full expression?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "This works like a standard handheld scientific calculator: each operation executes immediately rather than parsing a full typed expression, so functions like sin, log, or x\u00b2 apply to the number currently on screen. This matches how physical scientific calculators behave."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What does the DEG/RAD toggle do?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It controls whether sin, cos, and tan treat the entered number as degrees or radians. Switch it before using a trig function, not after."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What do MC, MR, M+, and M- do?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Standard calculator memory: M+ adds the current display value to memory, M- subtracts it, MR recalls the stored value to the display, and MC clears memory back to zero."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does this follow order of operations (PEMDAS) like a written expression?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No \u2014 like a real handheld calculator, this executes operations immediately as you press each key, rather than parsing a full typed expression. For a calculation with multiple operations, work through it step by step in the order you'd solve it by hand, the same way you would on a physical calculator."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What's the difference between DEG and RAD mode?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Degrees (DEG) measures angles the everyday way, 0\u2013360\u00b0 per full circle. Radians (RAD) measures angles as a fraction of \u03c0, used throughout higher mathematics and physics \u2014 sin(90\u00b0) in degree mode and sin(\u03c0/2) in radian mode give the same result, but entering '90' in the wrong mode will give a completely different answer."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Scientific Calculator \u2014 TallyBench",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any (runs in browser)",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "url": "https://tallybench.com/scientific-calculator.html"
+}
+</script>
 </head>
 <body data-page-cat="education">
 
@@ -148,6 +211,11 @@
     <p>It controls whether sin, cos, and tan treat the entered number as degrees or radians. Switch it before using a trig function, not after.</p>
     <h3>What do MC, MR, M+, and M- do?</h3>
     <p>Standard calculator memory: M+ adds the current display value to memory, M- subtracts it, MR recalls the stored value to the display, and MC clears memory back to zero.</p>
+    <h3>Does this follow order of operations (PEMDAS) like a written expression?</h3>
+    <p>No — like a real handheld calculator, this executes operations immediately as you press each key, rather than parsing a full typed expression. For a calculation with multiple operations, work through it step by step in the order you'd solve it by hand, the same way you would on a physical calculator.</p>
+    <h3>What's the difference between DEG and RAD mode?</h3>
+    <p>Degrees (DEG) measures angles the everyday way, 0–360° per full circle. Radians (RAD) measures angles as a fraction of π, used throughout higher mathematics and physics — sin(90°) in degree mode and sin(π/2) in radian mode give the same result, but entering '90' in the wrong mode will give a completely different answer.</p>
+    <p><strong>Worked example:</strong> to compute 3² + √16, press 3, x², then 16, √, then +, then = — matching how you'd solve it left to right on a physical scientific calculator.</p>
   </section>
 
   <nav class="more-tools">
@@ -176,7 +244,7 @@
   <div class="ad-slot">AD SLOT — 728×90 · footer leaderboard</div>
 
   <footer>
-    <p>TallyBench · built for quick answers · no data leaves your browser</p>
+    <p>TallyBench · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
   </footer>
 </div>
 

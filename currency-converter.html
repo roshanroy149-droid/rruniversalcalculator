@@ -25,6 +25,69 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7800403656727097" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Are these rates actually live?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "They're pulled in real time from a free public API each time you change an amount or currency, so you always see the latest data that service has \u2014 but the underlying rate itself is the European Central Bank's official daily reference rate, published once per business day (not weekends or ECB holidays). It's the same standard many banks and finance sites use as a benchmark, but it isn't a tick-by-tick trading feed."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why isn't this updated every second like a trading terminal?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Second-by-second interbank rates come from paid market data feeds that trading platforms subscribe to. For everyday conversions \u2014 travel budgeting, invoicing, checking what something costs abroad \u2014 the daily ECB reference rate is accurate enough and doesn't require an account or paid API key to access."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does my amount or currency choice get stored anywhere?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No \u2014 each conversion is a fresh request to the exchange rate service and nothing is saved. If the service is temporarily unreachable, the tool will say so rather than showing a stale or fabricated number."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I use this for sending or receiving international money transfers?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "This gives you the reference mid-market rate, useful for knowing what a fair conversion looks like \u2014 but banks and remittance services add their own margin on top, often 1-5%, so the amount you actually receive will be somewhat lower than this calculator's figure."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does the rate change slightly every time I check?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Rates here update once per business day from the European Central Bank's reference data, not by the second \u2014 so within a single day the number stays fixed, but checking again tomorrow (or after a weekend) will show a new day's rate."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Currency Converter \u2014 TallyBench",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any (runs in browser)",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "url": "https://tallybench.com/currency-converter.html"
+}
+</script>
 </head>
 <body data-page-cat="finance">
 
@@ -106,6 +169,11 @@
     <p>Second-by-second interbank rates come from paid market data feeds that trading platforms subscribe to. For everyday conversions — travel budgeting, invoicing, checking what something costs abroad — the daily ECB reference rate is accurate enough and doesn't require an account or paid API key to access.</p>
     <h3>Does my amount or currency choice get stored anywhere?</h3>
     <p>No — each conversion is a fresh request to the exchange rate service and nothing is saved. If the service is temporarily unreachable, the tool will say so rather than showing a stale or fabricated number.</p>
+    <h3>Can I use this for sending or receiving international money transfers?</h3>
+    <p>This gives you the reference mid-market rate, useful for knowing what a fair conversion looks like — but banks and remittance services add their own margin on top, often 1-5%, so the amount you actually receive will be somewhat lower than this calculator's figure.</p>
+    <h3>Why does the rate change slightly every time I check?</h3>
+    <p>Rates here update once per business day from the European Central Bank's reference data, not by the second — so within a single day the number stays fixed, but checking again tomorrow (or after a weekend) will show a new day's rate.</p>
+    <p><strong>Worked example:</strong> converting ₹1,00,000 to USD at a rate of 1 USD = ₹83.5 gives 100000÷83.5 ≈ $1,197.60 — enter 100000 with INR as 'From' and USD as 'To' above to see this computed live at today's actual rate.</p>
   </section>
 
   <nav class="more-tools">
@@ -134,7 +202,7 @@
   <div class="ad-slot">AD SLOT — 728×90 · footer leaderboard</div>
 
   <footer>
-    <p>TallyBench · built for quick answers · exchange rates via frankfurter.dev (ECB data)</p>
+    <p>TallyBench · built for quick answers · exchange rates via frankfurter.dev (ECB data) · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
   </footer>
 </div>
 

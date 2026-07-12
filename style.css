@@ -60,13 +60,13 @@ header{
 }
 .logo{
   font-family:'Space Grotesk',sans-serif;
-  font-weight:700;font-size:18px;letter-spacing:-0.01em;
+  font-weight:700;font-size:26px;letter-spacing:-0.02em;
   text-decoration:none;
   color:var(--text-on-dark);
   display:inline-flex;align-items:center;
 }
 @media(max-width:480px){
-  .logo{font-size:13px;}
+  .logo{font-size:19px;}
   .tagline{display:none;}
 }
 .logo span{color:var(--orange);}
@@ -109,7 +109,7 @@ header{
 
 /* Category tabs (buttons, reset from default button styling) */
 .cat-tab{
-  font:inherit;cursor:pointer;
+  cursor:pointer;
   appearance:none;-webkit-appearance:none;
 }
 .cat-tab.cat-open{color:var(--orange);background:rgba(192,138,52,0.12);}
@@ -122,7 +122,9 @@ header{
 /* Sub-ruler: second-tier row, collapses closed by default */
 .sub-ruler{
   max-height:0;
-  overflow:hidden;
+  overflow-x:auto;
+  overflow-y:hidden;
+  -webkit-overflow-scrolling:touch;
   background:#141210;
   border-top:0 solid rgba(242,236,221,0.08);
   transition:max-height .22s ease;

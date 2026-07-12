@@ -25,6 +25,77 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7800403656727097" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How is SIP maturity value calculated?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "SIP uses the future value of an annuity formula: each monthly investment compounds at the monthly rate for the remaining months, and all installments are summed. Returns are estimates, not guarantees \u2014 actual market returns vary and aren't linear."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does the SWP calculation work?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The starting balance grows by the monthly rate of return, then the withdrawal is subtracted, month by month, across the full duration. If withdrawals outpace growth, the balance can reach zero before the duration ends \u2014 the tool flags this rather than showing a negative balance."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What's the difference between this and simple interest?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Compound growth adds earned interest back into the principal each period, so future interest is calculated on a larger base \u2014 that's what \"compounding frequency\" controls. More frequent compounding (daily vs. annually) produces a slightly higher return at the same stated rate."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are these numbers guaranteed?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No \u2014 all three tools are projections based on a constant assumed rate of return you enter. Real investments fluctuate, and past or assumed performance doesn't guarantee future results."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does this account for taxes on investment returns?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No \u2014 the figures shown are pre-tax growth projections. Actual take-home returns depend on how the investment is taxed in your country (capital gains tax, dividend tax, etc.), which varies too much to model generically here."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How realistic is a 12% annual return assumption for SIP?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "12% is a commonly used illustrative assumption for equity mutual funds in India based on long-term historical averages, but actual returns vary year to year and aren't guaranteed \u2014 treat any fixed-rate projection as a planning estimate, not a promise."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Investment Calculator \u2014 TallyBench",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any (runs in browser)",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "url": "https://tallybench.com/investment-calculator.html"
+}
+</script>
 </head>
 <body data-page-cat="finance">
 
@@ -175,6 +246,11 @@
     <p>Compound growth adds earned interest back into the principal each period, so future interest is calculated on a larger base — that's what "compounding frequency" controls. More frequent compounding (daily vs. annually) produces a slightly higher return at the same stated rate.</p>
     <h3>Are these numbers guaranteed?</h3>
     <p>No — all three tools are projections based on a constant assumed rate of return you enter. Real investments fluctuate, and past or assumed performance doesn't guarantee future results.</p>
+    <h3>Does this account for taxes on investment returns?</h3>
+    <p>No — the figures shown are pre-tax growth projections. Actual take-home returns depend on how the investment is taxed in your country (capital gains tax, dividend tax, etc.), which varies too much to model generically here.</p>
+    <h3>How realistic is a 12% annual return assumption for SIP?</h3>
+    <p>12% is a commonly used illustrative assumption for equity mutual funds in India based on long-term historical averages, but actual returns vary year to year and aren't guaranteed — treat any fixed-rate projection as a planning estimate, not a promise.</p>
+    <p><strong>Worked example:</strong> investing ₹10,000/month for 10 years at an assumed 12% annual return grows to roughly ₹23.2 lakh, of which ₹12 lakh is your own contributions and about ₹11.2 lakh is projected growth — enter these exact numbers in the SIP tab above to verify.</p>
   </section>
 
   <nav class="more-tools">
@@ -203,7 +279,7 @@
   <div class="ad-slot">AD SLOT — 728×90 · footer leaderboard</div>
 
   <footer>
-    <p>TallyBench · built for quick answers · no data leaves your browser</p>
+    <p>TallyBench · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
   </footer>
 </div>
 
