@@ -17,7 +17,7 @@
   <div class="wrap">
     <div class="headbar">
       <a class="logo" href="index.html">RR UNIVERSAL CALCULATOR<span>.</span></a>
-      <div class="tagline">8 TOOLS · 0 SIGN-UP</div>
+      <div class="tagline">9 TOOLS · 0 SIGN-UP</div>
     </div>
   </div>
   <nav class="ruler">
@@ -28,6 +28,7 @@
     <a class="tick" href="age-calculator.html">AGE</a>
     <a class="tick" href="loan-calculator.html">LOAN</a>
     <a class="tick" href="unit-converter.html">UNITS</a>
+    <a class="tick" href="currency-converter.html">CURRENCY</a>
     <a class="tick" href="password-generator.html">PASSWORD</a>
     <a class="tick" href="word-counter.html">WORD COUNT</a>
   </nav>
@@ -38,7 +39,7 @@
 
   <section class="hero">
     <div class="eyebrow">// 06 · UNIT CONVERTER</div>
-    <h1>Length and weight, both directions.</h1>
+    <h1>Eight categories, both directions.</h1>
     <p>Pick a category, enter a value, and choose the units to convert from and to.</p>
   </section>
 
@@ -50,7 +51,13 @@
         <div class="field"><label>Category</label>
           <select id="unitCat">
             <option value="length">Length</option>
-            <option value="weight">Weight</option>
+            <option value="weight">Weight / Mass</option>
+            <option value="volume">Volume</option>
+            <option value="area">Area</option>
+            <option value="speed">Speed</option>
+            <option value="time">Time</option>
+            <option value="data">Digital Storage</option>
+            <option value="temperature">Temperature</option>
           </select>
         </div>
         <div class="row2">
@@ -69,9 +76,9 @@
 
   <section class="article">
     <h3>Which units are supported?</h3>
-    <p>Length covers meters, kilometers, centimeters, millimeters, miles, yards, feet, and inches. Weight covers kilograms, grams, pounds, ounces, and metric tons.</p>
+    <p>Length, weight/mass, volume, area, speed, time, and digital storage each have a full set of common units — for example length covers meters, kilometers, centimeters, millimeters, miles, yards, feet, inches, and nautical miles. Temperature converts between Celsius, Fahrenheit, and Kelvin using their proper formulas rather than a simple ratio.</p>
     <h3>How does the conversion work?</h3>
-    <p>Every unit is converted to a common base unit first (meters for length, kilograms for weight), then converted from that base into your target unit — so any combination works, not just fixed pairs.</p>
+    <p>Every unit in a category is converted to a common base unit first (meters for length, kilograms for weight, liters for volume, and so on), then converted from that base into your target unit — so any combination within a category works, not just fixed pairs. Temperature is the one exception, since Celsius, Fahrenheit, and Kelvin scales don't share a zero point, so it uses direct formulas instead.</p>
   </section>
 
   <nav class="more-tools">
@@ -84,6 +91,7 @@
       <li><a href="loan-calculator.html">Loan Calculator</a></li>
       <li><a href="password-generator.html">Password Generator</a></li>
       <li><a href="word-counter.html">Word Counter</a></li>
+      <li><a href="currency-converter.html">Currency Converter</a></li>
     </ul>
   </nav>
 
