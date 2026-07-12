@@ -11,16 +11,21 @@
 (function(){
   if(!document.getElementById('tipBill')) return;
   function calcTip(){
+    const cur = document.getElementById('tipCur').value;
     const bill = parseFloat(document.getElementById('tipBill').value)||0;
     const pct = parseFloat(document.getElementById('tipPct').value)||0;
     const people = parseInt(document.getElementById('tipPeople').value)||1;
     const tip = bill*pct/100;
     const total = bill+tip;
-    document.getElementById('tipAmt').textContent = '$'+tip.toFixed(2);
-    document.getElementById('tipTotal').textContent = '$'+total.toFixed(2);
-    document.getElementById('tipEach').textContent = '$'+(total/people).toFixed(2);
+    document.getElementById('tipAmt').textContent = cur+tip.toFixed(2);
+    document.getElementById('tipTotal').textContent = cur+total.toFixed(2);
+    document.getElementById('tipEach').textContent = cur+(total/people).toFixed(2);
   }
-  ['tipBill','tipPct','tipPeople'].forEach(id=>document.getElementById(id).addEventListener('input',calcTip));
+  ['tipBill','tipPct','tipPeople','tipCur'].forEach(id=>{
+    const el = document.getElementById(id);
+    el.addEventListener('input',calcTip);
+    el.addEventListener('change',calcTip);
+  });
   calcTip();
 })();
 
@@ -101,18 +106,36 @@
 // ---- Loan ----
 (function(){
   if(!document.getElementById('loanAmt')) return;
+  let tenureUnit = 'months';
+  const seg = document.getElementById('loanTenureSeg');
+  const unitLabel = document.getElementById('loanTenureUnitLabel');
+
   function calcLoan(){
     const cur = document.getElementById('loanCur').value;
     const P = parseFloat(document.getElementById('loanAmt').value)||0;
     const annual = parseFloat(document.getElementById('loanRate').value)||0;
-    const n = parseInt(document.getElementById('loanTerm').value)||1;
+    const termInput = parseFloat(document.getElementById('loanTerm').value)||0;
+    const n = Math.round(tenureUnit==='years' ? termInput*12 : termInput);
     const r = annual/100/12;
-    const pay = r===0 ? P/n : P*r/(1-Math.pow(1+r,-n));
+    const pay = (r===0 || n<=0) ? (n>0 ? P/n : 0) : P*r/(1-Math.pow(1+r,-n));
     const total = pay*n;
     document.getElementById('loanPay').textContent = cur+pay.toFixed(2);
     document.getElementById('loanTotal').textContent = cur+total.toFixed(2);
     document.getElementById('loanInt').textContent = cur+(total-P).toFixed(2);
   }
+
+  if(seg){
+    seg.addEventListener('click', (e)=>{
+      const btn = e.target.closest('button');
+      if(!btn) return;
+      tenureUnit = btn.dataset.unit;
+      seg.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      unitLabel.textContent = tenureUnit;
+      calcLoan();
+    });
+  }
+
   ['loanAmt','loanRate','loanTerm','loanCur'].forEach(id=>{
     document.getElementById(id).addEventListener('input',calcLoan);
     document.getElementById(id).addEventListener('change',calcLoan);
@@ -399,7 +422,12 @@
     document.getElementById('panel-'+btn.dataset.tab).classList.add('active');
   });
 
-  function money(n){ return '$'+n.toLocaleString(undefined,{maximumFractionDigits:0}); }
+  function money(n){
+    const cur = document.getElementById('invCur') ? document.getElementById('invCur').value : '$';
+    return cur+n.toLocaleString(undefined,{maximumFractionDigits:0});
+  }
+  const curSel = document.getElementById('invCur');
+  if(curSel) curSel.addEventListener('change', ()=>{ calcSIP(); calcSWP(); calcCompound(); });
 
   // SIP
   function calcSIP(){
@@ -470,25 +498,49 @@
   const countrySel = document.getElementById('taxCountry');
   if(!countrySel) return;
 
-  // brackets: [ceiling, rate] pairs, ceiling=Infinity for top bracket. Rates as decimals.
-  const schemes = {
-    us: { symbol:'$', brackets:[[11925,0.10],[48475,0.12],[103350,0.22],[197300,0.24],[250525,0.32],[626350,0.35],[Infinity,0.37]] },
-    ca: { symbol:'C$', brackets:[[57375,0.15],[114750,0.205],[177882,0.26],[253414,0.29],[Infinity,0.33]] },
-    uk: { symbol:'£', brackets:[[12570,0],[50270,0.20],[125140,0.40],[Infinity,0.45]] },
-    de: { symbol:'€', brackets:[[11604,0],[66760,0.30],[277825,0.42],[Infinity,0.45]] },
-    fr: { symbol:'€', brackets:[[11497,0],[29315,0.11],[83823,0.30],[180294,0.41],[Infinity,0.45]] },
-    in: { symbol:'₹', brackets:[[400000,0],[800000,0.05],[1200000,0.10],[1600000,0.15],[2000000,0.20],[2400000,0.25],[Infinity,0.30]], indiaRules:true },
-    au: { symbol:'A$', brackets:[[18200,0],[45000,0.16],[135000,0.30],[190000,0.37],[Infinity,0.45]] },
-    sg: { symbol:'S$', brackets:[[20000,0],[30000,0.02],[40000,0.035],[80000,0.07],[120000,0.115],[160000,0.15],[200000,0.18],[240000,0.19],[280000,0.195],[320000,0.20],[Infinity,0.24]] },
-    ae: { symbol:'AED ', brackets:[[Infinity,0]] }
+  // Non-US, non-India schemes: symbol + single bracket set (0% band already encodes personal allowance/basic exemption)
+  const flatSchemes = {
+    ca: { symbol:'C$', brackets:[[57375,0.15],[114750,0.205],[177882,0.26],[253414,0.29],[Infinity,0.33]], dedLabel:'RRSP contributions & other deductions' },
+    uk: { symbol:'£', brackets:[[12570,0],[50270,0.20],[125140,0.40],[Infinity,0.45]], dedLabel:'Pension contributions & Gift Aid' },
+    de: { symbol:'€', brackets:[[11604,0],[66760,0.30],[277825,0.42],[Infinity,0.45]], dedLabel:'Werbungskosten & other deductions (simplified)' },
+    fr: { symbol:'€', brackets:[[11497,0],[29315,0.11],[83823,0.30],[180294,0.41],[Infinity,0.45]], dedLabel:'Deductible expenses & abatements' },
+    au: { symbol:'A$', brackets:[[18200,0],[45000,0.16],[135000,0.30],[190000,0.37],[Infinity,0.45]], dedLabel:'Work-related & other deductions' },
+    sg: { symbol:'S$', brackets:[[20000,0],[30000,0.02],[40000,0.035],[80000,0.07],[120000,0.115],[160000,0.15],[200000,0.18],[240000,0.19],[280000,0.195],[320000,0.20],[Infinity,0.24]], dedLabel:'Reliefs (CPF, course fees, etc.)' },
+    ae: { symbol:'AED ', brackets:[[Infinity,0]], dedLabel:'Not applicable' }
   };
 
-  const incomeEl = document.getElementById('taxIncome');
-  const curLabel = document.getElementById('taxCurLabel');
+  const usFiling = {
+    single: { standardDeduction:15000, brackets:[[11925,0.10],[48475,0.12],[103350,0.22],[197300,0.24],[250525,0.32],[626350,0.35],[Infinity,0.37]] },
+    mfj:    { standardDeduction:30000, brackets:[[23850,0.10],[96950,0.12],[206700,0.22],[394600,0.24],[501050,0.32],[751600,0.35],[Infinity,0.37]] },
+    hoh:    { standardDeduction:22500, brackets:[[17000,0.10],[64850,0.12],[103350,0.22],[197300,0.24],[250500,0.32],[626350,0.35],[Infinity,0.37]] }
+  };
+
+  const indiaRegimes = {
+    new: { standardDeduction:75000, brackets:[[400000,0],[800000,0.05],[1200000,0.10],[1600000,0.15],[2000000,0.20],[2400000,0.25],[Infinity,0.30]], rebateThreshold:1200000 },
+    old: { standardDeduction:50000, brackets:[[250000,0],[500000,0.05],[1000000,0.20],[Infinity,0.30]], rebateThreshold:500000 }
+  };
+
+  const countrySel_ = countrySel;
+  const filingWrap = document.getElementById('taxFilingWrap');
+  const filingSel = document.getElementById('taxFilingStatus');
+  const regimeWrap = document.getElementById('taxRegimeWrap');
+  const regimeSeg = document.getElementById('taxRegimeSeg');
+  const indiaOldFields = document.getElementById('taxIndiaOldFields');
+  const genericWrap = document.getElementById('taxGenericDedWrap');
+  const genericLabel = document.getElementById('taxGenericDedLabel');
+  const stdDedLine = document.getElementById('taxStandardDedVal');
+  const salaryEl = document.getElementById('taxSalary');
+  const otherEl = document.getElementById('taxOtherIncome');
+  const curLabels = document.querySelectorAll('.tax-cur-label');
+  const grossEl = document.getElementById('taxGross');
+  const dedEl = document.getElementById('taxDeductions');
+  const taxableEl = document.getElementById('taxTaxable');
   const amtEl = document.getElementById('taxAmt');
   const takeHomeEl = document.getElementById('taxTakeHome');
   const effEl = document.getElementById('taxEffRate');
   const tbody = document.getElementById('taxTableBody');
+
+  let indiaRegime = 'new';
 
   function calcBracketTax(income, brackets){
     let tax = 0, lower = 0;
@@ -498,43 +550,85 @@
         const taxableInBand = Math.min(income, ceiling) - lower;
         const bandTax = taxableInBand*rate;
         tax += bandTax;
-        rows.push({lower, ceiling, rate, bandTax, taxableInBand});
+        rows.push({lower, ceiling, rate, bandTax});
       } else {
-        rows.push({lower, ceiling, rate, bandTax:0, taxableInBand:0});
+        rows.push({lower, ceiling, rate, bandTax:0});
       }
       lower = ceiling;
-      if(income <= ceiling) { /* keep listing remaining brackets at 0 for context, but stop expanding further ones beyond a couple */ }
     }
     return {tax, rows};
   }
 
-  function fmtMoney(sym, n){
-    return sym+Math.round(n).toLocaleString();
-  }
+  function fmtMoney(sym, n){ return sym+Math.round(Math.max(n,0)).toLocaleString(); }
   function fmtBand(sym, lower, ceiling){
     const upper = ceiling===Infinity ? '+' : fmtMoney(sym, ceiling);
     return fmtMoney(sym, lower)+' – '+upper;
   }
 
-  function calc(){
-    const country = countrySel.value;
-    const scheme = schemes[country];
-    curLabel.textContent = scheme.symbol.trim();
-    const income = parseFloat(incomeEl.value)||0;
+  function updateFieldVisibility(){
+    const country = countrySel_.value;
+    filingWrap.style.display = country==='us' ? '' : 'none';
+    regimeWrap.style.display = country==='in' ? '' : 'none';
+    indiaOldFields.style.display = (country==='in' && indiaRegime==='old') ? '' : 'none';
+    genericWrap.style.display = (country==='us' || country==='in') ? 'none' : '';
 
-    let { tax, rows } = calcBracketTax(income, scheme.brackets);
+    let symbol = '$';
+    if(country==='us') symbol = '$';
+    else if(country==='in') symbol = '₹';
+    else symbol = flatSchemes[country] ? flatSchemes[country].symbol.trim() : '$';
+    curLabels.forEach(el=>el.textContent = symbol);
 
-    if(scheme.indiaRules){
-      if(income <= 1200000){
-        tax = 0; // Section 87A rebate zeroes tax up to 12L taxable income
-      } else {
-        tax = tax*1.04; // 4% health & education cess
+    if(flatSchemes[country]) genericLabel.textContent = flatSchemes[country].dedLabel;
+  }
+
+  function getScheme(){
+    const country = countrySel_.value;
+    if(country==='us'){
+      const fs = usFiling[filingSel.value] || usFiling.single;
+      return { symbol:'$', standardDeduction:fs.standardDeduction, brackets:fs.brackets, extraDed:0, rebateThreshold:0 };
+    }
+    if(country==='in'){
+      const rg = indiaRegimes[indiaRegime];
+      let extraDed = 0;
+      if(indiaRegime==='old'){
+        const c80 = Math.min(parseFloat(document.getElementById('tax80c').value)||0, 150000);
+        const d80 = Math.min(parseFloat(document.getElementById('tax80d').value)||0, 25000);
+        const home = Math.min(parseFloat(document.getElementById('taxHomeLoan').value)||0, 200000);
+        const hra = Math.max(parseFloat(document.getElementById('taxHRA').value)||0, 0);
+        extraDed = c80+d80+home+hra;
       }
+      return { symbol:'₹', standardDeduction:rg.standardDeduction, brackets:rg.brackets, extraDed, rebateThreshold:rg.rebateThreshold, isIndia:true };
+    }
+    const scheme = flatSchemes[country];
+    const extraDed = Math.max(parseFloat(document.getElementById('taxGenericDed').value)||0, 0);
+    return { symbol:scheme.symbol, standardDeduction:0, brackets:scheme.brackets, extraDed, rebateThreshold:0 };
+  }
+
+  function calc(){
+    updateFieldVisibility();
+    const scheme = getScheme();
+    const salary = parseFloat(salaryEl.value)||0;
+    const other = parseFloat(otherEl.value)||0;
+    const gross = salary+other;
+    const totalDed = scheme.standardDeduction + scheme.extraDed;
+    const taxable = Math.max(gross-totalDed, 0);
+
+    stdDedLine.textContent = fmtMoney(scheme.symbol, scheme.standardDeduction);
+
+    let { tax, rows } = calcBracketTax(taxable, scheme.brackets);
+
+    if(scheme.rebateThreshold && taxable <= scheme.rebateThreshold){
+      tax = 0;
+    } else if(scheme.isIndia){
+      tax = tax*1.04; // 4% health & education cess
     }
 
-    const takeHome = Math.max(income-tax,0);
-    const effRate = income>0 ? (tax/income*100) : 0;
+    const takeHome = Math.max(gross-tax,0);
+    const effRate = gross>0 ? (tax/gross*100) : 0;
 
+    grossEl.textContent = fmtMoney(scheme.symbol, gross);
+    dedEl.textContent = fmtMoney(scheme.symbol, totalDed);
+    taxableEl.textContent = fmtMoney(scheme.symbol, taxable);
     amtEl.textContent = fmtMoney(scheme.symbol, tax);
     takeHomeEl.textContent = fmtMoney(scheme.symbol, takeHome);
     effEl.textContent = effRate.toFixed(2)+'%';
@@ -544,8 +638,24 @@
     }).join('');
   }
 
-  countrySel.addEventListener('change', calc);
-  incomeEl.addEventListener('input', calc);
+  countrySel_.addEventListener('change', calc);
+  filingSel.addEventListener('change', calc);
+  salaryEl.addEventListener('input', calc);
+  otherEl.addEventListener('input', calc);
+  ['tax80c','tax80d','taxHomeLoan','taxHRA','taxGenericDed'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.addEventListener('input', calc);
+  });
+  regimeSeg.addEventListener('click', (e)=>{
+    const btn = e.target.closest('button');
+    if(!btn) return;
+    indiaRegime = btn.dataset.regime;
+    regimeSeg.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    calc();
+  });
+
+  updateFieldVisibility();
   calc();
 })();
 
