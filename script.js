@@ -1072,3 +1072,10 @@
   addRow(4);
   calc();
 })();
+
+// ---- PWA: register service worker for offline/instant-load support ----
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => {});
+  });
+}
