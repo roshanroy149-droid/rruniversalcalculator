@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Percentage Calculator — Find X% of Y or What % A is of B | TallyBench</title>
-<meta name="description" content="Free percentage calculator for two common problems: finding X percent of a number, and figuring out what percent one number is of another.">
+<title>Percentage Calculator — % Of, % Change, % Difference & More | TallyBench</title>
+<meta name="description" content="Free percentage calculator with six modes: X% of Y, what percent A is of B, reverse percent, percentage change, increase/decrease by a percent, and percentage difference. Formulas and worked examples included.">
 <link rel="canonical" href="https://tallybench.com/percentage-calculator.html">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="manifest" href="manifest.json">
@@ -15,196 +15,228 @@
 <meta name="apple-mobile-web-app-title" content="TallyBench">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TallyBench">
-<meta property="og:title" content="Percentage Calculator — Find X% of Y or What % A is of B">
-<meta property="og:description" content="Free percentage calculator for two common problems: finding X percent of a number, and figuring out what percent one number is of another.">
+<meta property="og:title" content="Percentage Calculator — % Of, % Change, % Difference & More">
+<meta property="og:description" content="Six percentage tools in one: X% of Y, what percent A is of B, reverse percent, percentage change, increase/decrease by a percent, and percentage difference.">
 <meta property="og:url" content="https://tallybench.com/percentage-calculator.html">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Percentage Calculator — Find X% of Y or What % A is of B">
-<meta name="twitter:description" content="Free percentage calculator for two common problems: finding X percent of a number, and figuring out what percent one number is of another.">
+<meta name="twitter:title" content="Percentage Calculator — % Of, % Change, % Difference & More">
+<meta name="twitter:description" content="Six percentage tools in one: X% of Y, what percent A is of B, reverse percent, percentage change, increase/decrease by a percent, and percentage difference.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7800403656727097" crossorigin="anonymous"></script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "How do you calculate X percent of Y?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Multiply Y by X, then divide by 100. For example, 20% of 150 is (150 \u00d7 20) \u00f7 100 = 30."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How do you find what percent A is of B?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Divide A by B, then multiply by 100. For example, 30 is what percent of 120? (30 \u00f7 120) \u00d7 100 = 25%."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Where does this come up in real life?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Discounts, tax rates, grade calculations, tip splitting, and comparing changes over time all reduce to one of these two percent problems."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How do you calculate a percentage increase or decrease?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Subtract the old value from the new value, divide by the old value, then multiply by 100. A price moving from $80 to $100 is a (100\u221280)/80\u00d7100 = 25% increase. A drop from $100 to $80 is (80\u2212100)/100\u00d7100 = \u221220% \u2014 note the percentages aren't symmetric, because the base changes."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What's the difference between a percent and a percentage point?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "If an interest rate moves from 5% to 7%, that's a 2 percentage point increase, but a 40% relative increase in the rate itself (2\u00f75\u00d7100). News headlines often blur this distinction \u2014 always check which one is being reported."
-      }
-    }
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  "name": "Percentage Calculator \u2014 TallyBench",
-  "applicationCategory": "UtilitiesApplication",
-  "operatingSystem": "Any (runs in browser)",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "url": "https://tallybench.com/percentage-calculator.html"
-}
-</script>
 </head>
 <body data-page-cat="everyday">
-
 <header>
-  <div class="wrap">
-    <div class="headbar">
-      <a class="logo" href="index.html">TALLYBENCH<span>.</span></a>
-      <div class="tagline">22 TOOLS · 0 SIGN-UP</div>
-    </div>
-  </div>
-  <nav class="ruler cat-ruler">
-    <a class="tick" href="index.html">HOME</a>
-    <button class="tick cat-tab" type="button" data-cat="finance">FINANCE</button>
-    <button class="tick cat-tab" type="button" data-cat="health">HEALTH</button>
-    <button class="tick cat-tab" type="button" data-cat="education">EDUCATION</button>
-    <button class="tick cat-tab" type="button" data-cat="everyday">EVERYDAY</button>
-  </nav>
-  <nav class="ruler sub-ruler" id="subRuler">
-    <a class="tick sub-tick" data-cat="finance" href="currency-converter.html">CURRENCY</a>
-    <a class="tick sub-tick" data-cat="finance" href="loan-calculator.html">LOAN / EMI</a>
-    <a class="tick sub-tick" data-cat="finance" href="mortgage-calculator.html">MORTGAGE</a>
-    <a class="tick sub-tick" data-cat="finance" href="tax-calculator.html">TAX</a>
-    <a class="tick sub-tick" data-cat="finance" href="gst-vat-calculator.html">GST / VAT</a>
-    <a class="tick sub-tick" data-cat="finance" href="investment-calculator.html">INVESTMENT</a>
-    <a class="tick sub-tick" data-cat="finance" href="discount-calculator.html">DISCOUNT</a>
-    <a class="tick sub-tick" data-cat="finance" href="tip-calculator.html">TIP</a>
-    <a class="tick sub-tick" data-cat="finance" href="fd-calculator.html">FD</a>
-    <a class="tick sub-tick" data-cat="finance" href="rd-calculator.html">RD</a>
-    <a class="tick sub-tick" data-cat="finance" href="ppf-calculator.html">PPF</a>
-    <a class="tick sub-tick" data-cat="finance" href="hra-calculator.html">HRA</a>
-    <a class="tick sub-tick" data-cat="health" href="bmi-calculator.html">BMI</a>
-    <a class="tick sub-tick" data-cat="health" href="calorie-calculator.html">CALORIE</a>
-    <a class="tick sub-tick" data-cat="education" href="gpa-calculator.html">GPA</a>
-    <a class="tick sub-tick" data-cat="education" href="scientific-calculator.html">SCIENTIFIC</a>
-    <a class="tick sub-tick" data-cat="everyday" href="percentage-calculator.html">PERCENT</a>
-    <a class="tick sub-tick" data-cat="everyday" href="age-calculator.html">AGE</a>
-    <a class="tick sub-tick" data-cat="everyday" href="days-calculator.html">DAYS</a>
-    <a class="tick sub-tick" data-cat="everyday" href="unit-converter.html">UNITS</a>
-    <a class="tick sub-tick" data-cat="everyday" href="password-generator.html">PASSWORD</a>
-    <a class="tick sub-tick" data-cat="everyday" href="word-counter.html">WORD COUNT</a>
-  </nav>
-</header>
-
 <div class="wrap">
-  <div class="crumb"><a href="index.html">TallyBench</a> / Percentage Calculator</div>
-
-  <section class="hero">
-    <div class="hero-icon-row cat-utility">
-      <div class="hero-icon"><svg><use href="icons.svg#icon-percent"/></svg></div>
-      <div class="eyebrow">// 01 · PERCENTAGE CALCULATOR</div>
-    </div>
-    <h1>Two common percent problems, solved together.</h1>
-    <p>Find X percent of a number, or figure out what percent one number is of another — both update live.</p>
-  </section>
-
-  <section class="tool" id="percent">
-    <div class="card">
-      <div>
-        <div class="field"><label>X percent of Y — X</label><input type="number" id="pX" value="20"></div>
-        <div class="field"><label>X percent of Y — Y</label><input type="number" id="pY" value="150"></div>
-        <div class="field" style="margin-top:18px;"><label>A is what % of B — A</label><input type="number" id="pA" value="30"></div>
-        <div class="field"><label>A is what % of B — B</label><input type="number" id="pB" value="120"></div>
-      </div>
-      <div class="readout">
-        <div class="r-row"><span class="r-label">X% of Y</span><span class="r-value" id="pOut1">0</span></div>
-        <div class="r-row"><span class="r-label">A is % of B</span><span class="r-value" id="pOut2">0%</span></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="article">
-    <h3>How do you calculate X percent of Y?</h3>
-    <p>Multiply Y by X, then divide by 100. For example, 20% of 150 is (150 × 20) ÷ 100 = 30.</p>
-    <h3>How do you find what percent A is of B?</h3>
-    <p>Divide A by B, then multiply by 100. For example, 30 is what percent of 120? (30 ÷ 120) × 100 = 25%.</p>
-    <h3>Where does this come up in real life?</h3>
-    <p>Discounts, tax rates, grade calculations, tip splitting, and comparing changes over time all reduce to one of these two percent problems.</p>
-    <h3>How do you calculate a percentage increase or decrease?</h3>
-    <p>Subtract the old value from the new value, divide by the old value, then multiply by 100. A price moving from $80 to $100 is a (100−80)/80×100 = 25% increase. A drop from $100 to $80 is (80−100)/100×100 = −20% — note the percentages aren't symmetric, because the base changes.</p>
-    <h3>What's the difference between a percent and a percentage point?</h3>
-    <p>If an interest rate moves from 5% to 7%, that's a 2 percentage point increase, but a 40% relative increase in the rate itself (2÷5×100). News headlines often blur this distinction — always check which one is being reported.</p>
-    <p><strong>Worked example:</strong> a shirt is discounted from $45 to $36. Percent decrease = (45−36)/45×100 = 20%. Using the calculator above, entering 20 as X and 45 as Y in the top field gives the discount amount directly (9), matching this by-hand result.</p>
-  </section>
-
-  <nav class="more-tools">
-    <h2>More calculators</h2>
-    <ul>
-      <li><a href="age-calculator.html">Age Calculator</a></li>
-      <li><a href="currency-converter.html">Currency Converter</a></li>
-      <li><a href="bmi-calculator.html">BMI Calculator</a></li>
-      <li><a href="loan-calculator.html">Loan / EMI Calculator</a></li>
-      <li><a href="mortgage-calculator.html">Mortgage Calculator</a></li>
-      <li><a href="tax-calculator.html">Tax Calculator</a></li>
-      <li><a href="gst-vat-calculator.html">GST / VAT Calculator</a></li>
-      <li><a href="days-calculator.html">Days Between Dates</a></li>
-      <li><a href="calorie-calculator.html">Calorie / BMR Calculator</a></li>
-      <li><a href="unit-converter.html">Unit Converter</a></li>
-      <li><a href="discount-calculator.html">Discount Calculator</a></li>
-      <li><a href="investment-calculator.html">Investment Calculator</a></li>
-      <li><a href="gpa-calculator.html">GPA Calculator</a></li>
-      <li><a href="scientific-calculator.html">Scientific Calculator</a></li>
-      <li><a href="tip-calculator.html">Tip Calculator</a></li>
-      <li><a href="password-generator.html">Password Generator</a></li>
-      <li><a href="word-counter.html">Word Counter</a></li>
-      <li><a href="fd-calculator.html">FD Calculator</a></li>
-      <li><a href="rd-calculator.html">RD Calculator</a></li>
-      <li><a href="ppf-calculator.html">PPF Calculator</a></li>
-      <li><a href="hra-calculator.html">HRA Calculator</a></li>
-    </ul>
-  </nav>
-
-  <footer>
-    <p>TALLYBENCH · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
-  </footer>
+<div class="headbar">
+<a class="logo" href="index.html">TALLYBENCH<span>.</span></a>
 </div>
+</div>
+<nav class="ruler cat-ruler">
+<a class="tick" href="index.html">HOME</a>
+<button class="tick cat-tab" type="button" data-cat="finance">FINANCE</button>
+<button class="tick cat-tab" type="button" data-cat="health">HEALTH</button>
+<button class="tick cat-tab" type="button" data-cat="education">EDUCATION</button>
+<button class="tick cat-tab" type="button" data-cat="everyday">EVERYDAY</button>
+</nav>
+<nav class="ruler sub-ruler" id="subRuler">
+<a class="tick sub-tick" data-cat="finance" href="currency-converter.html">CURRENCY</a>
+<a class="tick sub-tick" data-cat="finance" href="loan-calculator.html">LOAN / EMI</a>
+<a class="tick sub-tick" data-cat="finance" href="mortgage-calculator.html">MORTGAGE</a>
+<a class="tick sub-tick" data-cat="finance" href="tax-calculator.html">TAX</a>
+<a class="tick sub-tick" data-cat="finance" href="gst-vat-calculator.html">GST / VAT</a>
+<a class="tick sub-tick" data-cat="finance" href="investment-calculator.html">INVESTMENT</a>
+<a class="tick sub-tick" data-cat="finance" href="discount-calculator.html">DISCOUNT</a>
+<a class="tick sub-tick" data-cat="finance" href="tip-calculator.html">TIP</a>
+<a class="tick sub-tick" data-cat="finance" href="fd-calculator.html">FD</a>
+<a class="tick sub-tick" data-cat="finance" href="rd-calculator.html">RD</a>
+<a class="tick sub-tick" data-cat="finance" href="ppf-calculator.html">PPF</a>
+<a class="tick sub-tick" data-cat="finance" href="hra-calculator.html">HRA</a>
+<a class="tick sub-tick" data-cat="health" href="bmi-calculator.html">BMI</a>
+<a class="tick sub-tick" data-cat="health" href="calorie-calculator.html">CALORIE</a>
+<a class="tick sub-tick" data-cat="education" href="gpa-calculator.html">GPA</a>
+<a class="tick sub-tick" data-cat="education" href="scientific-calculator.html">SCIENTIFIC</a>
+<a class="tick sub-tick" data-cat="everyday" href="percentage-calculator.html">PERCENT</a>
+<a class="tick sub-tick" data-cat="everyday" href="age-calculator.html">AGE</a>
+<a class="tick sub-tick" data-cat="everyday" href="days-calculator.html">DAYS</a>
+<a class="tick sub-tick" data-cat="everyday" href="unit-converter.html">UNITS</a>
+<a class="tick sub-tick" data-cat="everyday" href="password-generator.html">PASSWORD</a>
+<a class="tick sub-tick" data-cat="everyday" href="word-counter.html">WORD COUNT</a>
+</nav>
+</header>
+<div class="wrap">
+<p class="crumb"><a href="index.html">TallyBench</a> / Percentage Calculator</p>
 
+<section class="hero">
+<div class="eyebrow">// PERCENTAGE CALCULATOR</div>
+<h1>Every percent problem, one page.</h1>
+<p>Six tools that cover the percentage questions people actually ask — percent of a number, what percent one number is of another, reverse percentages, change over time, quick increase/decrease, and percentage difference. All update live as you type.</p>
+</section>
+
+<section class="tool">
+<div class="tool-head"><span class="tool-num">01</span><div><h2>What is X% of Y?</h2><p class="tool-sub">The classic — discounts, tips, commissions.</p></div></div>
+<div class="card">
+<div>
+<div class="row2">
+<div class="field"><label>Percent (X)</label><input type="number" id="pcOfPct" value="20" step="any"></div>
+<div class="field"><label>Number (Y)</label><input type="number" id="pcOfNum" value="150" step="any"></div>
+</div>
+</div>
+<div class="readout">
+<div class="r-row"><span class="r-label">X% of Y</span><span class="r-value" id="pcOfOut">30</span></div>
+</div>
+</div>
+</section>
+
+<section class="tool">
+<div class="tool-head"><span class="tool-num">02</span><div><h2>A is what percent of B?</h2><p class="tool-sub">Test scores, market share, progress toward a goal.</p></div></div>
+<div class="card">
+<div>
+<div class="row2">
+<div class="field"><label>Part (A)</label><input type="number" id="pcWhatA" value="30" step="any"></div>
+<div class="field"><label>Whole (B)</label><input type="number" id="pcWhatB" value="120" step="any"></div>
+</div>
+</div>
+<div class="readout">
+<div class="r-row"><span class="r-label">A as % of B</span><span class="r-value" id="pcWhatOut">25%</span></div>
+</div>
+</div>
+</section>
+
+<section class="tool">
+<div class="tool-head"><span class="tool-num">03</span><div><h2>X% of what number is Z?</h2><p class="tool-sub">Reverse percentages — work back to the original amount.</p></div></div>
+<div class="card">
+<div>
+<div class="row2">
+<div class="field"><label>Percent (X)</label><input type="number" id="pcRevPct" value="15" step="any"></div>
+<div class="field"><label>Known result (Z)</label><input type="number" id="pcRevVal" value="45" step="any"></div>
+</div>
+</div>
+<div class="readout">
+<div class="r-row"><span class="r-label">Original number</span><span class="r-value" id="pcRevOut">300</span></div>
+</div>
+</div>
+</section>
+
+<section class="tool">
+<div class="tool-head"><span class="tool-num">04</span><div><h2>Percentage change</h2><p class="tool-sub">From an old value to a new value — prices, salaries, traffic.</p></div></div>
+<div class="card">
+<div>
+<div class="row2">
+<div class="field"><label>Old value</label><input type="number" id="pcChgOld" value="80" step="any"></div>
+<div class="field"><label>New value</label><input type="number" id="pcChgNew" value="100" step="any"></div>
+</div>
+</div>
+<div class="readout">
+<div class="r-row"><span class="r-label">Change</span><span class="r-value" id="pcChgOut">+25%</span></div>
+<div class="r-row"><span class="r-label">Direction</span><span class="r-sub" id="pcChgDir">Increase</span></div>
+</div>
+</div>
+</section>
+
+<section class="tool">
+<div class="tool-head"><span class="tool-num">05</span><div><h2>Increase or decrease a number by a percent</h2><p class="tool-sub">Add VAT, apply a raise, take off a discount.</p></div></div>
+<div class="card">
+<div>
+<div class="row2">
+<div class="field"><label>Starting number</label><input type="number" id="pcAdjNum" value="500" step="any"></div>
+<div class="field"><label>Percent</label><input type="number" id="pcAdjPct" value="10" step="any"></div>
+</div>
+</div>
+<div class="readout">
+<div class="r-row"><span class="r-label">Increased</span><span class="r-value" id="pcAdjUp">550</span></div>
+<div class="r-row"><span class="r-label">Decreased</span><span class="r-value" id="pcAdjDown">450</span></div>
+</div>
+</div>
+</section>
+
+<section class="tool">
+<div class="tool-head"><span class="tool-num">06</span><div><h2>Percentage difference</h2><p class="tool-sub">Compare two values with no "before" and "after" — measured against their average.</p></div></div>
+<div class="card">
+<div>
+<div class="row2">
+<div class="field"><label>Value 1</label><input type="number" id="pcDiffA" value="26" step="any"></div>
+<div class="field"><label>Value 2</label><input type="number" id="pcDiffB" value="14" step="any"></div>
+</div>
+</div>
+<div class="readout">
+<div class="r-row"><span class="r-label">Percentage difference</span><span class="r-value" id="pcDiffOut">60%</span></div>
+</div>
+</div>
+</section>
+
+<section class="tool">
+<div class="tool-head"><span class="tool-num">//</span><div><h2>How percentages work — formulas, examples, and traps</h2><p class="tool-sub">Everything the six tools above are doing, explained.</p></div></div>
+<div class="article">
+
+<p>A percentage is just a fraction with 100 as the denominator — the word literally means "per hundred." Saying 25% is the same as saying 25 out of every 100, the fraction 1/4, or the decimal 0.25. That single idea powers every tool on this page; what changes between them is which piece of the puzzle you already know and which one you're solving for.</p>
+
+<h3>Mode 1 — What is X% of Y?</h3>
+<p>Multiply Y by X and divide by 100: <strong>X% of Y = Y × X ÷ 100</strong>. This is the workhorse of everyday life. A 20% tip on a $64 dinner in the US is 64 × 20 ÷ 100 = $12.80. A 15% discount on a €90 jacket is €13.50 off. GST at 18% on a ₹2,500 service is ₹450. Any time you know a rate and a base amount, this is the formula.</p>
+
+<h3>Mode 2 — A is what percent of B?</h3>
+<p>Divide the part by the whole and multiply by 100: <strong>(A ÷ B) × 100</strong>. Scoring 42 out of 60 on an exam is (42 ÷ 60) × 100 = 70%. If your team closed 30 deals out of 120 leads, that's a 25% conversion rate. The order matters — the number after "of" is always the denominator.</p>
+
+<h3>Mode 3 — Reverse percentages: X% of what is Z?</h3>
+<p>Divide the known result by the percent expressed as a decimal: <strong>original = Z ÷ (X ÷ 100)</strong>. If a 15% deposit on a home came to $45,000, the home price was 45,000 ÷ 0.15 = $300,000. This mode also answers the very common "price before tax" question — if a receipt shows €121 including 21% VAT, the pre-tax price isn't 121 minus 21%; it's 121 ÷ 1.21 = €100. Working backwards through a percentage is the single most common place people get percentages wrong.</p>
+
+<h3>Mode 4 — Percentage change</h3>
+<p>Subtract the old value from the new, divide by the <em>old</em> value, multiply by 100: <strong>(new − old) ÷ old × 100</strong>. A salary going from ₹8,00,000 to ₹9,20,000 is a 15% raise. Rent rising from $1,600 to $1,800 is a 12.5% increase. Note the asymmetry trap: a stock that falls from $100 to $80 has dropped 20%, but climbing back from $80 to $100 is a 25% gain — because the base changed. A 50% loss needs a 100% gain to break even. This is why "it went down X% then up X%" never returns you to the start.</p>
+
+<h3>Mode 5 — Increase or decrease by a percent</h3>
+<p>Multiply by (1 + rate) to increase or (1 − rate) to decrease: <strong>500 increased by 10% = 500 × 1.10 = 550</strong>; decreased, 500 × 0.90 = 450. Chaining matters here: two successive 10% increases aren't 20% — they're 1.10 × 1.10 = 21%. The same applies to inflation compounding year over year, or a price that's marked up 30% and then discounted 30% (you end up at 91% of the original, not 100%).</p>
+
+<h3>Mode 6 — Percentage difference</h3>
+<p>When neither value is the "original" — comparing prices at two shops, or output of two machines — percentage change is the wrong tool because there's no natural base. Percentage difference solves this by measuring against the <em>average</em> of the two values: <strong>|a − b| ÷ ((a + b) ÷ 2) × 100</strong>. Comparing 26 and 14: the gap is 12, the average is 20, so the percentage difference is 60%. It's symmetric — you get the same answer whichever number you enter first.</p>
+
+<h3>Percent vs percentage points</h3>
+<p>If a central bank rate moves from 5% to 7%, that's a rise of 2 <em>percentage points</em>, but a 40% <em>relative</em> increase in the rate itself (2 ÷ 5 × 100). Headlines routinely blur the two — "unemployment up 3%" could mean either, and the difference between 10% → 10.3% and 10% → 13% is enormous. When precision matters, say "points" for absolute changes in a rate and "percent" for relative ones.</p>
+
+<h3>Common mistakes worth knowing</h3>
+<p>Beyond the asymmetry and chaining traps above: percentages of different bases can't be added (a 10% discount on shoes plus a 10% discount on a jacket isn't "20% off the order"); an average of percentages is only valid when the underlying bases are equal; and "up to 70% off" legally means at least one item, somewhere, is 70% off. Finally, tiny bases produce dramatic-sounding percentages — going from 2 users to 4 is "100% growth," which is why early-stage statistics deserve a skeptical read of the absolute numbers behind them.</p>
+
+<h3>Where you'll use each mode</h3>
+<p>Mode 1 covers tips (US), VAT/GST additions (Europe, India), commissions, and interest for one period. Mode 2 covers exam marks, attendance, conversion rates, and body-fat or budget shares. Mode 3 covers back-calculating pre-tax prices, deposits, and "the sale price is $68 after 15% off — what was it originally?" Mode 4 covers salary changes, price and market moves, and year-over-year growth. Mode 5 covers markups, raises, shrinkage, and inflation adjustments. Mode 6 covers side-by-side comparisons with no before/after. If you're specifically working with sale prices, the <a href="discount-calculator.html">Discount Calculator</a> adds currency handling and reverse-price modes; for tax-inclusive pricing, the <a href="gst-vat-calculator.html">GST / VAT Calculator</a> handles country-specific rates.</p>
+
+<h3>Worked example, end to end</h3>
+<p>A laptop lists at $1,200 in a Black Friday sale at 25% off. Mode 1: the discount is 1,200 × 25 ÷ 100 = $300, so you pay $900. Sales tax of 8% applies at checkout — Mode 5: 900 × 1.08 = $972 out the door. A month later the same model is back at $1,200 — Mode 4 says the price rose (1,200 − 900) ÷ 900 × 100 = 33.3% from what you paid, even though the sale was "only" 25% off. Same dollars, different bases.</p>
+
+</div>
+</section>
+
+<section class="more-tools">
+<h2>More calculators</h2>
+<ul>
+<li><a href="age-calculator.html">Age Calculator</a></li>
+<li><a href="currency-converter.html">Currency Converter</a></li>
+<li><a href="bmi-calculator.html">BMI Calculator</a></li>
+<li><a href="loan-calculator.html">Loan / EMI Calculator</a></li>
+<li><a href="mortgage-calculator.html">Mortgage Calculator</a></li>
+<li><a href="tax-calculator.html">Tax Calculator</a></li>
+<li><a href="gst-vat-calculator.html">GST / VAT Calculator</a></li>
+<li><a href="days-calculator.html">Days Between Dates</a></li>
+<li><a href="calorie-calculator.html">Calorie / BMR Calculator</a></li>
+<li><a href="unit-converter.html">Unit Converter</a></li>
+<li><a href="discount-calculator.html">Discount Calculator</a></li>
+<li><a href="investment-calculator.html">Investment Calculator</a></li>
+<li><a href="gpa-calculator.html">GPA Calculator</a></li>
+<li><a href="scientific-calculator.html">Scientific Calculator</a></li>
+<li><a href="tip-calculator.html">Tip Calculator</a></li>
+<li><a href="password-generator.html">Password Generator</a></li>
+<li><a href="word-counter.html">Word Counter</a></li>
+<li><a href="fd-calculator.html">FD Calculator</a></li>
+<li><a href="rd-calculator.html">RD Calculator</a></li>
+<li><a href="ppf-calculator.html">PPF Calculator</a></li>
+<li><a href="hra-calculator.html">HRA Calculator</a></li>
+</ul>
+</section>
+
+<footer>
+<p>TALLYBENCH · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
+</footer>
+</div>
 <script src="script.js"></script>
 </body>
 </html>

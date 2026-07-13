@@ -96,7 +96,6 @@
   <div class="wrap">
     <div class="headbar">
       <a class="logo" href="index.html">TALLYBENCH<span>.</span></a>
-      <div class="tagline">22 TOOLS · 0 SIGN-UP</div>
     </div>
   </div>
   <nav class="ruler cat-ruler">
@@ -182,12 +181,18 @@
           <div class="field"><label>Home insurance (per year)</label><input type="number" id="mtgInsurance" value="1400" step="100"></div>
         </div>
         <div class="field"><label>PMI rate (annual %, applies if down payment &lt; 20%)</label><input type="number" id="mtgPmiRate" value="0.5" step="0.01"></div>
+        <div class="row2">
+          <div class="field"><label>HOA / society / maintenance (per month, optional)</label><input type="number" id="mtgHoa" value="0" min="0" step="10"></div>
+          <div class="field"><label>Extra payment per month (optional)</label><input type="number" id="mtgExtra" value="0" min="0" step="10"></div>
+        </div>
       </div>
       <div class="readout">
         <div class="r-row"><span class="r-label">Principal &amp; interest</span><span class="r-value" id="mtgPI">0</span></div>
-        <div class="r-row"><span class="r-label">Tax + insurance + PMI</span><span class="r-value" id="mtgExtras">0</span></div>
+        <div class="r-row"><span class="r-label">Tax + insurance + PMI + HOA</span><span class="r-value" id="mtgExtras">0</span></div>
         <div class="r-row"><span class="r-label">Total monthly payment</span><span class="r-value" id="mtgTotal">0</span></div>
         <div class="r-row"><span class="r-label">Total interest over loan</span><span class="r-value" id="mtgTotalInterest">0</span></div>
+        <div class="r-row"><span class="r-label">Paid off in</span><span class="r-value" id="mtgPayoff">—</span></div>
+        <div class="r-row"><span class="r-label">Extra payment saves</span><span class="r-sub" id="mtgSaved">—</span></div>
       </div>
     </div>
   </section>
@@ -204,16 +209,33 @@
 
   <section class="article">
     <h3>What's included in the monthly payment?</h3>
-    <p>Principal and interest are calculated with the standard fixed-rate amortization formula on the loan amount (home price minus down payment). Property tax and home insurance are simply divided by 12 and added on top, and PMI is estimated as a percentage of the loan balance per year, also divided by 12.</p>
+    <p>Principal and interest are calculated with the standard fixed-rate amortization formula on the loan amount (home price minus down payment). Property tax and home insurance are divided by 12 and added on top; PMI is estimated as a percentage of the loan balance per year, applied automatically while the down payment is under 20%; and the HOA/maintenance field adds any recurring monthly charge — HOA dues in the US, service charges in the UK, or society maintenance in India. Together these approximate the full "PITI + extras" figure lenders and landlords actually care about.</p>
+
     <h3>What is PMI and when does it apply?</h3>
-    <p>Private Mortgage Insurance is typically required when the down payment is below 20% of the home price, since the lender is taking on more risk. This calculator applies your entered PMI rate automatically whenever the down payment is under that 20% threshold, and shows zero otherwise.</p>
-    <h3>Does this account for changing interest rates or extra payments?</h3>
-    <p>No — this models a standard fixed-rate mortgage with no extra principal payments. Adjustable-rate mortgages, biweekly payment schedules, or extra prepayments would all change the real total interest paid.</p>
-    <h3>How does extra principal payment affect total interest?</h3>
-    <p>This calculator doesn't model extra payments directly, but the relationship is straightforward: any extra amount paid toward principal reduces the balance that future interest is calculated on, which shortens the loan and reduces total interest — even small consistent extra payments can cut years off a 30-year mortgage.</p>
+    <p>Private Mortgage Insurance is a US concept: lenders typically require it when the down payment is below 20%, because the loan is riskier. It protects the lender, not you, and typically costs 0.3%–1.5% of the loan per year. This calculator applies your entered PMI rate whenever the down payment is under 20% and drops it otherwise. Other markets have equivalents — Canada's CMHC insurance applies under 20% down, the UK prices risk through higher rates at high loan-to-value instead, and Indian lenders generally cap the loan at 75–90% of property value rather than charging separate insurance. If you're outside the US, set the PMI rate to 0 and let your quoted interest rate carry the risk pricing.</p>
+
+    <h3>What does the extra payment field do?</h3>
+    <p>Anything you enter is applied directly to principal each month on top of the required payment. Because interest accrues on the outstanding balance, extra principal paid early eliminates all the future interest that balance would have generated. The readout shows the payoff date and interest saved: on a $320,000 loan at 6.5% over 30 years, an extra $300/month saves nearly $140,000 of interest and finishes the loan almost nine years early. The amortization chart and table update to show the accelerated schedule.</p>
+
+    <h3>15-year vs 30-year (or 20-year) terms — how big is the difference?</h3>
+    <p>Halving the term far less than doubles the payment, because so much of a long loan's payment is interest. On $320,000 at 6.5%: 30 years costs about $2,023/month and ~$408,000 in total interest; 15 years costs about $2,787/month — only 38% more per month — but total interest collapses to ~$182,000. If the shorter payment fits your budget with room to spare, it's one of the cheapest forms of guaranteed return available. If it doesn't, the 30-year term plus voluntary extra payments gives you the same effect with flexibility to stop in a tight month.</p>
+
+    <h3>How do rates and structures differ by region?</h3>
+    <p>The US market is unusual in offering 30-year fixed rates for the entire term. In the UK and much of Europe, "fixed" usually means fixed for 2–10 years before reverting to a variable rate, so re-run this calculator at a stress-tested higher rate before committing. In India, most home loans float against the repo rate (via each bank's benchmark), tenures run up to 30 years, and borrowers get meaningful tax relief — up to ₹1.5 lakh of principal under Section 80C and ₹2 lakh of interest under Section 24 in the old regime (check the <a href="tax-calculator.html">Tax Calculator</a> to compare regimes with a home loan in the picture). Germany and Switzerland commonly amortize only partially over the fixed period. The formula on this page is the same everywhere; what changes is how long today's rate is guaranteed.</p>
+
+    <h3>Does this account for changing interest rates?</h3>
+    <p>No — it models a constant rate for the whole term, which is exact for US-style fixed loans and a snapshot for floating or short-fix loans. For a floating loan, the practical approach: run it at today's rate for the real picture now, then again at +1% or +2% to see whether you could absorb a reset. Lenders in several countries are required to run exactly that stress test before approving you.</p>
+
+    <h3>How much house can I afford, roughly?</h3>
+    <p>A widely used ceiling is the 28/36 rule: housing costs (this calculator's total monthly figure) under ~28% of gross monthly income, and all debt payments combined under ~36%. Indian banks apply a similar FOIR (fixed obligation to income ratio) cap, typically 40–55%. These are lender ceilings, not comfort levels — property tax reassessments, insurance inflation, and maintenance tend to push real housing costs up over time, so leaving headroom below the maximum is the difference between owning a home and being owned by one.</p>
+
     <h3>Why is my property tax and insurance estimate different from my actual bill?</h3>
-    <p>Property tax rates and home insurance premiums vary significantly by location, home value, and insurer — the fields above are your own estimates, not looked up automatically. Check your local county assessor's site or a recent insurance quote for more accurate numbers.</p>
-    <p><strong>Worked example:</strong> a $400,000 home with $80,000 down (20%, so no PMI), a 30-year term at 6.5%, gives roughly $2,023/month in principal and interest alone — add your actual property tax and insurance above to see the full monthly figure.</p>
+    <p>Property tax rates and insurance premiums vary enormously by location and property — US property tax alone ranges from under 0.3% to over 2% of home value per year depending on the state, and municipal rates in Europe and India are set locally. The fields above are your estimates, not lookups; a county assessor site, your local municipal portal, or a fresh insurance quote will give numbers worth trusting.</p>
+
+    <h3>What costs does this leave out?</h3>
+    <p>One-time costs at purchase: closing costs (typically 2–5% of the loan in the US), stamp duty and registration (5–8% of property value in most Indian states, and significant in the UK, Australia, and much of Europe), legal fees, and lender processing fees. Ongoing: repairs and maintenance (a common budget is ~1% of home value per year), utilities, and — for investment properties — vacancy. None of these are in the monthly figure above, and the one-time costs in particular are the reason the true cash needed at purchase is always more than the down payment.</p>
+
+    <p><strong>Worked example:</strong> a $400,000 home with $80,000 down (20%, so no PMI), 30 years at 6.5%, gives roughly $2,023/month in principal and interest. Add $400/month property tax, $117/month insurance, and $100 HOA and the real monthly cost is about $2,640. Now add $300 extra per month: the loan finishes in just over 21 years and the interest saved is close to $140,000 — enter these numbers above to watch the schedule shrink.</p>
   </section>
 
   <nav class="more-tools">

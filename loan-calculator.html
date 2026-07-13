@@ -96,7 +96,6 @@
   <div class="wrap">
     <div class="headbar">
       <a class="logo" href="index.html">TALLYBENCH<span>.</span></a>
-      <div class="tagline">22 TOOLS · 0 SIGN-UP</div>
     </div>
   </div>
   <nav class="ruler cat-ruler">
@@ -181,11 +180,14 @@
             </div>
           </div>
         </div>
+        <div class="field"><label>Extra payment per month (optional)</label><input type="number" id="loanExtra" value="0" min="0"></div>
       </div>
       <div class="readout">
         <div class="r-row"><span class="r-label">Monthly payment</span><span class="r-value" id="loanPay">$0</span></div>
         <div class="r-row"><span class="r-label">Total paid</span><span class="r-value" id="loanTotal">$0</span></div>
         <div class="r-row"><span class="r-label">Total interest</span><span class="r-value" id="loanInt">$0</span></div>
+        <div class="r-row"><span class="r-label">Paid off in</span><span class="r-value" id="loanPayoff">—</span></div>
+        <div class="r-row"><span class="r-label">Extra payment saves</span><span class="r-sub" id="loanSaved">—</span></div>
       </div>
     </div>
   </section>
@@ -202,16 +204,36 @@
 
   <section class="article">
     <h3>How is the loan payment formula calculated?</h3>
-    <p>This uses the standard fixed-rate amortization formula: it converts your annual rate to a monthly rate, then solves for a level payment that pays off the balance exactly across the full term.</p>
+    <p>This uses the standard fixed-rate amortization formula: it converts your annual rate to a monthly rate (r = annual ÷ 12 ÷ 100), then solves for the level payment that pays off the balance exactly across the full term: <strong>payment = P × r ÷ (1 − (1 + r)<sup>−n</sup>)</strong>, where P is the principal and n the number of months. It's the same formula behind nearly every personal loan, auto loan, and mortgage worldwide — in India this level payment is called an EMI (Equated Monthly Instalment), but the math is identical.</p>
+
+    <h3>How does the payment split between principal and interest?</h3>
+    <p>Each month, interest is charged only on the balance you still owe. Early on the balance is large, so most of your payment goes to interest; as the balance shrinks, the same level payment sends more and more toward principal. On a 30-year loan, it's common for the first year's payments to be over 80% interest — which is exactly why the amortization chart above starts nearly flat and steepens toward the end, and why extra payments made early matter far more than the same amount paid later.</p>
+
+    <h3>What does the extra payment field do?</h3>
+    <p>Any amount you add is applied straight to principal every month on top of the required payment. Because interest is calculated on the remaining balance, that extra principal removes not just its own amount but all the future interest that would have accrued on it. The readout shows both effects: how much sooner the loan is paid off, and the total interest avoided. Try the classic example — a 200,000 loan at 6.5% over 30 years costs about 255,000 in interest; adding just 200 a month cuts roughly 90,000 of interest and pays the loan off about nine years early.</p>
+
     <h3>Does this include taxes, insurance, or fees?</h3>
-    <p>No — this is principal and interest only. Mortgages and some auto loans often bundle in taxes, insurance, or other fees, which would raise your actual monthly payment above this number.</p>
-    <h3>Why does total interest matter?</h3>
-    <p>Two loans with the same monthly payment can cost very differently over time depending on the rate and term — comparing total interest, not just the monthly number, shows the real cost.</p>
+    <p>No — this is principal and interest only. Mortgages often bundle in taxes, insurance, and (in the US) PMI; if that's your situation use the <a href="mortgage-calculator.html">Mortgage Calculator</a>, which itemizes those on top of P&amp;I. Auto loans in many countries also add documentation or processing fees at origination, which raise the true cost but not the monthly payment.</p>
+
+    <h3>Nominal rate vs APR — which one should I enter?</h3>
+    <p>Enter the nominal annual interest rate your lender quotes for the loan itself. APR (Annual Percentage Rate — mandatory in US and EU loan disclosures, and shown as APR or "effective rate" elsewhere) additionally folds origination fees and certain charges into a single comparable number, so it runs slightly higher than the nominal rate. APR is the right number for <em>comparing</em> two loan offers; the nominal rate is the right number for <em>computing</em> the payment here. If you only know the APR and there were no fees, the two are the same.</p>
+
     <h3>What's the difference between flat rate and reducing balance interest?</h3>
-    <p>This calculator uses reducing balance (amortizing) interest, the standard for most personal loans, auto loans, and mortgages — interest is charged only on the remaining principal each month, so the interest portion shrinks over time even though the total payment stays level. Flat rate interest (less common, sometimes used for short-term loans) charges interest on the original amount for the entire term, which works out more expensive for the same stated rate.</p>
+    <p>This calculator uses reducing-balance (amortizing) interest — the standard for personal loans, auto loans, and mortgages in the US, Europe, and Indian banks — where interest is charged only on the remaining principal each month. Flat-rate interest, still quoted by some vehicle financiers and informal lenders in India and Southeast Asia, charges interest on the <em>original</em> amount for the entire term. A "7% flat" loan is dramatically more expensive than 7% reducing — as a rule of thumb, a flat rate is roughly equivalent to about 1.8× that rate on a reducing-balance basis. If a quote sounds too cheap, ask which basis it's on.</p>
+
     <h3>Why does the total interest change so much when I extend the term?</h3>
-    <p>A longer term lowers the monthly payment but increases total interest paid, since you're borrowing the lender's money for more months. Try comparing a 36-month and 60-month term on the same loan amount above — the monthly payment drops, but total interest paid rises noticeably.</p>
-    <p><strong>Worked example:</strong> a $20,000 loan at 6.5% annual interest over 60 months has a monthly payment of about $391 and total interest of roughly $3,460 over the life of the loan — try these exact numbers above to see the calculator match this.</p>
+    <p>A longer term lowers the monthly payment but increases total interest, since you're renting the lender's money for more months — and the balance stays high for longer, so each of those months is charged near-maximum interest. Compare a 36-month and 60-month term on the same amount above: the payment drops meaningfully, but total interest rises even faster. The term is the single biggest lever on total cost after the rate itself.</p>
+
+    <h3>Are there penalties for paying a loan off early?</h3>
+    <p>It depends where you are and what kind of loan it is. In India, the RBI bars prepayment penalties on floating-rate loans to individuals, though fixed-rate loans can still carry them. In the US, most auto and personal loans have no prepayment penalty, and qualified mortgages restrict them heavily. In much of the EU, early-repayment compensation is capped by the consumer credit directive (commonly around 1% of the amount repaid early). Always check your agreement before committing to a big prepayment — and note that even where a small penalty applies, the interest saved usually dwarfs it on a long remaining term.</p>
+
+    <h3>Fixed vs floating rate — does this calculator apply to both?</h3>
+    <p>The math here assumes the rate stays constant. That's exactly right for fixed-rate loans, and a reasonable snapshot for floating-rate loans (common for Indian home loans linked to the repo rate, and for tracker mortgages in Europe) at today's rate — just re-run the numbers if your rate resets. A 0.5-point rate move matters more than most people expect: on a 50,00,000 ₹ home loan over 20 years, it shifts the EMI by roughly ₹1,500–1,600 a month and several lakhs in total interest.</p>
+
+    <h3>How should I choose between a shorter term and investing the difference?</h3>
+    <p>Mathematically: if your loan rate is higher than the after-tax return you'd reliably earn elsewhere, prepaying wins; if it's lower, investing wins. A 12% personal loan in India or a 24% credit-card balance anywhere should almost always be attacked first. A 3% mortgage locked in years ago is usually worth keeping while savings rates exceed it. In between, the honest answer is that certainty has value — the interest saved by prepayment is guaranteed, market returns aren't.</p>
+
+    <p><strong>Worked example:</strong> a $20,000 loan at 6.5% annual interest over 60 months has a monthly payment of about $391 and total interest of roughly $3,480. Add a $100 extra payment each month and it's paid off in about 47 months instead of 60, saving close to $800 of interest — enter these exact numbers above to watch the schedule and chart update.</p>
   </section>
 
   <nav class="more-tools">

@@ -69,19 +69,54 @@
   calcTip();
 })();
 
-// ---- Percentage ----
+// ---- Percentage (6 modes) ----
 (function(){
-  if(!document.getElementById('pX')) return;
-  function calcPercent(){
-    const x=parseFloat(document.getElementById('pX').value)||0;
-    const y=parseFloat(document.getElementById('pY').value)||0;
-    const a=parseFloat(document.getElementById('pA').value)||0;
-    const b=parseFloat(document.getElementById('pB').value)||0;
-    document.getElementById('pOut1').textContent = (x*y/100).toFixed(2);
-    document.getElementById('pOut2').textContent = (b?(a/b*100):0).toFixed(2)+'%';
+  if(!document.getElementById('pcOfPct')) return;
+  const $ = id => document.getElementById(id);
+  const num = id => parseFloat($(id).value)||0;
+  const fmt = v => {
+    if(!isFinite(v)) return '—';
+    return Math.abs(v) >= 1e12 ? v.toExponential(2) : parseFloat(v.toFixed(4)).toLocaleString();
+  };
+
+  function calcAll(){
+    // 1. X% of Y
+    $('pcOfOut').textContent = fmt(num('pcOfNum')*num('pcOfPct')/100);
+
+    // 2. A is what % of B
+    const b = num('pcWhatB');
+    $('pcWhatOut').textContent = b===0 ? '—' : fmt(num('pcWhatA')/b*100)+'%';
+
+    // 3. X% of what is Z (reverse)
+    const rp = num('pcRevPct');
+    $('pcRevOut').textContent = rp===0 ? '—' : fmt(num('pcRevVal')/(rp/100));
+
+    // 4. Percentage change (old -> new)
+    const oldV = num('pcChgOld'), newV = num('pcChgNew');
+    if(oldV===0){
+      $('pcChgOut').textContent='—';
+      $('pcChgDir').textContent='Old value must be non-zero';
+    } else {
+      const chg = (newV-oldV)/oldV*100;
+      $('pcChgOut').textContent = (chg>0?'+':'')+fmt(chg)+'%';
+      $('pcChgDir').textContent = chg>0?'Increase':(chg<0?'Decrease':'No change');
+    }
+
+    // 5. Increase / decrease Y by X%
+    const base = num('pcAdjNum'), pct = num('pcAdjPct');
+    $('pcAdjUp').textContent = fmt(base*(1+pct/100));
+    $('pcAdjDown').textContent = fmt(base*(1-pct/100));
+
+    // 6. Percentage difference (vs average, symmetric)
+    const d1 = num('pcDiffA'), d2 = num('pcDiffB');
+    const avg = (d1+d2)/2;
+    $('pcDiffOut').textContent = avg===0 ? '—' : fmt(Math.abs(d1-d2)/Math.abs(avg)*100)+'%';
   }
-  ['pX','pY','pA','pB'].forEach(id=>document.getElementById(id).addEventListener('input',calcPercent));
-  calcPercent();
+
+  ['pcOfPct','pcOfNum','pcWhatA','pcWhatB','pcRevPct','pcRevVal',
+   'pcChgOld','pcChgNew','pcAdjNum','pcAdjPct','pcDiffA','pcDiffB'
+  ].forEach(id=>$(id).addEventListener('input',calcAll));
+  calcAll();
 })();
 
 // ---- BMI ----
@@ -150,18 +185,34 @@
   const seg = document.getElementById('loanTenureSeg');
   const unitLabel = document.getElementById('loanTenureUnitLabel');
 
+  function fmtMonths(m){
+    const y = Math.floor(m/12), rem = m%12;
+    if(y===0) return rem+' mo';
+    return rem===0 ? y+' yr' : y+' yr '+rem+' mo';
+  }
+
   function calcLoan(){
     const cur = document.getElementById('loanCur').value;
     const P = parseFloat(document.getElementById('loanAmt').value)||0;
     const annual = parseFloat(document.getElementById('loanRate').value)||0;
     const termInput = parseFloat(document.getElementById('loanTerm').value)||0;
+    const extraEl = document.getElementById('loanExtra');
+    const extra = extraEl ? (parseFloat(extraEl.value)||0) : 0;
     const n = Math.round(tenureUnit==='years' ? termInput*12 : termInput);
-    const r = annual/100/12;
-    const pay = (r===0 || n<=0) ? (n>0 ? P/n : 0) : P*r/(1-Math.pow(1+r,-n));
-    const total = pay*n;
-    document.getElementById('loanPay').textContent = cur+pay.toFixed(2);
-    document.getElementById('loanTotal').textContent = cur+total.toFixed(2);
-    document.getElementById('loanInt').textContent = cur+(total-P).toFixed(2);
+
+    const base = buildAmortization(P, annual, n, 0);
+    const acc  = extra>0 ? buildAmortization(P, annual, n, extra) : base;
+
+    document.getElementById('loanPay').textContent = cur+(base.pay+extra).toFixed(2);
+    document.getElementById('loanTotal').textContent = cur+(P+acc.totalInterest).toFixed(2);
+    document.getElementById('loanInt').textContent = cur+acc.totalInterest.toFixed(2);
+
+    const payoffEl = document.getElementById('loanPayoff');
+    const savedEl = document.getElementById('loanSaved');
+    if(payoffEl) payoffEl.textContent = (n>0&&P>0) ? fmtMonths(acc.monthsTaken) : '—';
+    if(savedEl) savedEl.textContent = extra>0
+      ? cur+Math.max(base.totalInterest-acc.totalInterest,0).toFixed(2)+' · '+fmtMonths(Math.max(base.monthsTaken-acc.monthsTaken,0))+' sooner'
+      : '—';
   }
 
   if(seg){
@@ -176,9 +227,11 @@
     });
   }
 
-  ['loanAmt','loanRate','loanTerm','loanCur'].forEach(id=>{
-    document.getElementById(id).addEventListener('input',calcLoan);
-    document.getElementById(id).addEventListener('change',calcLoan);
+  ['loanAmt','loanRate','loanTerm','loanCur','loanExtra'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener('input',calcLoan);
+    el.addEventListener('change',calcLoan);
   });
   calcLoan();
 })();
@@ -805,6 +858,14 @@
   const taxEl = document.getElementById('mtgTax');
   const insEl = document.getElementById('mtgInsurance');
   const pmiRateEl = document.getElementById('mtgPmiRate');
+  const hoaEl = document.getElementById('mtgHoa');
+  const extraEl = document.getElementById('mtgExtra');
+
+  function fmtMonths(m){
+    const y = Math.floor(m/12), rem = m%12;
+    if(y===0) return rem+' mo';
+    return rem===0 ? y+' yr' : y+' yr '+rem+' mo';
+  }
 
   function calc(){
     const cur = curEl.value;
@@ -814,9 +875,11 @@
     const annualRate = parseFloat(rateEl.value)||0;
     const years = parseFloat(termEl.value)||1;
     const n = Math.round(years*12);
-    const r = annualRate/100/12;
+    const extra = extraEl ? (parseFloat(extraEl.value)||0) : 0;
 
-    const pi = (r===0 || n<=0) ? (n>0?principal/n:0) : principal*r/(1-Math.pow(1+r,-n));
+    const base = buildAmortization(principal, annualRate, n, 0);
+    const acc  = extra>0 ? buildAmortization(principal, annualRate, n, extra) : base;
+    const pi = base.pay;
 
     const downPct = price>0 ? down/price*100 : 0;
     const pmiAnnualRate = parseFloat(pmiRateEl.value)||0;
@@ -824,18 +887,26 @@
 
     const taxMonthly = (parseFloat(taxEl.value)||0)/12;
     const insMonthly = (parseFloat(insEl.value)||0)/12;
+    const hoaMonthly = hoaEl ? (parseFloat(hoaEl.value)||0) : 0;
 
-    const extras = taxMonthly+insMonthly+pmiMonthly;
-    const total = pi+extras;
-    const totalInterest = pi*n - principal;
+    const extras = taxMonthly+insMonthly+pmiMonthly+hoaMonthly;
+    const total = pi+extras+extra;
 
     document.getElementById('mtgPI').textContent = cur+pi.toFixed(2);
     document.getElementById('mtgExtras').textContent = cur+extras.toFixed(2);
     document.getElementById('mtgTotal').textContent = cur+total.toFixed(2);
-    document.getElementById('mtgTotalInterest').textContent = cur+Math.max(totalInterest,0).toFixed(2);
+    document.getElementById('mtgTotalInterest').textContent = cur+Math.max(acc.totalInterest,0).toFixed(2);
+
+    const payoffEl = document.getElementById('mtgPayoff');
+    const savedEl = document.getElementById('mtgSaved');
+    if(payoffEl) payoffEl.textContent = (n>0&&principal>0) ? fmtMonths(acc.monthsTaken) : '—';
+    if(savedEl) savedEl.textContent = extra>0
+      ? cur+Math.max(base.totalInterest-acc.totalInterest,0).toFixed(2)+' · '+fmtMonths(Math.max(base.monthsTaken-acc.monthsTaken,0))+' sooner'
+      : '—';
   }
 
-  [priceEl, curEl, downEl, rateEl, termEl, taxEl, insEl, pmiRateEl].forEach(el=>{
+  [priceEl, curEl, downEl, rateEl, termEl, taxEl, insEl, pmiRateEl, hoaEl, extraEl].forEach(el=>{
+    if(!el) return;
     el.addEventListener('input', calc);
     el.addEventListener('change', calc);
   });
@@ -1081,22 +1152,25 @@ if ('serviceWorker' in navigator) {
 }
 
 // ---- Shared: amortization schedule + SVG chart renderer ----
-function buildAmortization(P, annualRate, months){
+function buildAmortization(P, annualRate, months, extra){
+  extra = extra||0;
   const r = annualRate/100/12;
   const pay = (r===0||months<=0) ? (months>0?P/months:0) : P*r/(1-Math.pow(1+r,-months));
   let bal = P; const years = [];
-  let yp=0, yi=0;
+  let yp=0, yi=0, totalInterest=0, monthsTaken=0;
   for(let m=1;m<=months;m++){
     const interest = bal*r;
-    const principal = Math.min(pay-interest, bal);
+    const principal = Math.min(pay+extra-interest, bal);
     bal = Math.max(bal-principal,0);
-    yp+=principal; yi+=interest;
-    if(m%12===0 || m===months){
+    yp+=principal; yi+=interest; totalInterest+=interest;
+    monthsTaken = m;
+    if(m%12===0 || m===months || bal<=0){
       years.push({year:Math.ceil(m/12), principal:yp, interest:yi, balance:bal});
       yp=0; yi=0;
     }
+    if(bal<=0) break;
   }
-  return {pay, years};
+  return {pay, years, monthsTaken, totalInterest};
 }
 
 function renderAmortChart(containerId, years, P, cur){
@@ -1145,12 +1219,15 @@ function renderAmortTable(bodyId, years, cur){
     const unit = seg ? (seg.querySelector('.active')?.dataset.unit||'months') : 'months';
     const months = Math.round(unit==='years' ? termInput*12 : termInput);
     if(P<=0||months<=0) return;
-    const {years} = buildAmortization(P, rate, months);
+    const extraEl = document.getElementById('loanExtra');
+    const extra = extraEl ? (parseFloat(extraEl.value)||0) : 0;
+    const {years} = buildAmortization(P, rate, months, extra);
     renderAmortChart('loanChart', years, P, cur);
     renderAmortTable('loanScheduleBody', years, cur);
   }
-  ['loanAmt','loanRate','loanTerm','loanCur'].forEach(id=>{
+  ['loanAmt','loanRate','loanTerm','loanCur','loanExtra'].forEach(id=>{
     const el=document.getElementById(id);
+    if(!el) return;
     el.addEventListener('input',update); el.addEventListener('change',update);
   });
   const seg=document.getElementById('loanTenureSeg');
@@ -1170,12 +1247,15 @@ function renderAmortTable(bodyId, years, cur){
     const years = parseFloat(document.getElementById('mtgTerm').value)||0;
     const months = Math.round(years*12);
     if(P<=0||months<=0) return;
-    const {years:sched} = buildAmortization(P, rate, months);
+    const extraEl = document.getElementById('mtgExtra');
+    const extra = extraEl ? (parseFloat(extraEl.value)||0) : 0;
+    const {years:sched} = buildAmortization(P, rate, months, extra);
     renderAmortChart('mtgChart', sched, P, cur);
     renderAmortTable('mtgScheduleBody', sched, cur);
   }
-  ['mtgPrice','mtgDown','mtgRate','mtgTerm','mtgCur'].forEach(id=>{
+  ['mtgPrice','mtgDown','mtgRate','mtgTerm','mtgCur','mtgExtra'].forEach(id=>{
     const el=document.getElementById(id);
+    if(!el) return;
     el.addEventListener('input',update); el.addEventListener('change',update);
   });
   update();
