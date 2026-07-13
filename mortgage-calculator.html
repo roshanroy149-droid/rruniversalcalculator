@@ -207,6 +207,45 @@
     </div>
   </section>
 
+  <section style="padding:32px 0;border-bottom:1px solid var(--paper-line);" id="mtgCompareSection">
+    <div class="tool-head"><span class="tool-num">//</span><div><h2>Compare two scenarios</h2><p class="tool-sub">Two homes, two rates, or two down payments — see the difference side by side.</p></div></div>
+    <label class="checks" style="display:inline-flex;margin-bottom:16px;"><input type="checkbox" id="mtgCompareToggle"> Compare with a second scenario</label>
+    <div id="mtgCompareWrap" style="display:none;">
+      <div class="card">
+        <div>
+          <div class="row2">
+            <div class="field"><label>Home price (Scenario B)</label><input type="number" id="mtgPriceB" value="400000" step="1000"></div>
+            <div class="field"><label>Down payment (Scenario B)</label><input type="number" id="mtgDownB" value="80000" step="1000"></div>
+          </div>
+          <div class="row2">
+            <div class="field"><label>Interest rate (%) (Scenario B)</label><input type="number" id="mtgRateB" value="6.0" step="0.01"></div>
+            <div class="field"><label>Loan term (years) (Scenario B)</label><input type="number" id="mtgTermB" value="30" min="1"></div>
+          </div>
+          <div class="row2">
+            <div class="field"><label>Property tax/yr (Scenario B)</label><input type="number" id="mtgTaxB" value="4800" step="100"></div>
+            <div class="field"><label>Insurance/yr (Scenario B)</label><input type="number" id="mtgInsuranceB" value="1400" step="100"></div>
+          </div>
+          <div class="row2">
+            <div class="field"><label>PMI rate (%) (Scenario B)</label><input type="number" id="mtgPmiRateB" value="0.5" step="0.01"></div>
+            <div class="field"><label>HOA/month (Scenario B)</label><input type="number" id="mtgHoaB" value="0" min="0" step="10"></div>
+          </div>
+          <div class="field"><label>Extra payment per month (Scenario B, optional)</label><input type="number" id="mtgExtraB" value="0" min="0" step="10"></div>
+        </div>
+        <div class="readout">
+          <div class="r-row"><span class="r-label">Total monthly payment (B)</span><span class="r-value" id="mtgTotalB">0</span></div>
+          <div class="r-row"><span class="r-label">Total interest (B)</span><span class="r-value" id="mtgIntB">0</span></div>
+          <div class="r-row"><span class="r-label">Paid off in (B)</span><span class="r-value" id="mtgPayoffB">—</span></div>
+        </div>
+      </div>
+      <div class="readout" style="margin-top:16px;background:linear-gradient(160deg, var(--readout-bg-hi), var(--readout-bg));">
+        <div class="r-row"><span class="r-label">Total monthly payment: A vs B</span><span class="r-value" id="mtgCompPay">—</span></div>
+        <div class="r-row"><span class="r-label">Total interest: A vs B</span><span class="r-value" id="mtgCompInt">—</span></div>
+        <div class="r-row"><span class="r-label">Payoff time: A vs B</span><span class="r-sub" id="mtgCompTime">—</span></div>
+        <div class="r-row"><span class="r-label">Cheaper option</span><span class="r-value" id="mtgCompWinner" style="font-size:16px;">—</span></div>
+      </div>
+    </div>
+  </section>
+
   <section class="article">
     <h3>What's included in the monthly payment?</h3>
     <p>Principal and interest are calculated with the standard fixed-rate amortization formula on the loan amount (home price minus down payment). Property tax and home insurance are divided by 12 and added on top; PMI is estimated as a percentage of the loan balance per year, applied automatically while the down payment is under 20%; and the HOA/maintenance field adds any recurring monthly charge — HOA dues in the US, service charges in the UK, or society maintenance in India. Together these approximate the full "PITI + extras" figure lenders and landlords actually care about.</p>

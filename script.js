@@ -149,6 +149,8 @@
   const cmWrap = document.getElementById('bmiCmWrap');
   const ftWrap = document.getElementById('bmiFtWrap');
   const wUnitSel = document.getElementById('bmiWUnit');
+  const standardSeg = document.getElementById('bmiStandardSeg');
+  let standard = 'who'; // 'who' = 25/30 thresholds, 'apac' = 23/25 (WHO Asia-Pacific)
 
   function getHeightMeters(){
     if(unitSel.value === 'ft'){
@@ -168,22 +170,27 @@
     const w = getWeightKg();
     const bmi = h>0 ? w/(h*h) : 0;
     document.getElementById('bmiVal').textContent = bmi.toFixed(1);
+
+    const overweightAt = standard==='apac' ? 23 : 25;
+    const obeseAt = standard==='apac' ? 25 : 30;
+    const healthyLowerBound = 18.5;
+
     let cat='—';
     if(bmi>0){
-      if(bmi<18.5) cat='Underweight';
-      else if(bmi<25) cat='Healthy range';
-      else if(bmi<30) cat='Overweight';
+      if(bmi<healthyLowerBound) cat='Underweight';
+      else if(bmi<overweightAt) cat='Healthy range';
+      else if(bmi<obeseAt) cat='Overweight';
       else cat='Obese';
     }
     document.getElementById('bmiCat').textContent = cat;
 
     const primeEl = document.getElementById('bmiPrime');
-    if(primeEl) primeEl.textContent = bmi>0 ? (bmi/25).toFixed(2) : '—';
+    if(primeEl) primeEl.textContent = bmi>0 ? (bmi/overweightAt).toFixed(2) : '—';
 
     const idealEl = document.getElementById('bmiIdeal');
     if(idealEl){
       if(h>0){
-        const lowKg = 18.5*h*h, highKg = 24.9*h*h;
+        const lowKg = healthyLowerBound*h*h, highKg = overweightAt===23 ? 22.9*h*h : 24.9*h*h;
         const isLb = wUnitSel && wUnitSel.value==='lb';
         const lo = isLb ? lowKg*2.20462 : lowKg;
         const hi = isLb ? highKg*2.20462 : highKg;
@@ -201,6 +208,16 @@
     calcBMI();
   });
   if(wUnitSel) wUnitSel.addEventListener('change',calcBMI);
+  if(standardSeg){
+    standardSeg.addEventListener('click', (e)=>{
+      const btn = e.target.closest('button');
+      if(!btn) return;
+      standard = btn.dataset.standard;
+      standardSeg.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      calcBMI();
+    });
+  }
   ['bmiH','bmiW','bmiFt','bmiIn'].forEach(id=>document.getElementById(id).addEventListener('input',calcBMI));
   calcBMI();
 })();
@@ -769,13 +786,36 @@
     const P = parseFloat(document.getElementById('sipAmt').value)||0;
     const annual = parseFloat(document.getElementById('sipRate').value)||0;
     const years = parseFloat(document.getElementById('sipYears').value)||0;
+    const stepUpEl = document.getElementById('sipStepUp');
+    const stepUp = stepUpEl ? (parseFloat(stepUpEl.value)||0) : 0;
     const n = Math.round(years*12);
     const r = annual/100/12;
-    const maturity = r===0 ? P*n : P*((Math.pow(1+r,n)-1)/r)*(1+r);
-    const invested = P*n;
+
+    let maturity, invested, finalMonthAmt;
+    if(stepUp === 0){
+      maturity = r===0 ? P*n : P*((Math.pow(1+r,n)-1)/r)*(1+r);
+      invested = P*n;
+      finalMonthAmt = P;
+    } else {
+      // Simulate month by month: contribution rises by stepUp% at each anniversary
+      maturity = 0; invested = 0; finalMonthAmt = P;
+      for(let m=1; m<=n; m++){
+        const yearIndex = Math.floor((m-1)/12);
+        const monthlyAmt = P * Math.pow(1+stepUp/100, yearIndex);
+        invested += monthlyAmt;
+        finalMonthAmt = monthlyAmt;
+        const remainingMonths = n - m + 1;
+        maturity += r===0 ? monthlyAmt : monthlyAmt * Math.pow(1+r, remainingMonths);
+      }
+    }
+
     document.getElementById('sipInvested').textContent = money(invested);
     document.getElementById('sipReturns').textContent = money(Math.max(maturity-invested,0));
     document.getElementById('sipMaturity').textContent = money(maturity);
+
+    const finalAmtEl = document.getElementById('sipFinalMonthAmt');
+    if(finalAmtEl) finalAmtEl.textContent = stepUp>0 ? money(finalMonthAmt)+'/mo by the final year' : '—';
+
     const inflEl = document.getElementById('sipInflation');
     const realEl = document.getElementById('sipRealValue');
     if(inflEl && realEl){
@@ -784,7 +824,7 @@
       realEl.textContent = money(real);
     }
   }
-  ['sipAmt','sipRate','sipYears','sipInflation'].forEach(id=>{
+  ['sipAmt','sipRate','sipYears','sipInflation','sipStepUp'].forEach(id=>{
     const el = document.getElementById(id);
     if(el) el.addEventListener('input', calcSIP);
   });
@@ -1107,6 +1147,7 @@
   if(!startEl) return;
   const endEl = document.getElementById('daysEnd');
   const bizCheck = document.getElementById('daysExcludeWeekends');
+  const inclusiveCheck = document.getElementById('daysInclusive');
 
   function calc(){
     const s = startEl.value ? new Date(startEl.value+'T00:00:00') : null;
@@ -1116,10 +1157,12 @@
     if(d1 > d2){ const t=d1; d1=d2; d2=t; }
 
     const msPerDay = 86400000;
-    const totalDays = Math.round((d2-d1)/msPerDay);
+    const inclusive = inclusiveCheck && inclusiveCheck.checked;
+    let totalDays = Math.round((d2-d1)/msPerDay);
+    if(inclusive) totalDays += 1;
     const weeks = (totalDays/7).toFixed(1);
 
-    // Y/M/D breakdown
+    // Y/M/D breakdown (always the plain calendar difference, inclusive/exclusive doesn't apply here)
     let y = d2.getFullYear()-d1.getFullYear();
     let m = d2.getMonth()-d1.getMonth();
     let day = d2.getDate()-d1.getDate();
@@ -1129,7 +1172,8 @@
     // business days
     let biz = 0;
     const cursor = new Date(d1);
-    while(cursor < d2){
+    const bizEndExclusive = inclusive ? new Date(d2.getTime()+msPerDay) : d2;
+    while(cursor < bizEndExclusive){
       const dow = cursor.getDay();
       if(dow!==0 && dow!==6) biz++;
       cursor.setDate(cursor.getDate()+1);
@@ -1144,6 +1188,7 @@
   startEl.addEventListener('input', calc);
   endEl.addEventListener('input', calc);
   if(bizCheck) bizCheck.addEventListener('change', calc);
+  if(inclusiveCheck) inclusiveCheck.addEventListener('change', calc);
 
   // sensible defaults: today and 30 days from today
   const today = new Date();
@@ -1526,10 +1571,43 @@
     const gpa = totalCredits>0 ? totalPoints/totalCredits : 0;
     document.getElementById('gpaCredits').textContent = totalCredits.toString();
     document.getElementById('gpaResult').textContent = gpa.toFixed(2);
+    calcTarget(totalCredits, totalPoints, scale);
+  }
+
+  function calcTarget(totalCredits, totalPoints, scale){
+    const targetEl = document.getElementById('tgTarget');
+    if(!targetEl) return;
+    const remEl = document.getElementById('tgRemaining');
+    const neededEl = document.getElementById('tgNeeded');
+    const feasibleEl = document.getElementById('tgFeasible');
+    const target = parseFloat(targetEl.value)||0;
+    const remaining = parseFloat(remEl.value)||0;
+
+    if(remaining<=0){
+      neededEl.textContent = '—';
+      feasibleEl.textContent = 'Enter remaining credit hours to plan ahead';
+      return;
+    }
+    const neededPoints = target*(totalCredits+remaining) - totalPoints;
+    const neededAvg = neededPoints/remaining;
+    neededEl.textContent = neededAvg.toFixed(2);
+
+    const maxPoint = Math.max(...gradePoints[scale].map(([,p])=>p));
+    if(neededAvg > maxPoint){
+      feasibleEl.textContent = 'Not achievable on this scale — would need above '+maxPoint.toFixed(1)+', the maximum possible';
+    } else if(neededAvg <= 0){
+      feasibleEl.textContent = 'Already locked in — your target is met even with the lowest possible grades remaining';
+    } else {
+      feasibleEl.textContent = 'Achievable';
+    }
   }
 
   addBtn.addEventListener('click', ()=>addRow());
   scaleEl.addEventListener('change', rebuildGradeOptions);
+  ['tgTarget','tgRemaining'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.addEventListener('input', calc);
+  });
 
   addRow(3);
   addRow(4);
@@ -1740,6 +1818,92 @@ function renderAmortTable(bodyId, years, cur){
     el.addEventListener('input',update); el.addEventListener('change',update);
   });
   update();
+})();
+
+// ---- Mortgage: compare two scenarios ----
+(function(){
+  const toggle = document.getElementById('mtgCompareToggle');
+  if(!toggle) return;
+  const wrap = document.getElementById('mtgCompareWrap');
+
+  function fmtMonths(m){
+    const y = Math.floor(m/12), rem = m%12;
+    if(y===0) return rem+' mo';
+    return rem===0 ? y+' yr' : y+' yr '+rem+' mo';
+  }
+
+  function scenario(prefix){
+    const price = parseFloat(document.getElementById('mtgPrice'+prefix).value)||0;
+    const down = parseFloat(document.getElementById('mtgDown'+prefix).value)||0;
+    const principal = Math.max(price-down, 0);
+    const rate = parseFloat(document.getElementById('mtgRate'+prefix).value)||0;
+    const years = parseFloat(document.getElementById('mtgTerm'+prefix).value)||1;
+    const n = Math.round(years*12);
+    const extra = parseFloat(document.getElementById('mtgExtra'+prefix).value)||0;
+
+    const result = buildAmortization(principal, rate, n, extra);
+    const pi = buildAmortization(principal, rate, n, 0).pay;
+
+    const downPct = price>0 ? down/price*100 : 0;
+    const pmiRate = parseFloat(document.getElementById('mtgPmiRate'+prefix).value)||0;
+    const pmiMonthly = downPct < 20 ? (principal*pmiRate/100)/12 : 0;
+    const taxMonthly = (parseFloat(document.getElementById('mtgTax'+prefix).value)||0)/12;
+    const insMonthly = (parseFloat(document.getElementById('mtgInsurance'+prefix).value)||0)/12;
+    const hoaMonthly = parseFloat(document.getElementById('mtgHoa'+prefix).value)||0;
+
+    const extrasTotal = taxMonthly+insMonthly+pmiMonthly+hoaMonthly;
+    const totalMonthly = pi+extrasTotal+extra;
+
+    return {
+      totalMonthly, totalInterest: result.totalInterest, monthsTaken: result.monthsTaken,
+      valid: principal>0 && n>0
+    };
+  }
+
+  function calcCompare(){
+    if(wrap.style.display === 'none') return;
+    const cur = document.getElementById('mtgCur').value;
+    const a = scenario('');
+    const b = scenario('B');
+
+    document.getElementById('mtgTotalB').textContent = cur+b.totalMonthly.toFixed(2);
+    document.getElementById('mtgIntB').textContent = cur+b.totalInterest.toFixed(2);
+    document.getElementById('mtgPayoffB').textContent = b.valid ? fmtMonths(b.monthsTaken) : '—';
+
+    if(!a.valid || !b.valid){
+      ['mtgCompPay','mtgCompInt'].forEach(id=>document.getElementById(id).textContent='—');
+      document.getElementById('mtgCompTime').textContent='—';
+      document.getElementById('mtgCompWinner').textContent='—';
+      return;
+    }
+
+    const intDiff = a.totalInterest - b.totalInterest;
+
+    document.getElementById('mtgCompPay').textContent =
+      cur+a.totalMonthly.toFixed(2)+' vs '+cur+b.totalMonthly.toFixed(2);
+    document.getElementById('mtgCompInt').textContent =
+      cur+a.totalInterest.toFixed(2)+' vs '+cur+b.totalInterest.toFixed(2);
+    document.getElementById('mtgCompTime').textContent =
+      fmtMonths(a.monthsTaken)+' vs '+fmtMonths(b.monthsTaken);
+
+    let winner;
+    if(Math.abs(intDiff) < 0.01) winner = 'Roughly equal total cost';
+    else if(intDiff > 0) winner = 'Scenario B — saves '+cur+Math.abs(intDiff).toFixed(2)+' in interest';
+    else winner = 'Scenario A — saves '+cur+Math.abs(intDiff).toFixed(2)+' in interest';
+    document.getElementById('mtgCompWinner').textContent = winner;
+  }
+
+  toggle.addEventListener('change', ()=>{
+    wrap.style.display = toggle.checked ? 'block' : 'none';
+    calcCompare();
+  });
+  ['mtgPrice','mtgDown','mtgRate','mtgTerm','mtgTax','mtgInsurance','mtgPmiRate','mtgHoa','mtgExtra','mtgCur',
+   'mtgPriceB','mtgDownB','mtgRateB','mtgTermB','mtgTaxB','mtgInsuranceB','mtgPmiRateB','mtgHoaB','mtgExtraB'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener('input', calcCompare);
+    el.addEventListener('change', calcCompare);
+  });
 })();
 
 // ---- Investment year-by-year growth table ----

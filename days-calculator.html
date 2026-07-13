@@ -152,6 +152,7 @@
         </div>
         <div class="checks">
           <label><input type="checkbox" id="daysExcludeWeekends"> Count business days only (Mon–Fri)</label>
+          <label><input type="checkbox" id="daysInclusive"> Count both start and end date (inclusive)</label>
         </div>
       </div>
       <div class="readout">
@@ -192,6 +193,8 @@
     <p>Monday through Friday, counted between the two dates. It doesn't exclude public holidays, since those vary hugely by country — the US, UK, and India each observe different national holidays on different dates, and even sub-national holidays (US state holidays, Indian state-specific festivals, EU country-specific bank holidays) differ within a single country. Treat this as a Mon–Fri count, not an official working-day count for payroll or legal deadlines.</p>
     <h3>Does the order of the two dates matter?</h3>
     <p>No — enter them in either order. The result is always shown as a positive count, and works the same whether you're counting forward to a future date or back to a past one.</p>
+    <h3>What does "count both start and end date" (inclusive) actually change?</h3>
+    <p>By default, this calculator counts the gap <em>between</em> two dates — Jan 1 to Jan 7 is 6 days apart. Checking "inclusive" instead counts every calendar day touched by the range, including both endpoints — the same Jan 1 to Jan 7 becomes 7 days. This matters for anything where you're occupying or billed for every day in the range: a rental period, a notice period, a hotel stay quoted as "7 nights," or a leave-of-absence request — those are almost always inclusive counts. A simple age-style "how far apart are these two dates" question is usually exclusive, which is why it's off by default.</p>
     <h3>What does the "add or subtract days" tool do differently?</h3>
     <p>The top calculator answers "how many days between these two dates?" The second tool answers the reverse question: "what date is 45 days from now?" or "what date was 90 days before this deadline?" — common for calculating due dates, return windows, contract notice periods, or quarantine/waiting periods. It also shows the day of the week the result lands on, useful for checking whether a deadline falls on a weekend.</p>
     <h3>Is this accurate enough for legal or contractual deadlines?</h3>

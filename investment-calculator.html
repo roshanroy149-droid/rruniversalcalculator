@@ -187,6 +187,7 @@
           <div class="field"><label>Monthly investment</label><input type="number" id="sipAmt" value="10000" step="100"></div>
           <div class="field"><label>Expected annual return (%)</label><input type="number" id="sipRate" value="12" step="0.1"></div>
           <div class="field"><label>Duration (years)</label><input type="number" id="sipYears" value="10" min="1"></div>
+          <div class="field"><label>Annual step-up (%, optional — increases your monthly investment each year)</label><input type="number" id="sipStepUp" value="0" step="1" min="0"></div>
           <div class="field"><label>Expected inflation (%, for real-value estimate)</label><input type="number" id="sipInflation" value="6" step="0.1" min="0"></div>
         </div>
         <div class="readout">
@@ -194,6 +195,7 @@
           <div class="r-row"><span class="r-label">Estimated returns</span><span class="r-value" id="sipReturns">0</span></div>
           <div class="r-row"><span class="r-label">Maturity value</span><span class="r-value" id="sipMaturity">0</span></div>
           <div class="r-row"><span class="r-label">Real value (today's purchasing power)</span><span class="r-sub" id="sipRealValue">—</span></div>
+          <div class="r-row"><span class="r-label">Final month's investment</span><span class="r-sub" id="sipFinalMonthAmt">—</span></div>
         </div>
       </div>
     </div>
@@ -251,6 +253,8 @@
   <section class="article">
     <h3>How is SIP maturity value calculated?</h3>
     <p>SIP uses the future value of an annuity formula: each monthly investment compounds at the monthly rate for the remaining months, and all installments are summed. Returns are estimates, not guarantees — actual market returns vary and aren't linear.</p>
+    <h3>What does the annual step-up field do?</h3>
+    <p>A step-up SIP increases your monthly contribution by a fixed percentage every 12 months — matching how most people's investable income actually grows, roughly tracking annual salary increments rather than staying flat for decades. A 10% step-up on a ₹10,000/month SIP means you're investing ₹11,000/month in year two, ₹12,100/month in year three, and so on. Because later, larger contributions still get meaningful time to compound, a step-up SIP with the same starting amount and rate produces a noticeably larger maturity value than a flat SIP — the "final month's investment" readout shows how large that monthly contribution has grown to by the end of the term, which is worth sanity-checking against what you'd realistically expect your income to support.</p>
     <h3>What does the "real value" figure mean, and why does it matter?</h3>
     <p>Maturity value is the nominal future amount; real value discounts that by your expected inflation rate to show what it's actually worth in today's purchasing power — <strong>real value = maturity ÷ (1 + inflation%)^years</strong>. A ₹23 lakh maturity value in 10 years sounds impressive, but if inflation runs at 6% over that period, it buys roughly what ₹12.8 lakh buys today. This is the single most overlooked number in retirement and goal planning: a return that beats inflation grows real wealth, a return that merely matches it treats you to a bigger pile of money that buys the same as before.</p>
     <h3>How does the SWP calculation work?</h3>
