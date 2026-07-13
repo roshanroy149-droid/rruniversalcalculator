@@ -33,7 +33,6 @@
   <div class="wrap">
     <div class="headbar">
       <a class="logo" href="index.html">TALLYBENCH<span>.</span></a>
-      <div class="tagline">22 TOOLS · 0 SIGN-UP</div>
     </div>
   </div>
   <nav class="ruler cat-ruler">
@@ -75,7 +74,7 @@
   <section class="hero">
     <div class="hero-icon-row cat-finance">
       <div class="hero-icon"><svg><use href="icons.svg#icon-investment"/></svg></div>
-      <div class="eyebrow">// 20 · RD CALCULATOR</div>
+      <div class="eyebrow">// RD CALCULATOR</div>
     </div>
     <h1>Monthly deposits, compounded to maturity.</h1>
     <p>Enter your monthly deposit, rate, and tenure to see the maturity value the way Indian banks compute it.</p>
@@ -87,6 +86,7 @@
         <div class="field"><label>Monthly deposit (₹)</label><input type="number" id="rdAmt" value="5000" step="500"></div>
         <div class="field"><label>Annual interest rate (%)</label><input type="number" id="rdRate" value="6.8" step="0.05"></div>
         <div class="field"><label>Tenure (months)</label><input type="number" id="rdMonths" value="60" min="6" step="1"></div>
+        <div class="checks"><label><input type="checkbox" id="rdSenior"> Senior citizen (typically +0.50% bonus rate)</label></div>
       </div>
       <div class="readout">
         <div class="r-row"><span class="r-label">Total deposited</span><span class="r-value" id="rdInvested">0</span></div>
@@ -101,13 +101,18 @@
     <h3>How is RD maturity calculated?</h3>
     <p>Each monthly installment earns compound interest for the months it stays deposited — the first installment compounds for the full tenure, the last for just one month. Indian banks compound RD interest quarterly; this calculator models each installment's growth month by month at the equivalent rate.</p>
     <h3>Is RD interest taxable?</h3>
-    <p>Yes — like FD interest, RD interest is taxable at your slab rate and subject to TDS above the annual threshold. The maturity value above is pre-tax.</p>
+    <p>Yes — like FD interest, RD interest is taxable at your slab rate and subject to TDS above the annual threshold (₹40,000, or ₹50,000 for senior citizens, combined across FD and RD interest at the same bank). The maturity value above is pre-tax; see the <a href="tax-calculator.html">Tax Calculator</a> to estimate the impact on your total liability.</p>
+    <h3>What does the senior citizen toggle do?</h3>
+    <p>Like FDs, most Indian banks offer RD depositors aged 60+ a bonus rate, typically 0.25–0.75% (0.50% is the common default used here) above the standard rate — a meaningful boost compounded over a multi-year RD, especially for seniors relying on these deposits as a steady, low-risk income source.</p>
     <h3>What if I miss a monthly installment?</h3>
-    <p>Banks typically charge a small penalty per missed installment (often ₹1–2 per ₹100 per month) and may close RDs with several consecutive defaults — the projection above assumes every installment is paid on time.</p>
+    <p>Banks typically charge a small penalty per missed installment (often ₹1–2 per ₹100 per month) and may close RDs with several consecutive defaults — the projection above assumes every installment is paid on time. This is one meaningful difference from a SIP, where a missed month typically has no penalty beyond the lost growth on that installment.</p>
     <h3>RD vs SIP — what's the difference?</h3>
-    <p>Both involve fixed monthly contributions, but an RD earns a guaranteed bank interest rate, while a SIP invests in market-linked mutual funds with higher potential returns and real risk of loss. For SIP projections, use the <a href="investment-calculator.html">Investment calculator</a>.</p>
-    <p><strong>Worked example:</strong> ₹5,000/month for 60 months at 6.8% grows to roughly ₹3.57 lakh — ₹3 lakh of your deposits plus about ₹57,000 interest.</p>
-
+    <p>Both involve fixed monthly contributions, but an RD earns a guaranteed bank interest rate with capital protection (within deposit insurance limits), while a SIP invests in market-linked mutual funds with higher potential long-run returns and real risk of loss in any given period. RDs suit short-to-medium-term goals where capital preservation matters more than growth; SIPs suit longer horizons where you can ride out market volatility. For SIP projections, use the <a href="investment-calculator.html">Investment calculator</a>.</p>
+    <h3>What's the equivalent of an RD outside India?</h3>
+    <p>Recurring deposits with a guaranteed bank rate are a distinctly South Asian banking product — most Western banks don't offer a direct equivalent. The closest analogues: in the US, a <strong>share certificate</strong> at a credit union or an <strong>automatic savings plan</strong> feeding a high-yield savings account approximates the "forced monthly discipline" aspect, though without the fixed-rate lock-in of an RD; some US banks also offer "add-on CDs" that permit periodic deposits at a fixed rate, functionally closer to an RD. In the UK, <strong>regular savings accounts</strong> (offered by most major banks) are the closest match — fixed monthly deposits over 12 months at a promotional fixed rate, though usually capped at a low maximum monthly amount and for a shorter term than typical Indian RDs. Continental Europe has fewer standardized regular-savings products; most people there use a standing order into a regular savings or term account instead. The compounding math this calculator performs applies to any of these; only product availability and terms differ by country.</p>
+    <h3>Why does an RD earn less total interest than an FD of the same total amount?</h3>
+    <p>Because your money isn't sitting at the bank for the full tenure — the first installment compounds for the whole period, but the last one only compounds for a single month, so the average amount actually earning interest over the tenure is roughly half the total deposited, unlike an FD where the full lump sum earns interest from day one. This is a mathematical property of the product, not a worse deal — RDs exist specifically for people building savings from monthly income rather than depositing a lump sum they already have.</p>
+    <p><strong>Worked example:</strong> ₹5,000/month for 60 months at 6.8% grows to roughly ₹3.57 lakh — ₹3 lakh of your deposits plus about ₹57,000 interest. With the senior citizen toggle adding 0.5% (7.3% total), the maturity value rises to approximately ₹3.6 lakh — a modest but real difference from the single rate bump.</p>
   </section>
 
   <nav class="more-tools">

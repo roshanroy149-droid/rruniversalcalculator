@@ -88,7 +88,6 @@
   <div class="wrap">
     <div class="headbar">
       <a class="logo" href="index.html">TALLYBENCH<span>.</span></a>
-      <div class="tagline">22 TOOLS · 0 SIGN-UP</div>
     </div>
   </div>
   <nav class="ruler cat-ruler">
@@ -130,7 +129,7 @@
   <section class="hero">
     <div class="hero-icon-row cat-utility">
       <div class="hero-icon"><svg><use href="icons.svg#icon-age"/></svg></div>
-      <div class="eyebrow">// 02 · AGE CALCULATOR</div>
+      <div class="eyebrow">// AGE CALCULATOR</div>
     </div>
     <h1>Exact age down to the day.</h1>
     <p>Pick a date of birth and get the precise age in years, months, and days as of today.</p>
@@ -140,26 +139,38 @@
     <div class="card">
       <div>
         <div class="field"><label>Date of birth</label><input type="date" id="ageDob"></div>
+        <div class="field"><label>Calculate age as of (defaults to today)</label><input type="date" id="ageAsOf"></div>
         <button class="ghost" id="ageBtn" style="margin-top:6px;">Calculate</button>
       </div>
       <div class="readout">
         <div class="r-row"><span class="r-label">Years</span><span class="r-value" id="ageY">—</span></div>
         <div class="r-row"><span class="r-label">Months</span><span class="r-value" id="ageM">—</span></div>
         <div class="r-row"><span class="r-label">Days</span><span class="r-value" id="ageD">—</span></div>
+        <div class="r-row"><span class="r-label">Total days lived</span><span class="r-sub" id="ageTotalDays">—</span></div>
+        <div class="r-row"><span class="r-label">Total weeks lived</span><span class="r-sub" id="ageTotalWeeks">—</span></div>
+        <div class="r-row"><span class="r-label">Next birthday</span><span class="r-sub" id="ageNextBday">—</span></div>
       </div>
     </div>
   </section>
 
   <section class="article">
     <h3>How is exact age calculated?</h3>
-    <p>The calculator subtracts your birth year, month, and day from today's date, borrowing a month or year where needed so the day and month counts stay positive.</p>
+    <p>The calculator subtracts your birth year, month, and day from the comparison date, borrowing a month or year where needed so the day and month counts stay positive — the same logic a person would use counting on their fingers, just done precisely.</p>
     <h3>Why does it show months and days, not just years?</h3>
-    <p>A single "years old" number hides a lot — this breaks age down to the exact month and day, useful for legal forms, eligibility checks, or just curiosity.</p>
+    <p>A single "years old" number hides a lot — this breaks age down to the exact month and day, useful for legal forms, eligibility checks (school cutoffs, visa rules, age-of-majority questions), or just curiosity about a specific milestone.</p>
     <h3>Does this account for leap years?</h3>
-    <p>Yes — the calculation is based on actual calendar dates, so February 29th in leap years is factored in automatically rather than assuming a fixed 365-day year.</p>
+    <p>Yes — the calculation is based on actual calendar dates, so February 29th in leap years is factored in automatically rather than assuming a fixed 365-day year. People born on February 29th (leap-year babies) have their day-count handled correctly even though their literal birthday only recurs every four years.</p>
     <h3>Can I calculate age as of a different date, not today?</h3>
-    <p>This calculator always compares your birth date to today's date. To find age as of a specific past or future date, use the Days Between Dates calculator instead and set that date as one of the two endpoints, then convert the day count to years/months yourself, or think of it as 'age at event = today's age minus/plus the gap to that date.'</p>
-    <p><strong>Worked example:</strong> someone born on 14 March 1994, checked on 12 July 2026, is 32 years old — the month hasn't yet reached March again this year, so it's 32 years, 3 months, 29 days, not simply 2026−1994=32 flat, which is why manual year subtraction alone is unreliable near a birthday.</p>
+    <p>Yes — use the "Calculate age as of" field to set any past or future date instead of today. This is useful for figuring out how old someone was (or will be) at a specific event: a wedding date, a policy start date, a historical record, or a future eligibility deadline. Leave it blank or set it to today for the default "current age" behavior.</p>
+    <h3>What do "total days lived" and "total weeks lived" actually tell you?</h3>
+    <p>They're the same age expressed in smaller units — useful for round-number milestones (turning 10,000 days old is a popular one, landing at roughly 27 years old) or just a different, sometimes more visceral way to look at a lifespan than "years." A person's total weeks lived is also the basis of the well-known "life in weeks" visualization exercise some people use for goal-setting and time perspective.</p>
+    <h3>How is "next birthday" calculated?</h3>
+    <p>It finds the next occurrence of your birth month and day from the comparison date — if that date has already passed this year, it rolls forward to next year automatically. For February 29th birthdays in a non-leap year, it's treated as landing on March 1st, matching how most calendar systems and legal frameworks handle the missing date.</p>
+    <h3>Are age-related legal thresholds the same everywhere?</h3>
+    <p>No — the age of majority is 18 in the US, UK, most of the EU, and India, but drinking age, driving age, and other thresholds vary widely even within a single country (US drinking age is 21 federally; several EU countries allow drinking beer/wine at 16; Indian states vary on both drinking and driving ages). This calculator gives you the precise age; matching it against a specific legal threshold in your jurisdiction is worth double-checking against local rules, especially near a birthday cutoff.</p>
+    <h3>Why does age calculated from year subtraction alone sometimes come out wrong?</h3>
+    <p>Simple subtraction (current year minus birth year) only works if the birthday has already occurred this year — otherwise it overstates age by one. This is the single most common manual age-calculation mistake, and exactly what this tool avoids by comparing full dates, not just years.</p>
+    <p><strong>Worked example:</strong> someone born on 14 March 1994, checked on 12 July 2026, is 32 years, 3 months, 29 days old — not simply 2026−1994=32 flat, since the month hasn't reached March again this year yet. That's roughly 11,808 days or 1,687 weeks lived, with their next birthday about eight months away.</p>
   </section>
 
   <nav class="more-tools">

@@ -50,17 +50,40 @@
 // ---- Tip ----
 (function(){
   if(!document.getElementById('tipBill')) return;
+  const roundEl = document.getElementById('tipRound');
+  const presets = document.getElementById('tipPresets');
+
   function calcTip(){
     const cur = document.getElementById('tipCur').value;
     const bill = parseFloat(document.getElementById('tipBill').value)||0;
     const pct = parseFloat(document.getElementById('tipPct').value)||0;
     const people = parseInt(document.getElementById('tipPeople').value)||1;
-    const tip = bill*pct/100;
-    const total = bill+tip;
+    let tip = bill*pct/100;
+    let total = bill+tip;
+
+    const effEl = document.getElementById('tipEffective');
+    if(roundEl && roundEl.checked){
+      const rounded = Math.ceil(total);
+      if(effEl) effEl.textContent = bill>0 ? (((rounded-bill)/bill)*100).toFixed(2)+'%' : '—';
+      tip = rounded-bill;
+      total = rounded;
+    } else if(effEl){
+      effEl.textContent = '—';
+    }
+
     document.getElementById('tipAmt').textContent = cur+tip.toFixed(2);
     document.getElementById('tipTotal').textContent = cur+total.toFixed(2);
     document.getElementById('tipEach').textContent = cur+(total/people).toFixed(2);
   }
+  if(presets){
+    presets.addEventListener('click',(e)=>{
+      const btn = e.target.closest('button');
+      if(!btn) return;
+      document.getElementById('tipPct').value = btn.dataset.pct;
+      calcTip();
+    });
+  }
+  if(roundEl) roundEl.addEventListener('change',calcTip);
   ['tipBill','tipPct','tipPeople','tipCur'].forEach(id=>{
     const el = document.getElementById(id);
     el.addEventListener('input',calcTip);
@@ -125,6 +148,7 @@
   const unitSel = document.getElementById('bmiUnit');
   const cmWrap = document.getElementById('bmiCmWrap');
   const ftWrap = document.getElementById('bmiFtWrap');
+  const wUnitSel = document.getElementById('bmiWUnit');
 
   function getHeightMeters(){
     if(unitSel.value === 'ft'){
@@ -135,9 +159,13 @@
     }
     return (parseFloat(document.getElementById('bmiH').value)||0)/100;
   }
+  function getWeightKg(){
+    const w = parseFloat(document.getElementById('bmiW').value)||0;
+    return (wUnitSel && wUnitSel.value==='lb') ? w/2.20462 : w;
+  }
   function calcBMI(){
     const h = getHeightMeters();
-    const w = parseFloat(document.getElementById('bmiW').value)||0;
+    const w = getWeightKg();
     const bmi = h>0 ? w/(h*h) : 0;
     document.getElementById('bmiVal').textContent = bmi.toFixed(1);
     let cat='—';
@@ -148,6 +176,23 @@
       else cat='Obese';
     }
     document.getElementById('bmiCat').textContent = cat;
+
+    const primeEl = document.getElementById('bmiPrime');
+    if(primeEl) primeEl.textContent = bmi>0 ? (bmi/25).toFixed(2) : '—';
+
+    const idealEl = document.getElementById('bmiIdeal');
+    if(idealEl){
+      if(h>0){
+        const lowKg = 18.5*h*h, highKg = 24.9*h*h;
+        const isLb = wUnitSel && wUnitSel.value==='lb';
+        const lo = isLb ? lowKg*2.20462 : lowKg;
+        const hi = isLb ? highKg*2.20462 : highKg;
+        const unit = isLb ? 'lb' : 'kg';
+        idealEl.textContent = lo.toFixed(1)+' – '+hi.toFixed(1)+' '+unit;
+      } else {
+        idealEl.textContent = '—';
+      }
+    }
   }
   unitSel.addEventListener('change',()=>{
     const isFt = unitSel.value === 'ft';
@@ -155,6 +200,7 @@
     ftWrap.style.display = isFt ? 'grid' : 'none';
     calcBMI();
   });
+  if(wUnitSel) wUnitSel.addEventListener('change',calcBMI);
   ['bmiH','bmiW','bmiFt','bmiIn'].forEach(id=>document.getElementById(id).addEventListener('input',calcBMI));
   calcBMI();
 })();
@@ -162,11 +208,12 @@
 // ---- Age ----
 (function(){
   if(!document.getElementById('ageBtn')) return;
-  document.getElementById('ageBtn').addEventListener('click',()=>{
+  function calc(){
     const dobVal = document.getElementById('ageDob').value;
     if(!dobVal) return;
     const dob = new Date(dobVal);
-    const now = new Date();
+    const asOfVal = document.getElementById('ageAsOf') ? document.getElementById('ageAsOf').value : '';
+    const now = asOfVal ? new Date(asOfVal) : new Date();
     let y = now.getFullYear()-dob.getFullYear();
     let m = now.getMonth()-dob.getMonth();
     let d = now.getDate()-dob.getDate();
@@ -175,7 +222,25 @@
     document.getElementById('ageY').textContent=y;
     document.getElementById('ageM').textContent=m;
     document.getElementById('ageD').textContent=d;
-  });
+
+    const msPerDay = 86400000;
+    const totalDays = Math.floor((now-dob)/msPerDay);
+    const totalDaysEl = document.getElementById('ageTotalDays');
+    const totalWeeksEl = document.getElementById('ageTotalWeeks');
+    if(totalDaysEl) totalDaysEl.textContent = totalDays.toLocaleString()+' days';
+    if(totalWeeksEl) totalWeeksEl.textContent = Math.floor(totalDays/7).toLocaleString()+' weeks';
+
+    const nextBdayEl = document.getElementById('ageNextBday');
+    if(nextBdayEl){
+      let next = new Date(now.getFullYear(), dob.getMonth(), dob.getDate());
+      if(next < now) next = new Date(now.getFullYear()+1, dob.getMonth(), dob.getDate());
+      const daysToGo = Math.ceil((next-now)/msPerDay);
+      nextBdayEl.textContent = next.toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'})+' ('+daysToGo+' days away)';
+    }
+  }
+  document.getElementById('ageBtn').addEventListener('click', calc);
+  const asOfEl = document.getElementById('ageAsOf');
+  if(asOfEl) asOfEl.addEventListener('change', calc);
 })();
 
 // ---- Loan ----
@@ -246,7 +311,9 @@
     area:    { m2:1, km2:1000000, cm2:0.0001, ha:10000, acre:4046.86, ft2:0.092903, mi2:2589988.11, yd2:0.836127 },
     speed:   { mps:1, kmh:0.277778, mph:0.44704, knot:0.514444, fps:0.3048 },
     time:    { sec:1, min:60, hr:3600, day:86400, week:604800, month:2629800, year:31557600 },
-    data:    { bit:0.125, byte:1, kb:1000, mb:1000000, gb:1000000000, tb:1000000000000, kib:1024, mib:1048576, gib:1073741824 }
+    data:    { bit:0.125, byte:1, kb:1000, mb:1000000, gb:1000000000, tb:1000000000000, kib:1024, mib:1048576, gib:1073741824 },
+    pressure:{ pa:1, kpa:1000, bar:100000, psi:6894.76, atm:101325, mmhg:133.322 },
+    energy:  { j:1, kj:1000, cal:4.184, kcal:4184, wh:3600, kwh:3600000, btu:1055.06 }
   };
   const labels = {
     m:'m', km:'km', cm:'cm', mm:'mm', mi:'mi', yd:'yd', ft:'ft', in:'in', nmi:'nautical mi',
@@ -256,7 +323,9 @@
     mps:'m/s', kmh:'km/h', mph:'mph', knot:'knot', fps:'ft/s',
     sec:'sec', min:'min', hr:'hr', day:'day', week:'week', month:'month', year:'year',
     bit:'bit', byte:'byte', kb:'KB', mb:'MB', gb:'GB', tb:'TB', kib:'KiB', mib:'MiB', gib:'GiB',
-    c:'°C', f:'°F', k:'K'
+    c:'°C', f:'°F', k:'K',
+    pa:'Pa', kpa:'kPa', bar:'bar', psi:'PSI', atm:'atm', mmhg:'mmHg',
+    j:'J', kj:'kJ', cal:'cal', kcal:'kcal', wh:'Wh', kwh:'kWh', btu:'BTU'
   };
   function tempToCelsius(v,u){ if(u==='f') return (v-32)*5/9; if(u==='k') return v-273.15; return v; }
   function celsiusTo(v,u){ if(u==='f') return v*9/5+32; if(u==='k') return v+273.15; return v; }
@@ -290,6 +359,17 @@
   }
   document.getElementById('unitCat').addEventListener('change',populateUnits);
   ['unitVal','unitFrom','unitTo'].forEach(id=>document.getElementById(id).addEventListener('input',calcUnit));
+  const swapBtn = document.getElementById('unitSwap');
+  if(swapBtn){
+    swapBtn.addEventListener('click',()=>{
+      const from = document.getElementById('unitFrom');
+      const to = document.getElementById('unitTo');
+      const tmp = from.value;
+      from.value = to.value;
+      to.value = tmp;
+      calcUnit();
+    });
+  }
   populateUnits();
 })();
 
@@ -534,8 +614,15 @@
     document.getElementById('sipInvested').textContent = money(invested);
     document.getElementById('sipReturns').textContent = money(Math.max(maturity-invested,0));
     document.getElementById('sipMaturity').textContent = money(maturity);
+    const inflEl = document.getElementById('sipInflation');
+    const realEl = document.getElementById('sipRealValue');
+    if(inflEl && realEl){
+      const infl = parseFloat(inflEl.value)||0;
+      const real = maturity/Math.pow(1+infl/100, years);
+      realEl.textContent = money(real);
+    }
   }
-  ['sipAmt','sipRate','sipYears'].forEach(id=>{
+  ['sipAmt','sipRate','sipYears','sipInflation'].forEach(id=>{
     const el = document.getElementById(id);
     if(el) el.addEventListener('input', calcSIP);
   });
@@ -756,23 +843,63 @@
 (function(){
   if(!document.getElementById('pwGen')) return;
   const pwLen = document.getElementById('pwLen');
-  pwLen.addEventListener('input',()=>document.getElementById('pwLenVal').textContent=pwLen.value);
+  pwLen.addEventListener('input',()=>{document.getElementById('pwLenVal').textContent=pwLen.value; genPassword();});
+
+  const AMBIG = /[Il1O0]/g;
+
+  function fmtCrackTime(seconds){
+    if(!isFinite(seconds)) return '—';
+    const units = [
+      [31557600000000, 'million+ years'],
+      [31557600, 'years'],
+      [2629800, 'months'],
+      [86400, 'days'],
+      [3600, 'hours'],
+      [60, 'minutes']
+    ];
+    if(seconds > 31557600*1e6) return 'longer than the age of the universe';
+    for(const [secs,label] of units){
+      if(seconds >= secs) return (seconds/secs).toFixed(seconds/secs>100?0:1)+' '+label;
+    }
+    return Math.round(seconds)+' seconds';
+  }
+
   function genPassword(){
     const len = parseInt(pwLen.value);
-    const sets = [];
-    if(document.getElementById('pwUpper').checked) sets.push('ABCDEFGHJKLMNPQRSTUVWXYZ');
-    if(document.getElementById('pwLower').checked) sets.push('abcdefghijkmnpqrstuvwxyz');
-    if(document.getElementById('pwNum').checked) sets.push('23456789');
+    const excludeAmbig = document.getElementById('pwAmbig').checked;
+    let sets = [];
+    if(document.getElementById('pwUpper').checked) sets.push('ABCDEFGHIJKLMNOPQRSTUVWXYZ');
+    if(document.getElementById('pwLower').checked) sets.push('abcdefghijklmnopqrstuvwxyz');
+    if(document.getElementById('pwNum').checked) sets.push('0123456789');
     if(document.getElementById('pwSym').checked) sets.push('!@#$%^&*-_=+?');
     if(sets.length===0){ document.getElementById('pwOut').textContent='Select at least one option'; return; }
+    if(excludeAmbig) sets = sets.map(s=>s.replace(AMBIG,''));
     const all = sets.join('');
     let pw='';
     const arr = new Uint32Array(len);
     crypto.getRandomValues(arr);
     for(let i=0;i<len;i++){ pw += all[arr[i]%all.length]; }
     document.getElementById('pwOut').textContent = pw;
+
+    const poolSize = all.length;
+    const entropy = len * Math.log2(poolSize);
+    const entropyEl = document.getElementById('pwEntropy');
+    if(entropyEl){
+      let label = entropy<40?'Weak':entropy<60?'Moderate':entropy<80?'Strong':'Very strong';
+      entropyEl.textContent = Math.round(entropy)+' bits ('+label+')';
+    }
+    const crackEl = document.getElementById('pwCrackTime');
+    if(crackEl){
+      const guesses = Math.pow(2, entropy) / 2; // average case
+      const seconds = guesses / 1e10; // 10B guesses/sec offline attack
+      crackEl.textContent = fmtCrackTime(seconds);
+    }
   }
   document.getElementById('pwGen').addEventListener('click',genPassword);
+  document.getElementById('pwAmbig').addEventListener('change',genPassword);
+  ['pwUpper','pwLower','pwNum','pwSym'].forEach(id=>{
+    document.getElementById(id).addEventListener('change',genPassword);
+  });
   document.getElementById('pwCopy').addEventListener('click',()=>{
     const txt = document.getElementById('pwOut').textContent;
     if(txt && txt!=='—') navigator.clipboard.writeText(txt);
@@ -783,14 +910,31 @@
 // ---- Word counter ----
 (function(){
   if(!document.getElementById('wcText')) return;
+  function fmtTime(totalSeconds){
+    if(totalSeconds < 60) return Math.round(totalSeconds)+' sec';
+    const m = Math.floor(totalSeconds/60), s = Math.round(totalSeconds%60);
+    return m+' min'+(s>0 ? ' '+s+' sec' : '');
+  }
   function calcWords(){
     const text = document.getElementById('wcText').value;
-    const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+    const trimmed = text.trim();
+    const words = trimmed ? trimmed.split(/\s+/).length : 0;
     const chars = text.length;
-    const sentences = text.trim() ? (text.match(/[.!?]+(\s|$)/g)||[]).length || (text.trim()?1:0) : 0;
+    const charsNoSpace = text.replace(/\s/g,'').length;
+    const sentences = trimmed ? ((text.match(/[.!?]+(\s|$)/g)||[]).length || 1) : 0;
+    const paragraphs = trimmed ? trimmed.split(/\n\s*\n/).filter(p=>p.trim().length>0).length : 0;
+
     document.getElementById('wcWords').textContent = words;
     document.getElementById('wcChars').textContent = chars;
+    const noSpaceEl = document.getElementById('wcCharsNoSpace');
+    if(noSpaceEl) noSpaceEl.textContent = charsNoSpace;
     document.getElementById('wcSent').textContent = sentences;
+    const paraEl = document.getElementById('wcPara');
+    if(paraEl) paraEl.textContent = paragraphs;
+    const readEl = document.getElementById('wcReadTime');
+    if(readEl) readEl.textContent = fmtTime(words/225*60);
+    const speakEl = document.getElementById('wcSpeakTime');
+    if(speakEl) speakEl.textContent = fmtTime(words/140*60);
   }
   document.getElementById('wcText').addEventListener('input',calcWords);
 })();
@@ -844,6 +988,39 @@
   const future = new Date(today.getTime()+30*86400000);
   startEl.value = today.toISOString().slice(0,10);
   endEl.value = future.toISOString().slice(0,10);
+  calc();
+})();
+
+// ---- Add/subtract days from a date ----
+(function(){
+  const startEl = document.getElementById('addStart');
+  if(!startEl) return;
+  const daysEl = document.getElementById('addDays');
+  const seg = document.getElementById('addDirSeg');
+  let dir = 'add';
+
+  function calc(){
+    if(!startEl.value) return;
+    const base = new Date(startEl.value+'T00:00:00');
+    const n = parseInt(daysEl.value)||0;
+    const result = new Date(base);
+    result.setDate(result.getDate() + (dir==='add' ? n : -n));
+    document.getElementById('addResult').textContent = result.toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'});
+    document.getElementById('addDow').textContent = result.toLocaleDateString(undefined,{weekday:'long'});
+  }
+  if(seg){
+    seg.addEventListener('click',(e)=>{
+      const btn = e.target.closest('button');
+      if(!btn) return;
+      dir = btn.dataset.dir;
+      seg.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      calc();
+    });
+  }
+  startEl.addEventListener('input', calc);
+  daysEl.addEventListener('input', calc);
+  startEl.value = new Date().toISOString().slice(0,10);
   calc();
 })();
 
@@ -946,6 +1123,14 @@
     document.getElementById('gstBase').textContent = base.toFixed(2);
     document.getElementById('gstTax').textContent = tax.toFixed(2);
     document.getElementById('gstTotal').textContent = total.toFixed(2);
+
+    const splitEl = document.getElementById('gstSplit');
+    if(splitEl){
+      const isIndiaFlat = ['5','12','18','28'].includes(presetEl.value);
+      splitEl.textContent = isIndiaFlat
+        ? (tax/2).toFixed(2)+' CGST + '+(tax/2).toFixed(2)+' SGST'
+        : '—';
+    }
   }
 
   amtEl.addEventListener('input', calc);
@@ -967,6 +1152,7 @@
   const ageEl = document.getElementById('calAge');
   if(!ageEl) return;
   const weightEl = document.getElementById('calWeight');
+  const weightUnitEl = document.getElementById('calWeightUnit');
   const unitEl = document.getElementById('calHeightUnit');
   const cmWrap = document.getElementById('calCmWrap');
   const ftWrap = document.getElementById('calFtWrap');
@@ -975,7 +1161,14 @@
   const inEl = document.getElementById('calHeightIn');
   const activityEl = document.getElementById('calActivity');
   const sexSeg = document.getElementById('calSexSeg');
+  const macroStyleEl = document.getElementById('calMacroStyle');
   let sex = 'male';
+
+  const macroSplits = {
+    balanced:    {p:0.30, c:0.40, f:0.30},
+    highprotein: {p:0.40, c:0.30, f:0.30},
+    lowcarb:     {p:0.35, c:0.20, f:0.45}
+  };
 
   function getHeightCm(){
     if(unitEl.value==='ft'){
@@ -985,6 +1178,10 @@
     }
     return parseFloat(cmEl.value)||0;
   }
+  function getWeightKg(){
+    const w = parseFloat(weightEl.value)||0;
+    return (weightUnitEl && weightUnitEl.value==='lb') ? w/2.20462 : w;
+  }
 
   function calc(){
     const isFt = unitEl.value==='ft';
@@ -992,7 +1189,7 @@
     ftWrap.style.display = isFt ? 'grid' : 'none';
 
     const age = parseFloat(ageEl.value)||0;
-    const weight = parseFloat(weightEl.value)||0;
+    const weight = getWeightKg();
     const height = getHeightCm();
     const activity = parseFloat(activityEl.value)||1.2;
 
@@ -1006,6 +1203,15 @@
     document.getElementById('calTDEE').textContent = Math.round(tdee).toLocaleString()+' kcal';
     document.getElementById('calLoss').textContent = Math.round(Math.max(tdee-500,0)).toLocaleString()+' kcal';
     document.getElementById('calGain').textContent = Math.round(tdee+500).toLocaleString()+' kcal';
+
+    const macrosEl = document.getElementById('calMacros');
+    if(macrosEl){
+      const style = macroSplits[macroStyleEl ? macroStyleEl.value : 'balanced'] || macroSplits.balanced;
+      const pG = Math.round(tdee*style.p/4);
+      const cG = Math.round(tdee*style.c/4);
+      const fG = Math.round(tdee*style.f/9);
+      macrosEl.textContent = pG+'g / '+cG+'g / '+fG+'g';
+    }
   }
 
   sexSeg.addEventListener('click', (e)=>{
@@ -1016,7 +1222,8 @@
     btn.classList.add('active');
     calc();
   });
-  [ageEl, weightEl, unitEl, cmEl, ftEl, inEl, activityEl].forEach(el=>{
+  [ageEl, weightEl, weightUnitEl, unitEl, cmEl, ftEl, inEl, activityEl, macroStyleEl].forEach(el=>{
+    if(!el) return;
     el.addEventListener('input', calc);
     el.addEventListener('change', calc);
   });
@@ -1043,10 +1250,14 @@
     const c = cur();
     const original = parseFloat(document.getElementById('discOriginal').value)||0;
     const pct = parseFloat(document.getElementById('discPct').value)||0;
+    const taxEl = document.getElementById('discTax');
+    const tax = taxEl ? (parseFloat(taxEl.value)||0) : 0;
     const saved = original*pct/100;
     const salePrice = original-saved;
     document.getElementById('discSaved').textContent = c+saved.toFixed(2);
     document.getElementById('discSalePrice').textContent = c+salePrice.toFixed(2);
+    const withTaxEl = document.getElementById('discFinalWithTax');
+    if(withTaxEl) withTaxEl.textContent = tax>0 ? c+(salePrice*(1+tax/100)).toFixed(2) : '—';
   }
   function calcOriginal(){
     const c = cur();
@@ -1057,9 +1268,22 @@
     document.getElementById('discOriginalOut').textContent = c+original.toFixed(2);
     document.getElementById('discSavedOut').textContent = c+Math.max(saved,0).toFixed(2);
   }
+  function calcStack(){
+    const c = cur();
+    const original = parseFloat(document.getElementById('discStackOriginal').value)||0;
+    const p1 = parseFloat(document.getElementById('discStack1').value)||0;
+    const p2 = parseFloat(document.getElementById('discStack2').value)||0;
+    const mid = original*(1-p1/100);
+    const final = mid*(1-p2/100);
+    const combined = original>0 ? (1-final/original)*100 : 0;
+    document.getElementById('discStackMid').textContent = c+mid.toFixed(2);
+    document.getElementById('discStackFinal').textContent = c+final.toFixed(2);
+    document.getElementById('discStackCombined').textContent = combined.toFixed(1)+'% off (not '+(p1+p2)+'%)';
+  }
 
-  ['discOriginal','discPct','discCur'].forEach(id=>{
+  ['discOriginal','discPct','discCur','discTax'].forEach(id=>{
     const el = document.getElementById(id);
+    if(!el) return;
     el.addEventListener('input', ()=>{calcSale(); calcOriginal();});
     el.addEventListener('change', ()=>{calcSale(); calcOriginal();});
   });
@@ -1067,8 +1291,14 @@
     const el = document.getElementById(id);
     el.addEventListener('input', calcOriginal);
   });
+  ['discStackOriginal','discStack1','discStack2'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener('input', calcStack);
+  });
   calcSale();
   calcOriginal();
+  calcStack();
 })();
 
 // ---- GPA calculator ----
@@ -1387,7 +1617,9 @@ function renderAmortTable(bodyId, years, cur){
   if(!document.getElementById('fdAmt')) return;
   function calc(){
     const P = parseFloat(document.getElementById('fdAmt').value)||0;
-    const r = (parseFloat(document.getElementById('fdRate').value)||0)/100;
+    let r = (parseFloat(document.getElementById('fdRate').value)||0)/100;
+    const seniorEl = document.getElementById('fdSenior');
+    if(seniorEl && seniorEl.checked) r += 0.005;
     const t = parseFloat(document.getElementById('fdYears').value)||0;
     const n = parseFloat(document.getElementById('fdFreq').value)||4;
     const maturity = P*Math.pow(1+r/n, n*t);
@@ -1395,8 +1627,9 @@ function renderAmortTable(bodyId, years, cur){
     document.getElementById('fdInterest').textContent = '₹'+Math.round(maturity-P).toLocaleString('en-IN');
     document.getElementById('fdMaturity').textContent = '₹'+Math.round(maturity).toLocaleString('en-IN');
   }
-  ['fdAmt','fdRate','fdYears','fdFreq'].forEach(id=>{
+  ['fdAmt','fdRate','fdYears','fdFreq','fdSenior'].forEach(id=>{
     const el=document.getElementById(id);
+    if(!el) return;
     el.addEventListener('input',calc); el.addEventListener('change',calc);
   });
   calc();
@@ -1407,7 +1640,9 @@ function renderAmortTable(bodyId, years, cur){
   if(!document.getElementById('rdAmt')) return;
   function calc(){
     const R = parseFloat(document.getElementById('rdAmt').value)||0;
-    const rate = (parseFloat(document.getElementById('rdRate').value)||0)/100;
+    let rate = (parseFloat(document.getElementById('rdRate').value)||0)/100;
+    const seniorEl = document.getElementById('rdSenior');
+    if(seniorEl && seniorEl.checked) rate += 0.005;
     const months = parseInt(document.getElementById('rdMonths').value)||0;
     // Each installment compounds quarterly for its remaining months
     let maturity = 0;
@@ -1421,8 +1656,9 @@ function renderAmortTable(bodyId, years, cur){
     document.getElementById('rdInterest').textContent = '₹'+Math.round(maturity-invested).toLocaleString('en-IN');
     document.getElementById('rdMaturity').textContent = '₹'+Math.round(maturity).toLocaleString('en-IN');
   }
-  ['rdAmt','rdRate','rdMonths'].forEach(id=>{
+  ['rdAmt','rdRate','rdMonths','rdSenior'].forEach(id=>{
     const el=document.getElementById(id);
+    if(!el) return;
     el.addEventListener('input',calc);
   });
   calc();

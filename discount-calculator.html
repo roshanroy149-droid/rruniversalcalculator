@@ -96,7 +96,6 @@
   <div class="wrap">
     <div class="headbar">
       <a class="logo" href="index.html">TALLYBENCH<span>.</span></a>
-      <div class="tagline">22 TOOLS · 0 SIGN-UP</div>
     </div>
   </div>
   <nav class="ruler cat-ruler">
@@ -138,7 +137,7 @@
   <section class="hero">
     <div class="hero-icon-row cat-finance">
       <div class="hero-icon"><svg><use href="icons.svg#icon-discount"/></svg></div>
-      <div class="eyebrow">// 12 · DISCOUNT CALCULATOR</div>
+      <div class="eyebrow">// DISCOUNT CALCULATOR</div>
     </div>
     <h1>What does that percentage off actually save you?</h1>
     <p>Enter a price and discount to see the sale price, or work backward from a sale price to find the original.</p>
@@ -171,6 +170,7 @@
     <div class="tabs" id="discTabs">
       <button class="active" data-tab="sale">Find sale price</button>
       <button data-tab="original">Find original price</button>
+      <button data-tab="stack">Stack two discounts</button>
     </div>
 
     <div class="tab-panel active" id="panel-sale">
@@ -178,10 +178,12 @@
         <div>
           <div class="field"><label>Original price</label><input type="number" id="discOriginal" value="1000" step="0.01"></div>
           <div class="field"><label>Discount (%)</label><input type="number" id="discPct" value="25" step="1"></div>
+          <div class="field"><label>Sales tax / VAT / GST applied after discount (%, optional)</label><input type="number" id="discTax" value="0" step="0.1" min="0"></div>
         </div>
         <div class="readout">
           <div class="r-row"><span class="r-label">You save</span><span class="r-value" id="discSaved">0</span></div>
-          <div class="r-row"><span class="r-label">Sale price</span><span class="r-value" id="discSalePrice">0</span></div>
+          <div class="r-row"><span class="r-label">Sale price (before tax)</span><span class="r-value" id="discSalePrice">0</span></div>
+          <div class="r-row"><span class="r-label">Final price (with tax)</span><span class="r-sub" id="discFinalWithTax">—</span></div>
         </div>
       </div>
     </div>
@@ -198,20 +200,39 @@
         </div>
       </div>
     </div>
+
+    <div class="tab-panel" id="panel-stack">
+      <div class="card">
+        <div>
+          <div class="field"><label>Original price</label><input type="number" id="discStackOriginal" value="1000" step="0.01"></div>
+          <div class="field"><label>First discount (%)</label><input type="number" id="discStack1" value="20" step="1"></div>
+          <div class="field"><label>Second discount (%) — applied after the first</label><input type="number" id="discStack2" value="10" step="1"></div>
+        </div>
+        <div class="readout">
+          <div class="r-row"><span class="r-label">Price after first discount</span><span class="r-value" id="discStackMid">0</span></div>
+          <div class="r-row"><span class="r-label">Final price</span><span class="r-value" id="discStackFinal">0</span></div>
+          <div class="r-row"><span class="r-label">Combined effective discount</span><span class="r-sub" id="discStackCombined">—</span></div>
+        </div>
+      </div>
+    </div>
   </section>
 
   <section class="article">
     <h3>How is the sale price calculated?</h3>
-    <p>The discount percentage is multiplied by the original price to get the amount saved, then subtracted from the original price for the sale price.</p>
+    <p>The discount percentage is multiplied by the original price to get the amount saved, then subtracted from the original price for the sale price: <strong>sale price = original × (1 − discount%/100)</strong>.</p>
     <h3>How does "find original price" work in reverse?</h3>
-    <p>If a sale price reflects a known discount percentage, the original price is the sale price divided by (1 minus the discount as a decimal) — this undoes the discount math to recover the starting price.</p>
-    <h3>Does this handle stacked discounts, like 20% off an already-discounted item?</h3>
-    <p>Not automatically — stacked discounts apply sequentially, not additively (20% off, then another 10% off, is not the same as 30% off). Run the sale price through the calculator twice, once per discount, to get an accurate stacked result.</p>
-    <h3>How do I calculate two discounts applied one after another?</h3>
-    <p>Stacked discounts multiply, not add — 20% off followed by another 10% off is NOT 30% off. Run the first discount through the calculator, take that sale price, then run it through again as the new 'original price' with the second discount percentage.</p>
-    <h3>What's the actual percentage saved when two discounts stack?</h3>
-    <p>Two stacked discounts of 20% and 10% leave you paying 80%×90% = 72% of the original price — a combined 28% off, not 30%. The gap grows the more discounts are stacked, which is why store 'up to 50% off, plus extra 20% off' promotions save less than the headline number suggests.</p>
-    <p><strong>Worked example:</strong> a $200 item with 30% off comes to $140 (you save $60). Working backward, a $140 sale price with a known 30% discount recovers the original $200 exactly — try both tabs above with these numbers to confirm.</p>
+    <p>If a sale price reflects a known discount percentage, the original price is the sale price divided by (1 minus the discount as a decimal): <strong>original = sale ÷ (1 − discount%/100)</strong> — this undoes the discount math to recover the starting price. It's the same reverse-percentage logic used for "price before tax" calculations.</p>
+    <h3>How do stacked discounts actually work?</h3>
+    <p>Stacked discounts multiply, not add — 20% off followed by another 10% off is <em>not</em> 30% off. Each discount applies to the already-discounted price, so the combined effect is 1 − (1−0.20)×(1−0.10) = 1 − 0.80×0.90 = 1 − 0.72 = 28% off, not 30%. The Stack tab above computes this directly for any two discounts, and shows the "combined effective discount" so you can see exactly how much the headline percentages actually save. The gap between the naive sum and the real combined discount grows the more discounts are stacked — which is why "up to 50% off, plus an extra 20%" promotions save meaningfully less than the two numbers added together suggest.</p>
+    <h3>Does the order of stacked discounts matter?</h3>
+    <p>No — multiplication is commutative, so 20% then 10% gives exactly the same final price as 10% then 20% (both land at 72% of the original). What does matter is whether a coupon is described as applying to the <em>original</em> price or the <em>already-discounted</em> price — retailers sometimes apply a coupon to the pre-sale price even during a sale, which is more generous than stacking, so check the fine print.</p>
+    <h3>How does sales tax interact with a discount?</h3>
+    <p>In the US, sales tax is calculated on the discounted price, not the original — so a $100 item at 20% off with 8% sales tax comes to $80 × 1.08 = $86.40, not $100 × 1.08 minus 20%. The optional tax field on the "Find sale price" tab applies exactly this order. In most of Europe and in India, prices are more commonly tax-inclusive to begin with (VAT/GST already baked into the shelf price), so a discount there typically reduces the tax-inclusive price directly — if you need to separate the tax component afterward, the <a href="gst-vat-calculator.html">GST / VAT Calculator</a> handles that reverse extraction.</p>
+    <h3>What's the difference between percent-off and dollar-off coupons when stacking?</h3>
+    <p>A flat dollar-off coupon ($20 off) and a percent-off coupon (20% off) only produce the same saving at one specific price point — below that price the dollar coupon saves relatively more, above it the percent coupon does. When both are stackable, applying the percentage discount first (on the larger base) then the flat amount usually saves slightly more than the reverse order, though most retailers fix the order in their system rather than letting you choose.</p>
+    <h3>Why does "50% off" sometimes not feel like half price?</h3>
+    <p>Watch for "up to" language — "up to 50% off" legally requires only that at least one item in the sale carries that discount, not the whole range. Also check whether the discount applies to the lowest previously-advertised price or a recently-inflated "original" price; consumer protection rules on this vary significantly between the US (FTC guidance), the EU (the Omnibus Directive requires showing the lowest price in the last 30 days), and India (Consumer Protection Act rules on misleading MRP claims) — the EU's rule in particular makes pre-sale price inflation harder to get away with legally.</p>
+    <p><strong>Worked example:</strong> a $200 item with 30% off comes to $140 (you save $60); add 8% sales tax on the discounted price and the final total is $151.20. Working backward, a $140 sale price with a known 30% discount recovers the original $200 exactly. Stacking 20% then 10% on that same $200 item lands at $144 (28% combined off), not the $140 that a naive 30%-sum would suggest — try all three tabs above with these numbers to confirm.</p>
   </section>
 
   <nav class="more-tools">

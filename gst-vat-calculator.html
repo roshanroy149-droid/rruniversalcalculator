@@ -96,7 +96,6 @@
   <div class="wrap">
     <div class="headbar">
       <a class="logo" href="index.html">TALLYBENCH<span>.</span></a>
-      <div class="tagline">22 TOOLS · 0 SIGN-UP</div>
     </div>
   </div>
   <nav class="ruler cat-ruler">
@@ -138,7 +137,7 @@
   <section class="hero">
     <div class="hero-icon-row cat-finance">
       <div class="hero-icon"><svg><use href="icons.svg#icon-gst"/></svg></div>
-      <div class="eyebrow">// 08 · GST / VAT CALCULATOR</div>
+      <div class="eyebrow">// GST / VAT CALCULATOR</div>
     </div>
     <h1>Add tax to a price, or pull it back out of one.</h1>
     <p>Pick a country preset or enter a custom rate, then choose whether your amount excludes or already includes tax.</p>
@@ -156,10 +155,16 @@
             <option value="28">India GST — 28%</option>
             <option value="20">UK VAT — 20%</option>
             <option value="21">EU VAT (avg) — 21%</option>
+            <option value="19">Germany VAT — 19%</option>
+            <option value="20fr">France VAT — 20%</option>
             <option value="10">Australia GST — 10%</option>
             <option value="5ca">Canada GST — 5%</option>
             <option value="9">Singapore GST — 9%</option>
             <option value="15">New Zealand GST — 15%</option>
+            <option value="10jp">Japan consumption tax — 10%</option>
+            <option value="15za">South Africa VAT — 15%</option>
+            <option value="5ae">UAE VAT — 5%</option>
+            <option value="7us">US average sales tax — 7% (varies by state)</option>
             <option value="custom">Custom rate</option>
           </select>
         </div>
@@ -175,22 +180,27 @@
         <div class="r-row"><span class="r-label">Base amount</span><span class="r-value" id="gstBase">0</span></div>
         <div class="r-row"><span class="r-label">Tax amount</span><span class="r-value" id="gstTax">0</span></div>
         <div class="r-row"><span class="r-label">Total amount</span><span class="r-value" id="gstTotal">0</span></div>
+        <div class="r-row"><span class="r-label">CGST + SGST split (India intra-state)</span><span class="r-sub" id="gstSplit">—</span></div>
       </div>
     </div>
   </section>
 
   <section class="article">
     <h3>What's the difference between the two modes?</h3>
-    <p>"Add tax to amount" treats your entered amount as the pre-tax base and adds tax on top. "Amount already includes tax" treats your entered amount as the final, tax-inclusive price and works backward to show what the base price and tax portion were.</p>
+    <p>"Add tax to amount" treats your entered amount as the pre-tax base and adds tax on top. "Amount already includes tax" treats your entered amount as the final, tax-inclusive price and works backward — dividing by (1 + rate) rather than multiplying — to show what the base price and tax portion were.</p>
     <h3>Why do the preset rates vary so much by country?</h3>
-    <p>GST and VAT rates and structures are set independently by each country or economic bloc, and many countries — India especially — use multiple slabs for different categories of goods and services rather than one flat rate. Pick the closest preset or enter a custom rate if yours isn't listed.</p>
+    <p>GST and VAT rates and structures are set independently by each country or economic bloc, and many countries — India especially — use multiple slabs for different categories of goods and services rather than one flat rate (India's GST Council sets 5%, 12%, 18%, and 28% slabs across different product categories, plus a 0% exempt category for essentials). The EU sets a minimum standard VAT rate across member states but each country sets its own specific rate above that floor, which is why Germany (19%) and France (20%) differ despite both following the EU VAT directive framework. Pick the closest preset or enter a custom rate if yours isn't listed.</p>
     <h3>Is this the same as sales tax in the US?</h3>
-    <p>Not quite — GST/VAT is typically applied at each stage of production with credits for tax already paid, while US sales tax is usually collected once at the final point of sale and varies by state and city. This calculator's flat add/remove math works for either, as long as you use the correct combined rate.</p>
+    <p>Not quite, structurally — GST/VAT is typically applied at each stage of production with credits for tax already paid at earlier stages (so only the value added at each step is effectively taxed), while US sales tax is usually collected once at the final point of sale to the consumer and varies not just by state but often by city and county too, with combined rates commonly ranging from under 5% to over 10% depending on location. The "US average sales tax" preset here (7%) is a rough national blended average — for an accurate figure, check your specific state and local rate, since the real range is wide.</p>
     <h3>How do I know if a price already includes tax?</h3>
-    <p>In India, MRP (Maximum Retail Price) on packaged goods is required to be tax-inclusive — so if you're back-calculating GST from an MRP, use 'Amount already includes tax.' A quoted B2B price before invoicing, on the other hand, is usually tax-exclusive.</p>
+    <p>In India, MRP (Maximum Retail Price) on packaged goods is required by law to be tax-inclusive — so if you're back-calculating GST from an MRP, use "Amount already includes tax." A quoted B2B price before invoicing is usually tax-exclusive. In the UK and EU, consumer-facing retail prices are legally required to be VAT-inclusive, while B2B quotes are frequently shown exclusive of VAT with the tax added at invoicing. In the US, sales tax is almost always added at checkout rather than baked into the displayed shelf price — a rare case where the "sticker price" genuinely is the pre-tax base.</p>
     <h3>Why does my invoice show CGST and SGST separately instead of one GST figure?</h3>
-    <p>For transactions within the same Indian state, GST is split evenly into CGST (central) and SGST (state) — an 18% GST bill would show as 9% CGST + 9% SGST. This calculator gives you the combined total; halve it for each component if you need the split.</p>
-    <p><strong>Worked example:</strong> a ₹2,000 item with 18% GST added comes to ₹2,360 total (₹360 tax). Working backward from a ₹2,360 tax-inclusive price at 18% gives a base of ₹2,000 exactly — switch the mode toggle above to see both directions match.</p>
+    <p>For transactions within the same Indian state, GST is split evenly into CGST (Central GST, collected by the central government) and SGST (State GST, collected by the state) — an 18% GST bill would show as 9% CGST + 9% SGST, which the readout above calculates automatically. For transactions between two different Indian states, the full rate is instead charged as IGST (Integrated GST), a single line rather than a split, collected by the central government and apportioned to the destination state.</p>
+    <h3>Why is Japan's tax called "consumption tax" and the UAE's rate so low?</h3>
+    <p>Naming and rate-setting are both matters of national policy, not a universal standard — Japan's consumption tax functions like a VAT but is named differently for historical and political reasons, having been introduced later and more gradually than most European VATs (starting at 3% in 1989 and rising in stages to today's 10%). The UAE introduced VAT only in 2018 at a deliberately low 5% rate as part of a broader Gulf Cooperation Council agreement, reflecting the region's historically low-tax approach centered on oil revenue rather than consumption tax as a primary government funding source.</p>
+    <h3>Does this calculator handle multiple tax rates stacked on one item, like some US jurisdictions?</h3>
+    <p>Not automatically — some US locations stack state, county, and city sales tax into one combined rate, which you should add together yourself before entering it as a single custom rate here, since this tool applies one flat rate at a time. The same applies to any jurisdiction with layered taxes; combine them into one effective rate first.</p>
+    <p><strong>Worked example:</strong> a ₹2,000 item with 18% GST added comes to ₹2,360 total (₹360 tax, split as ₹180 CGST + ₹180 SGST for an intra-state sale). Working backward from a ₹2,360 tax-inclusive price at 18% gives a base of ₹2,000 exactly — switch the mode toggle above to see both directions match.</p>
   </section>
 
   <nav class="more-tools">

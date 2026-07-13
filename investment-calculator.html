@@ -104,7 +104,6 @@
   <div class="wrap">
     <div class="headbar">
       <a class="logo" href="index.html">TALLYBENCH<span>.</span></a>
-      <div class="tagline">22 TOOLS · 0 SIGN-UP</div>
     </div>
   </div>
   <nav class="ruler cat-ruler">
@@ -146,7 +145,7 @@
   <section class="hero">
     <div class="hero-icon-row cat-finance">
       <div class="hero-icon"><svg><use href="icons.svg#icon-investment"/></svg></div>
-      <div class="eyebrow">// 13 · INVESTMENT CALCULATOR</div>
+      <div class="eyebrow">// INVESTMENT CALCULATOR</div>
     </div>
     <h1>SIP, SWP, and compound growth in one place.</h1>
     <p>Project a recurring investment, a recurring withdrawal, or a lump-sum's compound growth. Switch tabs below.</p>
@@ -188,11 +187,13 @@
           <div class="field"><label>Monthly investment</label><input type="number" id="sipAmt" value="10000" step="100"></div>
           <div class="field"><label>Expected annual return (%)</label><input type="number" id="sipRate" value="12" step="0.1"></div>
           <div class="field"><label>Duration (years)</label><input type="number" id="sipYears" value="10" min="1"></div>
+          <div class="field"><label>Expected inflation (%, for real-value estimate)</label><input type="number" id="sipInflation" value="6" step="0.1" min="0"></div>
         </div>
         <div class="readout">
           <div class="r-row"><span class="r-label">Total invested</span><span class="r-value" id="sipInvested">0</span></div>
           <div class="r-row"><span class="r-label">Estimated returns</span><span class="r-value" id="sipReturns">0</span></div>
           <div class="r-row"><span class="r-label">Maturity value</span><span class="r-value" id="sipMaturity">0</span></div>
+          <div class="r-row"><span class="r-label">Real value (today's purchasing power)</span><span class="r-sub" id="sipRealValue">—</span></div>
         </div>
       </div>
     </div>
@@ -250,17 +251,21 @@
   <section class="article">
     <h3>How is SIP maturity value calculated?</h3>
     <p>SIP uses the future value of an annuity formula: each monthly investment compounds at the monthly rate for the remaining months, and all installments are summed. Returns are estimates, not guarantees — actual market returns vary and aren't linear.</p>
+    <h3>What does the "real value" figure mean, and why does it matter?</h3>
+    <p>Maturity value is the nominal future amount; real value discounts that by your expected inflation rate to show what it's actually worth in today's purchasing power — <strong>real value = maturity ÷ (1 + inflation%)^years</strong>. A ₹23 lakh maturity value in 10 years sounds impressive, but if inflation runs at 6% over that period, it buys roughly what ₹12.8 lakh buys today. This is the single most overlooked number in retirement and goal planning: a return that beats inflation grows real wealth, a return that merely matches it treats you to a bigger pile of money that buys the same as before.</p>
     <h3>How does the SWP calculation work?</h3>
-    <p>The starting balance grows by the monthly rate of return, then the withdrawal is subtracted, month by month, across the full duration. If withdrawals outpace growth, the balance can reach zero before the duration ends — the tool flags this rather than showing a negative balance.</p>
+    <p>The starting balance grows by the monthly rate of return, then the withdrawal is subtracted, month by month, across the full duration. If withdrawals outpace growth, the balance can reach zero before the duration ends — the tool flags this rather than showing a negative balance. SWP is commonly used for retirement income planning: withdrawing less than the fund's growth rate can, in principle, sustain payouts indefinitely, which is the logic behind the "safe withdrawal rate" concept popular in retirement planning worldwide.</p>
     <h3>What's the difference between this and simple interest?</h3>
-    <p>Compound growth adds earned interest back into the principal each period, so future interest is calculated on a larger base — that's what "compounding frequency" controls. More frequent compounding (daily vs. annually) produces a slightly higher return at the same stated rate.</p>
+    <p>Compound growth adds earned interest back into the principal each period, so future interest is calculated on a larger base — that's what "compounding frequency" controls. More frequent compounding (daily vs. annually) produces a slightly higher return at the same stated rate, though the difference shrinks the more frequent compounding already is (daily vs monthly matters far less than monthly vs annual).</p>
     <h3>Are these numbers guaranteed?</h3>
-    <p>No — all three tools are projections based on a constant assumed rate of return you enter. Real investments fluctuate, and past or assumed performance doesn't guarantee future results.</p>
+    <p>No — all three tools are projections based on a constant assumed rate of return you enter. Real investments fluctuate significantly year to year even when long-run averages look smooth, and past or assumed performance doesn't guarantee future results, regardless of which country or asset class you're modeling.</p>
     <h3>Does this account for taxes on investment returns?</h3>
-    <p>No — the figures shown are pre-tax growth projections. Actual take-home returns depend on how the investment is taxed in your country (capital gains tax, dividend tax, etc.), which varies too much to model generically here.</p>
+    <p>No — the figures shown are pre-tax growth projections. Actual take-home returns depend heavily on how the investment is taxed in your country: the US taxes long-term capital gains at preferential rates (0/15/20% federal brackets) separate from ordinary income; India taxes equity long-term capital gains above ₹1.25 lakh/year at a flat rate, with different rules for debt funds; most of Europe applies a mix of capital gains and dividend withholding tax that varies significantly by country and account type (many EU countries offer tax-advantaged wrapper accounts, similar in spirit to a US 401(k)/IRA or an ISA in the UK). This variance is too large to model generically, so build in your own after-tax adjustment based on your jurisdiction.</p>
     <h3>How realistic is a 12% annual return assumption for SIP?</h3>
-    <p>12% is a commonly used illustrative assumption for equity mutual funds in India based on long-term historical averages, but actual returns vary year to year and aren't guaranteed — treat any fixed-rate projection as a planning estimate, not a promise.</p>
-    <p><strong>Worked example:</strong> investing ₹10,000/month for 10 years at an assumed 12% annual return grows to roughly ₹23.2 lakh, of which ₹12 lakh is your own contributions and about ₹11.2 lakh is projected growth — enter these exact numbers in the SIP tab above to verify.</p>
+    <p>12% is a commonly used illustrative assumption for equity mutual funds in India based on long-term historical averages, but actual returns vary year to year and aren't guaranteed. For context, US equities (S&P 500) have historically averaged roughly 9–10% nominal annually over many decades, and European broad-market equities somewhat lower — treat any fixed-rate projection, in any market, as a planning estimate, not a promise, and consider running the numbers at a more conservative rate as a stress test.</p>
+    <h3>What's a reasonable inflation assumption for the real-value estimate?</h3>
+    <p>It depends on the country and the point in the economic cycle — India has historically run inflation in the 5–7% range over the long term, the US and EU have more commonly targeted around 2% (their central banks' explicit target), though both saw much higher actual inflation in the early 2020s. Use your country's long-run historical average as a starting default, and adjust for your own view of where things are headed.</p>
+    <p><strong>Worked example:</strong> investing ₹10,000/month for 10 years at an assumed 12% annual return grows to roughly ₹23.2 lakh, of which ₹12 lakh is your own contributions and about ₹11.2 lakh is projected growth. At 6% assumed inflation over that decade, that ₹23.2 lakh is worth roughly ₹12.9 lakh in today's purchasing power — enter these exact numbers in the SIP tab above to verify both figures.</p>
   </section>
 
   <nav class="more-tools">

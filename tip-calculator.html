@@ -96,7 +96,6 @@
   <div class="wrap">
     <div class="headbar">
       <a class="logo" href="index.html">TALLYBENCH<span>.</span></a>
-      <div class="tagline">22 TOOLS · 0 SIGN-UP</div>
     </div>
   </div>
   <nav class="ruler cat-ruler">
@@ -138,7 +137,7 @@
   <section class="hero">
     <div class="hero-icon-row cat-finance">
       <div class="hero-icon"><svg><use href="icons.svg#icon-tip"/></svg></div>
-      <div class="eyebrow">// 16 · TIP CALCULATOR</div>
+      <div class="eyebrow">// TIP CALCULATOR</div>
     </div>
     <h1>Split a bill and see the tip, fast.</h1>
     <p>Enter the bill amount, choose a tip percentage, and split it across the table. Updates live as you type.</p>
@@ -170,29 +169,46 @@
           </select>
         </div>
         <div class="field"><label>Bill amount</label><input type="number" id="tipBill" value="50" step="0.01"></div>
-        <div class="field"><label>Tip percent (%)</label><input type="number" id="tipPct" value="18" step="1"></div>
+        <div class="field"><label>Tip percent (%)</label>
+          <input type="number" id="tipPct" value="18" step="1">
+          <div class="btn-row" id="tipPresets" style="margin-top:8px;">
+            <button type="button" class="ghost" data-pct="10">10%</button>
+            <button type="button" class="ghost" data-pct="15">15%</button>
+            <button type="button" class="ghost" data-pct="18">18%</button>
+            <button type="button" class="ghost" data-pct="20">20%</button>
+            <button type="button" class="ghost" data-pct="25">25%</button>
+          </div>
+        </div>
         <div class="field"><label>Number of people</label><input type="number" id="tipPeople" value="1" min="1" step="1"></div>
+        <div class="checks"><label><input type="checkbox" id="tipRound"> Round total up to the nearest whole number</label></div>
       </div>
       <div class="readout">
         <div class="r-row"><span class="r-label">Tip</span><span class="r-value" id="tipAmt">$0.00</span></div>
         <div class="r-row"><span class="r-label">Total</span><span class="r-value" id="tipTotal">$0.00</span></div>
         <div class="r-row"><span class="r-label">Per person</span><span class="r-value" id="tipEach">$0.00</span></div>
+        <div class="r-row"><span class="r-label">Effective tip after rounding</span><span class="r-sub" id="tipEffective">—</span></div>
       </div>
     </div>
   </section>
 
   <section class="article">
     <h3>How is tip calculated?</h3>
-    <p>Multiply the bill by the tip percentage to get the tip amount, then add that to the bill for the total. Divide the total by the number of people for an even split.</p>
-    <h3>What's a normal tip percentage?</h3>
-    <p>15–20% is the typical range in the US for table service; some people go higher for exceptional service or lower for counter service. Adjust the field above to match your situation.</p>
+    <p>Multiply the bill by the tip percentage to get the tip amount, then add that to the bill for the total. Divide the total by the number of people for an even split. The preset buttons above jump straight to the most common percentages; the round-up option bumps the final total to the next whole currency unit, distributing that small extra rounding amount into the tip.</p>
+    <h3>What's a normal tip percentage in the US?</h3>
+    <p>15–20% is the standard range for US table service, with 20% increasingly the default baseline rather than the ceiling — many people now tip 20–25% for excellent service. Counter service, coffee shops, and takeout typically prompt for 10–15% or a flat small amount. Delivery drivers are commonly tipped a flat $3–5 plus a percentage on larger orders, since much of their income depends on it.</p>
+    <h3>How does tipping differ in the UK and Europe?</h3>
+    <p>In the UK, a 10–12.5% service charge is frequently already added to restaurant bills — check before tipping again on top, since it's often at the venue's discretion whether staff receive it directly. In much of continental Europe (France, Germany, Italy, Spain), service is legally built into the menu price, and tipping is a modest gesture rather than an expectation — rounding up the bill or leaving 5–10% for good service is generous, not the 18–20% norm assumed in the US. Scandinavia and the Netherlands lean even lighter, sometimes with no tip expected at all for adequate service.</p>
+    <h3>Is tipping customary in India and much of Asia?</h3>
+    <p>In India, many restaurant bills already include a service charge (though it's technically meant to be voluntary per government guidance, not mandatory) — where it's absent, 10% is a common informal norm in urban restaurants, while it's less expected at smaller local eateries. In Japan, tipping can actually be seen as awkward or unnecessary, since excellent service is considered a baseline standard, not something extra to reward financially. China and South Korea have traditionally had little to no tipping culture in most settings, though this is shifting slightly in tourist-facing venues. When traveling, it's worth a quick check on local norms rather than defaulting to the US percentage out of habit.</p>
     <h3>Does this split the tip evenly even if orders were different sizes?</h3>
-    <p>This calculator splits the total bill evenly across everyone entered. For itemized splitting by what each person actually ordered, you'd add up individual amounts first, then use this tool per person.</p>
+    <p>This calculator splits the total bill evenly across everyone entered. For itemized splitting by what each person actually ordered, add up individual amounts first, then run each person's own subtotal through this tool separately with the same tip percentage.</p>
     <h3>What if a service charge is already included in the bill?</h3>
-    <p>Check your receipt — if a service charge or gratuity is already listed as a line item, that typically covers the tip, and adding another tip on top is optional (some regions treat it as customary regardless). Enter 0% in this calculator if you just want to confirm the per-person split without adding anything extra.</p>
+    <p>Check the receipt — if a service charge or gratuity line is already listed, that typically covers the tip, and adding another on top is optional (though some regions treat an additional small tip as customary regardless of the service charge). Enter 0% here if you just want to confirm the per-person split without adding anything extra.</p>
     <h3>Should tax be included before or after calculating the tip?</h3>
-    <p>Convention varies — many people tip on the pre-tax subtotal, though tipping on the post-tax total is also common and simpler in practice. Enter whichever amount (pre- or post-tax) matches your own preference in the bill field above.</p>
-    <p><strong>Worked example:</strong> a $64 bill split 4 ways with an 18% tip: tip = $11.52, total = $75.52, per person = $18.88 — try these exact numbers above to confirm.</p>
+    <p>Convention varies — many US diners tip on the pre-tax subtotal on principle (since tax isn't a service the server provided), though tipping on the post-tax total is common and simpler in practice, and the difference is usually just a few percent of the tip itself. Enter whichever amount (pre- or post-tax) matches your own preference in the bill field above; this calculator doesn't assume either way.</p>
+    <h3>Why would I round the total up?</h3>
+    <p>Rounding to a clean number avoids awkward change and is a simple way to nudge a tip slightly higher without doing mental math at the table — the "effective tip" readout shows exactly what percentage that rounding works out to, so you can see it's still in a reasonable range rather than accidentally over-tipping by a lot on a small bill.</p>
+    <p><strong>Worked example:</strong> a $64 bill split 4 ways with an 18% tip: tip = $11.52, total = $75.52, per person = $18.88. Rounding the total up to $76 makes the effective tip 18.75% instead of 18% — a negligible difference for a cleaner split.</p>
   </section>
 
   <nav class="more-tools">

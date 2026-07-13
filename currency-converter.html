@@ -96,7 +96,6 @@
   <div class="wrap">
     <div class="headbar">
       <a class="logo" href="index.html">TALLYBENCH<span>.</span></a>
-      <div class="tagline">22 TOOLS · 0 SIGN-UP</div>
     </div>
   </div>
   <nav class="ruler cat-ruler">
@@ -138,7 +137,7 @@
   <section class="hero">
     <div class="hero-icon-row cat-finance">
       <div class="hero-icon"><svg><use href="icons.svg#icon-currency"/></svg></div>
-      <div class="eyebrow">// 03 · CURRENCY CONVERTER · LIVE RATES</div>
+      <div class="eyebrow">// CURRENCY CONVERTER · LIVE RATES</div>
     </div>
     <h1>Convert currencies at the current exchange rate.</h1>
     <p>Rates are pulled live from the European Central Bank's daily reference rates — no sign-up, no delay beyond the bank's own daily update.</p>
@@ -165,16 +164,20 @@
 
   <section class="article">
     <h3>Are these rates actually live?</h3>
-    <p>They're pulled in real time from a free public API each time you change an amount or currency, so you always see the latest data that service has — but the underlying rate itself is the European Central Bank's official daily reference rate, published once per business day (not weekends or ECB holidays). It's the same standard many banks and finance sites use as a benchmark, but it isn't a tick-by-tick trading feed.</p>
+    <p>They're pulled in real time from a free public API (Frankfurter, which sources European Central Bank data) each time you change an amount or currency, so you always see the latest data that service has — but the underlying rate itself is the ECB's official daily reference rate, published once per business day (not weekends or ECB holidays). It's the same standard many banks and finance sites use as a benchmark, but it isn't a tick-by-tick trading feed.</p>
     <h3>Why isn't this updated every second like a trading terminal?</h3>
-    <p>Second-by-second interbank rates come from paid market data feeds that trading platforms subscribe to. For everyday conversions — travel budgeting, invoicing, checking what something costs abroad — the daily ECB reference rate is accurate enough and doesn't require an account or paid API key to access.</p>
+    <p>Second-by-second interbank rates come from paid market data feeds that trading platforms and brokerages subscribe to, often costing thousands of dollars a month for institutional access. For everyday conversions — travel budgeting, invoicing, checking what something costs abroad, comparing a salary offer in a different country — the daily ECB reference rate is accurate enough and doesn't require an account or paid API key to access.</p>
     <h3>Does my amount or currency choice get stored anywhere?</h3>
     <p>No — each conversion is a fresh request to the exchange rate service and nothing is saved. If the service is temporarily unreachable, the tool will say so rather than showing a stale or fabricated number.</p>
     <h3>Can I use this for sending or receiving international money transfers?</h3>
-    <p>This gives you the reference mid-market rate, useful for knowing what a fair conversion looks like — but banks and remittance services add their own margin on top, often 1-5%, so the amount you actually receive will be somewhat lower than this calculator's figure.</p>
+    <p>This gives you the reference mid-market rate, useful for knowing what a fair conversion looks like — but banks and remittance services add their own margin on top, often 1–5% depending on the provider and corridor, so the amount you actually receive will be somewhat lower than this calculator's figure. Traditional banks (in the US, UK, EU, and India) tend to sit at the higher end of that margin range, while dedicated remittance services and fintech transfer apps are usually cheaper and often disclose their markup transparently — it's worth comparing the total received amount, not just the advertised rate, since some providers advertise a rate close to mid-market but recoup the margin through a separate flat fee.</p>
     <h3>Why does the rate change slightly every time I check?</h3>
-    <p>Rates here update once per business day from the European Central Bank's reference data, not by the second — so within a single day the number stays fixed, but checking again tomorrow (or after a weekend) will show a new day's rate.</p>
-    <p><strong>Worked example:</strong> converting ₹1,00,000 to USD at a rate of 1 USD = ₹83.5 gives 100000÷83.5 ≈ $1,197.60 — enter 100000 with INR as 'From' and USD as 'To' above to see this computed live at today's actual rate.</p>
+    <p>Rates here update once per business day from the ECB's reference data, not by the second — so within a single day the number stays fixed, but checking again tomorrow (or after a weekend) will show a new day's rate. Currency markets are genuinely volatile day to day; a pair can easily move 0.5–1.5% in a single trading day around major economic data releases or central bank announcements.</p>
+    <h3>Which currencies are covered, and are any pegged?</h3>
+    <p>Major global currencies are covered, including USD, EUR, GBP, INR, JPY, AUD, CAD, and dozens more. Note that some currencies are pegged or tightly managed against another (the UAE dirham and several Gulf currencies against the USD, for instance), so their "exchange rate" barely moves day to day almost by policy design, unlike freely floating currencies like the USD/EUR or USD/INR pairs, which fluctuate continuously based on market forces.</p>
+    <h3>How does this compare across the US, Europe, and India specifically?</h3>
+    <p>USD and EUR are both freely floating, liquid currencies with tight bid-ask spreads at any reputable exchange point. INR is a managed float — the Reserve Bank of India intervenes periodically to smooth volatility, so it moves less erratically day-to-day than some emerging-market currencies but is still fundamentally market-driven. If you're comparing prices or budgets across these three regions, this converter's mid-market rate is the fair reference point before any bank or card network's own conversion fee is applied on top.</p>
+    <p><strong>Worked example:</strong> converting ₹1,00,000 to USD at a rate of 1 USD = ₹83.5 gives 100000÷83.5 ≈ $1,197.60 — enter 100000 with INR as "From" and USD as "To" above to see this computed live at today's actual rate, which will differ slightly from this example since rates move daily.</p>
   </section>
 
   <nav class="more-tools">

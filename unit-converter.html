@@ -88,7 +88,6 @@
   <div class="wrap">
     <div class="headbar">
       <a class="logo" href="index.html">TALLYBENCH<span>.</span></a>
-      <div class="tagline">22 TOOLS · 0 SIGN-UP</div>
     </div>
   </div>
   <nav class="ruler cat-ruler">
@@ -130,9 +129,9 @@
   <section class="hero">
     <div class="hero-icon-row cat-utility">
       <div class="hero-icon"><svg><use href="icons.svg#icon-units"/></svg></div>
-      <div class="eyebrow">// 11 · UNIT CONVERTER</div>
+      <div class="eyebrow">// UNIT CONVERTER</div>
     </div>
-    <h1>Eight categories, both directions.</h1>
+    <h1>Ten categories, both directions.</h1>
     <p>Pick a category, enter a value, and choose the units to convert from and to.</p>
   </section>
 
@@ -149,13 +148,18 @@
             <option value="time">Time</option>
             <option value="data">Digital Storage</option>
             <option value="temperature">Temperature</option>
+            <option value="pressure">Pressure</option>
+            <option value="energy">Energy</option>
           </select>
         </div>
         <div class="row2">
           <div class="field"><label>Value</label><input type="number" id="unitVal" value="1"></div>
           <div class="field"><label>From</label><select id="unitFrom"></select></div>
         </div>
-        <div class="field"><label>To</label><select id="unitTo"></select></div>
+        <div class="row2">
+          <div class="field"><label>To</label><select id="unitTo"></select></div>
+          <div class="field" style="align-self:end;"><button type="button" class="ghost" id="unitSwap" style="width:100%;">⇅ Swap</button></div>
+        </div>
       </div>
       <div class="readout">
         <div class="r-row"><span class="r-label">Result</span><span class="r-value" id="unitOut">—</span></div>
@@ -165,14 +169,20 @@
 
   <section class="article">
     <h3>Which units are supported?</h3>
-    <p>Length, weight/mass, volume, area, speed, time, and digital storage each have a full set of common units — for example length covers meters, kilometers, centimeters, millimeters, miles, yards, feet, inches, and nautical miles. Temperature converts between Celsius, Fahrenheit, and Kelvin using their proper formulas rather than a simple ratio.</p>
+    <p>Length, weight/mass, volume, area, speed, time, digital storage, pressure, and energy each have a full set of common units — for example length covers meters, kilometers, centimeters, millimeters, miles, yards, feet, inches, and nautical miles. Temperature converts between Celsius, Fahrenheit, and Kelvin using their proper formulas rather than a simple ratio.</p>
     <h3>How does the conversion work?</h3>
-    <p>Every unit in a category is converted to a common base unit first (meters for length, kilograms for weight, liters for volume, and so on), then converted from that base into your target unit — so any combination within a category works, not just fixed pairs. Temperature is the one exception, since Celsius, Fahrenheit, and Kelvin scales don't share a zero point, so it uses direct formulas instead.</p>
+    <p>Every unit in a category is converted to a common base unit first (meters for length, kilograms for weight, liters for volume, and so on), then converted from that base into your target unit — so any combination within a category works, not just fixed pairs. Temperature is the one exception, since Celsius, Fahrenheit, and Kelvin scales don't share a zero point, so it uses direct formulas instead. The swap button flips the From and To units instantly, useful for checking a conversion in reverse.</p>
+    <h3>What's included in the pressure and energy categories?</h3>
+    <p>Pressure covers pascals, kilopascals, bar, PSI (pounds per square inch, standard in the US for tire pressure and plumbing), atmospheres, and mmHg (used in medical blood-pressure and barometric contexts). Energy covers joules, kilojoules, calories, kilocalories (the "Calories" on nutrition labels), watt-hours, kilowatt-hours (what electricity bills are metered in), and BTU (British Thermal Units, still used for HVAC ratings in the US). These come up constantly in cross-border technical contexts — a European car's tire pressure spec in bar vs a US spec in PSI, or a US appliance's energy rating in BTU vs an EU rating in kWh.</p>
     <h3>Why do some conversions give slightly different results elsewhere?</h3>
-    <p>Some conversion factors are internationally defined exact values (1 inch = 2.54cm exactly), while others involve rounding depending on the standard used (e.g. US survey feet vs. international feet differ by a tiny fraction) — for everyday use these differences are negligible, but they can matter in scientific or legal contexts.</p>
+    <p>Some conversion factors are internationally defined exact values (1 inch = 2.54cm exactly, part of the 1959 international yard and pound agreement), while others involve rounding depending on the standard used — the US survey foot and the international foot differ by about 2 parts per million, immaterial for daily use but occasionally relevant in land surveying and GIS work. For everyday use these differences are negligible, but they can matter in scientific, engineering, or legal contexts.</p>
     <h3>Can I convert between categories, like length to weight?</h3>
-    <p>No — unit conversion only works within the same physical quantity (length to length, weight to weight), since converting across categories (like meters to kilograms) isn't mathematically meaningful without additional context like density.</p>
-    <p><strong>Worked example:</strong> 1 mile = 1609.34 meters exactly as used here, so 5 miles converts to 8,046.7 meters, or 8.047 km — try entering 5 with 'mi' as the From unit and 'km' as the To unit above.</p>
+    <p>No — unit conversion only works within the same physical quantity (length to length, weight to weight), since converting across categories (like meters to kilograms) isn't mathematically meaningful without additional context like density or a specific material's properties.</p>
+    <h3>Which unit systems does this cover — metric, imperial, US customary?</h3>
+    <p>All three, mixed within each category as needed. Metric (SI) units are the global default for science and most of the world's daily use, including India and virtually all of Europe. Imperial units (as historically used in the UK) and US customary units (the US's own variant, which differs from imperial in a few units like fluid ounces and gallons) are both represented for length, weight, and volume, since American users, and to a lesser extent British users for some everyday units like miles and pints, still use them daily.</p>
+    <h3>Why does a US gallon differ from a UK/imperial gallon?</h3>
+    <p>The US customary gallon (3.785 liters) and the imperial gallon used historically in the UK (4.546 liters) are genuinely different volumes — about 20% apart — a holdover from different historical standardizations that never fully merged. This converter uses US customary volume units throughout, since that's the more commonly needed reference online; if you specifically need imperial (UK) gallons, note the roughly 1.2× difference when converting.</p>
+    <p><strong>Worked example:</strong> 1 mile = 1,609.34 meters exactly as used here, so 5 miles converts to 8,046.7 meters, or 8.047 km. On the newer categories: 30 PSI (a common car tire pressure) converts to about 2.07 bar, and 1 kWh converts to exactly 3,600,000 joules or about 3,412 BTU — try entering these in the corresponding categories above.</p>
   </section>
 
   <nav class="more-tools">

@@ -88,7 +88,6 @@
   <div class="wrap">
     <div class="headbar">
       <a class="logo" href="index.html">TALLYBENCH<span>.</span></a>
-      <div class="tagline">22 TOOLS · 0 SIGN-UP</div>
     </div>
   </div>
   <nav class="ruler cat-ruler">
@@ -130,7 +129,7 @@
   <section class="hero">
     <div class="hero-icon-row cat-utility">
       <div class="hero-icon"><svg><use href="icons.svg#icon-words"/></svg></div>
-      <div class="eyebrow">// 18 · WORD & CHARACTER COUNTER</div>
+      <div class="eyebrow">// WORD & CHARACTER COUNTER</div>
     </div>
     <h1>Paste text, see counts update live.</h1>
     <p>Word count, character count, and sentence count, all updating as you type or paste.</p>
@@ -141,22 +140,34 @@
       <div><div class="field"><label>Your text</label><textarea id="wcText" placeholder="Paste or type here..."></textarea></div></div>
       <div class="readout">
         <div class="r-row"><span class="r-label">Words</span><span class="r-value" id="wcWords">0</span></div>
-        <div class="r-row"><span class="r-label">Characters</span><span class="r-value" id="wcChars">0</span></div>
+        <div class="r-row"><span class="r-label">Characters (with spaces)</span><span class="r-value" id="wcChars">0</span></div>
+        <div class="r-row"><span class="r-label">Characters (no spaces)</span><span class="r-sub" id="wcCharsNoSpace">0</span></div>
         <div class="r-row"><span class="r-label">Sentences</span><span class="r-value" id="wcSent">0</span></div>
+        <div class="r-row"><span class="r-label">Paragraphs</span><span class="r-sub" id="wcPara">0</span></div>
+        <div class="r-row"><span class="r-label">Reading time</span><span class="r-sub" id="wcReadTime">0 sec</span></div>
+        <div class="r-row"><span class="r-label">Speaking time</span><span class="r-sub" id="wcSpeakTime">0 sec</span></div>
       </div>
     </div>
   </section>
 
   <section class="article">
     <h3>How is the word count calculated?</h3>
-    <p>Text is trimmed and split on whitespace, so each run of characters between spaces counts as one word.</p>
+    <p>Text is trimmed and split on whitespace, so each run of characters between spaces counts as one word — the same basic method used by Word, Google Docs, and most online counters.</p>
+    <h3>What's the difference between the two character counts?</h3>
+    <p>"With spaces" counts every character including spaces and line breaks — this is the number that matters for platforms with a hard character limit that includes whitespace, like SMS (160 characters per segment) or some meta description fields. "Without spaces" strips whitespace out, giving a count closer to actual letter/punctuation content — useful for typing-speed contexts or comparing density between texts of different formatting.</p>
+    <h3>How are reading time and speaking time estimated?</h3>
+    <p>Reading time uses an average silent adult reading speed of 200–250 words per minute (this calculator uses 225 as a middle estimate); speaking time uses an average spoken pace of about 130–150 words per minute (this calculator uses 140), which is typical for presentations and conversational speech. Both are population averages — a technical document reads slower than a novel, and a rehearsed speech is often paced differently than casual conversation — so treat these as planning estimates, not guarantees. They're most useful for pacing a speech to a time limit, or gauging whether a blog post is a "3-minute read" or a "12-minute read" for a header estimate.</p>
     <h3>What's this useful for?</h3>
-    <p>Checking essay or post length against a word limit, meeting a minimum character count for a bio or meta description, or getting a rough sentence count for readability.</p>
+    <p>Checking essay or post length against a word limit, meeting a minimum or maximum character count for a bio, tweet, or meta description, estimating video script length from a speaking-time figure, or getting a rough sentence and paragraph count for readability review.</p>
     <h3>Does this match Microsoft Word's or Google Docs' word count exactly?</h3>
-    <p>It should be very close for typical text, since both count space-separated words the same basic way — small differences can appear around hyphenated words, numbers with commas, or unusual punctuation, where different tools make slightly different judgment calls.</p>
+    <p>It should be very close for typical text, since both count space-separated words the same basic way — small differences can appear around hyphenated words, numbers with commas, or unusual punctuation, where different tools make slightly different judgment calls about what constitutes a single "word."</p>
     <h3>Why does the sentence count sometimes look off?</h3>
-    <p>Sentence counting relies on detecting periods, question marks, and exclamation points followed by a space — abbreviations like 'Dr.' or decimal numbers like '3.14' can occasionally be miscounted as sentence breaks, a known limitation of simple punctuation-based counting.</p>
-    <p><strong>Worked example:</strong> pasting a 250-word essay draft here instantly shows whether it clears a '200 word minimum' assignment requirement, without needing to open a separate word processor.</p>
+    <p>Sentence counting relies on detecting periods, question marks, and exclamation points followed by a space — abbreviations like "Dr." or "e.g.", decimal numbers like "3.14", or ellipses can occasionally be miscounted as sentence breaks. This is a known limitation of simple punctuation-based counting, shared by essentially every lightweight word-count tool, and generally only affects the count by a few sentences on longer text.</p>
+    <h3>How is paragraph count determined?</h3>
+    <p>A paragraph is counted as a block of text separated by a blank line (a double line break) — this matches how most word processors and CMS platforms treat paragraph breaks when you paste formatted text. If your source text uses single line breaks without blank lines between paragraphs, the count may show fewer paragraphs than visually expected.</p>
+    <h3>Are word/character limits the same across platforms and languages?</h3>
+    <p>No — platform limits vary widely (X/Twitter's character limit, meta description guidelines around 150–160 characters for Google search snippets, academic abstract limits often 250–300 words) and none of them are universal. Character-based limits also behave differently across languages and scripts — a single Chinese or Japanese character often conveys what takes several Latin-script characters to express, so a "160-character" limit reads very differently in different languages, and this calculator counts Unicode characters as entered rather than adjusting for script.</p>
+    <p><strong>Worked example:</strong> pasting a 250-word essay draft here instantly shows whether it clears a "200 word minimum" assignment requirement, roughly how long it takes to read (about 67 seconds at 225 wpm) or read aloud (about 107 seconds at 140 wpm) — without needing to open a separate word processor.</p>
   </section>
 
   <nav class="more-tools">

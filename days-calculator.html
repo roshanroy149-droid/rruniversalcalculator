@@ -96,7 +96,6 @@
   <div class="wrap">
     <div class="headbar">
       <a class="logo" href="index.html">TALLYBENCH<span>.</span></a>
-      <div class="tagline">22 TOOLS · 0 SIGN-UP</div>
     </div>
   </div>
   <nav class="ruler cat-ruler">
@@ -138,7 +137,7 @@
   <section class="hero">
     <div class="hero-icon-row cat-utility">
       <div class="hero-icon"><svg><use href="icons.svg#icon-days"/></svg></div>
-      <div class="eyebrow">// 09 · DAYS BETWEEN DATES CALCULATOR</div>
+      <div class="eyebrow">// DAYS BETWEEN DATES CALCULATOR</div>
     </div>
     <h1>How many days between two dates?</h1>
     <p>Pick a start and end date to get the exact day count, week count, year/month/day breakdown, and business day count.</p>
@@ -164,18 +163,46 @@
     </div>
   </section>
 
+  <section class="tool" id="dateAdd">
+    <div class="tool-head"><span class="tool-num">//</span><div><h2>Add or subtract days from a date</h2><p class="tool-sub">Find a date a certain number of days before or after another.</p></div></div>
+    <div class="card">
+      <div>
+        <div class="field"><label>Starting date</label><input type="date" id="addStart"></div>
+        <div class="row2">
+          <div class="field"><label>Number of days</label><input type="number" id="addDays" value="30" step="1"></div>
+          <div class="field"><label>Direction</label>
+            <div class="seg" id="addDirSeg">
+              <button type="button" class="active" data-dir="add">Add (forward)</button>
+              <button type="button" data-dir="sub">Subtract (back)</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="readout">
+        <div class="r-row"><span class="r-label">Result date</span><span class="r-value" id="addResult" style="font-size:18px;">—</span></div>
+        <div class="r-row"><span class="r-label">Day of week</span><span class="r-sub" id="addDow">—</span></div>
+      </div>
+    </div>
+  </section>
+
   <section class="article">
     <h3>How is the day count calculated?</h3>
     <p>The calculator takes the exact calendar difference between the two dates, inclusive of leap years, and shows it as a raw day count, in weeks, and broken down into years/months/days.</p>
     <h3>What counts as a business day?</h3>
-    <p>Monday through Friday, counted between the two dates. It doesn't exclude public holidays, since those vary by country and calendar — treat it as a Mon–Fri count, not an official working-day count for payroll or legal deadlines.</p>
+    <p>Monday through Friday, counted between the two dates. It doesn't exclude public holidays, since those vary hugely by country — the US, UK, and India each observe different national holidays on different dates, and even sub-national holidays (US state holidays, Indian state-specific festivals, EU country-specific bank holidays) differ within a single country. Treat this as a Mon–Fri count, not an official working-day count for payroll or legal deadlines.</p>
     <h3>Does the order of the two dates matter?</h3>
     <p>No — enter them in either order. The result is always shown as a positive count, and works the same whether you're counting forward to a future date or back to a past one.</p>
+    <h3>What does the "add or subtract days" tool do differently?</h3>
+    <p>The top calculator answers "how many days between these two dates?" The second tool answers the reverse question: "what date is 45 days from now?" or "what date was 90 days before this deadline?" — common for calculating due dates, return windows, contract notice periods, or quarantine/waiting periods. It also shows the day of the week the result lands on, useful for checking whether a deadline falls on a weekend.</p>
     <h3>Is this accurate enough for legal or contractual deadlines?</h3>
-    <p>The day count itself is exact, but many contracts define 'business days' or 'working days' with specific rules (excluding public holidays, or counting from the day after signing) that vary by jurisdiction and agreement — always check the exact wording of a contract rather than relying solely on a general-purpose calculator for legal deadlines.</p>
+    <p>The day count itself is exact, but many contracts define "business days" or "working days" with specific rules (excluding public holidays, or counting from the day after signing, or using a different definition of "days" entirely — calendar days vs business days changes the math) that vary by jurisdiction and agreement. US federal contracts, UK commercial agreements, EU cross-border contracts, and Indian legal notices can each define these terms slightly differently. Always check the exact wording of a contract rather than relying solely on a general-purpose calculator for anything with legal consequences.</p>
     <h3>Why does the business day count seem lower than I expected?</h3>
-    <p>Business days here count Monday–Friday only, excluding weekends — it doesn't subtract public holidays, since those differ by country and calendar, so the true number of working days may be a few less than shown if holidays fall in that range.</p>
-    <p><strong>Worked example:</strong> from 1 January 2026 to 31 December 2026 is 364 days — one short of a full year because the count runs from Jan 1 to Dec 31 inclusive-exclusive, illustrating why 'a year' and '365 days between two dates' don't always align exactly depending on which dates you pick.</p>
+    <p>Business days here count Monday–Friday only, excluding weekends — it doesn't subtract public holidays, so the true number of working days may be a few less than shown if holidays fall in that range. A rough rule of thumb: most countries have 8–12 public holidays a year, so subtract roughly that many days (pro-rated for the period) from the Mon–Fri count for a closer estimate of actual working days.</p>
+    <h3>How do different date-count conventions affect the result?</h3>
+    <p>"Days between" can mean inclusive of both endpoints, exclusive of both, or inclusive of one and exclusive of the other, depending on context — insurance policies, rental agreements, and loan interest calculations sometimes specify which convention applies. This calculator uses the straightforward calendar-day difference (exclusive of the start, inclusive of the end, matching how most people intuitively count "days from now"), which is the most common default but worth double-checking against specific legal or financial documents.</p>
+    <h3>Why isn't a year always exactly 365 days between two dates?</h3>
+    <p>Leap years add a 366th day roughly every four years, so any span crossing a leap day will be one day longer than the same span in a non-leap period. Additionally, "one year later" measured by calendar date (e.g., March 1 to next March 1) isn't always exactly 365 days if a February 29th falls in between.</p>
+    <p><strong>Worked example:</strong> from 1 January 2026 to 31 December 2026 is 364 days — one short of a full year because the count runs from Jan 1 to Dec 31, illustrating why "a year" and "365 days between two dates" don't always align depending on which dates you pick. Adding 90 days to 1 January 2026 lands on 1 April 2026, a Wednesday.</p>
   </section>
 
   <nav class="more-tools">

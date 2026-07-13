@@ -33,7 +33,6 @@
   <div class="wrap">
     <div class="headbar">
       <a class="logo" href="index.html">TALLYBENCH<span>.</span></a>
-      <div class="tagline">22 TOOLS · 0 SIGN-UP</div>
     </div>
   </div>
   <nav class="ruler cat-ruler">
@@ -75,7 +74,7 @@
   <section class="hero">
     <div class="hero-icon-row cat-finance">
       <div class="hero-icon"><svg><use href="icons.svg#icon-investment"/></svg></div>
-      <div class="eyebrow">// 19 · FD CALCULATOR</div>
+      <div class="eyebrow">// FD CALCULATOR</div>
     </div>
     <h1>What will your fixed deposit grow to?</h1>
     <p>Enter the deposit, rate, and tenure — quarterly compounding by default, matching how Indian banks actually calculate FD interest.</p>
@@ -95,6 +94,7 @@
             <option value="1">Annually</option>
           </select>
         </div>
+        <div class="checks"><label><input type="checkbox" id="fdSenior"> Senior citizen (typically +0.50% bonus rate)</label></div>
       </div>
       <div class="readout">
         <div class="r-row"><span class="r-label">Invested</span><span class="r-value" id="fdInvested">0</span></div>
@@ -107,15 +107,22 @@
 
   <section class="article">
     <h3>How is FD maturity calculated?</h3>
-    <p>Fixed deposits use compound interest: maturity = P × (1 + r/n)^(n×t), where P is your deposit, r the annual rate, n the compounding frequency per year, and t the tenure in years. Most Indian banks compound quarterly, which is the default above.</p>
+    <p>Fixed deposits use compound interest: <strong>maturity = P × (1 + r/n)^(n×t)</strong>, where P is your deposit, r the annual rate, n the compounding frequency per year, and t the tenure in years. Most Indian banks compound quarterly, which is the default above.</p>
     <h3>Is FD interest taxable?</h3>
-    <p>Yes — FD interest is fully taxable as "income from other sources" at your slab rate, and banks deduct TDS at 10% if annual interest exceeds ₹40,000 (₹50,000 for senior citizens). The maturity figure above is pre-tax.</p>
+    <p>Yes — FD interest is fully taxable as "income from other sources" at your slab rate, and banks deduct TDS at 10% if annual interest exceeds ₹40,000 (₹50,000 for senior citizens), or 20% if you haven't linked PAN. The maturity figure above is pre-tax; check the <a href="tax-calculator.html">Tax Calculator</a> to see how this interest affects your total tax once added to other income.</p>
+    <h3>What does the senior citizen toggle change?</h3>
+    <p>Indian banks typically offer FD depositors aged 60+ an additional 0.25–0.75% over the standard rate (0.50% is the most common), recognizing that seniors often rely more heavily on fixed-income products for regular income. Toggle it on and adjust the base rate field to see the higher effective return — it's a real, meaningful difference over a multi-year tenure.</p>
     <h3>What happens if I withdraw an FD early?</h3>
-    <p>Premature withdrawal typically incurs a penalty of 0.5–1% on the interest rate, and the FD earns the rate applicable for the period actually held, not the originally booked rate — so breaking a 5-year FD after 1 year usually earns notably less than a fifth of the projected interest.</p>
+    <p>Premature withdrawal typically incurs a penalty of 0.5–1% on the interest rate, and the FD earns the rate applicable for the period actually held, not the originally booked rate — so breaking a 5-year FD after 1 year usually earns notably less than a fifth of the projected interest. Some banks offer specific "no-penalty" or partial-withdrawal FD variants at a slightly lower headline rate as a trade-off for that flexibility.</p>
     <h3>FD vs RD — which one is this for?</h3>
     <p>An FD is a one-time lump-sum deposit. If you're depositing a fixed amount every month instead, use the <a href="rd-calculator.html">RD calculator</a>.</p>
-    <p><strong>Worked example:</strong> ₹1,00,000 for 5 years at 7% compounded quarterly: 100000 × (1 + 0.07/4)^20 ≈ ₹1,41,478 — about ₹41,478 of interest.</p>
-
+    <h3>What's the equivalent of an FD outside India?</h3>
+    <p>The core concept — lock money away for a fixed term at a fixed rate, in exchange for a higher return than an instant-access account — exists worldwide under different names. In the US, it's a <strong>Certificate of Deposit (CD)</strong>, typically FDIC-insured up to $250,000 per depositor per bank, with terms from a few months to 5 years and an early-withdrawal penalty usually expressed as a number of months' interest rather than a rate cut. In the UK, it's a <strong>fixed-rate savings bond</strong ("fixed-rate bond" or "term deposit"), FSCS-protected up to £85,000, generally with no early access at all rather than a penalty-based one. Continental Europe uses <strong>term deposits</strong> (Festgeld in Germany, dépôt à terme in France) under similar national deposit-guarantee schemes (typically €100,000 under the EU-wide floor). The math this calculator uses — compound interest at a fixed rate over a fixed term — applies identically to all of these; only the compounding convention, insurance limits, and early-withdrawal rules differ by country and product.</p>
+    <h3>How does deposit insurance compare across these markets?</h3>
+    <p>India's DICGC insures bank deposits (including FDs) up to ₹5 lakh per depositor per bank; the US FDIC insures up to $250,000; the UK's FSCS covers up to £85,000; and the EU's deposit guarantee scheme floor is €100,000 (implemented per member state, sometimes higher). If you're holding a fixed deposit larger than your country's insured limit, spreading it across multiple banks is a common way to keep the full amount protected.</p>
+    <h3>Why does compounding frequency matter for the same stated rate?</h3>
+    <p>More frequent compounding means interest starts earning interest sooner within each year — quarterly compounding produces a slightly higher effective annual yield than annual compounding at the identical stated rate, though the gap is modest (a fraction of a percent) at typical FD rates. This is exactly why Indian banks quote FD rates alongside their compounding frequency, and why this calculator lets you switch it to match your specific bank's terms.</p>
+    <p><strong>Worked example:</strong> ₹1,00,000 for 5 years at 7% compounded quarterly: 100,000 × (1 + 0.07/4)^20 ≈ ₹1,41,478 — about ₹41,478 of interest. With the senior citizen toggle adding 0.5% (7.5% total), the same deposit grows to roughly ₹1,44,996 instead — about ₹3,500 more over the term from that single rate bump.</p>
   </section>
 
   <nav class="more-tools">

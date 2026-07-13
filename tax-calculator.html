@@ -112,7 +112,6 @@
   <div class="wrap">
     <div class="headbar">
       <a class="logo" href="index.html">TALLYBENCH<span>.</span></a>
-      <div class="tagline">22 TOOLS · 0 SIGN-UP</div>
     </div>
   </div>
   <nav class="ruler cat-ruler">
@@ -154,7 +153,7 @@
   <section class="hero">
     <div class="hero-icon-row cat-finance">
       <div class="hero-icon"><svg><use href="icons.svg#icon-tax"/></svg></div>
-      <div class="eyebrow">// 07 · INCOME TAX CALCULATOR</div>
+      <div class="eyebrow">// INCOME TAX CALCULATOR</div>
     </div>
     <h1>Gross income to take-home, with real deductions.</h1>
     <p>Enter salary and other income, apply the deductions that actually apply to you, and — for India — switch between old and new regime to compare.</p>
@@ -252,18 +251,22 @@
   <section class="article">
     <h3>Why doesn't this match my payslip or tax software exactly?</h3>
     <p>Real tax bills depend on filing status details, credits, dependents, and sub-national taxes (state, provincial, cantonal) that this tool doesn't model. It calculates the national/federal bracket structure on your taxable income after the deductions you enter, which is a solid estimate, not a filing-ready number.</p>
+    <h3>Does this include US state income tax?</h3>
+    <p>No — this models federal tax only. US state income tax varies enormously: nine states (including Texas, Florida, and Washington) charge no state income tax at all, while California's top rate exceeds 13%. If you're in a state with income tax, add your state's estimate separately on top of this federal figure for a fuller picture.</p>
     <h3>Old regime vs new regime in India — which should I pick?</h3>
     <p>New regime has lower rates and a bigger standard deduction (₹75,000) but doesn't allow 80C, 80D, HRA, or home loan interest deductions. Old regime has higher rates but lets you claim those deductions. If you have significant 80C investments, HRA, or a home loan, toggle to old regime and enter them — the calculator will show which comes out ahead.</p>
     <h3>Why is India's rebate different between regimes?</h3>
     <p>Section 87A zeroes out tax entirely up to ₹12,00,000 taxable income under the new regime, but only up to ₹5,00,000 under the old regime — both are applied automatically based on your regime choice, along with the 4% health and education cess on whatever tax remains.</p>
     <h3>What counts as "other income"?</h3>
-    <p>Interest, rental income, freelance or business income, dividends — anything beyond your salary that's taxed as ordinary income in your country. It's added to salary to get gross income before deductions are applied.</p>
+    <p>Interest, rental income, freelance or business income, dividends — anything beyond your salary that's taxed as ordinary income in your country. It's added to salary to get gross income before deductions are applied. Note this excludes capital gains in most countries, which are frequently taxed under separate rules and rates (short vs long-term capital gains in the US and India, for example) rather than folded into ordinary income brackets.</p>
     <h3>Why does the UAE show zero regardless of income?</h3>
-    <p>The UAE does not levy a personal income tax on salaries at the federal level, so the estimate is correctly zero for any amount entered.</p>
+    <p>The UAE does not levy a personal income tax on salaries at the federal level, so the estimate is correctly zero for any amount entered — one of a small number of countries (alongside several other Gulf states) that fund government spending primarily through other means, historically oil and gas revenue, rather than personal income tax.</p>
+    <h3>How do UK and German tax bands actually work?</h3>
+    <p>Both use progressive marginal brackets like the US, but with different structures — the UK applies a Personal Allowance (tax-free threshold) that itself phases out above £100,000 of income, then 20%/40%/45% bands above that. Germany's system is a continuous formula rather than flat brackets for middle incomes, producing a smoothly rising marginal rate rather than the "step" pattern of bracket-based systems, before capping at a flat top rate for very high incomes. This calculator simplifies both into an approximate bracket model for a directionally accurate estimate.</p>
     <h3>Why is my actual tax bill different from this estimate?</h3>
     <p>This models the national/federal bracket structure and the most common deductions, but real returns often include additional credits, state/provincial tax, and situational adjustments (dependents, other credits) this tool doesn't cover — treat this as a solid planning estimate, not a filing number.</p>
     <h3>How much difference can deductions actually make?</h3>
-    <p>In India's old regime, maxing out Section 80C (₹1.5L) alone can shift someone from the 20% bracket into paying meaningfully less tax on the same gross income — try toggling the regime and adjusting the deduction fields above to see the real difference on your own numbers.</p>
+    <p>In India's old regime, maxing out Section 80C (₹1.5L) alone can shift someone from the 20% bracket into paying meaningfully less tax on the same gross income — try toggling the regime and adjusting the deduction fields above to see the real difference on your own numbers. In the US, maxing a 401(k) or traditional IRA contribution directly reduces taxable income the same way, and in the UK, pension contributions receive similar relief at your marginal rate.</p>
     <p><strong>Worked example:</strong> in the US, a single filer earning $75,000 with the standard $15,000 deduction has $60,000 taxable income, landing a federal tax bill of roughly $8,114 — about 10.8% of gross income, well below the top marginal rate of 22% since only the income above each threshold is taxed at that threshold's rate.</p>
   </section>
 

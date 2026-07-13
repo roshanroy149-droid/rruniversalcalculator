@@ -96,7 +96,6 @@
   <div class="wrap">
     <div class="headbar">
       <a class="logo" href="index.html">TALLYBENCH<span>.</span></a>
-      <div class="tagline">22 TOOLS · 0 SIGN-UP</div>
     </div>
   </div>
   <nav class="ruler cat-ruler">
@@ -138,7 +137,7 @@
   <section class="hero">
     <div class="hero-icon-row cat-health">
       <div class="hero-icon"><svg><use href="icons.svg#icon-calorie"/></svg></div>
-      <div class="eyebrow">// 10 · CALORIE / BMR CALCULATOR</div>
+      <div class="eyebrow">// CALORIE / BMR CALCULATOR</div>
     </div>
     <h1>How many calories does your body actually need?</h1>
     <p>Enter your stats and activity level to get your BMR, maintenance calories, and targets for weight loss or gain.</p>
@@ -155,7 +154,13 @@
         </div>
         <div class="row2">
           <div class="field"><label>Age (years)</label><input type="number" id="calAge" value="30" min="1"></div>
-          <div class="field"><label>Weight (kg)</label><input type="number" id="calWeight" value="70"></div>
+          <div class="field"><label>Weight</label><input type="number" id="calWeight" value="70"></div>
+        </div>
+        <div class="field"><label>Weight unit</label>
+          <select id="calWeightUnit">
+            <option value="kg">Kilograms</option>
+            <option value="lb">Pounds</option>
+          </select>
         </div>
         <div class="field"><label>Height unit</label>
           <select id="calHeightUnit">
@@ -183,22 +188,47 @@
         <div class="r-row"><span class="r-label">Maintenance (TDEE)</span><span class="r-value" id="calTDEE">0</span></div>
         <div class="r-row"><span class="r-label">Weight loss target</span><span class="r-value" id="calLoss">0</span></div>
         <div class="r-row"><span class="r-label">Weight gain target</span><span class="r-value" id="calGain">0</span></div>
+        <div class="r-row"><span class="r-label">Macros at maintenance (P / C / F)</span><span class="r-sub" id="calMacros">—</span></div>
       </div>
+    </div>
+  </section>
+
+  <section style="padding:0 0 8px;">
+    <div class="field"><label>Macro split style (affects the breakdown above)</label>
+      <select id="calMacroStyle">
+        <option value="balanced" selected>Balanced (30% protein / 40% carb / 30% fat)</option>
+        <option value="highprotein">Higher protein (40% protein / 30% carb / 30% fat)</option>
+        <option value="lowcarb">Lower carb (35% protein / 20% carb / 45% fat)</option>
+      </select>
     </div>
   </section>
 
   <section class="article">
     <h3>What formula does this use?</h3>
-    <p>BMR is calculated with the Mifflin-St Jeor equation, generally considered more accurate than the older Harris-Benedict formula. TDEE (Total Daily Energy Expenditure) multiplies BMR by an activity factor to estimate total calories burned per day.</p>
+    <p>BMR is calculated with the Mifflin-St Jeor equation — <strong>10×weight(kg) + 6.25×height(cm) − 5×age + 5</strong> for men, and the same minus 161 instead of plus 5 for women. Published in 1990 and re-validated repeatedly since, it's generally considered more accurate for the modern population than the older 1919 Harris-Benedict formula, which tends to overestimate BMR by 5–15% for most people today. TDEE (Total Daily Energy Expenditure) multiplies BMR by an activity factor to estimate total calories burned per day, including exercise and general movement.</p>
+
+    <h3>How does Harris-Benedict compare, and should I care?</h3>
+    <p>Harris-Benedict (revised 1984 version: 88.36 + 13.4×kg + 4.8×cm − 5.7×age for men) is still widely quoted and used in some clinical settings, but independent validation studies consistently find Mifflin-St Jeor closer to measured resting metabolic rate for the general population, which is why this calculator defaults to it. The two formulas typically land within 3–5% of each other for an average-build adult — the gap widens for people at the extremes of body composition, which is exactly the case Katch-McArdle below is built for.</p>
+
+    <h3>What about the Katch-McArdle formula?</h3>
+    <p>Katch-McArdle calculates BMR from lean body mass instead of total weight: <strong>370 + 21.6 × lean mass (kg)</strong>. Because fat tissue burns far fewer calories at rest than muscle, this formula is more accurate for people who are notably lean or muscular — bodybuilders, athletes — where Mifflin-St Jeor's weight-only approach can misjudge BMR. Its accuracy depends entirely on an accurate body-fat percentage input, which most people don't have precisely measured (a DEXA scan or hydrostatic weighing gives the most reliable figure; bioelectrical scales are a rough estimate at best) — that's why this calculator uses Mifflin-St Jeor as the general-purpose default.</p>
+
     <h3>How are the weight loss and gain targets calculated?</h3>
-    <p>Weight loss target subtracts 500 calories from TDEE, and weight gain target adds 500 — a 500-calorie daily deficit or surplus roughly corresponds to about 0.5kg (1lb) of change per week, a commonly used moderate pace.</p>
+    <p>Weight loss target subtracts 500 calories from TDEE, and weight gain target adds 500 — a 500-calorie daily deficit or surplus roughly corresponds to about 0.45 kg (1 lb) of change per week, since one pound of body fat represents approximately 3,500 kcal. This is a moderate, sustainable pace recommended by most dietitians; a more aggressive 750–1,000 calorie deficit accelerates loss but is harder to sustain and risks more muscle loss alongside fat.</p>
+
+    <h3>What do the macro numbers mean?</h3>
+    <p>Protein and carbohydrates provide 4 kcal per gram, fat provides 9 kcal per gram — the macro breakdown above splits your maintenance calories into grams of each using whichever style you pick. "Balanced" (30/40/30) suits general health goals; "Higher protein" (40/30/30) supports muscle retention during a calorie deficit or muscle gain during a surplus, since protein needs don't scale down just because calories do; "Lower carb" (35/20/45) suits people managing blood sugar or following a lower-carbohydrate eating pattern. None of these is more "correct" than another — the right split depends on your goal, medical situation, and what you can sustain.</p>
+
     <h3>Is this accurate for everyone?</h3>
-    <p>These are population-average formulas — actual metabolism varies with muscle mass, genetics, and health conditions. Treat the numbers as a reasonable starting point, not a precise measurement, and adjust based on how your actual weight responds over a few weeks.</p>
-    <h3>How accurate is this compared to a lab measurement?</h3>
-    <p>The Mifflin-St Jeor formula is a population-average estimate validated against measured metabolic rates, generally accurate within about 10% for most people — but true metabolism varies with genetics, muscle mass, and health conditions, so a DEXA scan or metabolic cart test would be more precise for any individual.</p>
+    <p>These are population-average formulas — actual metabolism varies with muscle mass, genetics, thyroid function, and other health conditions, and studies show even the best equations can be off by 10% or more for a given individual. Treat the numbers as a well-informed starting point, not a precise measurement, and adjust based on how your actual weight responds over 2–3 weeks of consistent tracking — that real-world feedback beats any formula.</p>
+
     <h3>Should I eat exactly my TDEE every day?</h3>
-    <p>TDEE is a maintenance estimate, not a daily target — actual intake naturally varies day to day, and what matters for weight management is the average over a week or two, not hitting an exact number every single day.</p>
-    <p><strong>Worked example:</strong> a 30-year-old male, 75kg, 178cm, moderately active: BMR = 10×75 + 6.25×178 − 5×30 + 5 = 750+1112.5−150+5 = 1,717.5 kcal. TDEE = 1,717.5 × 1.55 ≈ 2,662 kcal/day for maintenance.</p>
+    <p>TDEE is a maintenance estimate, not a daily prescription — actual intake naturally varies day to day with social meals, travel, and appetite, and what matters for weight management is the average over a week or two, not hitting an exact number every single day. Weekly averaging also smooths out water-weight fluctuations that make day-to-day scale readings noisy.</p>
+
+    <h3>Does this differ between the US, Europe, and India?</h3>
+    <p>The physiology and formulas are universal — a calorie is a calorie regardless of country. What differs is units and labeling conventions: US nutrition labels use Calories (kcal) and often report macros in grams per serving with different serving-size conventions than the EU's per-100g standard; India's ICMR-NIN also publishes its own reference energy intake tables, which run somewhat lower than US RDA figures for a given body size, reflecting differences in the reference population studied. If you're cross-referencing a food label from a different country, the calorie and gram figures are directly comparable — just check whether you're looking at "per serving" or "per 100g."</p>
+
+    <p><strong>Worked example:</strong> a 30-year-old male, 75 kg, 178 cm, moderately active: BMR = 10×75 + 6.25×178 − 5×30 + 5 = 750+1,112.5−150+5 = 1,717.5 kcal. TDEE = 1,717.5 × 1.55 ≈ 2,662 kcal/day for maintenance. On a balanced macro split, that's roughly 200g protein, 266g carbs, and 89g fat per day (30/40/30 by calories, converted at 4/4/9 kcal per gram).</p>
   </section>
 
   <nav class="more-tools">
