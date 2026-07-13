@@ -1881,3 +1881,96 @@ function renderAmortTable(bodyId, years, cur){
   });
   calc();
 })();
+
+// ---- Universal Reset + Copy Result buttons ----
+// Adds a "Reset" and "Copy result" button to every calculator card that has
+// a .readout, using only the inputs/segmented-controls that belong to it.
+// Skipped on the scientific calculator page, which has its own AC/Copy controls
+// suited to its expression-based model rather than a fixed input form.
+(function(){
+  if(document.getElementById('sciGrid')) return;
+
+  const cards = document.querySelectorAll('.tool .card');
+  if(!cards.length) return;
+
+  cards.forEach(card => {
+    const readout = card.querySelector('.readout');
+    if(!readout) return; // output-only or input-only card with nothing to attach to
+
+    // Decide the scope to pull default values from: normally this card, but
+    // if this card has no inputs of its own (e.g. tax calculator's separate
+    // output card), fall back to the whole .tool section instead.
+    let scope = card;
+    if(card.querySelectorAll('input, select').length === 0){
+      const toolSection = card.closest('.tool');
+      if(toolSection && toolSection.querySelectorAll('input, select').length > 0){
+        scope = toolSection;
+      }
+    }
+
+    const formInputs = Array.from(scope.querySelectorAll('input, select'));
+    if(formInputs.length === 0) return; // nothing resettable (e.g. password generator has no inputs)
+
+    const defaults = formInputs.map(el => {
+      if(el.tagName === 'SELECT'){
+        const opts = Array.from(el.options);
+        const defOpt = opts.find(o => o.defaultSelected) || opts[0];
+        return {el, kind:'value', value: defOpt ? defOpt.value : ''};
+      }
+      if(el.type === 'checkbox' || el.type === 'radio'){
+        return {el, kind:'checkbox', value: el.defaultChecked};
+      }
+      return {el, kind:'value', value: el.defaultValue};
+    });
+
+    const segGroups = Array.from(scope.querySelectorAll('.seg'));
+    const segDefaults = segGroups.map(seg => ({
+      seg, activeBtn: seg.querySelector('button.active') || seg.querySelector('button')
+    }));
+
+    // Special case: age calculator uses a manual "Calculate" button rather
+    // than live recalculation on input.
+    const calcBtn = scope.querySelector('#ageBtn');
+
+    const row = document.createElement('div');
+    row.className = 'result-actions';
+    row.style.cssText = 'display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;';
+    row.innerHTML =
+      '<button type="button" class="ghost result-reset" style="font-size:12px;padding:8px 14px;">Reset</button>'+
+      '<button type="button" class="ghost result-copy" style="font-size:12px;padding:8px 14px;">Copy result</button>';
+    readout.appendChild(row);
+
+    const resetBtn = row.querySelector('.result-reset');
+    const copyBtn = row.querySelector('.result-copy');
+
+    resetBtn.addEventListener('click', () => {
+      defaults.forEach(d => {
+        if(d.kind === 'checkbox') d.el.checked = d.value;
+        else d.el.value = d.value;
+        d.el.dispatchEvent(new Event('input', {bubbles:true}));
+        d.el.dispatchEvent(new Event('change', {bubbles:true}));
+      });
+      segDefaults.forEach(({activeBtn}) => { if(activeBtn) activeBtn.click(); });
+      if(calcBtn) calcBtn.click();
+    });
+
+    copyBtn.addEventListener('click', () => {
+      const labels = Array.from(readout.querySelectorAll('.r-label'));
+      const lines = [];
+      labels.forEach(label => {
+        const val = label.nextElementSibling;
+        if(val && (val.classList.contains('r-value') || val.classList.contains('r-sub'))){
+          const text = val.textContent.trim();
+          if(text) lines.push(label.textContent.trim() + ': ' + text);
+        }
+      });
+      const text = lines.length ? lines.join('\n') : readout.textContent.replace(/\s+/g,' ').trim();
+      if(!text) return;
+      navigator.clipboard.writeText(text).then(() => {
+        const orig = copyBtn.textContent;
+        copyBtn.textContent = 'Copied!';
+        setTimeout(() => { copyBtn.textContent = orig; }, 1500);
+      }).catch(() => {});
+    });
+  });
+})();
