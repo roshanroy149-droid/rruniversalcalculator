@@ -875,32 +875,87 @@
   if(document.getElementById('cmpPrincipal')) calcCompound();
 })();
 
+// ---- Tax calculator: shared bracket data + pure calculation helpers ----
+// Hoisted out of the main calculator IIFE so the comparison-mode module below
+// can reuse the exact same numbers — one source of truth, not a duplicated copy.
+const taxFlatSchemes = {
+  ca: { symbol:'C$', brackets:[[57375,0.15],[114750,0.205],[177882,0.26],[253414,0.29],[Infinity,0.33]], dedLabel:'RRSP contributions & other deductions' },
+  uk: { symbol:'£', brackets:[[12570,0],[50270,0.20],[125140,0.40],[Infinity,0.45]], dedLabel:'Pension contributions & Gift Aid' },
+  de: { symbol:'€', brackets:[[11604,0],[66760,0.30],[277825,0.42],[Infinity,0.45]], dedLabel:'Werbungskosten & other deductions (simplified)' },
+  fr: { symbol:'€', brackets:[[11497,0],[29315,0.11],[83823,0.30],[180294,0.41],[Infinity,0.45]], dedLabel:'Deductible expenses & abatements' },
+  au: { symbol:'A$', brackets:[[18200,0],[45000,0.16],[135000,0.30],[190000,0.37],[Infinity,0.45]], dedLabel:'Work-related & other deductions' },
+  sg: { symbol:'S$', brackets:[[20000,0],[30000,0.02],[40000,0.035],[80000,0.07],[120000,0.115],[160000,0.15],[200000,0.18],[240000,0.19],[280000,0.195],[320000,0.20],[Infinity,0.24]], dedLabel:'Reliefs (CPF, course fees, etc.)' },
+  ae: { symbol:'AED ', brackets:[[Infinity,0]], dedLabel:'Not applicable' }
+};
+const taxUsFiling = {
+  single: { standardDeduction:15000, brackets:[[11925,0.10],[48475,0.12],[103350,0.22],[197300,0.24],[250525,0.32],[626350,0.35],[Infinity,0.37]] },
+  mfj:    { standardDeduction:30000, brackets:[[23850,0.10],[96950,0.12],[206700,0.22],[394600,0.24],[501050,0.32],[751600,0.35],[Infinity,0.37]] },
+  hoh:    { standardDeduction:22500, brackets:[[17000,0.10],[64850,0.12],[103350,0.22],[197300,0.24],[250500,0.32],[626350,0.35],[Infinity,0.37]] }
+};
+const taxIndiaRegimes = {
+  new: { standardDeduction:75000, brackets:[[400000,0],[800000,0.05],[1200000,0.10],[1600000,0.15],[2000000,0.20],[2400000,0.25],[Infinity,0.30]], rebateThreshold:1200000 },
+  old: { standardDeduction:50000, brackets:[[250000,0],[500000,0.05],[1000000,0.20],[Infinity,0.30]], rebateThreshold:500000 }
+};
+
+function calcBracketTax(income, brackets){
+  let tax = 0, lower = 0;
+  const rows = [];
+  for(const [ceiling, rate] of brackets){
+    if(income > lower){
+      const taxableInBand = Math.min(income, ceiling) - lower;
+      const bandTax = taxableInBand*rate;
+      tax += bandTax;
+      rows.push({lower, ceiling, rate, bandTax});
+    } else {
+      rows.push({lower, ceiling, rate, bandTax:0});
+    }
+    lower = ceiling;
+  }
+  return {tax, rows};
+}
+function taxFmtMoney(sym, n){ return sym+Math.round(Math.max(n,0)).toLocaleString(); }
+
+// Returns a scheme using ONLY the standard/default deduction (no itemized
+// fields) for a given country + filing status/regime — used by comparison
+// mode, where Scenario B intentionally stays simple rather than duplicating
+// every itemized deduction field from Scenario A.
+function getStandardTaxScheme(country, filingStatus, indiaRegime){
+  if(country==='us'){
+    const fs = taxUsFiling[filingStatus] || taxUsFiling.single;
+    return { symbol:'$', standardDeduction:fs.standardDeduction, brackets:fs.brackets, extraDed:0, rebateThreshold:0 };
+  }
+  if(country==='in'){
+    const rg = taxIndiaRegimes[indiaRegime] || taxIndiaRegimes.new;
+    return { symbol:'₹', standardDeduction:rg.standardDeduction, brackets:rg.brackets, extraDed:0, rebateThreshold:rg.rebateThreshold, isIndia:true };
+  }
+  const scheme = taxFlatSchemes[country] || taxFlatSchemes.uk;
+  return { symbol:scheme.symbol, standardDeduction:0, brackets:scheme.brackets, extraDed:0, rebateThreshold:0 };
+}
+
+// Computes final tax/take-home/effective-rate from a scheme + gross income —
+// shared by both the main calculator and comparison mode.
+function computeTaxFromScheme(scheme, gross){
+  const totalDed = scheme.standardDeduction + (scheme.extraDed||0);
+  const taxable = Math.max(gross-totalDed, 0);
+  let { tax, rows } = calcBracketTax(taxable, scheme.brackets);
+  if(scheme.rebateThreshold && taxable <= scheme.rebateThreshold){
+    tax = 0;
+  } else if(scheme.isIndia){
+    tax = tax*1.04; // 4% health & education cess
+  }
+  const takeHome = Math.max(gross-tax,0);
+  const effRate = gross>0 ? (tax/gross*100) : 0;
+  return { tax, taxable, takeHome, effRate, totalDed, rows };
+}
+
 // ---- Tax calculator ----
 (function(){
   const countrySel = document.getElementById('taxCountry');
   if(!countrySel) return;
 
-  // Non-US, non-India schemes: symbol + single bracket set (0% band already encodes personal allowance/basic exemption)
-  const flatSchemes = {
-    ca: { symbol:'C$', brackets:[[57375,0.15],[114750,0.205],[177882,0.26],[253414,0.29],[Infinity,0.33]], dedLabel:'RRSP contributions & other deductions' },
-    uk: { symbol:'£', brackets:[[12570,0],[50270,0.20],[125140,0.40],[Infinity,0.45]], dedLabel:'Pension contributions & Gift Aid' },
-    de: { symbol:'€', brackets:[[11604,0],[66760,0.30],[277825,0.42],[Infinity,0.45]], dedLabel:'Werbungskosten & other deductions (simplified)' },
-    fr: { symbol:'€', brackets:[[11497,0],[29315,0.11],[83823,0.30],[180294,0.41],[Infinity,0.45]], dedLabel:'Deductible expenses & abatements' },
-    au: { symbol:'A$', brackets:[[18200,0],[45000,0.16],[135000,0.30],[190000,0.37],[Infinity,0.45]], dedLabel:'Work-related & other deductions' },
-    sg: { symbol:'S$', brackets:[[20000,0],[30000,0.02],[40000,0.035],[80000,0.07],[120000,0.115],[160000,0.15],[200000,0.18],[240000,0.19],[280000,0.195],[320000,0.20],[Infinity,0.24]], dedLabel:'Reliefs (CPF, course fees, etc.)' },
-    ae: { symbol:'AED ', brackets:[[Infinity,0]], dedLabel:'Not applicable' }
-  };
-
-  const usFiling = {
-    single: { standardDeduction:15000, brackets:[[11925,0.10],[48475,0.12],[103350,0.22],[197300,0.24],[250525,0.32],[626350,0.35],[Infinity,0.37]] },
-    mfj:    { standardDeduction:30000, brackets:[[23850,0.10],[96950,0.12],[206700,0.22],[394600,0.24],[501050,0.32],[751600,0.35],[Infinity,0.37]] },
-    hoh:    { standardDeduction:22500, brackets:[[17000,0.10],[64850,0.12],[103350,0.22],[197300,0.24],[250500,0.32],[626350,0.35],[Infinity,0.37]] }
-  };
-
-  const indiaRegimes = {
-    new: { standardDeduction:75000, brackets:[[400000,0],[800000,0.05],[1200000,0.10],[1600000,0.15],[2000000,0.20],[2400000,0.25],[Infinity,0.30]], rebateThreshold:1200000 },
-    old: { standardDeduction:50000, brackets:[[250000,0],[500000,0.05],[1000000,0.20],[Infinity,0.30]], rebateThreshold:500000 }
-  };
+  const flatSchemes = taxFlatSchemes;
+  const usFiling = taxUsFiling;
+  const indiaRegimes = taxIndiaRegimes;
 
   const countrySel_ = countrySel;
   const filingWrap = document.getElementById('taxFilingWrap');
@@ -924,24 +979,7 @@
 
   let indiaRegime = 'new';
 
-  function calcBracketTax(income, brackets){
-    let tax = 0, lower = 0;
-    const rows = [];
-    for(const [ceiling, rate] of brackets){
-      if(income > lower){
-        const taxableInBand = Math.min(income, ceiling) - lower;
-        const bandTax = taxableInBand*rate;
-        tax += bandTax;
-        rows.push({lower, ceiling, rate, bandTax});
-      } else {
-        rows.push({lower, ceiling, rate, bandTax:0});
-      }
-      lower = ceiling;
-    }
-    return {tax, rows};
-  }
-
-  function fmtMoney(sym, n){ return sym+Math.round(Math.max(n,0)).toLocaleString(); }
+  function fmtMoney(sym, n){ return taxFmtMoney(sym, n); }
   function fmtBand(sym, lower, ceiling){
     const upper = ceiling===Infinity ? '+' : fmtMoney(sym, ceiling);
     return fmtMoney(sym, lower)+' – '+upper;
@@ -1039,6 +1077,87 @@
 
   updateFieldVisibility();
   calc();
+})();
+
+// ---- Tax: compare two scenarios ----
+(function(){
+  const toggle = document.getElementById('taxCompareToggle');
+  if(!toggle) return;
+  const wrap = document.getElementById('taxCompareWrap');
+  const countryBSel = document.getElementById('taxCountryB');
+  const filingWrapB = document.getElementById('taxFilingWrapB');
+  const filingSelB = document.getElementById('taxFilingStatusB');
+  const regimeWrapB = document.getElementById('taxRegimeWrapB');
+  const regimeSegB = document.getElementById('taxRegimeSegB');
+  let indiaRegimeB = 'new';
+
+  function updateVisibilityB(){
+    const country = countryBSel.value;
+    filingWrapB.style.display = country==='us' ? '' : 'none';
+    regimeWrapB.style.display = country==='in' ? '' : 'none';
+  }
+
+  function calcCompare(){
+    if(wrap.style.display === 'none') return;
+    updateVisibilityB();
+
+    const salaryEl = document.getElementById('taxSalary');
+    const otherEl = document.getElementById('taxOtherIncome');
+    const gross = (parseFloat(salaryEl.value)||0) + (parseFloat(otherEl.value)||0);
+
+    // Scenario A: read directly from the already-computed main calculator output
+    const amtAText = document.getElementById('taxAmt').textContent;
+    const takeHomeAText = document.getElementById('taxTakeHome').textContent;
+    const effRateAText = document.getElementById('taxEffRate').textContent;
+
+    // Scenario B: compute independently using the shared standard-deduction-only engine
+    const countryB = countryBSel.value;
+    const schemeB = getStandardTaxScheme(countryB, filingSelB.value, indiaRegimeB);
+    const resultB = computeTaxFromScheme(schemeB, gross);
+
+    document.getElementById('taxAmtB').textContent = taxFmtMoney(schemeB.symbol, resultB.tax);
+    document.getElementById('taxTakeHomeB').textContent = taxFmtMoney(schemeB.symbol, resultB.takeHome);
+    document.getElementById('taxEffRateB').textContent = resultB.effRate.toFixed(2)+'%';
+
+    document.getElementById('taxCompAmt').textContent = amtAText+' vs '+taxFmtMoney(schemeB.symbol, resultB.tax);
+    document.getElementById('taxCompTakeHome').textContent = takeHomeAText+' vs '+taxFmtMoney(schemeB.symbol, resultB.takeHome);
+    document.getElementById('taxCompRate').textContent = effRateAText+' vs '+resultB.effRate.toFixed(2)+'%';
+
+    // Parse A's numeric tax back out for comparison (strip currency symbol/commas)
+    const amtANum = parseFloat(amtAText.replace(/[^0-9.]/g,''))||0;
+    const diff = amtANum - resultB.tax;
+    let winner;
+    if(Math.abs(diff) < 1) winner = 'Roughly equal';
+    else if(diff > 0) winner = 'Scenario B has the lower estimated tax';
+    else winner = 'Scenario A has the lower estimated tax';
+    document.getElementById('taxCompWinner').textContent = winner;
+  }
+
+  toggle.addEventListener('change', ()=>{
+    wrap.style.display = toggle.checked ? 'block' : 'none';
+    calcCompare();
+  });
+  countryBSel.addEventListener('change', calcCompare);
+  filingSelB.addEventListener('change', calcCompare);
+  regimeSegB.addEventListener('click', (e)=>{
+    const btn = e.target.closest('button');
+    if(!btn) return;
+    indiaRegimeB = btn.dataset.regime;
+    regimeSegB.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    calcCompare();
+  });
+  // Recalculate whenever Scenario A's inputs change too, since B shares the income figure
+  ['taxSalary','taxOtherIncome','taxCountry','taxFilingStatus','tax80c','tax80d','taxHomeLoan','taxHRA','taxGenericDed'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener('input', calcCompare);
+    el.addEventListener('change', calcCompare);
+  });
+  const regimeSegA = document.getElementById('taxRegimeSeg');
+  if(regimeSegA) regimeSegA.addEventListener('click', ()=>setTimeout(calcCompare,0));
+
+  updateVisibilityB();
 })();
 
 // ---- Password generator ----

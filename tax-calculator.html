@@ -248,6 +248,59 @@
     </div>
   </section>
 
+  <section style="padding:32px 0;border-bottom:1px solid var(--paper-line);" id="taxCompareSection">
+    <div class="tool-head"><span class="tool-num">//</span><div><h2>Compare two scenarios</h2><p class="tool-sub">Same income, a different country or regime — see the tax difference side by side.</p></div></div>
+    <label class="checks" style="display:inline-flex;margin-bottom:12px;"><input type="checkbox" id="taxCompareToggle"> Compare with a second scenario</label>
+    <div id="taxCompareWrap" style="display:none;">
+      <p style="font-size:13px;color:var(--graphite);margin:0 0 16px;">Scenario B reuses the same salary and other income <strong>number</strong> as Scenario A above — it does not convert currency, so this shows how the same nominal amount is taxed under a different country's rules, not a real-income comparison across currencies. Scenario B also uses that country's standard deduction only, for a fast comparison rather than a fully itemized one. To compare real purchasing power, convert the income first using the <a href="currency-converter.html">Currency Converter</a>.</p>
+      <div class="card">
+        <div>
+          <div class="row2">
+            <div class="field"><label>Country (Scenario B)</label>
+              <select id="taxCountryB">
+                <option value="us">United States (federal)</option>
+                <option value="ca">Canada (federal)</option>
+                <option value="uk" selected>United Kingdom</option>
+                <option value="de">Germany (simplified)</option>
+                <option value="fr">France</option>
+                <option value="in">India</option>
+                <option value="au">Australia</option>
+                <option value="sg">Singapore (resident)</option>
+                <option value="ae">United Arab Emirates</option>
+              </select>
+            </div>
+            <div class="field" id="taxFilingWrapB" style="display:none;">
+              <label>Filing status (Scenario B)</label>
+              <select id="taxFilingStatusB">
+                <option value="single">Single</option>
+                <option value="mfj">Married filing jointly</option>
+                <option value="hoh">Head of household</option>
+              </select>
+            </div>
+            <div class="field" id="taxRegimeWrapB" style="display:none;">
+              <label>Tax regime (Scenario B)</label>
+              <div class="seg" id="taxRegimeSegB">
+                <button type="button" class="active" data-regime="new">New regime</button>
+                <button type="button" data-regime="old">Old regime</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="readout">
+          <div class="r-row"><span class="r-label">Estimated tax (B)</span><span class="r-value" id="taxAmtB">0</span></div>
+          <div class="r-row"><span class="r-label">Take-home (B)</span><span class="r-value" id="taxTakeHomeB">0</span></div>
+          <div class="r-row"><span class="r-label">Effective rate (B)</span><span class="r-value" id="taxEffRateB">0%</span></div>
+        </div>
+      </div>
+      <div class="readout" style="margin-top:16px;background:linear-gradient(160deg, var(--readout-bg-hi), var(--readout-bg));">
+        <div class="r-row"><span class="r-label">Estimated tax: A vs B</span><span class="r-value" id="taxCompAmt">—</span></div>
+        <div class="r-row"><span class="r-label">Take-home: A vs B</span><span class="r-value" id="taxCompTakeHome">—</span></div>
+        <div class="r-row"><span class="r-label">Effective rate: A vs B</span><span class="r-sub" id="taxCompRate">—</span></div>
+        <div class="r-row"><span class="r-label">Lower tax</span><span class="r-value" id="taxCompWinner" style="font-size:16px;">—</span></div>
+      </div>
+    </div>
+  </section>
+
   <section class="article">
     <h3>Why doesn't this match my payslip or tax software exactly?</h3>
     <p>Real tax bills depend on filing status details, credits, dependents, and sub-national taxes (state, provincial, cantonal) that this tool doesn't model. It calculates the national/federal bracket structure on your taxable income after the deductions you enter, which is a solid estimate, not a filing-ready number.</p>
@@ -255,6 +308,8 @@
     <p>No — this models federal tax only. US state income tax varies enormously: nine states (including Texas, Florida, and Washington) charge no state income tax at all, while California's top rate exceeds 13%. If you're in a state with income tax, add your state's estimate separately on top of this federal figure for a fuller picture.</p>
     <h3>Old regime vs new regime in India — which should I pick?</h3>
     <p>New regime has lower rates and a bigger standard deduction (₹75,000) but doesn't allow 80C, 80D, HRA, or home loan interest deductions. Old regime has higher rates but lets you claim those deductions. If you have significant 80C investments, HRA, or a home loan, toggle to old regime and enter them — the calculator will show which comes out ahead.</p>
+    <h3>How does the "Compare two scenarios" section work?</h3>
+    <p>Scenario B reuses the same salary and other income figure as Scenario A, and lets you pick a different country or regime to see the tax difference on that same nominal number. It's deliberately simplified — Scenario B applies only the standard deduction for whichever country you pick, not itemized deductions, so it answers "how does the tax structure compare" rather than "what would I actually pay after every deduction I'm eligible for." For a fully itemized figure in a different country, switch Scenario A itself to that country instead. Also worth repeating: the income number isn't currency-converted between A and B, so comparing, say, a $75,000 US scenario against a "₹75,000" Indian scenario is really comparing how two different tax systems treat the same digits — not real purchasing-power parity. If you want a genuine cross-currency comparison, convert the income first with the <a href="currency-converter.html">Currency Converter</a>, then enter the converted figure into Scenario A.</p>
     <h3>Why is India's rebate different between regimes?</h3>
     <p>Section 87A zeroes out tax entirely up to ₹12,00,000 taxable income under the new regime, but only up to ₹5,00,000 under the old regime — both are applied automatically based on your regime choice, along with the 4% health and education cess on whatever tax remains.</p>
     <h3>What counts as "other income"?</h3>
