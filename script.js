@@ -443,7 +443,7 @@
   });
 })();
 
-// ---- Scientific calculator ----
+// ---- Scientific calculator: expression tokenizer / parser / evaluator ----
 (function(){
   const grid = document.getElementById('sciGrid');
   if(!grid) return;
@@ -451,133 +451,295 @@
   const valEl = document.getElementById('sciVal');
   const degBtn = document.getElementById('sciDeg');
   const radBtn = document.getElementById('sciRad');
+  const copyBtn = document.getElementById('sciCopy');
 
-  let current = '0';
-  let previous = null;
-  let operator = null;
-  let resetNext = false;
-  let memory = 0;
+  let expr = '';          // the live expression being typed
   let lastAnswer = 0;
+  let memory = 0;
   let degMode = true;
+  let justEvaluated = false;
 
-  const opSymbol = {add:'+', sub:'−', mul:'×', div:'÷', pow:'xʸ'};
-
-  function fmt(n){
-    if(!isFinite(n)) return 'Error';
-    if(Math.abs(n) < 1e-12) n = 0;
-    const s = parseFloat(n.toPrecision(12)).toString();
-    return s;
-  }
-  function render(){
-    valEl.textContent = current;
-    exprEl.textContent = previous!==null ? previous+' '+(opSymbol[operator]||'') : '\u00A0';
-  }
-  function inputDigit(d){
-    if(resetNext){ current = d; resetNext=false; }
-    else { current = current==='0' ? d : current+d; }
-    render();
-  }
-  function inputDot(){
-    if(resetNext){ current='0.'; resetNext=false; render(); return; }
-    if(!current.includes('.')) current+='.';
-    render();
-  }
-  function clearAll(){ current='0'; previous=null; operator=null; resetNext=false; render(); }
-  function backspace(){ current = current.length>1 ? current.slice(0,-1) : '0'; render(); }
-  function toggleSign(){ current = fmt(parseFloat(current)*-1); render(); }
-  function percent(){ current = fmt(parseFloat(current)/100); render(); }
-
-  function compute(){
-    if(previous===null || operator===null) return parseFloat(current);
-    const a = parseFloat(previous), b = parseFloat(current);
-    let r;
-    switch(operator){
-      case 'add': r=a+b; break;
-      case 'sub': r=a-b; break;
-      case 'mul': r=a*b; break;
-      case 'div': r=b===0 ? NaN : a/b; break;
-      case 'pow': r=Math.pow(a,b); break;
-      default: r=b;
+  // ---- Tokenizer ----
+  function tokenize(str){
+    const tokens = [];
+    let i = 0;
+    const funcs = ['sin','cos','tan','log','ln','sqrt','cbrt'];
+    while(i < str.length){
+      const c = str[i];
+      if(/\s/.test(c)){ i++; continue; }
+      if(/[0-9.]/.test(c)){
+        let j = i;
+        while(j<str.length && /[0-9.]/.test(str[j])) j++;
+        tokens.push({type:'num', value: parseFloat(str.slice(i,j))});
+        i = j; continue;
+      }
+      if(c==='π'){ tokens.push({type:'const', value: Math.PI}); i++; continue; }
+      if(c==='e'){ tokens.push({type:'const', value: Math.E}); i++; continue; }
+      if(str.slice(i,i+3)==='Ans'){ tokens.push({type:'ans'}); i+=3; continue; }
+      const mf = funcs.find(f => str.slice(i, i+f.length).toLowerCase()===f);
+      if(mf){ tokens.push({type:'func', value: mf}); i += mf.length; continue; }
+      if(c==='√'){ tokens.push({type:'func', value:'sqrt'}); i++; continue; }
+      if(c==='∛'){ tokens.push({type:'func', value:'cbrt'}); i++; continue; }
+      if(c==='('){ tokens.push({type:'lparen'}); i++; continue; }
+      if(c===')'){ tokens.push({type:'rparen'}); i++; continue; }
+      if(c==='+'){ tokens.push({type:'op', value:'+'}); i++; continue; }
+      if(c==='-'||c==='−'){ tokens.push({type:'op', value:'-'}); i++; continue; }
+      if(c==='*'||c==='×'){ tokens.push({type:'op', value:'*'}); i++; continue; }
+      if(c==='/'||c==='÷'){ tokens.push({type:'op', value:'/'}); i++; continue; }
+      if(c==='^'){ tokens.push({type:'op', value:'^'}); i++; continue; }
+      if(c==='²'){ tokens.push({type:'postfix', value:'sq'}); i++; continue; }
+      if(c==='³'){ tokens.push({type:'postfix', value:'cube'}); i++; continue; }
+      if(c==='!'){ tokens.push({type:'postfix', value:'fact'}); i++; continue; }
+      if(str.slice(i,i+2)==='⁻¹'){ tokens.push({type:'postfix', value:'inv'}); i+=2; continue; }
+      throw new Error('Unexpected character: '+c);
     }
-    return r;
-  }
-  function setOperator(op){
-    if(previous!==null && !resetNext){
-      current = fmt(compute());
+    const out = [];
+    for(const t of tokens){
+      if(out.length){
+        const prev = out[out.length-1];
+        const prevEndsValue = ['num','const','ans','rparen','postfix'].includes(prev.type);
+        const startsValue = ['num','const','ans','func','lparen'].includes(t.type);
+        if(prevEndsValue && startsValue) out.push({type:'op', value:'*'});
+      }
+      out.push(t);
     }
-    previous = current;
-    operator = op;
-    resetNext = true;
-    render();
+    return out;
   }
-  function equals(){
-    if(operator===null) return;
-    const r = compute();
-    lastAnswer = r;
-    current = fmt(r);
-    previous = null;
-    operator = null;
-    resetNext = true;
-    render();
+
+  // ---- Recursive-descent parser ----
+  function parse(tokens){
+    let pos = 0;
+    const peek = () => tokens[pos];
+    const advance = () => tokens[pos++];
+    function parseExpression(){
+      let node = parseTerm();
+      while(peek() && peek().type==='op' && (peek().value==='+'||peek().value==='-')){
+        const op = advance().value;
+        node = {type:'binary', op, left:node, right:parseTerm()};
+      }
+      return node;
+    }
+    function parseTerm(){
+      let node = parsePower();
+      while(peek() && peek().type==='op' && (peek().value==='*'||peek().value==='/')){
+        const op = advance().value;
+        node = {type:'binary', op, left:node, right:parsePower()};
+      }
+      return node;
+    }
+    function parsePower(){
+      let node = parseUnary();
+      if(peek() && peek().type==='op' && peek().value==='^'){
+        advance();
+        node = {type:'binary', op:'^', left:node, right:parsePower()}; // right-assoc
+      }
+      return node;
+    }
+    function parseUnary(){
+      if(peek() && peek().type==='op' && peek().value==='-'){
+        advance();
+        return {type:'unary', op:'-', operand: parseUnary()};
+      }
+      return parsePostfix();
+    }
+    function parsePostfix(){
+      let node = parsePrimary();
+      while(peek() && peek().type==='postfix'){
+        node = {type:'postfixop', op: advance().value, operand: node};
+      }
+      return node;
+    }
+    function parsePrimary(){
+      const t = peek();
+      if(!t) throw new Error('Unexpected end of expression');
+      if(t.type==='num' || t.type==='const'){ advance(); return {type:'num', value:t.value}; }
+      if(t.type==='ans'){ advance(); return {type:'ans'}; }
+      if(t.type==='lparen'){
+        advance();
+        const node = parseExpression();
+        if(peek() && peek().type==='rparen') advance();
+        return node;
+      }
+      if(t.type==='func'){
+        advance();
+        if(peek() && peek().type==='lparen'){
+          advance();
+          const arg = parseExpression();
+          if(peek() && peek().type==='rparen') advance();
+          return {type:'func', name:t.value, arg};
+        }
+        return {type:'func', name:t.value, arg: parsePostfix()};
+      }
+      throw new Error('Unexpected token');
+    }
+    const result = parseExpression();
+    if(pos < tokens.length) throw new Error('Unexpected trailing input');
+    return result;
   }
-  function toRad(v){ return degMode ? v*Math.PI/180 : v; }
-  function unary(fn){
-    const v = parseFloat(current);
-    current = fmt(fn(v));
-    resetNext = true;
-    render();
-  }
+
   function factorial(n){
     n = Math.round(n);
     if(n<0) return NaN;
     if(n>170) return Infinity;
-    let r=1;
-    for(let i=2;i<=n;i++) r*=i;
+    let r=1; for(let i=2;i<=n;i++) r*=i;
     return r;
+  }
+
+  function evalNode(node){
+    switch(node.type){
+      case 'num': return node.value;
+      case 'ans': return lastAnswer;
+      case 'unary': return -evalNode(node.operand);
+      case 'postfixop': {
+        const v = evalNode(node.operand);
+        if(node.op==='sq') return v*v;
+        if(node.op==='cube') return v*v*v;
+        if(node.op==='fact') return factorial(v);
+        if(node.op==='inv') return v===0 ? NaN : 1/v;
+        break;
+      }
+      case 'binary': {
+        const a = evalNode(node.left), b = evalNode(node.right);
+        if(node.op==='+') return a+b;
+        if(node.op==='-') return a-b;
+        if(node.op==='*') return a*b;
+        if(node.op==='/') return b===0 ? NaN : a/b;
+        if(node.op==='^') return Math.pow(a,b);
+        break;
+      }
+      case 'func': {
+        const v = evalNode(node.arg);
+        const toRad = x => degMode ? x*Math.PI/180 : x;
+        switch(node.name){
+          case 'sin': return Math.sin(toRad(v));
+          case 'cos': return Math.cos(toRad(v));
+          case 'tan': return Math.tan(toRad(v));
+          case 'log': return Math.log10(v);
+          case 'ln': return Math.log(v);
+          case 'sqrt': return Math.sqrt(v);
+          case 'cbrt': return Math.cbrt(v);
+        }
+        break;
+      }
+    }
+    throw new Error('Cannot evaluate');
+  }
+
+  function fmt(n){
+    if(typeof n!=='number' || !isFinite(n)) return 'Error';
+    if(Math.abs(n) < 1e-12) n = 0;
+    return parseFloat(n.toPrecision(12)).toString();
+  }
+
+  function evaluateExpr(str){
+    const opens = (str.match(/\(/g)||[]).length;
+    const closes = (str.match(/\)/g)||[]).length;
+    if(opens>closes) str += ')'.repeat(opens-closes);
+    const tokens = tokenize(str);
+    const tree = parse(tokens);
+    return evalNode(tree);
+  }
+
+  function render(){ valEl.textContent = expr || '0'; }
+
+  function insert(str){
+    if(justEvaluated){ expr=''; justEvaluated=false; exprEl.textContent='\u00A0'; }
+    expr += str;
+    render();
+  }
+  function insertDigit(d){ insert(d); }
+  function insertDot(){
+    // only block a second dot within the current numeric run
+    const m = expr.match(/(\d*\.?\d*)$/);
+    if(m && m[0].includes('.')) return;
+    insert('.');
+  }
+  function clearAll(){ expr=''; justEvaluated=false; exprEl.textContent='\u00A0'; render(); }
+  function backspace(){
+    if(justEvaluated){ clearAll(); return; }
+    expr = expr.slice(0,-1);
+    render();
+  }
+  function doEquals(){
+    if(!expr){ return; }
+    try{
+      const r = evaluateExpr(expr);
+      if(typeof r!=='number' || !isFinite(r)) throw new Error('Math error');
+      exprEl.textContent = expr+' =';
+      lastAnswer = r;
+      expr = fmt(r);
+      valEl.textContent = expr;
+      justEvaluated = true;
+    } catch(err){
+      exprEl.textContent = expr+' =';
+      valEl.textContent = 'Error';
+      expr = '';
+      justEvaluated = true;
+    }
   }
 
   const actions = {
     ac: clearAll,
     back: backspace,
-    sign: toggleSign,
-    pct: percent,
-    dot: inputDot,
-    eq: equals,
-    add: ()=>setOperator('add'),
-    sub: ()=>setOperator('sub'),
-    mul: ()=>setOperator('mul'),
-    div: ()=>setOperator('div'),
-    pow: ()=>setOperator('pow'),
-    sq: ()=>unary(v=>v*v),
-    cube: ()=>unary(v=>v*v*v),
-    sqrt: ()=>unary(v=>Math.sqrt(v)),
-    cbrt: ()=>unary(v=>Math.cbrt(v)),
-    inv: ()=>unary(v=> v===0 ? NaN : 1/v),
-    fact: ()=>unary(factorial),
-    sin: ()=>unary(v=>Math.sin(toRad(v))),
-    cos: ()=>unary(v=>Math.cos(toRad(v))),
-    tan: ()=>unary(v=>Math.tan(toRad(v))),
-    log: ()=>unary(v=>Math.log10(v)),
-    ln: ()=>unary(v=>Math.log(v)),
-    pi: ()=>{ current = fmt(Math.PI); resetNext=true; render(); },
-    e: ()=>{ current = fmt(Math.E); resetNext=true; render(); },
-    ans: ()=>{ current = fmt(lastAnswer); resetNext=true; render(); },
+    dot: insertDot,
+    eq: doEquals,
+    sq: ()=>insert('²'),
+    cube: ()=>insert('³'),
+    fact: ()=>insert('!'),
+    inv: ()=>insert('⁻¹'),
+    sqrt: ()=>insert('√('),
+    cbrt: ()=>insert('∛('),
+    sin: ()=>insert('sin('),
+    cos: ()=>insert('cos('),
+    tan: ()=>insert('tan('),
+    log: ()=>insert('log('),
+    ln: ()=>insert('ln('),
+    pi: ()=>insert('π'),
+    e: ()=>insert('e'),
+    ans: ()=>insert('Ans'),
     mc: ()=>{ memory = 0; },
-    mr: ()=>{ current = fmt(memory); resetNext=true; render(); },
-    'm+': ()=>{ memory += parseFloat(current); },
-    'm-': ()=>{ memory -= parseFloat(current); }
+    mr: ()=>insert(fmt(memory)),
+    'm+': ()=>{ try{ memory += evaluateExpr(expr||valEl.textContent); }catch(e){} },
+    'm-': ()=>{ try{ memory -= evaluateExpr(expr||valEl.textContent); }catch(e){} }
   };
 
   grid.addEventListener('click', (e)=>{
     const btn = e.target.closest('button');
     if(!btn) return;
-    if(btn.dataset.num !== undefined){ inputDigit(btn.dataset.num); return; }
+    if(btn.dataset.num !== undefined){ insertDigit(btn.dataset.num); return; }
+    if(btn.dataset.ins !== undefined){ insert(btn.dataset.ins); return; }
     const act = btn.dataset.act;
     if(act && actions[act]) actions[act]();
   });
 
   degBtn.addEventListener('click', ()=>{ degMode=true; degBtn.classList.add('active'); radBtn.classList.remove('active'); });
   radBtn.addEventListener('click', ()=>{ degMode=false; radBtn.classList.add('active'); degBtn.classList.remove('active'); });
+
+  if(copyBtn){
+    copyBtn.addEventListener('click', ()=>{
+      const txt = valEl.textContent;
+      if(txt && txt!=='0' && txt!=='Error') navigator.clipboard.writeText(txt);
+    });
+  }
+
+  // ---- Keyboard support ----
+  document.addEventListener('keydown', (e)=>{
+    // only act when the scientific calculator is the visible tool on this page
+    if(!document.getElementById('scientific')) return;
+    const k = e.key;
+    if(/^[0-9]$/.test(k)){ insertDigit(k); e.preventDefault(); return; }
+    if(k==='.'){ insertDot(); e.preventDefault(); return; }
+    if(k==='+'){ insert('+'); e.preventDefault(); return; }
+    if(k==='-'){ insert('−'); e.preventDefault(); return; }
+    if(k==='*'){ insert('×'); e.preventDefault(); return; }
+    if(k==='/'){ insert('÷'); e.preventDefault(); return; }
+    if(k==='^'){ insert('^'); e.preventDefault(); return; }
+    if(k==='('){ insert('('); e.preventDefault(); return; }
+    if(k===')'){ insert(')'); e.preventDefault(); return; }
+    if(k==='Enter' || k==='='){ doEquals(); e.preventDefault(); return; }
+    if(k==='Backspace'){ backspace(); e.preventDefault(); return; }
+    if(k==='Escape'){ clearAll(); e.preventDefault(); return; }
+  });
 
   render();
 })();

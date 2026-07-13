@@ -139,8 +139,8 @@
       <div class="hero-icon"><svg><use href="icons.svg#icon-scientific"/></svg></div>
       <div class="eyebrow">// SCIENTIFIC CALCULATOR</div>
     </div>
-    <h1>Trig, logs, powers, and roots — one keypad.</h1>
-    <p>A full scientific keypad: trigonometric functions, logarithms, powers, roots, factorials, and memory keys, with a degrees/radians toggle.</p>
+    <h1>Type or tap — full expressions, proper precedence.</h1>
+    <p>Trigonometric functions, logarithms, powers, roots, factorials, memory keys, and parentheses — build a full expression like <code>3² + √16</code> or <code>2×(3+4)</code> and it evaluates with correct order of operations, not just one step at a time. Works with your keyboard too.</p>
   </section>
 
   <section class="tool" id="scientific">
@@ -148,10 +148,11 @@
       <div class="sci-mode">
         <button id="sciDeg" class="active" data-mode="deg">DEG</button>
         <button id="sciRad" data-mode="rad">RAD</button>
+        <button class="ghost" id="sciCopy" style="margin-left:auto;">Copy result</button>
       </div>
       <div class="sci-display">
         <div class="sci-expr" id="sciExpr">&nbsp;</div>
-        <div class="sci-val" id="sciVal">0</div>
+        <div class="sci-val" id="sciVal" tabindex="0">0</div>
       </div>
       <div class="sci-grid" id="sciGrid">
         <button data-act="mc">MC</button>
@@ -162,13 +163,13 @@
 
         <button data-act="ac">AC</button>
         <button data-act="back">⌫</button>
-        <button data-act="pct">%</button>
+        <button data-ins="(">(</button>
+        <button data-ins=")">)</button>
         <button data-act="inv">1/x</button>
-        <button data-act="sign">±</button>
 
         <button data-act="sq">x²</button>
         <button data-act="cube">x³</button>
-        <button data-act="pow" class="op">xʸ</button>
+        <button data-ins="^" class="op">xʸ</button>
         <button data-act="sqrt">√x</button>
         <button data-act="cbrt">³√x</button>
 
@@ -181,47 +182,52 @@
         <button data-num="7">7</button>
         <button data-num="8">8</button>
         <button data-num="9">9</button>
-        <button data-act="div" class="op">÷</button>
+        <button data-ins="÷" class="op">÷</button>
         <button data-act="pi">π</button>
 
         <button data-num="4">4</button>
         <button data-num="5">5</button>
         <button data-num="6">6</button>
-        <button data-act="mul" class="op">×</button>
+        <button data-ins="×" class="op">×</button>
         <button data-act="e">e</button>
 
         <button data-num="1">1</button>
         <button data-num="2">2</button>
         <button data-num="3">3</button>
-        <button data-act="sub" class="op">−</button>
+        <button data-ins="−" class="op">−</button>
         <button data-act="fact">n!</button>
 
         <button data-num="0" class="wide">0</button>
         <button data-act="dot">.</button>
-        <button data-act="add" class="op">+</button>
+        <button data-ins="+" class="op">+</button>
         <button data-act="eq" class="eq">=</button>
       </div>
+      <p class="hint" style="font-size:12px;color:var(--graphite);margin-top:10px;">Keyboard: digits, + − × ÷ ^ ( ), Enter to evaluate, Backspace to edit, Esc to clear.</p>
     </div>
   </section>
 
   <section class="article">
-    <h3>Does this handle order of operations like a full expression?</h3>
-    <p>This works like a standard handheld scientific calculator: each operation executes immediately rather than parsing a full typed expression, so functions like sin, log, or x² apply to the number currently on screen. This matches how physical scientific calculators (Casio fx-series, TI-30/34, and similar) behave, as opposed to expression-parsing calculators that respect full PEMDAS across a typed string.</p>
+    <h3>Does this handle order of operations and parentheses now?</h3>
+    <p>Yes. Unlike a basic 4-function calculator that executes each key press immediately, this builds a full expression as you type — like <code>2+3×4</code> or <code>2×(3+4)</code> — and evaluates it all at once with correct precedence: powers before multiplication/division, multiplication/division before addition/subtraction, and anything in parentheses first. <code>2+3×4</code> correctly gives 14, not 20.</p>
+    <h3>How do the function buttons (√x, sin, log, etc.) work in an expression?</h3>
+    <p>Functions are prefix operators — press the function <em>before</em> the number, the same way you'd write it on paper: √x inserts <code>√(</code>, and you then type the number that goes inside, e.g. <code>√(16</code>. You don't need to type the closing bracket yourself; pressing <strong>=</strong> automatically closes any parentheses you left open. x², x³, n!, and 1/x work the opposite way — as postfix operators applied to whatever comes right before them, since that matches how they're written: <code>3²</code>, <code>5!</code>.</p>
     <h3>What does the DEG/RAD toggle do?</h3>
-    <p>It controls whether sin, cos, and tan treat the entered number as degrees or radians. Switch it before using a trig function, not after — the same value produces a completely different result depending on which mode is active, and this is the single most common source of "wrong answer" confusion with any scientific calculator, physical or digital.</p>
+    <p>It controls whether sin, cos, and tan treat the number inside as degrees or radians. Switch it before evaluating a trig expression, not after — the same input produces a completely different result depending on which mode is active, and this is the single most common source of "wrong answer" confusion with any scientific calculator, physical or digital.</p>
     <h3>What do MC, MR, M+, and M- do?</h3>
-    <p>Standard calculator memory: M+ adds the current display value to memory, M- subtracts it, MR recalls the stored value to the display, and MC clears memory back to zero. This lets you hold an intermediate result aside while continuing a different calculation — useful for multi-step problems like computing a weighted average by hand, where you need to accumulate a running total across several separate multiplications.</p>
+    <p>Standard calculator memory: M+ adds the current result to memory, M- subtracts it, MR inserts the stored value into your expression, and MC clears memory back to zero. This lets you hold an intermediate result aside while continuing a different calculation — useful for multi-step problems like a weighted average, where you need to accumulate a running total across several separate steps.</p>
     <h3>What's the difference between log and ln?</h3>
-    <p>"log" here is log base 10 (common logarithm) — log(100) = 2, since 10² = 100. "ln" is the natural logarithm, base e (Euler's number, ≈2.71828) — ln(x) is the inverse of eˣ and shows up throughout calculus, compound growth, and probability. Scientific and financial fields tend to favor natural log for continuous-growth modeling, while log base 10 remains common in engineering contexts like the decibel and pH scales, both of which are defined directly in terms of log₁₀.</p>
-    <h3>What does x^y let me compute that x² and x³ don't?</h3>
-    <p>x^y raises the display value to any exponent you enter next, including negative and fractional ones — x^0.5 is the same as √x, x^(1/3) is the same as ³√x, and x^-1 is the same as the 1/x button. The dedicated x², x³, √x, and ³√x buttons are just faster shortcuts for the most common cases of this same general operation.</p>
+    <p>"log" here is log base 10 (common logarithm) — log(100) = 2, since 10² = 100. "ln" is the natural logarithm, base e (Euler's number, ≈2.71828) — ln(x) is the inverse of eˣ and shows up throughout calculus, compound growth, and probability. Scientific and financial fields tend to favor natural log for continuous-growth modeling, while log base 10 remains common in engineering contexts like the decibel and pH scales, both defined directly in terms of log₁₀.</p>
+    <h3>What does x^y (xʸ) let me compute that x² and x³ don't?</h3>
+    <p>xʸ inserts a <code>^</code> so you can raise a number to any exponent, including negative and fractional ones — <code>16^0.5</code> is the same as √16, and <code>8^(1/3)</code> is the same as ∛8. Chained powers evaluate right to left, matching standard math convention: <code>2^3^2</code> means 2^(3²) = 2⁹ = 512, not (2³)² = 64.</p>
     <h3>What does n! (factorial) compute, and where is it used?</h3>
-    <p>n! multiplies every whole number from 1 up to n together — 5! = 5×4×3×2×1 = 120. It's the basis of combinatorics (counting arrangements and combinations), probability calculations, and the binomial theorem, and grows extremely fast: 10! is already 3,628,800, and 20! exceeds 2.4 quintillion, which is why factorial calculations are rarely done by hand past small numbers.</p>
+    <p>n! multiplies every whole number from 1 up to n together — 5! = 5×4×3×2×1 = 120. It's the basis of combinatorics, probability calculations, and the binomial theorem, and grows extremely fast: 10! is already 3,628,800, and 20! exceeds 2.4 quintillion.</p>
     <h3>Are π and e here exact values?</h3>
-    <p>They're entered as double-precision floating-point approximations (π ≈ 3.14159265358979, e ≈ 2.71828182845905) — accurate to about 15 significant digits, which is more than enough precision for any practical calculation, though both numbers are technically irrational and have no exact finite decimal representation.</p>
-    <h3>Does this follow order of operations (PEMDAS) like a written expression?</h3>
-    <p>No — like a real handheld calculator, this executes operations immediately as you press each key, rather than parsing a full typed expression. For a calculation with multiple operations, work through it step by step in the order you'd solve it by hand, the same way you would on a physical calculator — this is standard behavior for this class of calculator worldwide, not a limitation specific to this tool.</p>
-    <p><strong>Worked example:</strong> to compute 3² + √16, press 3, x², then 16, √x, then +, then = — matching how you'd solve it left to right on a physical scientific calculator, giving 9 + 4 = 13.</p>
+    <p>They're stored as double-precision floating-point approximations (π ≈ 3.14159265358979, e ≈ 2.71828182845905) — accurate to about 15 significant digits, more than enough for any practical calculation, though both numbers are technically irrational with no exact finite decimal form.</p>
+    <h3>What happens if I make a mistake, like dividing by zero or leaving a bracket open?</h3>
+    <p>Division by zero, or any other undefined result, shows "Error" rather than a nonsensical number or a frozen calculator — press AC and start again. Unclosed parentheses are handled leniently: press <strong>=</strong> with an open bracket still pending and it closes automatically at the end of the expression, so <code>√(16</code> evaluates correctly without needing a trailing <code>)</code>.</p>
+    <h3>Can I use my keyboard instead of clicking?</h3>
+    <p>Yes — digits, <code>+ − × ÷ ^ ( )</code>, Enter (or <code>=</code>) to evaluate, Backspace to edit, and Escape to clear all work directly, no need to reach for the mouse for a quick calculation.</p>
+    <p><strong>Worked example:</strong> to compute 3² + √16, press 3, x² (expression shows <code>3²</code>), then + , then √x (this inserts an opening bracket: <code>3²+√(</code>), then 1, 6, then = — the calculator auto-closes the bracket and evaluates 9 + 4 = <strong>13</strong>. The key habit to build: postfix keys like x² and n! go <em>after</em> the number, prefix keys like √x, sin, and log go <em>before</em> it — exactly as you'd write either on paper.</p>
   </section>
 
   <nav class="more-tools">
