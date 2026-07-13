@@ -202,6 +202,41 @@
     </div>
   </section>
 
+  <section style="padding:32px 0;border-bottom:1px solid var(--paper-line);" id="loanCompareSection">
+    <div class="tool-head"><span class="tool-num">//</span><div><h2>Compare two scenarios</h2><p class="tool-sub">Two rates, two terms, or two extra-payment plans — see the difference side by side.</p></div></div>
+    <label class="checks" style="display:inline-flex;margin-bottom:16px;"><input type="checkbox" id="loanCompareToggle"> Compare with a second scenario</label>
+    <div id="loanCompareWrap" style="display:none;">
+      <div class="card">
+        <div>
+          <div class="field"><label>Loan amount (Scenario B)</label><input type="number" id="loanAmtB" value="20000"></div>
+          <div class="field"><label>Annual interest rate (%) (Scenario B)</label><input type="number" id="loanRateB" value="5.5" step="0.01"></div>
+          <div class="field">
+            <label>Tenure — enter in <span id="loanTenureUnitLabelB">months</span> (Scenario B)</label>
+            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+              <input type="number" id="loanTermB" value="60" style="flex:1;min-width:100px;">
+              <div class="seg" id="loanTenureSegB">
+                <button type="button" class="active" data-unit="months">Months</button>
+                <button type="button" data-unit="years">Years</button>
+              </div>
+            </div>
+          </div>
+          <div class="field"><label>Extra payment per month (Scenario B, optional)</label><input type="number" id="loanExtraB" value="0" min="0"></div>
+        </div>
+        <div class="readout">
+          <div class="r-row"><span class="r-label">Monthly payment (B)</span><span class="r-value" id="loanPayB">$0</span></div>
+          <div class="r-row"><span class="r-label">Total interest (B)</span><span class="r-value" id="loanIntB">$0</span></div>
+          <div class="r-row"><span class="r-label">Paid off in (B)</span><span class="r-value" id="loanPayoffB">—</span></div>
+        </div>
+      </div>
+      <div class="readout" style="margin-top:16px;background:linear-gradient(160deg, var(--readout-bg-hi), var(--readout-bg));">
+        <div class="r-row"><span class="r-label">Monthly payment: A vs B</span><span class="r-value" id="loanCompPay">—</span></div>
+        <div class="r-row"><span class="r-label">Total interest: A vs B</span><span class="r-value" id="loanCompInt">—</span></div>
+        <div class="r-row"><span class="r-label">Payoff time: A vs B</span><span class="r-sub" id="loanCompTime">—</span></div>
+        <div class="r-row"><span class="r-label">Cheaper option</span><span class="r-value" id="loanCompWinner" style="font-size:16px;">—</span></div>
+      </div>
+    </div>
+  </section>
+
   <section class="article">
     <h3>How is the loan payment formula calculated?</h3>
     <p>This uses the standard fixed-rate amortization formula: it converts your annual rate to a monthly rate (r = annual ÷ 12 ÷ 100), then solves for the level payment that pays off the balance exactly across the full term: <strong>payment = P × r ÷ (1 − (1 + r)<sup>−n</sup>)</strong>, where P is the principal and n the number of months. It's the same formula behind nearly every personal loan, auto loan, and mortgage worldwide — in India this level payment is called an EMI (Equated Monthly Instalment), but the math is identical.</p>

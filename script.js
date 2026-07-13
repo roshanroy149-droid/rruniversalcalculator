@@ -1627,7 +1627,96 @@ function renderAmortTable(bodyId, years, cur){
   update();
 })();
 
-// ---- Mortgage amortization hookup ----
+// ---- Loan: compare two scenarios ----
+(function(){
+  const toggle = document.getElementById('loanCompareToggle');
+  if(!toggle) return;
+  const wrap = document.getElementById('loanCompareWrap');
+  const segB = document.getElementById('loanTenureSegB');
+  const unitLabelB = document.getElementById('loanTenureUnitLabelB');
+
+  function fmtMonths(m){
+    const y = Math.floor(m/12), rem = m%12;
+    if(y===0) return rem+' mo';
+    return rem===0 ? y+' yr' : y+' yr '+rem+' mo';
+  }
+  function getUnit(segEl){
+    const active = segEl ? segEl.querySelector('button.active') : null;
+    return active ? active.dataset.unit : 'months';
+  }
+  function scenarioFromIds(curId, amtId, rateId, termId, segEl, extraId){
+    const cur = document.getElementById(curId).value;
+    const P = parseFloat(document.getElementById(amtId).value)||0;
+    const rate = parseFloat(document.getElementById(rateId).value)||0;
+    const termInput = parseFloat(document.getElementById(termId).value)||0;
+    const unit = getUnit(segEl);
+    const n = Math.round(unit==='years' ? termInput*12 : termInput);
+    const extraEl = document.getElementById(extraId);
+    const extra = extraEl ? (parseFloat(extraEl.value)||0) : 0;
+    const result = buildAmortization(P, rate, n, extra);
+    return { cur, P, n, extra, pay: result.pay+extra, totalInterest: result.totalInterest, monthsTaken: result.monthsTaken, valid: P>0 && n>0 };
+  }
+
+  function calcCompare(){
+    if(wrap.style.display === 'none') return;
+    const a = scenarioFromIds('loanCur','loanAmt','loanRate','loanTerm', document.getElementById('loanTenureSeg'), 'loanExtra');
+    const b = scenarioFromIds('loanCur','loanAmtB','loanRateB','loanTermB', segB, 'loanExtraB');
+
+    const curB = document.getElementById('loanCur').value;
+    document.getElementById('loanPayB').textContent = curB+b.pay.toFixed(2);
+    document.getElementById('loanIntB').textContent = curB+b.totalInterest.toFixed(2);
+    document.getElementById('loanPayoffB').textContent = b.valid ? fmtMonths(b.monthsTaken) : '—';
+
+    if(!a.valid || !b.valid){
+      ['loanCompPay','loanCompInt'].forEach(id=>document.getElementById(id).textContent='—');
+      document.getElementById('loanCompTime').textContent='—';
+      document.getElementById('loanCompWinner').textContent='—';
+      return;
+    }
+
+    const payDiff = a.pay - b.pay;
+    const intDiff = a.totalInterest - b.totalInterest;
+    const timeDiff = a.monthsTaken - b.monthsTaken;
+
+    document.getElementById('loanCompPay').textContent =
+      a.cur+a.pay.toFixed(2)+' vs '+curB+b.pay.toFixed(2)+' ('+(payDiff>=0?'+':'')+a.cur+Math.abs(payDiff).toFixed(2)+(payDiff>=0?' more for A':' more for B')+')';
+    document.getElementById('loanCompInt').textContent =
+      a.cur+a.totalInterest.toFixed(2)+' vs '+curB+b.totalInterest.toFixed(2);
+    document.getElementById('loanCompTime').textContent =
+      fmtMonths(a.monthsTaken)+' vs '+fmtMonths(b.monthsTaken);
+
+    // "Cheaper" judged by total interest paid, the fairest single number for comparing loan cost
+    let winner;
+    if(Math.abs(intDiff) < 0.01) winner = 'Roughly equal total cost';
+    else if(intDiff > 0) winner = 'Scenario B — saves '+a.cur+Math.abs(intDiff).toFixed(2)+' in interest';
+    else winner = 'Scenario A — saves '+a.cur+Math.abs(intDiff).toFixed(2)+' in interest';
+    document.getElementById('loanCompWinner').textContent = winner;
+  }
+
+  toggle.addEventListener('change', ()=>{
+    wrap.style.display = toggle.checked ? 'block' : 'none';
+    calcCompare();
+  });
+  if(segB){
+    segB.addEventListener('click', (e)=>{
+      const btn = e.target.closest('button');
+      if(!btn) return;
+      segB.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      unitLabelB.textContent = btn.dataset.unit;
+      calcCompare();
+    });
+  }
+  ['loanAmt','loanRate','loanTerm','loanExtra','loanCur',
+   'loanAmtB','loanRateB','loanTermB','loanExtraB'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener('input', calcCompare);
+    el.addEventListener('change', calcCompare);
+  });
+  const segA = document.getElementById('loanTenureSeg');
+  if(segA) segA.addEventListener('click', ()=>setTimeout(calcCompare,0));
+})();
 (function(){
   if(!document.getElementById('mtgScheduleBody')) return;
   function update(){
