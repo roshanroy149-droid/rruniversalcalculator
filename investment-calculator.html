@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Investment Calculator — SIP, SWP & Compound Growth | TallyBench</title>
-<meta name="description" content="Free investment calculator covering SIP (systematic investment plan), SWP (systematic withdrawal plan), and compound interest growth.">
+<title>Investment Calculator — SIP, SWP, Compound Growth &amp; CAGR | TallyBench</title>
+<meta name="description" content="Free investment calculator covering SIP (systematic investment plan), SWP (systematic withdrawal plan), compound interest growth, and CAGR.">
 <link rel="canonical" href="https://tallybench.com/investment-calculator.html">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="manifest" href="manifest.json">
@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="TallyBench">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TallyBench">
-<meta property="og:title" content="Investment Calculator — SIP, SWP & Compound Growth">
-<meta property="og:description" content="Free investment calculator covering SIP (systematic investment plan), SWP (systematic withdrawal plan), and compound interest growth.">
+<meta property="og:title" content="Investment Calculator — SIP, SWP, Compound Growth &amp; CAGR">
+<meta property="og:description" content="Free investment calculator covering SIP (systematic investment plan), SWP (systematic withdrawal plan), compound interest growth, and CAGR.">
 <meta property="og:url" content="https://tallybench.com/investment-calculator.html">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Investment Calculator — SIP, SWP & Compound Growth">
-<meta name="twitter:description" content="Free investment calculator covering SIP (systematic investment plan), SWP (systematic withdrawal plan), and compound interest growth.">
+<meta name="twitter:title" content="Investment Calculator — SIP, SWP, Compound Growth &amp; CAGR">
+<meta name="twitter:description" content="Free investment calculator covering SIP (systematic investment plan), SWP (systematic withdrawal plan), compound interest growth, and CAGR.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -78,6 +78,14 @@
         "@type": "Answer",
         "text": "12% is a commonly used illustrative assumption for equity mutual funds in India based on long-term historical averages, but actual returns vary year to year and aren't guaranteed \u2014 treat any fixed-rate projection as a planning estimate, not a promise."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "What is CAGR and how is it different from average annual return?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "CAGR (Compound Annual Growth Rate) is the single steady annual rate that would take a starting value to an ending value over a given number of years, smoothing out whatever bumpy path the actual returns took. It's calculated as (Ending value \u00f7 Starting value)^(1\u00f7years) \u2212 1. A simple average of each year's percentage change can overstate real growth when returns are volatile \u2014 CAGR reflects what an investment actually did, not the average of its ups and downs."
+      }
     }
   ]
 }
@@ -127,6 +135,7 @@
     <a class="tick sub-tick" data-cat="finance" href="rd-calculator.html">RD</a>
     <a class="tick sub-tick" data-cat="finance" href="ppf-calculator.html">PPF</a>
     <a class="tick sub-tick" data-cat="finance" href="hra-calculator.html">HRA</a>
+    <a class="tick sub-tick" data-cat="finance" href="break-even-calculator.html">BREAK-EVEN</a>
     <a class="tick sub-tick" data-cat="health" href="bmi-calculator.html">BMI</a>
     <a class="tick sub-tick" data-cat="health" href="calorie-calculator.html">CALORIE</a>
     <a class="tick sub-tick" data-cat="education" href="gpa-calculator.html">GPA</a>
@@ -135,6 +144,10 @@
     <a class="tick sub-tick" data-cat="everyday" href="age-calculator.html">AGE</a>
     <a class="tick sub-tick" data-cat="everyday" href="days-calculator.html">DAYS</a>
     <a class="tick sub-tick" data-cat="everyday" href="unit-converter.html">UNITS</a>
+    <a class="tick sub-tick" data-cat="everyday" href="week-number-calculator.html">WEEK #</a>
+    <a class="tick sub-tick" data-cat="everyday" href="cm-to-inches.html">CM→IN</a>
+    <a class="tick sub-tick" data-cat="everyday" href="kg-to-pounds.html">KG→LB</a>
+    <a class="tick sub-tick" data-cat="everyday" href="celsius-to-fahrenheit.html">°C→°F</a>
     <a class="tick sub-tick" data-cat="everyday" href="password-generator.html">PASSWORD</a>
     <a class="tick sub-tick" data-cat="everyday" href="word-counter.html">WORD COUNT</a>
   </nav>
@@ -181,6 +194,7 @@
       <button class="active" data-tab="sip">SIP</button>
       <button data-tab="swp">SWP</button>
       <button data-tab="compound">Compound Growth</button>
+      <button data-tab="cagr">CAGR</button>
     </div>
 
     <div class="tab-panel active" id="panel-sip">
@@ -244,6 +258,22 @@
         <div class="field-warning" id="cmpWarning"></div>
       </div>
     </div>
+
+    <div class="tab-panel" id="panel-cagr">
+      <div class="card">
+        <div>
+          <div class="field"><label>Starting value</label><input type="number" id="cagrStart" value="100000" step="1000"></div>
+          <div class="field"><label>Ending value</label><input type="number" id="cagrEnd" value="250000" step="1000"></div>
+          <div class="field"><label>Duration (years)</label><input type="number" id="cagrYears" value="5" min="1" step="0.5"></div>
+        </div>
+        <div class="readout">
+          <div class="r-row"><span class="r-label">CAGR</span><span class="r-value" id="cagrOut">0%</span></div>
+          <div class="r-row"><span class="r-label">Total growth</span><span class="r-value" id="cagrGrowth">0%</span></div>
+          <div class="r-row"><span class="r-label">Growth multiple</span><span class="r-sub" id="cagrMultiple">—</span></div>
+        </div>
+        <div class="field-warning" id="cagrWarning"></div>
+      </div>
+    </div>
   </section>
 
 
@@ -271,10 +301,14 @@
     <h3>Does this account for taxes on investment returns?</h3>
     <p>No — the figures shown are pre-tax growth projections. Actual take-home returns depend heavily on how the investment is taxed in your country: the US taxes long-term capital gains at preferential rates (0/15/20% federal brackets) separate from ordinary income; India taxes equity long-term capital gains above ₹1.25 lakh/year at a flat rate, with different rules for debt funds; most of Europe applies a mix of capital gains and dividend withholding tax that varies significantly by country and account type (many EU countries offer tax-advantaged wrapper accounts, similar in spirit to a US 401(k)/IRA or an ISA in the UK). This variance is too large to model generically, so build in your own after-tax adjustment based on your jurisdiction.</p>
     <h3>How realistic is a 12% annual return assumption for SIP?</h3>
-    <p>12% is a commonly used illustrative assumption for equity mutual funds in India based on long-term historical averages, but actual returns vary year to year and aren't guaranteed. For context, US equities (S&P 500) have historically averaged roughly 9–10% nominal annually over many decades, and European broad-market equities somewhat lower — treat any fixed-rate projection, in any market, as a planning estimate, not a promise, and consider running the numbers at a more conservative rate as a stress test.</p>
+    <p>12% is a commonly used illustrative assumption for equity mutual funds in India based on long-term historical averages, but actual returns vary year to year and aren't guaranteed. For context, US equities (S&amp;P 500) have historically averaged roughly 9–10% nominal annually over many decades, and European broad-market equities somewhat lower — treat any fixed-rate projection, in any market, as a planning estimate, not a promise, and consider running the numbers at a more conservative rate as a stress test.</p>
     <h3>What's a reasonable inflation assumption for the real-value estimate?</h3>
     <p>It depends on the country and the point in the economic cycle — India has historically run inflation in the 5–7% range over the long term, the US and EU have more commonly targeted around 2% (their central banks' explicit target), though both saw much higher actual inflation in the early 2020s. Use your country's long-run historical average as a starting default, and adjust for your own view of where things are headed.</p>
-    <p><strong>Worked example:</strong> investing ₹10,000/month for 10 years at an assumed 12% annual return grows to roughly ₹23.2 lakh, of which ₹12 lakh is your own contributions and about ₹11.2 lakh is projected growth. At 6% assumed inflation over that decade, that ₹23.2 lakh is worth roughly ₹12.9 lakh in today's purchasing power — enter these exact numbers in the SIP tab above to verify both figures.</p>
+    <h3>What is CAGR and how is it different from average annual return?</h3>
+    <p>CAGR (Compound Annual Growth Rate) is the single steady annual rate that would take a starting value to an ending value over a given number of years, smoothing out whatever bumpy path the actual returns took: <strong>CAGR = (Ending ÷ Starting)^(1/years) − 1</strong>. It's the standard way to compare investments fairly, since it accounts for compounding rather than just averaging year-to-year percentage swings — a simple average can look identical for two investments with wildly different actual outcomes if their swings happen to average out the same way.</p>
+    <h3>When is CAGR misleading?</h3>
+    <p>CAGR describes the start and end points only — it says nothing about the path between them, so two investments with the same CAGR can have very different volatility along the way (one might have grown smoothly, the other crashed 50% then recovered). It's also not meaningful if the starting value is zero or negative, or across a period where the sign of the value flips (e.g. a business going from profit to loss).</p>
+    <p><strong>Worked example:</strong> investing ₹10,000/month for 10 years at an assumed 12% annual return grows to roughly ₹23.2 lakh, of which ₹12 lakh is your own contributions and about ₹11.2 lakh is projected growth. At 6% assumed inflation over that decade, that ₹23.2 lakh is worth roughly ₹12.9 lakh in today's purchasing power — enter these exact numbers in the SIP tab above to verify both figures. Separately, an investment that grows from ₹1,00,000 to ₹2,50,000 over 5 years has a CAGR of (2.5)^(1/5) − 1 ≈ 20.1% — enter these numbers in the CAGR tab to confirm.</p>
   </section>
 
   <!-- TB:MORETOOLS:START -->
@@ -292,6 +326,7 @@
       <li><a href="rd-calculator.html">RD Calculator</a></li>
       <li><a href="ppf-calculator.html">PPF Calculator</a></li>
       <li><a href="hra-calculator.html">HRA Calculator</a></li>
+      <li><a href="break-even-calculator.html">Break-Even &amp; Profit Margin Calculator</a></li>
       <li><a href="bmi-calculator.html">BMI Calculator</a></li>
       <li><a href="calorie-calculator.html">Calorie / BMR Calculator</a></li>
       <li><a href="gpa-calculator.html">GPA Calculator</a></li>
@@ -300,6 +335,10 @@
       <li><a href="age-calculator.html">Age Calculator</a></li>
       <li><a href="days-calculator.html">Days Between Dates</a></li>
       <li><a href="unit-converter.html">Unit Converter</a></li>
+      <li><a href="week-number-calculator.html">Week Number Calculator</a></li>
+      <li><a href="cm-to-inches.html">CM to Inches</a></li>
+      <li><a href="kg-to-pounds.html">KG to Pounds</a></li>
+      <li><a href="celsius-to-fahrenheit.html">Celsius to Fahrenheit</a></li>
       <li><a href="password-generator.html">Password Generator</a></li>
       <li><a href="word-counter.html">Word Counter</a></li>
     </ul>

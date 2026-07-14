@@ -423,6 +423,114 @@
   populateUnits();
 })();
 
+// ---- CM to inches (dedicated converter page) ----
+(function(){
+  const cmEl = document.getElementById('ctiCm');
+  if(!cmEl) return;
+  const inEl = document.getElementById('ctiIn');
+  const resultEl = document.getElementById('ctiResult');
+  const warnEl = document.getElementById('ctiWarning');
+
+  function setWarn(msg){
+    if(!warnEl) return;
+    if(msg){ warnEl.textContent = msg; warnEl.classList.add('show'); }
+    else { warnEl.textContent = ''; warnEl.classList.remove('show'); }
+  }
+
+  function fromCm(){
+    const cm = parseFloat(cmEl.value)||0;
+    setWarn(cm < 0 ? 'Length can\'t be negative.' : null);
+    const inches = cm/2.54;
+    inEl.value = inches.toFixed(2);
+    resultEl.textContent = cm.toLocaleString()+' cm equals '+inches.toFixed(2)+' in';
+  }
+  function fromIn(){
+    const inches = parseFloat(inEl.value)||0;
+    setWarn(inches < 0 ? 'Length can\'t be negative.' : null);
+    const cm = inches*2.54;
+    cmEl.value = cm.toFixed(2);
+    resultEl.textContent = cm.toLocaleString()+' cm equals '+inches.toFixed(2)+' in';
+  }
+  cmEl.addEventListener('input', fromCm);
+  inEl.addEventListener('input', fromIn);
+
+  const tbody = document.querySelector('#ctiTable tbody');
+  if(tbody){
+    const vals = [1,2,5,10,20,30,50,75,100,150,160,170,180,190,200];
+    tbody.innerHTML = vals.map(cm=>'<tr><td>'+cm+' cm</td><td>'+(cm/2.54).toFixed(2)+' in</td></tr>').join('');
+  }
+  fromCm();
+})();
+
+// ---- KG to pounds (dedicated converter page) ----
+(function(){
+  const kgEl = document.getElementById('ktpKg');
+  if(!kgEl) return;
+  const lbEl = document.getElementById('ktpLb');
+  const resultEl = document.getElementById('ktpResult');
+  const warnEl = document.getElementById('ktpWarning');
+
+  function setWarn(msg){
+    if(!warnEl) return;
+    if(msg){ warnEl.textContent = msg; warnEl.classList.add('show'); }
+    else { warnEl.textContent = ''; warnEl.classList.remove('show'); }
+  }
+
+  function fromKg(){
+    const kg = parseFloat(kgEl.value)||0;
+    setWarn(kg < 0 ? 'Weight can\'t be negative.' : null);
+    const lb = kg*2.20462;
+    lbEl.value = lb.toFixed(2);
+    resultEl.textContent = kg.toLocaleString()+' kg equals '+lb.toFixed(2)+' lb';
+  }
+  function fromLb(){
+    const lb = parseFloat(lbEl.value)||0;
+    setWarn(lb < 0 ? 'Weight can\'t be negative.' : null);
+    const kg = lb*0.453592;
+    kgEl.value = kg.toFixed(2);
+    resultEl.textContent = kg.toFixed(2)+' kg equals '+lb.toLocaleString()+' lb';
+  }
+  kgEl.addEventListener('input', fromKg);
+  lbEl.addEventListener('input', fromLb);
+
+  const tbody = document.querySelector('#ktpTable tbody');
+  if(tbody){
+    const vals = [1,5,10,20,30,40,50,60,70,80,90,100,150];
+    tbody.innerHTML = vals.map(kg=>'<tr><td>'+kg+' kg</td><td>'+(kg*2.20462).toFixed(2)+' lb</td></tr>').join('');
+  }
+  fromKg();
+})();
+
+// ---- Celsius to Fahrenheit (dedicated converter page) ----
+(function(){
+  const cEl = document.getElementById('ctfC');
+  if(!cEl) return;
+  const fEl = document.getElementById('ctfF');
+  const resultEl = document.getElementById('ctfResult');
+
+  function fromC(){
+    const c = parseFloat(cEl.value)||0;
+    const f = c*9/5+32;
+    fEl.value = f.toFixed(1);
+    resultEl.textContent = c.toLocaleString()+'°C equals '+f.toFixed(1)+'°F';
+  }
+  function fromF(){
+    const f = parseFloat(fEl.value)||0;
+    const c = (f-32)*5/9;
+    cEl.value = c.toFixed(1);
+    resultEl.textContent = c.toFixed(1)+'°C equals '+f.toLocaleString()+'°F';
+  }
+  cEl.addEventListener('input', fromC);
+  fEl.addEventListener('input', fromF);
+
+  const tbody = document.querySelector('#ctfTable tbody');
+  if(tbody){
+    const vals = [-20,-10,0,10,20,25,30,37,40,50,75,100];
+    tbody.innerHTML = vals.map(c=>'<tr><td>'+c+'°C</td><td>'+(c*9/5+32).toFixed(1)+'°F</td></tr>').join('');
+  }
+  fromC();
+})();
+
 // ---- Currency converter (live rates via frankfurter.dev, ECB data) ----
 (function(){
   if(!document.getElementById('curAmt')) return;
@@ -960,6 +1068,37 @@
     if(el){ el.addEventListener('input', calcCompound); el.addEventListener('change', calcCompound); }
   });
   if(document.getElementById('cmpPrincipal')) calcCompound();
+
+  // CAGR
+  function calcCAGR(){
+    const start = parseFloat(document.getElementById('cagrStart').value)||0;
+    const end = parseFloat(document.getElementById('cagrEnd').value)||0;
+    const years = parseFloat(document.getElementById('cagrYears').value)||0;
+
+    if(start <= 0){
+      setWarning('cagrWarning', 'Starting value must be greater than zero — CAGR is undefined from a zero or negative base.');
+    } else if(end < 0){
+      setWarning('cagrWarning', 'Ending value can\'t be negative.');
+    } else if(years <= 0){
+      setWarning('cagrWarning', 'Duration must be greater than zero years.');
+    } else {
+      setWarning('cagrWarning', null);
+    }
+
+    const valid = start > 0 && end >= 0 && years > 0;
+    const cagr = valid ? (Math.pow(end/start, 1/years) - 1) * 100 : 0;
+    const growth = valid ? ((end-start)/start) * 100 : 0;
+    const multiple = valid ? end/start : 0;
+
+    document.getElementById('cagrOut').textContent = valid ? cagr.toFixed(2)+'%' : '—';
+    document.getElementById('cagrGrowth').textContent = valid ? (growth>0?'+':'')+growth.toFixed(2)+'%' : '—';
+    document.getElementById('cagrMultiple').textContent = valid ? multiple.toFixed(2)+'x' : '—';
+  }
+  ['cagrStart','cagrEnd','cagrYears'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.addEventListener('input', calcCAGR);
+  });
+  if(document.getElementById('cagrStart')) calcCAGR();
 })();
 
 // ---- Tax calculator: shared bracket data + pure calculation helpers ----
@@ -1434,6 +1573,52 @@ function computeTaxFromScheme(scheme, gross){
   calc();
 })();
 
+// ---- Week number calculator ----
+(function(){
+  const dateEl = document.getElementById('wnDate');
+  if(!dateEl) return;
+
+  function isLeap(y){ return (y%4===0 && y%100!==0) || y%400===0; }
+
+  function getISOWeekInfo(date){
+    const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+    const dayNum = (d.getUTCDay() + 6) % 7; // Mon=0..Sun=6
+    d.setUTCDate(d.getUTCDate() - dayNum + 3); // nearest Thursday
+    const isoYear = d.getUTCFullYear();
+    const firstThursday = new Date(Date.UTC(isoYear, 0, 4));
+    const firstDayNum = (firstThursday.getUTCDay() + 6) % 7;
+    firstThursday.setUTCDate(firstThursday.getUTCDate() - firstDayNum + 3);
+    const week = 1 + Math.round((d - firstThursday) / (7*86400000));
+    return { week, isoYear };
+  }
+
+  function calc(){
+    const val = dateEl.value;
+    const warnEl = document.getElementById('wnWarning');
+    if(!val){
+      if(warnEl){ warnEl.textContent = 'Enter a date.'; warnEl.classList.add('show'); }
+      ['wnWeek','wnWeekday','wnDayOfYear','wnIsoYear'].forEach(id=>document.getElementById(id).textContent='—');
+      return;
+    }
+    if(warnEl){ warnEl.textContent = ''; warnEl.classList.remove('show'); }
+
+    const date = new Date(val+'T00:00:00');
+    const { week, isoYear } = getISOWeekInfo(date);
+    const weekdayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    const startOfYear = new Date(date.getFullYear(),0,1);
+    const dayOfYear = Math.round((date-startOfYear)/86400000) + 1;
+
+    document.getElementById('wnWeek').textContent = 'Week '+week;
+    document.getElementById('wnWeekday').textContent = weekdayNames[date.getDay()];
+    document.getElementById('wnDayOfYear').textContent = dayOfYear+' of '+(isLeap(date.getFullYear())?366:365);
+    document.getElementById('wnIsoYear').textContent = isoYear;
+  }
+
+  if(!dateEl.value) dateEl.value = new Date().toISOString().slice(0,10);
+  dateEl.addEventListener('input', calc);
+  calc();
+})();
+
 // ---- Add/subtract days from a date ----
 (function(){
   const startEl = document.getElementById('addStart');
@@ -1792,6 +1977,82 @@ function computeTaxFromScheme(scheme, gross){
   calcSale();
   calcOriginal();
   calcStack();
+})();
+
+// ---- Break-even & profit margin calculator ----
+(function(){
+  const tabs = document.getElementById('beTabs');
+  if(!tabs) return;
+
+  tabs.addEventListener('click', (e)=>{
+    const btn = e.target.closest('button');
+    if(!btn) return;
+    tabs.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+    document.getElementById('panel-'+btn.dataset.tab).classList.add('active');
+  });
+
+  function setWarning(id, msg){
+    const el = document.getElementById(id);
+    if(!el) return;
+    if(msg){ el.textContent = msg; el.classList.add('show'); }
+    else { el.textContent = ''; el.classList.remove('show'); }
+  }
+
+  function calcBreakEven(){
+    const fixed = parseFloat(document.getElementById('beFixed').value)||0;
+    const price = parseFloat(document.getElementById('bePrice').value)||0;
+    const varCost = parseFloat(document.getElementById('beVarCost').value)||0;
+    const contribution = price - varCost;
+
+    if(fixed < 0){
+      setWarning('beWarning', 'Fixed costs can\'t be negative.');
+    } else if(price <= varCost){
+      setWarning('beWarning', 'Price per unit must be greater than variable cost per unit — otherwise every sale loses money and there\'s no break-even point.');
+    } else {
+      setWarning('beWarning', null);
+    }
+
+    const valid = fixed >= 0 && contribution > 0;
+    const units = valid ? fixed/contribution : null;
+    const revenue = valid ? units*price : null;
+    const ratio = price>0 ? (contribution/price)*100 : 0;
+
+    document.getElementById('beUnits').textContent = valid ? Math.ceil(units).toLocaleString() : '—';
+    document.getElementById('beRevenue').textContent = valid ? revenue.toLocaleString(undefined,{maximumFractionDigits:2}) : '—';
+    document.getElementById('beContribution').textContent = contribution.toLocaleString(undefined,{maximumFractionDigits:2});
+    document.getElementById('beRatio').textContent = ratio.toFixed(1)+'%';
+  }
+  ['beFixed','bePrice','beVarCost'].forEach(id=>{
+    document.getElementById(id).addEventListener('input', calcBreakEven);
+  });
+  calcBreakEven();
+
+  function calcMargin(){
+    const cost = parseFloat(document.getElementById('mgCost').value)||0;
+    const sell = parseFloat(document.getElementById('mgSell').value)||0;
+    const profit = sell - cost;
+
+    if(cost <= 0){
+      setWarning('mgWarning', 'Cost price must be greater than zero.');
+    } else if(sell < 0){
+      setWarning('mgWarning', 'Selling price can\'t be negative.');
+    } else {
+      setWarning('mgWarning', null);
+    }
+
+    const margin = sell>0 ? (profit/sell)*100 : 0;
+    const markup = cost>0 ? (profit/cost)*100 : 0;
+
+    document.getElementById('mgProfit').textContent = profit.toLocaleString(undefined,{maximumFractionDigits:2});
+    document.getElementById('mgMargin').textContent = (cost>0 && sell>0) ? margin.toFixed(1)+'%' : '—';
+    document.getElementById('mgMarkup').textContent = cost>0 ? markup.toFixed(1)+'%' : '—';
+  }
+  ['mgCost','mgSell'].forEach(id=>{
+    document.getElementById(id).addEventListener('input', calcMargin);
+  });
+  calcMargin();
 })();
 
 // ---- GPA calculator ----
@@ -2239,6 +2500,12 @@ function amortizationToCSV(years, cur){
   }
   function update(){
     const tab = activeTab();
+    const wrap = document.getElementById('invGrowthWrap');
+    if(tab==='cagr'){
+      if(wrap) wrap.style.display = 'none';
+      return;
+    }
+    if(wrap) wrap.style.display = '';
     let rows = [];
     if(tab==='sip'){
       const amt = parseFloat(document.getElementById('sipAmt').value)||0;
@@ -2258,7 +2525,7 @@ function amortizationToCSV(years, cur){
         const val = P*Math.pow(1+rate/freq, freq*y);
         rows.push({year:y, invested:P, value:val});
       }
-    } else { // swp
+    } else if(tab==='swp'){
       const P = parseFloat(document.getElementById('swpPrincipal').value)||0;
       const wd = parseFloat(document.getElementById('swpWithdraw').value)||0;
       const rate = (parseFloat(document.getElementById('swpRate').value)||0)/100/12;

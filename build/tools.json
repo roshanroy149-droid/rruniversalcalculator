@@ -18,6 +18,7 @@
     { "id": "rd-calculator", "file": "rd-calculator.html", "category": "finance", "navLabel": "RD", "title": "RD Calculator" },
     { "id": "ppf-calculator", "file": "ppf-calculator.html", "category": "finance", "navLabel": "PPF", "title": "PPF Calculator" },
     { "id": "hra-calculator", "file": "hra-calculator.html", "category": "finance", "navLabel": "HRA", "title": "HRA Calculator" },
+    { "id": "break-even-calculator", "file": "break-even-calculator.html", "category": "finance", "navLabel": "BREAK-EVEN", "title": "Break-Even &amp; Profit Margin Calculator" },
     { "id": "bmi-calculator", "file": "bmi-calculator.html", "category": "health", "navLabel": "BMI", "title": "BMI Calculator" },
     { "id": "calorie-calculator", "file": "calorie-calculator.html", "category": "health", "navLabel": "CALORIE", "title": "Calorie / BMR Calculator" },
     { "id": "gpa-calculator", "file": "gpa-calculator.html", "category": "education", "navLabel": "GPA", "title": "GPA Calculator" },
@@ -26,6 +27,10 @@
     { "id": "age-calculator", "file": "age-calculator.html", "category": "everyday", "navLabel": "AGE", "title": "Age Calculator" },
     { "id": "days-calculator", "file": "days-calculator.html", "category": "everyday", "navLabel": "DAYS", "title": "Days Between Dates" },
     { "id": "unit-converter", "file": "unit-converter.html", "category": "everyday", "navLabel": "UNITS", "title": "Unit Converter" },
+    { "id": "week-number-calculator", "file": "week-number-calculator.html", "category": "everyday", "navLabel": "WEEK #", "title": "Week Number Calculator" },
+    { "id": "cm-to-inches", "file": "cm-to-inches.html", "category": "everyday", "navLabel": "CM→IN", "title": "CM to Inches" },
+    { "id": "kg-to-pounds", "file": "kg-to-pounds.html", "category": "everyday", "navLabel": "KG→LB", "title": "KG to Pounds" },
+    { "id": "celsius-to-fahrenheit", "file": "celsius-to-fahrenheit.html", "category": "everyday", "navLabel": "°C→°F", "title": "Celsius to Fahrenheit" },
     { "id": "password-generator", "file": "password-generator.html", "category": "everyday", "navLabel": "PASSWORD", "title": "Password Generator" },
     { "id": "word-counter", "file": "word-counter.html", "category": "everyday", "navLabel": "WORD COUNT", "title": "Word Counter" }
   ]

@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TallyBench — Quick Calculators for Everyday Numbers</title>
-<meta name="description" content="22 free calculators: percentage, age, currency, BMI, loan/EMI, mortgage, tax, GST/VAT, days between dates, calorie/BMR, unit conversion, discount, SIP/investment, GPA, scientific, tip, password, word count, plus India finance tools — FD, RD, PPF, and HRA. No sign-up.">
+<meta name="description" content="27 free calculators: percentage, age, currency, BMI, loan/EMI, mortgage, tax, GST/VAT, days between dates, calorie/BMR, unit conversion, discount, SIP/investment/CAGR, GPA, scientific, tip, password, word count, break-even/margin, week number, cm-to-inches, kg-to-pounds, Celsius-to-Fahrenheit, plus India finance tools — FD, RD, PPF, and HRA. No sign-up.">
 <link rel="canonical" href="https://tallybench.com/">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="manifest" href="manifest.json">
@@ -16,11 +16,11 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TallyBench">
 <meta property="og:title" content="TallyBench — Quick Calculators for Everyday Numbers">
-<meta property="og:description" content="22 free calculators: percentage, age, currency, BMI, loan/EMI, mortgage, tax, GST/VAT, days between dates, calorie/BMR, unit conversion, discount, SIP/investment, GPA, scientific, tip, password, word count, plus India finance tools — FD, RD, PPF, and HRA. No sign-up.">
+<meta property="og:description" content="27 free calculators: percentage, age, currency, BMI, loan/EMI, mortgage, tax, GST/VAT, days between dates, calorie/BMR, unit conversion, discount, SIP/investment/CAGR, GPA, scientific, tip, password, word count, break-even/margin, week number, cm-to-inches, kg-to-pounds, Celsius-to-Fahrenheit, plus India finance tools — FD, RD, PPF, and HRA. No sign-up.">
 <meta property="og:url" content="https://tallybench.com/">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="TallyBench — Quick Calculators for Everyday Numbers">
-<meta name="twitter:description" content="22 free calculators: percentage, age, currency, BMI, loan/EMI, mortgage, tax, GST/VAT, days between dates, calorie/BMR, unit conversion, discount, SIP/investment, GPA, scientific, tip, password, word count, plus India finance tools — FD, RD, PPF, and HRA. No sign-up.">
+<meta name="twitter:description" content="27 free calculators: percentage, age, currency, BMI, loan/EMI, mortgage, tax, GST/VAT, days between dates, calorie/BMR, unit conversion, discount, SIP/investment/CAGR, GPA, scientific, tip, password, word count, break-even/margin, week number, cm-to-inches, kg-to-pounds, Celsius-to-Fahrenheit, plus India finance tools — FD, RD, PPF, and HRA. No sign-up.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -55,6 +55,7 @@
   <a class="tick sub-tick" data-cat="finance" href="rd-calculator.html">RD</a>
   <a class="tick sub-tick" data-cat="finance" href="ppf-calculator.html">PPF</a>
   <a class="tick sub-tick" data-cat="finance" href="hra-calculator.html">HRA</a>
+  <a class="tick sub-tick" data-cat="finance" href="break-even-calculator.html">BREAK-EVEN</a>
   <a class="tick sub-tick" data-cat="health" href="bmi-calculator.html">BMI</a>
   <a class="tick sub-tick" data-cat="health" href="calorie-calculator.html">CALORIE</a>
   <a class="tick sub-tick" data-cat="education" href="gpa-calculator.html">GPA</a>
@@ -63,6 +64,10 @@
   <a class="tick sub-tick" data-cat="everyday" href="age-calculator.html">AGE</a>
   <a class="tick sub-tick" data-cat="everyday" href="days-calculator.html">DAYS</a>
   <a class="tick sub-tick" data-cat="everyday" href="unit-converter.html">UNITS</a>
+  <a class="tick sub-tick" data-cat="everyday" href="week-number-calculator.html">WEEK #</a>
+  <a class="tick sub-tick" data-cat="everyday" href="cm-to-inches.html">CM→IN</a>
+  <a class="tick sub-tick" data-cat="everyday" href="kg-to-pounds.html">KG→LB</a>
+  <a class="tick sub-tick" data-cat="everyday" href="celsius-to-fahrenheit.html">°C→°F</a>
   <a class="tick sub-tick" data-cat="everyday" href="password-generator.html">PASSWORD</a>
   <a class="tick sub-tick" data-cat="everyday" href="word-counter.html">WORD COUNT</a>
 </nav>
@@ -75,7 +80,7 @@
 <div class="hero-copy">
 <div class="eyebrow">// NO SIGN-UP, NO CLUTTER</div>
 <h1>Just the number you need.</h1>
-<p>22 calculators covering money, health, school, and everyday math — pick one below and get your answer.</p>
+<p>27 calculators covering money, health, school, and everyday math — pick one below and get your answer.</p>
 </div>
 <div class="hero-graphic" aria-hidden="true">
 <svg viewBox="0 48 400 234" xmlns="http://www.w3.org/2000/svg">
@@ -107,7 +112,7 @@
 <circle cx="272" cy="188" r="3" fill="#C08A34"/>
 <rect x="205" y="206" width="140" height="66" rx="8" fill="#14120F"/>
 <text x="275" y="226" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="9" letter-spacing="1.5" fill="#9C9284">TOOLS ON THE BENCH</text>
-<text x="275" y="256" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="28" font-weight="700" fill="#F2D9A0">22</text>
+<text x="275" y="256" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="28" font-weight="700" fill="#F2D9A0">27</text>
 </svg>
 </div>
 </div>
@@ -185,7 +190,7 @@
 <a class="tool-card-link cat-finance" href="investment-calculator.html">
 <div class="tcl-top"><div class="tcl-icon"><svg><use href="icons.svg#icon-investment"/></svg></div></div>
 <h3>Investment Calculator</h3>
-<p>SIP, SWP, and compound growth projections.</p>
+<p>SIP, SWP, compound growth, and CAGR.</p>
 </a>
 <a class="tool-card-link cat-finance" href="discount-calculator.html">
 <div class="tcl-top"><div class="tcl-icon"><svg><use href="icons.svg#icon-discount"/></svg></div></div>
@@ -196,6 +201,11 @@
 <div class="tcl-top"><div class="tcl-icon"><svg><use href="icons.svg#icon-tip"/></svg></div></div>
 <h3>Tip Calculator</h3>
 <p>Split a bill by percentage and number of people.</p>
+</a>
+<a class="tool-card-link cat-finance" href="break-even-calculator.html">
+<div class="tcl-top"><div class="tcl-icon"><svg><use href="icons.svg#icon-investment"/></svg></div></div>
+<h3>Break-Even &amp; Profit Margin</h3>
+<p>Units to break even, plus gross margin and markup.</p>
 </a>
 </div>
 </section>
@@ -263,6 +273,26 @@
 <div class="tcl-top"><div class="tcl-icon"><svg><use href="icons.svg#icon-units"/></svg></div></div>
 <h3>Unit Converter</h3>
 <p>Length, weight, volume, area, speed, time, data, and temperature.</p>
+</a>
+<a class="tool-card-link cat-utility" href="week-number-calculator.html">
+<div class="tcl-top"><div class="tcl-icon"><svg><use href="icons.svg#icon-days"/></svg></div></div>
+<h3>Week Number Calculator</h3>
+<p>ISO week number, day of year, and weekday for any date.</p>
+</a>
+<a class="tool-card-link cat-utility" href="cm-to-inches.html">
+<div class="tcl-top"><div class="tcl-icon"><svg><use href="icons.svg#icon-units"/></svg></div></div>
+<h3>CM to Inches</h3>
+<p>Quick two-way centimeter/inch conversion.</p>
+</a>
+<a class="tool-card-link cat-utility" href="kg-to-pounds.html">
+<div class="tcl-top"><div class="tcl-icon"><svg><use href="icons.svg#icon-units"/></svg></div></div>
+<h3>KG to Pounds</h3>
+<p>Quick two-way kilogram/pound conversion.</p>
+</a>
+<a class="tool-card-link cat-utility" href="celsius-to-fahrenheit.html">
+<div class="tcl-top"><div class="tcl-icon"><svg><use href="icons.svg#icon-units"/></svg></div></div>
+<h3>Celsius to Fahrenheit</h3>
+<p>Quick two-way temperature conversion.</p>
 </a>
 <a class="tool-card-link cat-utility" href="password-generator.html">
 <div class="tcl-top"><div class="tcl-icon"><svg><use href="icons.svg#icon-password"/></svg></div></div>

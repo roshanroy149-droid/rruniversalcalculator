@@ -1,7 +1,7 @@
 {
   "name": "TallyBench — Everyday Calculators",
   "short_name": "TallyBench",
-  "description": "18 free calculators: percentage, age, currency, BMI, loan/EMI, mortgage, tax, GST/VAT, days between dates, calorie/BMR, unit conversion, discount, investment, GPA, scientific, tip, password, and word count.",
+  "description": "27 free calculators: percentage, age, currency, BMI, loan/EMI, mortgage, tax, GST/VAT, days between dates, calorie/BMR, unit conversion, discount, investment/CAGR, GPA, scientific, tip, password, word count, break-even/margin, week number, and unit shortcuts (cm/in, kg/lb, C/F).",
   "start_url": "/?source=pwa",
   "scope": "/",
   "display": "standalone",

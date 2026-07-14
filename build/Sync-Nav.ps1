@@ -13,8 +13,9 @@
 
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
-$data = Get-Content (Join-Path $PSScriptRoot 'tools.json') -Raw | ConvertFrom-Json
 $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
+$toolsJsonText = [System.IO.File]::ReadAllText((Join-Path $PSScriptRoot 'tools.json'), [System.Text.Encoding]::UTF8)
+$data = $toolsJsonText | ConvertFrom-Json
 $nl = "`r`n"
 
 function New-NavBlock($indent) {

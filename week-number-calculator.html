@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week Number Calculator — ISO Week &amp; Day of Year | TallyBench</title>
+<meta name="description" content="Free week number calculator. Find the ISO 8601 week number, day of year, and weekday for any date, past or future.">
+<link rel="canonical" href="https://tallybench.com/week-number-calculator.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.svg">
+<meta name="theme-color" content="#1C1A17">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="TallyBench">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TallyBench">
+<meta property="og:title" content="Week Number Calculator — ISO Week &amp; Day of Year">
+<meta property="og:description" content="Free week number calculator. Find the ISO 8601 week number, day of year, and weekday for any date, past or future.">
+<meta property="og:url" content="https://tallybench.com/week-number-calculator.html">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Week Number Calculator — ISO Week &amp; Day of Year">
+<meta name="twitter:description" content="Free week number calculator. Find the ISO 8601 week number, day of year, and weekday for any date, past or future.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7800403656727097" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is an ISO week number?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "ISO 8601 defines week 1 of a year as the week containing that year's first Thursday, with weeks running Monday to Sunday. This means the ISO week-numbering year can differ from the calendar year for a few days at the very start or end of January/December — for example, 31 December can fall in week 1 of the following ISO year."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why doesn't week 1 always start on January 1st?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Because ISO weeks always run Monday–Sunday and week 1 is defined by containing the first Thursday of the year, not by containing January 1st. If January 1st falls on a Friday, Saturday, or Sunday, it actually belongs to the last week of the previous ISO year, not week 1."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do all countries use the ISO week numbering system?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No — ISO 8601 (Monday-start weeks, week 1 contains the first Thursday) is the standard across most of Europe and in many business/engineering contexts, but the US commonly uses a Sunday-start week where week 1 simply contains January 1st, giving a different week number for the same date near year boundaries."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Week Number Calculator — TallyBench",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any (runs in browser)",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "url": "https://tallybench.com/week-number-calculator.html"
+}
+</script>
+</head>
+<body data-page-cat="everyday">
+
+<header>
+  <div class="wrap">
+    <div class="headbar">
+      <a class="logo" href="index.html">TALLYBENCH<span>.</span></a>
+    </div>
+  </div>
+  <!-- TB:NAV:START -->
+  <nav class="ruler cat-ruler" aria-label="Category">
+    <a class="tick" href="index.html">HOME</a>
+    <button class="tick cat-tab" type="button" data-cat="finance">FINANCE</button>
+    <button class="tick cat-tab" type="button" data-cat="health">HEALTH</button>
+    <button class="tick cat-tab" type="button" data-cat="education">EDUCATION</button>
+    <button class="tick cat-tab" type="button" data-cat="everyday">EVERYDAY</button>
+  </nav>
+  <nav class="ruler sub-ruler" id="subRuler" aria-label="Tools">
+    <a class="tick sub-tick" data-cat="finance" href="currency-converter.html">CURRENCY</a>
+    <a class="tick sub-tick" data-cat="finance" href="loan-calculator.html">LOAN / EMI</a>
+    <a class="tick sub-tick" data-cat="finance" href="mortgage-calculator.html">MORTGAGE</a>
+    <a class="tick sub-tick" data-cat="finance" href="tax-calculator.html">TAX</a>
+    <a class="tick sub-tick" data-cat="finance" href="gst-vat-calculator.html">GST / VAT</a>
+    <a class="tick sub-tick" data-cat="finance" href="investment-calculator.html">INVESTMENT</a>
+    <a class="tick sub-tick" data-cat="finance" href="discount-calculator.html">DISCOUNT</a>
+    <a class="tick sub-tick" data-cat="finance" href="tip-calculator.html">TIP</a>
+    <a class="tick sub-tick" data-cat="finance" href="fd-calculator.html">FD</a>
+    <a class="tick sub-tick" data-cat="finance" href="rd-calculator.html">RD</a>
+    <a class="tick sub-tick" data-cat="finance" href="ppf-calculator.html">PPF</a>
+    <a class="tick sub-tick" data-cat="finance" href="hra-calculator.html">HRA</a>
+    <a class="tick sub-tick" data-cat="finance" href="break-even-calculator.html">BREAK-EVEN</a>
+    <a class="tick sub-tick" data-cat="health" href="bmi-calculator.html">BMI</a>
+    <a class="tick sub-tick" data-cat="health" href="calorie-calculator.html">CALORIE</a>
+    <a class="tick sub-tick" data-cat="education" href="gpa-calculator.html">GPA</a>
+    <a class="tick sub-tick" data-cat="education" href="scientific-calculator.html">SCIENTIFIC</a>
+    <a class="tick sub-tick" data-cat="everyday" href="percentage-calculator.html">PERCENT</a>
+    <a class="tick sub-tick" data-cat="everyday" href="age-calculator.html">AGE</a>
+    <a class="tick sub-tick" data-cat="everyday" href="days-calculator.html">DAYS</a>
+    <a class="tick sub-tick" data-cat="everyday" href="unit-converter.html">UNITS</a>
+    <a class="tick sub-tick" data-cat="everyday" href="week-number-calculator.html">WEEK #</a>
+    <a class="tick sub-tick" data-cat="everyday" href="cm-to-inches.html">CM→IN</a>
+    <a class="tick sub-tick" data-cat="everyday" href="kg-to-pounds.html">KG→LB</a>
+    <a class="tick sub-tick" data-cat="everyday" href="celsius-to-fahrenheit.html">°C→°F</a>
+    <a class="tick sub-tick" data-cat="everyday" href="password-generator.html">PASSWORD</a>
+    <a class="tick sub-tick" data-cat="everyday" href="word-counter.html">WORD COUNT</a>
+  </nav>
+  <!-- TB:NAV:END -->
+</header>
+
+<div class="wrap">
+  <div class="crumb"><a href="index.html">TallyBench</a> / Week Number Calculator</div>
+
+  <section class="hero">
+    <div class="hero-icon-row cat-utility">
+      <div class="hero-icon"><svg><use href="icons.svg#icon-days"/></svg></div>
+      <div class="eyebrow">// WEEK NUMBER CALCULATOR</div>
+    </div>
+    <h1>What week number is it?</h1>
+    <p>Enter any date to get its ISO 8601 week number, day of the year, and weekday.</p>
+  </section>
+
+  <section class="tool" id="weeknum">
+    <div class="card">
+      <div>
+        <div class="field"><label>Date</label><input type="date" id="wnDate"></div>
+      </div>
+      <div class="readout">
+        <div class="r-row"><span class="r-label">ISO week number</span><span class="r-value" id="wnWeek">—</span></div>
+        <div class="r-row"><span class="r-label">Weekday</span><span class="r-value" id="wnWeekday">—</span></div>
+        <div class="r-row"><span class="r-label">Day of year</span><span class="r-sub" id="wnDayOfYear">—</span></div>
+        <div class="r-row"><span class="r-label">ISO week-numbering year</span><span class="r-sub" id="wnIsoYear">—</span></div>
+      </div>
+      <div class="field-warning" id="wnWarning"></div>
+    </div>
+  </section>
+
+  <section class="article">
+    <h3>What is an ISO week number?</h3>
+    <p>ISO 8601 defines week 1 of a year as the week containing that year's first Thursday, with weeks running Monday to Sunday. This means the ISO week-numbering year can differ from the calendar year for a few days at the very start or end of January/December — for example, 31 December can fall in week 1 of the following ISO year, and 1 January can fall in week 52 or 53 of the previous one.</p>
+    <h3>Why doesn't week 1 always start on January 1st?</h3>
+    <p>Because ISO weeks always run Monday–Sunday and week 1 is defined by containing the first Thursday of the year, not by containing January 1st. If January 1st falls on a Friday, Saturday, or Sunday, it actually belongs to the last week (52 or 53) of the previous ISO year rather than week 1 of the new one — this is the most common source of "why does this say week 52 for a January date" confusion.</p>
+    <h3>Do all countries use the ISO week numbering system?</h3>
+    <p>No — ISO 8601 (Monday-start weeks, week 1 contains the first Thursday) is the standard across most of Europe and in many business, engineering, and payroll contexts worldwide, but the US commonly uses a Sunday-start week where week 1 simply contains January 1st. The same calendar date can therefore have a different week number depending on which system is used — this calculator uses the ISO 8601 standard.</p>
+    <h3>Why does a year sometimes have 53 weeks instead of 52?</h3>
+    <p>52 weeks × 7 days = 364 days, one short of a normal 365-day year (and two short of a 366-day leap year), so the leftover days have to go somewhere. A year has 53 ISO weeks whenever 1 January falls on a Thursday, or in a leap year, when it falls on a Wednesday — roughly 1 year in 5 or 6.</p>
+    <p><strong>Worked example:</strong> 1 January 2027 is a Friday, so it belongs to week 53 of the 2026 ISO year, not week 1 of 2027 — week 1 of 2027 only begins on Monday, 4 January. Enter both dates above to see the ISO week-numbering year shift.</p>
+  </section>
+
+  <!-- TB:MORETOOLS:START -->
+  <nav class="more-tools" aria-label="More calculators">
+    <h2>More calculators</h2>
+    <ul>
+      <li><a href="currency-converter.html">Currency Converter</a></li>
+      <li><a href="loan-calculator.html">Loan / EMI Calculator</a></li>
+      <li><a href="mortgage-calculator.html">Mortgage Calculator</a></li>
+      <li><a href="tax-calculator.html">Tax Calculator</a></li>
+      <li><a href="gst-vat-calculator.html">GST / VAT Calculator</a></li>
+      <li><a href="investment-calculator.html">Investment Calculator</a></li>
+      <li><a href="discount-calculator.html">Discount Calculator</a></li>
+      <li><a href="tip-calculator.html">Tip Calculator</a></li>
+      <li><a href="fd-calculator.html">FD Calculator</a></li>
+      <li><a href="rd-calculator.html">RD Calculator</a></li>
+      <li><a href="ppf-calculator.html">PPF Calculator</a></li>
+      <li><a href="hra-calculator.html">HRA Calculator</a></li>
+      <li><a href="break-even-calculator.html">Break-Even &amp; Profit Margin Calculator</a></li>
+      <li><a href="bmi-calculator.html">BMI Calculator</a></li>
+      <li><a href="calorie-calculator.html">Calorie / BMR Calculator</a></li>
+      <li><a href="gpa-calculator.html">GPA Calculator</a></li>
+      <li><a href="scientific-calculator.html">Scientific Calculator</a></li>
+      <li><a href="percentage-calculator.html">Percentage Calculator</a></li>
+      <li><a href="age-calculator.html">Age Calculator</a></li>
+      <li><a href="days-calculator.html">Days Between Dates</a></li>
+      <li><a href="unit-converter.html">Unit Converter</a></li>
+      <li><a href="cm-to-inches.html">CM to Inches</a></li>
+      <li><a href="kg-to-pounds.html">KG to Pounds</a></li>
+      <li><a href="celsius-to-fahrenheit.html">Celsius to Fahrenheit</a></li>
+      <li><a href="password-generator.html">Password Generator</a></li>
+      <li><a href="word-counter.html">Word Counter</a></li>
+    </ul>
+  </nav>
+  <!-- TB:MORETOOLS:END -->
+
+  <footer>
+    <p>TallyBench · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
+  </footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
