@@ -216,7 +216,9 @@
   const ftWrap = document.getElementById('bmiFtWrap');
   const wUnitSel = document.getElementById('bmiWUnit');
   const standardSeg = document.getElementById('bmiStandardSeg');
+  const sexSeg = document.getElementById('bmiSexSeg');
   let standard = 'who'; // 'who' = 25/30 thresholds, 'apac' = 23/25 (WHO Asia-Pacific)
+  let sex = 'male';
 
   function getHeightMeters(){
     if(unitSel.value === 'ft'){
@@ -266,6 +268,19 @@
         idealEl.textContent = '—';
       }
     }
+
+    const devineEl = document.getElementById('bmiDevine');
+    if(devineEl){
+      const totalInches = h/0.0254;
+      if(totalInches>0){
+        const base = sex==='male' ? 50 : 45.5;
+        const kg = Math.max(base + 2.3*(totalInches-60), 0);
+        const isLb = wUnitSel && wUnitSel.value==='lb';
+        devineEl.textContent = isLb ? (kg*2.20462).toFixed(1)+' lb' : kg.toFixed(1)+' kg';
+      } else {
+        devineEl.textContent = '—';
+      }
+    }
   }
   unitSel.addEventListener('change',()=>{
     const isFt = unitSel.value === 'ft';
@@ -284,8 +299,56 @@
       calcBMI();
     });
   }
+  const bfHipWrap = document.getElementById('bfHipWrap');
+  if(sexSeg){
+    sexSeg.addEventListener('click', (e)=>{
+      const btn = e.target.closest('button');
+      if(!btn) return;
+      sex = btn.dataset.sex;
+      sexSeg.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      if(bfHipWrap) bfHipWrap.style.display = sex==='female' ? 'flex' : 'none';
+      calcBMI();
+      calcBodyFat();
+    });
+  }
   ['bmiH','bmiW','bmiFt','bmiIn'].forEach(id=>document.getElementById(id).addEventListener('input',calcBMI));
   calcBMI();
+
+  // Body fat % — US Navy method (needs neck/waist, plus hip for women)
+  function calcBodyFat(){
+    const pctEl = document.getElementById('bfPct');
+    const catEl = document.getElementById('bfCat');
+    if(!pctEl) return;
+    const h = getHeightMeters()*100; // cm
+    const neck = parseFloat(document.getElementById('bfNeck').value)||0;
+    const waist = parseFloat(document.getElementById('bfWaist').value)||0;
+    const hip = parseFloat(document.getElementById('bfHip').value)||0;
+
+    let pct = null;
+    if(h>0 && neck>0 && waist>neck){
+      if(sex==='male'){
+        pct = 495/(1.0324 - 0.19077*Math.log10(waist-neck) + 0.15456*Math.log10(h)) - 450;
+      } else if(hip>0 && (waist+hip)>neck){
+        pct = 495/(1.29579 - 0.35004*Math.log10(waist+hip-neck) + 0.22100*Math.log10(h)) - 450;
+      }
+    }
+    if(pct===null || !isFinite(pct) || pct<=0){
+      pctEl.textContent = '—';
+      catEl.textContent = 'Enter valid measurements above';
+      return;
+    }
+    pctEl.textContent = pct.toFixed(1)+'%';
+    const ranges = sex==='male'
+      ? [[6,'Essential fat'],[14,'Athletic'],[18,'Fitness'],[25,'Average'],[Infinity,'Above average']]
+      : [[14,'Essential fat'],[21,'Athletic'],[25,'Fitness'],[32,'Average'],[Infinity,'Above average']];
+    catEl.textContent = ranges.find(([max])=>pct<max)[1];
+  }
+  ['bfNeck','bfWaist','bfHip'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.addEventListener('input', calcBodyFat);
+  });
+  calcBodyFat();
 })();
 
 // ---- Age ----
@@ -391,6 +454,7 @@
     length:  { m:1, km:1000, cm:0.01, mm:0.001, mi:1609.34, yd:0.9144, ft:0.3048, in:0.0254, nmi:1852 },
     weight:  { kg:1, g:0.001, mg:0.000001, lb:0.453592, oz:0.0283495, ton:1000, stone:6.35029 },
     volume:  { l:1, ml:0.001, m3:1000, cm3:0.001, gal:3.78541, qt:0.946353, pt:0.473176, cup:0.24, fl_oz:0.0295735 },
+    cooking: { l:1, ml:0.001, tsp:0.00492892, tbsp:0.01478676, fl_oz:0.02957353, cup:0.236588, pt:0.473176, qt:0.946353, gal:3.78541 },
     area:    { m2:1, km2:1000000, cm2:0.0001, ha:10000, acre:4046.86, ft2:0.092903, mi2:2589988.11, yd2:0.836127 },
     speed:   { mps:1, kmh:0.277778, mph:0.44704, knot:0.514444, fps:0.3048 },
     time:    { sec:1, min:60, hr:3600, day:86400, week:604800, month:2629800, year:31557600 },
@@ -402,6 +466,7 @@
     m:'m', km:'km', cm:'cm', mm:'mm', mi:'mi', yd:'yd', ft:'ft', in:'in', nmi:'nautical mi',
     kg:'kg', g:'g', mg:'mg', lb:'lb', oz:'oz', ton:'metric ton', stone:'stone',
     l:'L', ml:'mL', m3:'m³', cm3:'cm³', gal:'gal (US)', qt:'qt (US)', pt:'pt (US)', cup:'cup (US)', fl_oz:'fl oz (US)',
+    tsp:'tsp', tbsp:'tbsp',
     m2:'m²', km2:'km²', cm2:'cm²', ha:'hectare', acre:'acre', ft2:'ft²', mi2:'mi²', yd2:'yd²',
     mps:'m/s', kmh:'km/h', mph:'mph', knot:'knot', fps:'ft/s',
     sec:'sec', min:'min', hr:'hr', day:'day', week:'week', month:'month', year:'year',
@@ -624,6 +689,46 @@
     dateEl.textContent = 'Rates as of '+asOfDate+' · source: European Central Bank via frankfurter.dev';
   }
 
+  function renderCurChart(dates, values, from, to){
+    const el = document.getElementById('curChart');
+    if(!el) return;
+    if(!values.length){ el.innerHTML = '<p style="font-size:12px;color:var(--graphite);">Trend data unavailable right now.</p>'; return; }
+    const W=700, H=180, pad=36;
+    const min = Math.min(...values), max = Math.max(...values);
+    const range = (max-min)||1;
+    const n = values.length;
+    const x = i => pad + (i/(Math.max(n-1,1)))*(W-pad-16);
+    const y = v => H-24 - ((v-min)/range)*(H-40);
+    let path = `M ${x(0)} ${y(values[0])}`;
+    values.forEach((v,i)=>{ path += ` L ${x(i)} ${y(v)}`; });
+    el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;background:var(--card-hi);border:1px solid var(--paper-line);border-radius:6px;">
+      <path d="${path}" fill="none" stroke="var(--teal)" stroke-width="2"/>
+      <text x="${pad}" y="14" font-size="10" font-family="JetBrains Mono,monospace" fill="var(--graphite)">1 ${from} IN ${to} — LAST 30 DAYS</text>
+      <text x="${pad}" y="${H-6}" font-size="9" font-family="JetBrains Mono,monospace" fill="var(--graphite)">${dates[0]}</text>
+      <text x="${W-16}" y="${H-6}" text-anchor="end" font-size="9" font-family="JetBrains Mono,monospace" fill="var(--graphite)">${dates[dates.length-1]}</text>
+    </svg>`;
+  }
+
+  function loadHistory(){
+    const chartEl = document.getElementById('curChart');
+    if(!chartEl) return;
+    const from = fromEl.value, to = toEl.value;
+    if(!from || !to) return;
+    if(from===to){ chartEl.innerHTML = '<p style="font-size:12px;color:var(--graphite);">Pick two different currencies to see a trend.</p>'; return; }
+    chartEl.innerHTML = '<p style="font-size:12px;color:var(--graphite);">Loading trend…</p>';
+    const end = new Date();
+    const start = new Date(end); start.setDate(start.getDate()-30);
+    const fmt = d => d.toISOString().slice(0,10);
+    fetch(`https://api.frankfurter.dev/v1/${fmt(start)}..${fmt(end)}?base=${from}&symbols=${to}`)
+      .then(r=>{ if(!r.ok) throw new Error('bad response'); return r.json(); })
+      .then(data=>{
+        const dates = Object.keys(data.rates).sort();
+        const values = dates.map(d=>data.rates[d][to]);
+        renderCurChart(dates, values, from, to);
+      })
+      .catch(()=> renderCurChart([], [], from, to));
+  }
+
   fetch('https://api.frankfurter.dev/v1/latest?base=USD')
     .then(r=>{ if(!r.ok) throw new Error('bad response'); return r.json(); })
     .then(data=>{
@@ -633,6 +738,7 @@
       fillSelect(fromEl, codes, 'USD');
       fillSelect(toEl, codes, 'INR');
       convert();
+      loadHistory();
     })
     .catch(()=>{
       fillSelect(fromEl, fallbackCurrencies, 'USD');
@@ -643,8 +749,8 @@
     });
 
   amtEl.addEventListener('input', convert);
-  fromEl.addEventListener('change', convert);
-  toEl.addEventListener('change', convert);
+  fromEl.addEventListener('change', ()=>{ convert(); loadHistory(); });
+  toEl.addEventListener('change', ()=>{ convert(); loadHistory(); });
   const curPresets = document.getElementById('curPresets');
   if(curPresets){
     curPresets.addEventListener('click', (e)=>{
@@ -659,6 +765,7 @@
     fromEl.value = toEl.value;
     toEl.value = tmp;
     convert();
+    loadHistory();
   });
 })();
 
@@ -1219,6 +1326,35 @@ function computeTaxFromScheme(scheme, gross){
   return { tax, taxable, takeHome, effRate, totalDed, rows };
 }
 
+// Simplified payroll-tax add-ons (beyond income tax) for the Paycheck Calculator.
+// Only modeled where the deduction is a major, well-known share of a paycheck —
+// other countries get income tax only, disclosed as such on the page.
+const payrollTaxes = {
+  us: (annualGross)=>{
+    const ssWageBase = 168600;
+    const ss = Math.min(annualGross, ssWageBase) * 0.062;
+    const medicare = annualGross * 0.0145;
+    return ss + medicare;
+  },
+  in: (annualGross)=> annualGross * 0.12, // simplified EPF employee contribution
+  uk: (annualGross)=>{
+    const primaryThreshold = 12570, upperLimit = 50270;
+    let ni = 0;
+    if(annualGross > primaryThreshold) ni += (Math.min(annualGross, upperLimit) - primaryThreshold) * 0.08;
+    if(annualGross > upperLimit) ni += (annualGross - upperLimit) * 0.02;
+    return ni;
+  },
+  ca: (annualGross)=>{
+    const cppMax = 68500, eiMax = 63200;
+    return Math.min(annualGross, cppMax)*0.0595 + Math.min(annualGross, eiMax)*0.0164;
+  }
+};
+function getPayrollTax(country, annualGross){
+  const fn = payrollTaxes[country];
+  return fn ? fn(annualGross) : 0;
+}
+const payrollTaxLabels = { us:'Social Security + Medicare', in:'EPF contribution (simplified)', uk:'National Insurance', ca:'CPP + EI' };
+
 // ---- Tax calculator ----
 (function(){
   const countrySel = document.getElementById('taxCountry');
@@ -1529,6 +1665,14 @@ function computeTaxFromScheme(scheme, gross){
     const m = Math.floor(totalSeconds/60), s = Math.round(totalSeconds%60);
     return m+' min'+(s>0 ? ' '+s+' sec' : '');
   }
+  function countSyllables(word){
+    const w = word.toLowerCase().replace(/[^a-z]/g,'');
+    if(!w) return 0;
+    const groups = w.match(/[aeiouy]+/g) || [];
+    let count = groups.length;
+    if(w.endsWith('e') && count>1) count--;
+    return Math.max(count,1);
+  }
   function calcWords(){
     const text = document.getElementById('wcText').value;
     const trimmed = text.trim();
@@ -1549,6 +1693,28 @@ function computeTaxFromScheme(scheme, gross){
     if(readEl) readEl.textContent = fmtTime(words/225*60);
     const speakEl = document.getElementById('wcSpeakTime');
     if(speakEl) speakEl.textContent = fmtTime(words/140*60);
+
+    const fleschEl = document.getElementById('wcFlesch');
+    const fleschLabelEl = document.getElementById('wcFleschLabel');
+    if(fleschEl && fleschLabelEl){
+      if(words===0 || sentences===0){
+        fleschEl.textContent = '—';
+        fleschLabelEl.textContent = '—';
+      } else {
+        const syllables = trimmed.split(/\s+/).reduce((sum,w)=>sum+countSyllables(w),0);
+        const score = 206.835 - 1.015*(words/sentences) - 84.6*(syllables/words);
+        const clamped = Math.max(0, Math.min(100, score));
+        fleschEl.textContent = clamped.toFixed(1);
+        let label;
+        if(clamped>=90) label = 'Very easy (5th grade)';
+        else if(clamped>=70) label = 'Easy (7th grade)';
+        else if(clamped>=60) label = 'Standard (8th-9th grade)';
+        else if(clamped>=50) label = 'Fairly difficult (high school)';
+        else if(clamped>=30) label = 'Difficult (college)';
+        else label = 'Very difficult (college graduate)';
+        fleschLabelEl.textContent = label;
+      }
+    }
   }
   document.getElementById('wcText').addEventListener('input',calcWords);
   const exampleBtn = document.getElementById('wcExample');
@@ -2162,6 +2328,7 @@ function computeTaxFromScheme(scheme, gross){
     calc();
   }
 
+  let lastCredits = 0, lastPoints = 0, lastScale = '4';
   function calc(){
     const scale = scaleEl.value;
     const weighted = weightedEl.checked;
@@ -2177,6 +2344,7 @@ function computeTaxFromScheme(scheme, gross){
     const gpa = totalCredits>0 ? totalPoints/totalCredits : 0;
     document.getElementById('gpaCredits').textContent = totalCredits.toString();
     document.getElementById('gpaResult').textContent = gpa.toFixed(2);
+    lastCredits = totalCredits; lastPoints = totalPoints; lastScale = scale;
     calcTarget(totalCredits, totalPoints, scale);
   }
 
@@ -2218,6 +2386,589 @@ function computeTaxFromScheme(scheme, gross){
 
   addRow(3);
   addRow(4);
+  calc();
+
+  // ---- Semester history (localStorage) ----
+  const HISTORY_KEY = 'tb_gpa_history';
+  const historySection = document.getElementById('gpaHistory');
+  const historyBody = document.getElementById('gpaHistoryBody');
+  const saveBtn = document.getElementById('gpaSaveSemester');
+  const clearBtn = document.getElementById('gpaClearHistory');
+  const labelEl = document.getElementById('gpaSemesterLabel');
+
+  function loadHistory(){
+    try { return JSON.parse(localStorage.getItem(HISTORY_KEY)) || []; }
+    catch(e) { return []; }
+  }
+  function saveHistory(list){
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(list));
+  }
+  function renderHistory(){
+    const list = loadHistory();
+    if(!historySection) return;
+    historySection.hidden = list.length===0;
+    if(!historyBody) return;
+    historyBody.innerHTML = list.map((s,i)=>
+      `<tr><td>${s.label}</td><td>${s.credits}</td><td>${s.credits>0 ? (s.points/s.credits).toFixed(2) : '0.00'}</td><td><button type="button" class="ghost" data-idx="${i}" style="font-size:10px;padding:4px 8px;">Remove</button></td></tr>`
+    ).join('');
+    let cumCredits=0, cumPoints=0;
+    list.forEach(s=>{ cumCredits+=s.credits; cumPoints+=s.points; });
+    const cumEl = document.getElementById('gpaCumulative');
+    if(cumEl) cumEl.textContent = cumCredits>0 ? (cumPoints/cumCredits).toFixed(2) : '—';
+  }
+  if(saveBtn){
+    saveBtn.addEventListener('click', ()=>{
+      if(lastCredits<=0) return;
+      const list = loadHistory();
+      const label = (labelEl && labelEl.value.trim()) || ('Semester '+(list.length+1));
+      list.push({label, credits: lastCredits, points: lastPoints, scale: lastScale});
+      saveHistory(list);
+      if(labelEl) labelEl.value = '';
+      renderHistory();
+    });
+  }
+  if(historyBody){
+    historyBody.addEventListener('click', (e)=>{
+      const btn = e.target.closest('button[data-idx]');
+      if(!btn) return;
+      const list = loadHistory();
+      list.splice(parseInt(btn.dataset.idx,10), 1);
+      saveHistory(list);
+      renderHistory();
+    });
+  }
+  if(clearBtn){
+    clearBtn.addEventListener('click', ()=>{
+      saveHistory([]);
+      renderHistory();
+    });
+  }
+  renderHistory();
+})();
+
+// ---- Dedicated SIP Calculator ----
+(function(){
+  const anchorEl = document.getElementById('dsipAmt');
+  if(!anchorEl) return;
+  const curSel = document.getElementById('dsipCur');
+  function money(n){
+    const cur = curSel ? curSel.value : '₹';
+    return cur+Math.round(n).toLocaleString();
+  }
+  function setWarning(id, msg){
+    const w = document.getElementById(id);
+    if(!w) return;
+    if(msg){ w.textContent = msg; w.classList.add('show'); } else { w.textContent=''; w.classList.remove('show'); }
+  }
+  function calc(){
+    const P = parseFloat(document.getElementById('dsipAmt').value)||0;
+    const annual = parseFloat(document.getElementById('dsipRate').value)||0;
+    const years = parseFloat(document.getElementById('dsipYears').value)||0;
+    const stepUp = parseFloat(document.getElementById('dsipStepUp').value)||0;
+    const infl = parseFloat(document.getElementById('dsipInflation').value)||0;
+    const n = Math.round(years*12);
+    const r = annual/100/12;
+
+    if(P<0) setWarning('dsipWarning', "Monthly investment can't be negative.");
+    else if(years<=0) setWarning('dsipWarning', 'Duration must be greater than zero years.');
+    else if(annual<=-100) setWarning('dsipWarning', 'An annual return of -100% or lower means the investment loses everything — enter a realistic expected return.');
+    else setWarning('dsipWarning', null);
+
+    let invested=0, balance=0, finalMonthAmt=P;
+    const yearRows=[];
+    for(let m=1;m<=n;m++){
+      const yearIndex = Math.floor((m-1)/12);
+      const monthlyAmt = P*Math.pow(1+stepUp/100, yearIndex);
+      balance = balance*(1+r) + monthlyAmt;
+      invested += monthlyAmt;
+      finalMonthAmt = monthlyAmt;
+      if(m%12===0 || m===n) yearRows.push({year:Math.ceil(m/12), invested, value:balance});
+    }
+    const maturity = balance;
+
+    document.getElementById('dsipInvested').textContent = money(invested);
+    document.getElementById('dsipReturns').textContent = money(Math.max(maturity-invested,0));
+    document.getElementById('dsipMaturity').textContent = money(maturity);
+    const finalAmtEl = document.getElementById('dsipFinalMonthAmt');
+    if(finalAmtEl) finalAmtEl.textContent = stepUp>0 ? money(finalMonthAmt)+'/mo by the final year' : '—';
+    const realEl = document.getElementById('dsipRealValue');
+    if(realEl) realEl.textContent = years>0 ? money(maturity/Math.pow(1+infl/100, years)) : '—';
+
+    const body = document.getElementById('dsipGrowthBody');
+    if(body) body.innerHTML = yearRows.map(r=>`<tr><td>${r.year}</td><td>${money(r.invested)}</td><td>${money(r.value)}</td><td>${money(r.value-r.invested)}</td></tr>`).join('');
+  }
+  ['dsipAmt','dsipRate','dsipYears','dsipStepUp','dsipInflation','dsipCur'].forEach(id=>{
+    const e = document.getElementById(id);
+    if(e){ e.addEventListener('input', calc); e.addEventListener('change', calc); }
+  });
+  calc();
+})();
+
+// ---- Dedicated Compound Interest Calculator ----
+(function(){
+  const anchorEl = document.getElementById('dcmpPrincipal');
+  if(!anchorEl) return;
+  const curSel = document.getElementById('dcmpCur');
+  function money(n){
+    const cur = curSel ? curSel.value : '$';
+    return cur+Math.round(n).toLocaleString();
+  }
+  function setWarning(id, msg){
+    const w = document.getElementById(id);
+    if(!w) return;
+    if(msg){ w.textContent = msg; w.classList.add('show'); } else { w.textContent=''; w.classList.remove('show'); }
+  }
+  function calc(){
+    const P = parseFloat(document.getElementById('dcmpPrincipal').value)||0;
+    const annual = parseFloat(document.getElementById('dcmpRate').value)||0;
+    const years = parseFloat(document.getElementById('dcmpYears').value)||0;
+    const n = parseFloat(document.getElementById('dcmpFreq').value)||1;
+    const monthlyContribution = parseFloat(document.getElementById('dcmpMonthly').value)||0;
+
+    if(P<0) setWarning('dcmpWarning', "Principal can't be negative.");
+    else if(years<=0) setWarning('dcmpWarning', 'Duration must be greater than zero years.');
+    else if(annual<=-100*n) setWarning('dcmpWarning', 'That interest rate implies losing more than the full principal each compounding period — enter a realistic rate.');
+    else setWarning('dcmpWarning', null);
+
+    const months = Math.round(years*12);
+    const rMonthly = Math.pow(1+(annual/100)/n, n/12) - 1;
+    let balance = P, invested = P;
+    const yearRows = [];
+    for(let m=1;m<=months;m++){
+      balance = balance*(1+rMonthly) + monthlyContribution;
+      invested += monthlyContribution;
+      if(m%12===0 || m===months) yearRows.push({year:Math.ceil(m/12), invested, value:balance});
+    }
+    const maturity = balance;
+
+    document.getElementById('dcmpPrincipalOut').textContent = money(invested);
+    document.getElementById('dcmpInterest').textContent = money(Math.max(maturity-invested,0));
+    document.getElementById('dcmpMaturity').textContent = money(maturity);
+
+    const body = document.getElementById('dcmpGrowthBody');
+    if(body) body.innerHTML = yearRows.map(r=>`<tr><td>${r.year}</td><td>${money(r.invested)}</td><td>${money(r.value)}</td><td>${money(r.value-r.invested)}</td></tr>`).join('');
+  }
+  ['dcmpPrincipal','dcmpRate','dcmpYears','dcmpFreq','dcmpMonthly','dcmpCur'].forEach(id=>{
+    const e = document.getElementById(id);
+    if(e){ e.addEventListener('input', calc); e.addEventListener('change', calc); }
+  });
+  calc();
+})();
+
+// ---- Macro Calculator ----
+(function(){
+  const ageEl = document.getElementById('macroAge');
+  if(!ageEl) return;
+  const unitEl = document.getElementById('macroUnit');
+  const weightEl = document.getElementById('macroWeight');
+  const weightUnitEl = document.getElementById('macroWeightUnit');
+  const cmEl = document.getElementById('macroHeightCm');
+  const ftEl = document.getElementById('macroHeightFt');
+  const inEl = document.getElementById('macroHeightIn');
+  const cmWrap = document.getElementById('macroCmWrap');
+  const ftWrap = document.getElementById('macroFtWrap');
+  const activityEl = document.getElementById('macroActivity');
+  const sexSeg = document.getElementById('macroSexSeg');
+  const goalSeg = document.getElementById('macroGoalSeg');
+  const styleEl = document.getElementById('macroStyle');
+  let sex = 'male', goal = 'maintain';
+
+  const goalAdjust = { lose:-500, maintain:0, gain:500 };
+  const splits = {
+    balanced:    {p:0.30, c:0.40, f:0.30},
+    highprotein: {p:0.40, c:0.30, f:0.30},
+    lowcarb:     {p:0.35, c:0.20, f:0.45},
+    keto:        {p:0.25, c:0.05, f:0.70}
+  };
+
+  function getHeightCm(){
+    if(unitEl.value==='ft'){
+      const ft = parseFloat(ftEl.value)||0;
+      const inch = parseFloat(inEl.value)||0;
+      return (ft*12+inch)*2.54;
+    }
+    return parseFloat(cmEl.value)||0;
+  }
+  function getWeightKg(){
+    const w = parseFloat(weightEl.value)||0;
+    return (weightUnitEl && weightUnitEl.value==='lb') ? w/2.20462 : w;
+  }
+
+  function calc(){
+    const isFt = unitEl.value==='ft';
+    cmWrap.style.display = isFt ? 'none' : 'flex';
+    ftWrap.style.display = isFt ? 'grid' : 'none';
+
+    const age = parseFloat(ageEl.value)||0;
+    const weight = getWeightKg();
+    const height = getHeightCm();
+    const activity = parseFloat(activityEl.value)||1.2;
+
+    let bmr = 10*weight + 6.25*height - 5*age;
+    bmr += (sex==='male') ? 5 : -161;
+    bmr = Math.max(bmr,0);
+    const tdee = bmr*activity;
+    const target = Math.max(tdee + goalAdjust[goal], 0);
+
+    document.getElementById('macroTDEE').textContent = Math.round(tdee).toLocaleString()+' kcal';
+    document.getElementById('macroTarget').textContent = Math.round(target).toLocaleString()+' kcal';
+
+    const style = splits[styleEl.value] || splits.balanced;
+    document.getElementById('macroProtein').textContent = Math.round(target*style.p/4)+' g';
+    document.getElementById('macroCarbs').textContent = Math.round(target*style.c/4)+' g';
+    document.getElementById('macroFat').textContent = Math.round(target*style.f/9)+' g';
+  }
+
+  sexSeg.addEventListener('click', (e)=>{
+    const btn = e.target.closest('button');
+    if(!btn) return;
+    sex = btn.dataset.sex;
+    sexSeg.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    calc();
+  });
+  goalSeg.addEventListener('click', (e)=>{
+    const btn = e.target.closest('button');
+    if(!btn) return;
+    goal = btn.dataset.goal;
+    goalSeg.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    calc();
+  });
+  [ageEl, weightEl, weightUnitEl, unitEl, cmEl, ftEl, inEl, activityEl, styleEl].forEach(e=>{
+    if(e){ e.addEventListener('input', calc); e.addEventListener('change', calc); }
+  });
+  calc();
+})();
+
+// ---- Pregnancy Due Date Calculator ----
+(function(){
+  const methodEl = document.getElementById('pregMethod');
+  if(!methodEl) return;
+  const dateEl = document.getElementById('pregDate');
+  const cycleEl = document.getElementById('pregCycle');
+  const cycleWrap = document.getElementById('pregCycleWrap');
+
+  function addDays(date, days){ const d = new Date(date); d.setDate(d.getDate()+days); return d; }
+  function fmt(d){ return d.toLocaleDateString(undefined, {year:'numeric', month:'long', day:'numeric'}); }
+
+  function calc(){
+    const method = methodEl.value;
+    cycleWrap.style.display = method==='lmp' ? 'flex' : 'none';
+    const raw = dateEl.value;
+    if(!raw) return;
+    const inputDate = new Date(raw+'T00:00:00');
+    if(isNaN(inputDate)) return;
+    const cycleLen = parseFloat(cycleEl.value)||28;
+
+    let lmpDate;
+    if(method==='lmp') lmpDate = inputDate;
+    else if(method==='conception') lmpDate = addDays(inputDate, -14);
+    else lmpDate = addDays(inputDate, -19); // 5-day (blastocyst) IVF transfer
+
+    const cycleAdjust = method==='lmp' ? (cycleLen-28) : 0;
+    const dueDate = addDays(lmpDate, 280 + cycleAdjust);
+
+    const today = new Date(); today.setHours(0,0,0,0);
+    const gestationDays = Math.round((today - lmpDate)/86400000);
+    const daysToDue = Math.round((dueDate - today)/86400000);
+    const weeksPregnant = Math.floor(Math.max(gestationDays,0)/7);
+    const daysExtra = Math.max(gestationDays,0)%7;
+    let trimester = 1;
+    if(weeksPregnant>=27) trimester = 3; else if(weeksPregnant>=13) trimester = 2;
+
+    document.getElementById('pregDueDate').textContent = fmt(dueDate);
+    document.getElementById('pregWeeks').textContent = gestationDays>=0 ? (weeksPregnant+'w '+daysExtra+'d') : 'Not yet started';
+    document.getElementById('pregTrimester').textContent = gestationDays>=0 ? ('Trimester '+trimester) : '—';
+    document.getElementById('pregDaysLeft').textContent = daysToDue>=0 ? (daysToDue+' days') : 'Due date has passed';
+
+    const milestones = document.getElementById('pregMilestones');
+    if(milestones){
+      const rows = [
+        {label:'End of 1st trimester (week 13)', date: addDays(lmpDate, 13*7)},
+        {label:'Viability milestone (week 24)', date: addDays(lmpDate, 24*7)},
+        {label:'Full term begins (week 37)', date: addDays(lmpDate, 37*7)},
+        {label:'Estimated due date (week 40)', date: dueDate}
+      ];
+      milestones.innerHTML = rows.map(r=>`<tr><td>${r.label}</td><td>${fmt(r.date)}</td></tr>`).join('');
+    }
+  }
+  [methodEl, dateEl, cycleEl].forEach(e=>{ if(e){ e.addEventListener('input', calc); e.addEventListener('change', calc); } });
+  calc();
+})();
+
+// ---- Ovulation Calculator ----
+(function(){
+  const lmpEl = document.getElementById('ovuLmp');
+  if(!lmpEl) return;
+  const cycleEl = document.getElementById('ovuCycle');
+  const lutealEl = document.getElementById('ovuLuteal');
+
+  function addDays(date, days){ const d = new Date(date); d.setDate(d.getDate()+days); return d; }
+  function fmt(d){ return d.toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'}); }
+
+  function calc(){
+    const raw = lmpEl.value;
+    if(!raw) return;
+    const lmp = new Date(raw+'T00:00:00');
+    if(isNaN(lmp)) return;
+    const cycleLen = parseFloat(cycleEl.value)||28;
+    const luteal = parseFloat(lutealEl.value)||14;
+
+    const ovulationDay = addDays(lmp, cycleLen-luteal);
+    const fertileStart = addDays(ovulationDay, -5);
+    const fertileEnd = addDays(ovulationDay, 1);
+    const nextPeriod = addDays(lmp, cycleLen);
+
+    document.getElementById('ovuDate').textContent = fmt(ovulationDay);
+    document.getElementById('ovuFertile').textContent = fmt(fertileStart)+' – '+fmt(fertileEnd);
+    document.getElementById('ovuNextPeriod').textContent = fmt(nextPeriod);
+
+    const body = document.getElementById('ovuCycleBody');
+    if(body){
+      const rows = [];
+      for(let i=0;i<6;i++){
+        const cycleStart = addDays(lmp, cycleLen*i);
+        const ov = addDays(cycleStart, cycleLen-luteal);
+        rows.push({n:i+1, period:cycleStart, ovulation:ov, fertileStart:addDays(ov,-5), fertileEnd:addDays(ov,1)});
+      }
+      body.innerHTML = rows.map(r=>`<tr><td>Cycle ${r.n}</td><td>${fmt(r.period)}</td><td>${fmt(r.fertileStart)} – ${fmt(r.fertileEnd)}</td><td>${fmt(r.ovulation)}</td></tr>`).join('');
+    }
+  }
+  [lmpEl, cycleEl, lutealEl].forEach(e=>{ if(e){ e.addEventListener('input', calc); e.addEventListener('change', calc); } });
+  calc();
+})();
+
+// ---- Refinance Calculator ----
+(function(){
+  const balanceEl = document.getElementById('refBalance');
+  if(!balanceEl) return;
+  const curSel = document.getElementById('refCur');
+  function money(n){
+    const cur = curSel ? curSel.value : '$';
+    return cur+Math.round(n).toLocaleString();
+  }
+  function setWarning(id, msg){
+    const w = document.getElementById(id);
+    if(!w) return;
+    if(msg){ w.textContent = msg; w.classList.add('show'); } else { w.textContent=''; w.classList.remove('show'); }
+  }
+  function calc(){
+    const balance = parseFloat(balanceEl.value)||0;
+    const curRate = parseFloat(document.getElementById('refCurRate').value)||0;
+    const remainingYears = parseFloat(document.getElementById('refRemainingYears').value)||0;
+    const newRate = parseFloat(document.getElementById('refNewRate').value)||0;
+    const newTermYears = parseFloat(document.getElementById('refNewTerm').value)||0;
+    const closingCosts = parseFloat(document.getElementById('refClosing').value)||0;
+
+    if(balance<=0 || remainingYears<=0 || newTermYears<=0){
+      setWarning('refWarning', 'Enter a positive loan balance and term to see a comparison.');
+      return;
+    }
+    setWarning('refWarning', null);
+
+    const curMonths = Math.round(remainingYears*12);
+    const newMonths = Math.round(newTermYears*12);
+    const current = buildAmortization(balance, curRate, curMonths, 0);
+    const refi = buildAmortization(balance, newRate, newMonths, 0);
+
+    const monthlySavings = current.pay - refi.pay;
+    const breakEvenMonths = monthlySavings>0 ? Math.ceil(closingCosts/monthlySavings) : Infinity;
+
+    document.getElementById('refCurrentPay').textContent = money(current.pay);
+    document.getElementById('refNewPay').textContent = money(refi.pay);
+    document.getElementById('refMonthlySavings').textContent = (monthlySavings>=0?'':'-')+money(Math.abs(monthlySavings));
+    document.getElementById('refCurrentInterest').textContent = money(current.totalInterest);
+    document.getElementById('refNewInterest').textContent = money(refi.totalInterest);
+    document.getElementById('refInterestDiff').textContent = money(Math.abs(current.totalInterest-refi.totalInterest)) + (refi.totalInterest<current.totalInterest ? ' saved' : ' more');
+    document.getElementById('refBreakEven').textContent = isFinite(breakEvenMonths) ? (breakEvenMonths+' months') : "Never — payment doesn't decrease at this rate";
+
+    const verdict = document.getElementById('refVerdict');
+    if(verdict){
+      if(monthlySavings<=0) verdict.textContent = "This refinance raises your monthly payment — only worth it if you specifically want a shorter term.";
+      else if(breakEvenMonths <= newMonths*0.5) verdict.textContent = 'Likely worth it — you recover the closing costs well within the new loan\'s term.';
+      else verdict.textContent = "Marginal — you'd need to stay in the loan a long time to recover the closing costs.";
+    }
+  }
+  ['refBalance','refCurRate','refRemainingYears','refNewRate','refNewTerm','refClosing','refCur'].forEach(id=>{
+    const e = document.getElementById(id);
+    if(e){ e.addEventListener('input', calc); e.addEventListener('change', calc); }
+  });
+  calc();
+})();
+
+// ---- Paycheck / Take-Home Pay Calculator ----
+(function(){
+  const countryEl = document.getElementById('payCountry');
+  if(!countryEl) return;
+  function money(sym, n){ return sym+Math.round(Math.max(n,0)).toLocaleString(); }
+
+  function calc(){
+    const country = countryEl.value;
+    const filingWrap = document.getElementById('payFilingWrap');
+    const regimeWrap = document.getElementById('payRegimeWrap');
+    filingWrap.style.display = country==='us' ? '' : 'none';
+    regimeWrap.style.display = country==='in' ? '' : 'none';
+
+    const filingStatus = document.getElementById('payFiling').value;
+    const regime = document.getElementById('payRegime').value;
+    const annualGross = parseFloat(document.getElementById('payGross').value)||0;
+    const frequency = document.getElementById('payFrequency').value;
+
+    const scheme = getStandardTaxScheme(country, filingStatus, regime);
+    const result = computeTaxFromScheme(scheme, annualGross);
+    const payrollTax = getPayrollTax(country, annualGross);
+    const netAnnual = Math.max(annualGross - result.tax - payrollTax, 0);
+
+    const periodsPerYear = {weekly:52, biweekly:26, semimonthly:24, monthly:12}[frequency] || 12;
+
+    document.getElementById('payGrossPeriod').textContent = money(scheme.symbol, annualGross/periodsPerYear);
+    document.getElementById('payTaxPeriod').textContent = money(scheme.symbol, result.tax/periodsPerYear);
+    document.getElementById('payPayrollPeriod').textContent = money(scheme.symbol, payrollTax/periodsPerYear);
+    document.getElementById('payNetPeriod').textContent = money(scheme.symbol, netAnnual/periodsPerYear);
+
+    document.getElementById('payGrossAnnual').textContent = money(scheme.symbol, annualGross);
+    document.getElementById('payTaxAnnual').textContent = money(scheme.symbol, result.tax);
+    document.getElementById('payPayrollAnnual').textContent = money(scheme.symbol, payrollTax);
+    document.getElementById('payNetAnnual').textContent = money(scheme.symbol, netAnnual);
+    document.getElementById('payEffRate').textContent = (annualGross>0 ? (((result.tax+payrollTax)/annualGross)*100).toFixed(1) : '0') + '%';
+
+    const payrollLabel = document.getElementById('payPayrollLabel');
+    if(payrollLabel) payrollLabel.textContent = payrollTaxLabels[country] || 'Payroll tax (not modeled for this country)';
+  }
+  ['payCountry','payFiling','payRegime','payGross','payFrequency'].forEach(id=>{
+    const e = document.getElementById(id);
+    if(e){ e.addEventListener('input', calc); e.addEventListener('change', calc); }
+  });
+  calc();
+})();
+
+// ---- Debt Payoff Calculator (snowball vs avalanche) ----
+(function(){
+  const rowsWrap = document.getElementById('debtRows');
+  if(!rowsWrap) return;
+  const addBtn = document.getElementById('debtAddRow');
+  const strategySeg = document.getElementById('debtStrategySeg');
+  const extraEl = document.getElementById('debtExtra');
+  const curSel = document.getElementById('debtCur');
+  let strategy = 'avalanche';
+  let rowId = 0;
+
+  function money(n){
+    const cur = curSel ? curSel.value : '$';
+    return cur+Math.round(n).toLocaleString();
+  }
+
+  function addRow(name, balance, apr, minPay){
+    rowId++;
+    const row = document.createElement('div');
+    row.className = 'row3';
+    row.id = 'debtRow'+rowId;
+    row.style.marginBottom = '10px';
+    row.innerHTML = `
+      <div class="field"><label>Debt name</label><input type="text" class="debtName" placeholder="e.g. Credit card" value="${name||''}"></div>
+      <div class="field"><label>Balance</label><input type="number" class="debtBalance" value="${balance||1000}" min="0" step="10"></div>
+      <div class="field"><label>APR (%)</label><input type="number" class="debtApr" value="${apr||18}" min="0" step="0.1"></div>
+      <div class="field"><label>Min. payment</label><input type="number" class="debtMinPay" value="${minPay||25}" min="0" step="5"></div>
+    `;
+    const removeBtn = document.createElement('button');
+    removeBtn.type = 'button';
+    removeBtn.className = 'ghost';
+    removeBtn.textContent = 'Remove';
+    removeBtn.style.marginBottom = '14px';
+    removeBtn.addEventListener('click', ()=>{ row.remove(); calc(); });
+    row.appendChild(removeBtn);
+    rowsWrap.appendChild(row);
+    row.querySelectorAll('input').forEach(inp=>inp.addEventListener('input', calc));
+  }
+
+  function simulate(debts, extra, strat){
+    const list = debts.map(d=>({...d, paidOff:null}));
+    if(strat==='avalanche') list.sort((a,b)=>b.apr-a.apr);
+    else list.sort((a,b)=>a.balance-b.balance);
+
+    let month = 0, totalInterest = 0;
+    const maxMonths = 1200;
+    let remaining = list.filter(d=>d.balance>0);
+    while(remaining.length>0 && month<maxMonths){
+      month++;
+      let freedUp = extra;
+      for(const d of list){
+        if(d.balance<=0) continue;
+        const interest = d.balance*(d.apr/100/12);
+        totalInterest += interest;
+        d.balance += interest;
+        const pay = Math.min(d.minPay, d.balance);
+        d.balance -= pay;
+      }
+      for(const d of list){
+        if(d.balance<=0 || freedUp<=0) continue;
+        const pay = Math.min(freedUp, d.balance);
+        d.balance -= pay;
+        freedUp -= pay;
+      }
+      for(const d of list){
+        if(d.balance<=0.01 && d.paidOff===null) d.paidOff = month;
+      }
+      remaining = list.filter(d=>d.balance>0.01);
+    }
+    return { months: month, totalInterest, order: list.slice().sort((a,b)=>(a.paidOff||Infinity)-(b.paidOff||Infinity)) };
+  }
+
+  function calc(){
+    const debts = [];
+    rowsWrap.querySelectorAll('.row3').forEach(row=>{
+      const name = row.querySelector('.debtName').value || 'Debt';
+      const balance = parseFloat(row.querySelector('.debtBalance').value)||0;
+      const apr = parseFloat(row.querySelector('.debtApr').value)||0;
+      const minPay = parseFloat(row.querySelector('.debtMinPay').value)||0;
+      if(balance>0) debts.push({name, balance, apr, minPay});
+    });
+    const extra = parseFloat(extraEl.value)||0;
+
+    if(debts.length===0){
+      document.getElementById('debtMonths').textContent = '—';
+      document.getElementById('debtInterest').textContent = '—';
+      document.getElementById('debtOrderBody').innerHTML = '';
+      return;
+    }
+
+    const result = simulate(debts, extra, strategy);
+    document.getElementById('debtMonths').textContent = result.months+' months';
+    document.getElementById('debtInterest').textContent = money(result.totalInterest);
+    document.getElementById('debtPayoffDate').textContent = (function(){
+      const d = new Date(); d.setMonth(d.getMonth()+result.months);
+      return d.toLocaleDateString(undefined,{year:'numeric',month:'long'});
+    })();
+
+    const otherStrat = strategy==='avalanche' ? 'snowball' : 'avalanche';
+    const otherResult = simulate(debts, extra, otherStrat);
+    const diff = otherResult.totalInterest - result.totalInterest;
+    const compareEl = document.getElementById('debtCompare');
+    if(compareEl){
+      compareEl.textContent = diff > 0.5
+        ? (strategy==='avalanche' ? 'Avalanche' : 'Snowball')+' saves you '+money(diff)+' in interest vs. '+otherStrat+' on these numbers.'
+        : 'Both strategies cost about the same in interest for these numbers — pick whichever keeps you motivated.';
+    }
+
+    const body = document.getElementById('debtOrderBody');
+    if(body) body.innerHTML = result.order.map((d,i)=>`<tr><td>${i+1}. ${d.name}</td><td>${d.paidOff?('Month '+d.paidOff):('Not paid off within '+result.months+' months')}</td></tr>`).join('');
+  }
+
+  addBtn.addEventListener('click', ()=>addRow());
+  strategySeg.addEventListener('click', (e)=>{
+    const btn = e.target.closest('button');
+    if(!btn) return;
+    strategy = btn.dataset.strategy;
+    strategySeg.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    calc();
+  });
+  extraEl.addEventListener('input', calc);
+  if(curSel) curSel.addEventListener('change', calc);
+
+  addRow('Credit card', 4000, 22, 100);
+  addRow('Car loan', 12000, 7, 250);
   calc();
 })();
 

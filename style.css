@@ -151,13 +151,26 @@ header{
   background:var(--orange);
 }
 
-/* On narrow screens, wrap nav ticks onto multiple lines instead of a
-   horizontally-scrolling row with no visible scroll affordance — otherwise
-   trailing items (e.g. EVERYDAY) are clipped off-screen with no indication. */
+/* On narrow screens, the tool sub-list wraps onto multiple lines instead of a
+   horizontally-scrolling row with no visible scroll affordance. The top
+   category row instead stays a single line, with each tick sharing the width
+   equally and shrinking its own padding/font so all categories always fit —
+   never wrapping or scrolling. */
 @media(max-width:640px){
   .cat-ruler{
-    flex-wrap:wrap;
-    overflow-x:visible;
+    flex-wrap:nowrap;
+  }
+  .cat-ruler .tick{
+    flex:1 1 0;
+    min-width:0;
+    padding-left:2px;
+    padding-right:2px;
+    font-size:clamp(7.5px, 2.6vw, 11px);
+    letter-spacing:0;
+    text-align:center;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:clip;
   }
   .sub-ruler{
     flex-wrap:wrap;
@@ -407,7 +420,8 @@ footer p{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--graph
 .hero-graphic svg{width:100%;height:auto;display:block;}
 @media(max-width:780px){
   .hero-flex{flex-direction:column;align-items:flex-start;gap:14px;}
-  .hero-graphic{width:260px;max-width:70vw;align-self:center;}
+  .hero-flex .hero-copy{flex:0 0 auto;min-width:0;}
+  .hero-graphic{width:300px;max-width:80vw;align-self:center;}
 }
 
 /* SCIENTIFIC CALCULATOR */

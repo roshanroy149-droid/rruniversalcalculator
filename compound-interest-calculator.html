@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CM to Inches Converter | TallyBench</title>
-<meta name="description" content="Convert centimeters to inches and inches to centimeters instantly, plus a quick-reference table of common conversions.">
-<link rel="canonical" href="https://tallybench.com/cm-to-inches.html">
+<title>Compound Interest Calculator — With Monthly Contributions | TallyBench</title>
+<meta name="description" content="Free compound interest calculator with optional monthly contributions and any compounding frequency — annually, quarterly, monthly, or daily.">
+<link rel="canonical" href="https://tallybench.com/compound-interest-calculator.html">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.svg">
@@ -15,14 +15,15 @@
 <meta name="apple-mobile-web-app-title" content="TallyBench">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TallyBench">
-<meta property="og:title" content="CM to Inches Converter">
-<meta property="og:description" content="Convert centimeters to inches and inches to centimeters instantly, plus a quick-reference table of common conversions.">
-<meta property="og:url" content="https://tallybench.com/cm-to-inches.html">
+<meta property="og:title" content="Compound Interest Calculator — With Monthly Contributions">
+<meta property="og:description" content="Free compound interest calculator with optional monthly contributions and any compounding frequency — annually, quarterly, monthly, or daily.">
+<meta property="og:url" content="https://tallybench.com/compound-interest-calculator.html">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="CM to Inches Converter">
-<meta name="twitter:description" content="Convert centimeters to inches and inches to centimeters instantly, plus a quick-reference table of common conversions.">
+<meta name="twitter:title" content="Compound Interest Calculator — With Monthly Contributions">
+<meta name="twitter:description" content="Free compound interest calculator with optional monthly contributions and any compounding frequency — annually, quarterly, monthly, or daily.">
 <link rel="stylesheet" href="fonts/fonts.css">
 <link rel="stylesheet" href="style.css">
+
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -30,18 +31,34 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "How do I convert cm to inches?",
+      "name": "What's the difference between this and simple interest?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Divide the centimeter value by 2.54 — 1 inch is defined as exactly 2.54 cm, so this conversion is exact, not an approximation."
+        "text": "Compound growth adds earned interest back into the principal each period, so future interest is calculated on a larger base. More frequent compounding (daily vs. annually) produces a slightly higher return at the same stated rate."
       }
     },
     {
       "@type": "Question",
-      "name": "How do I convert inches to cm?",
+      "name": "What does the monthly contribution field add?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Multiply the inch value by 2.54. For example, 10 inches × 2.54 = 25.4 cm."
+        "text": "It lets you model a lump sum that also receives regular top-ups, rather than a one-time deposit left to grow alone — closer to how many people actually save."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How much does compounding frequency actually matter?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The difference shrinks the more frequent compounding already is — daily vs. monthly matters far less than monthly vs. annual, at the same stated rate."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are these numbers guaranteed?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No — this is a projection based on a constant assumed rate you enter. Real investments and interest rates fluctuate."
       }
     }
   ]
@@ -51,7 +68,7 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "CM to Inches Converter — TallyBench",
+  "name": "Compound Interest Calculator — TallyBench",
   "applicationCategory": "UtilitiesApplication",
   "operatingSystem": "Any (runs in browser)",
   "offers": {
@@ -59,11 +76,11 @@
     "price": "0",
     "priceCurrency": "USD"
   },
-  "url": "https://tallybench.com/cm-to-inches.html"
+  "url": "https://tallybench.com/compound-interest-calculator.html"
 }
 </script>
 </head>
-<body data-page-cat="everyday">
+<body data-page-cat="finance">
 
 <header>
   <div class="wrap">
@@ -121,49 +138,75 @@
 </header>
 
 <div class="wrap">
-  <div class="crumb"><a href="index.html">TallyBench</a> / CM to Inches</div>
+  <div class="crumb"><a href="index.html">TallyBench</a> / Compound Interest Calculator</div>
 
   <section class="hero">
-    <div class="hero-icon-row cat-utility">
-      <div class="hero-icon"><svg><use href="icons.svg#icon-units"/></svg></div>
-      <div class="eyebrow">// CM ↔ INCHES CONVERTER</div>
+    <div class="hero-icon-row cat-finance">
+      <div class="hero-icon"><svg><use href="icons.svg#icon-investment"/></svg></div>
+      <div class="eyebrow">// COMPOUND INTEREST CALCULATOR</div>
     </div>
-    <h1>Centimeters to inches, both ways.</h1>
-    <p>Type into either field — the exact conversion (1 in = 2.54 cm) updates live.</p>
+    <h1>How a principal — plus regular top-ups — actually grows.</h1>
+    <p>Enter a starting amount, rate, term, and compounding frequency, with an optional monthly contribution, to see the maturity value and interest earned.</p>
   </section>
 
-  <section class="tool" id="cmin">
+  <section class="tool" id="compound">
+    <div class="disclaimer">
+      <strong>Estimate only — not investment advice.</strong> This projects growth using a constant assumed rate you enter. Real markets and interest rates fluctuate.
+    </div>
+    <div class="field" style="max-width:260px;margin-bottom:20px;">
+      <label>Currency</label>
+      <select id="dcmpCur">
+        <option value="$" selected>USD ($)</option>
+        <option value="€">EUR (€)</option>
+        <option value="£">GBP (£)</option>
+        <option value="₹">INR (₹)</option>
+      </select>
+    </div>
     <div class="card">
       <div>
-        <div class="field"><label>Centimeters</label><input type="number" id="ctiCm" value="170" step="0.1"></div>
-        <div class="field"><label>Inches</label><input type="number" id="ctiIn" value="66.93" step="0.01"></div>
+        <div class="field"><label>Principal</label><input type="number" id="dcmpPrincipal" value="100000" step="1000"></div>
+        <div class="field"><label>Annual interest rate (%)</label><input type="number" id="dcmpRate" value="8" step="0.1"></div>
+        <div class="field"><label>Duration (years)</label><input type="number" id="dcmpYears" value="10" min="1"></div>
+        <div class="field"><label>Compounding frequency</label>
+          <select id="dcmpFreq">
+            <option value="1">Annually</option>
+            <option value="2">Semi-annually</option>
+            <option value="4">Quarterly</option>
+            <option value="12" selected>Monthly</option>
+            <option value="365">Daily</option>
+          </select>
+        </div>
+        <div class="field"><label>Monthly contribution (optional)</label><input type="number" id="dcmpMonthly" value="0" step="50" min="0"></div>
       </div>
       <div class="readout">
-        <div class="r-row"><span class="r-label">170 cm equals</span><span class="r-value" id="ctiResult">66.93 in</span></div>
+        <div class="r-row"><span class="r-label">Total contributed</span><span class="r-value" id="dcmpPrincipalOut">0</span></div>
+        <div class="r-row"><span class="r-label">Interest earned</span><span class="r-value" id="dcmpInterest">0</span></div>
+        <div class="r-row"><span class="r-label">Maturity value</span><span class="r-value" id="dcmpMaturity">0</span></div>
       </div>
-      <div class="field-warning" id="ctiWarning"></div>
+      <div class="field-warning" id="dcmpWarning"></div>
     </div>
   </section>
 
-  <section class="tool" id="reference">
-    <div class="tool-head"><span class="tool-num">//</span><div><h2>Quick reference</h2><p class="tool-sub">Common centimeter-to-inch conversions.</p></div></div>
+  <section style="padding:32px 0;border-bottom:1px solid var(--paper-line);">
+    <h2 style="font-family:'Space Grotesk',sans-serif;font-size:20px;margin:0 0 6px;">Year-by-year growth</h2>
+    <p style="color:var(--graphite);font-size:13px;margin:0 0 16px;">Cumulative contributions vs. projected value, year by year.</p>
     <div class="table-scroll">
-      <table class="bracket-table" id="ctiTable">
-        <thead><tr><th>Centimeters</th><th>Inches</th></tr></thead>
-        <tbody></tbody>
-      </table>
+      <table class="bracket-table" style="margin-top:0;"><thead><tr><th>Year</th><th>Contributed (cumulative)</th><th>Value</th><th>Growth</th></tr></thead><tbody id="dcmpGrowthBody"></tbody></table>
     </div>
   </section>
 
   <section class="article">
-    <h3>How do I convert cm to inches?</h3>
-    <p>Divide the centimeter value by 2.54: <strong>inches = cm ÷ 2.54</strong>. 1 inch is defined as exactly 2.54 cm by international agreement, so this conversion is exact, not an approximation.</p>
-    <h3>How do I convert inches to cm?</h3>
-    <p>Multiply the inch value by 2.54: <strong>cm = inches × 2.54</strong>. For example, 10 inches × 2.54 = 25.4 cm.</p>
-    <h3>Where does 2.54 come from?</h3>
-    <p>The international inch was formally standardized as exactly 2.54 cm in 1959 by agreement between the US, UK, and other Commonwealth countries, replacing several slightly different national definitions that existed before then.</p>
-    <p><strong>Worked example:</strong> a 175 cm height converts to 175 ÷ 2.54 ≈ 68.9 inches (5 ft 8.9 in). Need feet and inches specifically, or other length/weight/volume units? Try the full <a href="unit-converter.html">Unit Converter</a>.</p>
+    <h3>What's the difference between this and simple interest?</h3>
+    <p>Compound growth adds earned interest back into the principal each period, so future interest is calculated on a larger base — that's what "compounding frequency" controls: <strong>maturity = P × (1 + r/n)^(n×t)</strong>. More frequent compounding produces a slightly higher return at the same stated rate.</p>
+    <h3>What does the monthly contribution field add?</h3>
+    <p>It lets you model a lump sum that also receives regular top-ups — a hybrid between a one-time deposit and a pure SIP. If you're only ever adding money monthly with no starting lump sum, the dedicated <a href="sip-calculator.html">SIP Calculator</a> is a more natural fit.</p>
+    <h3>How much does compounding frequency actually matter?</h3>
+    <p>The difference shrinks the more frequent compounding already is — daily vs. monthly matters far less than monthly vs. annual, at the same stated rate. On $100,000 at 8% over 10 years, annual compounding yields about $215,900, while daily compounding yields about $222,500 — a modest but real difference.</p>
+    <h3>Are these numbers guaranteed?</h3>
+    <p>No — this is a projection based on a constant assumed rate you enter. Real investments and bank rates fluctuate, and past performance doesn't guarantee future results.</p>
   </section>
+
+  <p style="font-size:13px;color:var(--graphite);margin:0 0 24px;">Also want SIP or CAGR projections? Use the combined <a href="investment-calculator.html">Investment Calculator</a>.</p>
 
   <!-- TB:MORETOOLS:START -->
   <nav class="more-tools" aria-label="More calculators">
@@ -178,7 +221,6 @@
       <li><a href="gst-vat-calculator.html">GST / VAT Calculator</a></li>
       <li><a href="investment-calculator.html">Investment Calculator</a></li>
       <li><a href="sip-calculator.html">SIP Calculator</a></li>
-      <li><a href="compound-interest-calculator.html">Compound Interest Calculator</a></li>
       <li><a href="discount-calculator.html">Discount Calculator</a></li>
       <li><a href="tip-calculator.html">Tip Calculator</a></li>
       <li><a href="fd-calculator.html">FD Calculator</a></li>
@@ -199,6 +241,7 @@
       <li><a href="days-calculator.html">Days Between Dates</a></li>
       <li><a href="unit-converter.html">Unit Converter</a></li>
       <li><a href="week-number-calculator.html">Week Number Calculator</a></li>
+      <li><a href="cm-to-inches.html">CM to Inches</a></li>
       <li><a href="kg-to-pounds.html">KG to Pounds</a></li>
       <li><a href="celsius-to-fahrenheit.html">Celsius to Fahrenheit</a></li>
       <li><a href="password-generator.html">Password Generator</a></li>

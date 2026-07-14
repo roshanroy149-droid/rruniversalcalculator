@@ -101,9 +101,13 @@
     <a class="tick sub-tick" data-cat="finance" href="currency-converter.html">CURRENCY</a>
     <a class="tick sub-tick" data-cat="finance" href="loan-calculator.html">LOAN / EMI</a>
     <a class="tick sub-tick" data-cat="finance" href="mortgage-calculator.html">MORTGAGE</a>
+    <a class="tick sub-tick" data-cat="finance" href="refinance-calculator.html">REFINANCE</a>
     <a class="tick sub-tick" data-cat="finance" href="tax-calculator.html">TAX</a>
+    <a class="tick sub-tick" data-cat="finance" href="paycheck-calculator.html">PAYCHECK</a>
     <a class="tick sub-tick" data-cat="finance" href="gst-vat-calculator.html">GST / VAT</a>
     <a class="tick sub-tick" data-cat="finance" href="investment-calculator.html">INVESTMENT</a>
+    <a class="tick sub-tick" data-cat="finance" href="sip-calculator.html">SIP</a>
+    <a class="tick sub-tick" data-cat="finance" href="compound-interest-calculator.html">COMPOUND INT.</a>
     <a class="tick sub-tick" data-cat="finance" href="discount-calculator.html">DISCOUNT</a>
     <a class="tick sub-tick" data-cat="finance" href="tip-calculator.html">TIP</a>
     <a class="tick sub-tick" data-cat="finance" href="fd-calculator.html">FD</a>
@@ -111,8 +115,12 @@
     <a class="tick sub-tick" data-cat="finance" href="ppf-calculator.html">PPF</a>
     <a class="tick sub-tick" data-cat="finance" href="hra-calculator.html">HRA</a>
     <a class="tick sub-tick" data-cat="finance" href="break-even-calculator.html">BREAK-EVEN</a>
+    <a class="tick sub-tick" data-cat="finance" href="debt-payoff-calculator.html">DEBT PAYOFF</a>
     <a class="tick sub-tick" data-cat="health" href="bmi-calculator.html">BMI</a>
     <a class="tick sub-tick" data-cat="health" href="calorie-calculator.html">CALORIE</a>
+    <a class="tick sub-tick" data-cat="health" href="macro-calculator.html">MACROS</a>
+    <a class="tick sub-tick" data-cat="health" href="pregnancy-calculator.html">PREGNANCY</a>
+    <a class="tick sub-tick" data-cat="health" href="ovulation-calculator.html">OVULATION</a>
     <a class="tick sub-tick" data-cat="education" href="gpa-calculator.html">GPA</a>
     <a class="tick sub-tick" data-cat="education" href="scientific-calculator.html">SCIENTIFIC</a>
     <a class="tick sub-tick" data-cat="everyday" href="percentage-calculator.html">PERCENT</a>
@@ -154,6 +162,8 @@
         <div class="r-row"><span class="r-label">Paragraphs</span><span class="r-sub" id="wcPara">0</span></div>
         <div class="r-row"><span class="r-label">Reading time</span><span class="r-sub" id="wcReadTime">0 sec</span></div>
         <div class="r-row"><span class="r-label">Speaking time</span><span class="r-sub" id="wcSpeakTime">0 sec</span></div>
+        <div class="r-row"><span class="r-label">Readability (Flesch Reading Ease)</span><span class="r-value" id="wcFlesch" style="font-size:16px;">—</span></div>
+        <div class="r-row"><span class="r-label">Grade level</span><span class="r-sub" id="wcFleschLabel">—</span></div>
       </div>
     </div>
   </section>
@@ -176,6 +186,11 @@
     <h3>Are word/character limits the same across platforms and languages?</h3>
     <p>No — platform limits vary widely (X/Twitter's character limit, meta description guidelines around 150–160 characters for Google search snippets, academic abstract limits often 250–300 words) and none of them are universal. Character-based limits also behave differently across languages and scripts — a single Chinese or Japanese character often conveys what takes several Latin-script characters to express, so a "160-character" limit reads very differently in different languages, and this calculator counts Unicode characters as entered rather than adjusting for script.</p>
     <p><strong>Worked example:</strong> pasting a 250-word essay draft here instantly shows whether it clears a "200 word minimum" assignment requirement, roughly how long it takes to read (about 67 seconds at 225 wpm) or read aloud (about 107 seconds at 140 wpm) — without needing to open a separate word processor.</p>
+
+    <h3>How is the readability score calculated?</h3>
+    <p>This uses the Flesch Reading Ease formula: <strong>206.835 − 1.015 × (words ÷ sentences) − 84.6 × (syllables ÷ words)</strong> — shorter sentences and shorter words push the score higher (easier to read). Syllables are estimated by counting vowel groups per word, a common approximation rather than a dictionary lookup, so treat the exact number as directional rather than precise.</p>
+    <h3>What score should I be aiming for?</h3>
+    <p>General audience writing (news, blogs, most web content) typically targets 60–70 ("Standard," roughly 8th–9th grade reading level). Technical or academic writing often scores lower (30–50) simply because of longer, more precise sentences and specialized vocabulary — a low score isn't necessarily "bad" if the audience expects that register.</p>
   </section>
 
   <!-- TB:MORETOOLS:START -->
@@ -185,9 +200,13 @@
       <li><a href="currency-converter.html">Currency Converter</a></li>
       <li><a href="loan-calculator.html">Loan / EMI Calculator</a></li>
       <li><a href="mortgage-calculator.html">Mortgage Calculator</a></li>
+      <li><a href="refinance-calculator.html">Refinance Calculator</a></li>
       <li><a href="tax-calculator.html">Tax Calculator</a></li>
+      <li><a href="paycheck-calculator.html">Paycheck Calculator</a></li>
       <li><a href="gst-vat-calculator.html">GST / VAT Calculator</a></li>
       <li><a href="investment-calculator.html">Investment Calculator</a></li>
+      <li><a href="sip-calculator.html">SIP Calculator</a></li>
+      <li><a href="compound-interest-calculator.html">Compound Interest Calculator</a></li>
       <li><a href="discount-calculator.html">Discount Calculator</a></li>
       <li><a href="tip-calculator.html">Tip Calculator</a></li>
       <li><a href="fd-calculator.html">FD Calculator</a></li>
@@ -195,8 +214,12 @@
       <li><a href="ppf-calculator.html">PPF Calculator</a></li>
       <li><a href="hra-calculator.html">HRA Calculator</a></li>
       <li><a href="break-even-calculator.html">Break-Even &amp; Profit Margin Calculator</a></li>
+      <li><a href="debt-payoff-calculator.html">Debt Payoff Calculator</a></li>
       <li><a href="bmi-calculator.html">BMI Calculator</a></li>
       <li><a href="calorie-calculator.html">Calorie / BMR Calculator</a></li>
+      <li><a href="macro-calculator.html">Macro Calculator</a></li>
+      <li><a href="pregnancy-calculator.html">Pregnancy Due Date Calculator</a></li>
+      <li><a href="ovulation-calculator.html">Ovulation Calculator</a></li>
       <li><a href="gpa-calculator.html">GPA Calculator</a></li>
       <li><a href="scientific-calculator.html">Scientific Calculator</a></li>
       <li><a href="percentage-calculator.html">Percentage Calculator</a></li>

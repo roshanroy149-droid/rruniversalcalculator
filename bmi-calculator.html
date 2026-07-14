@@ -109,9 +109,13 @@
     <a class="tick sub-tick" data-cat="finance" href="currency-converter.html">CURRENCY</a>
     <a class="tick sub-tick" data-cat="finance" href="loan-calculator.html">LOAN / EMI</a>
     <a class="tick sub-tick" data-cat="finance" href="mortgage-calculator.html">MORTGAGE</a>
+    <a class="tick sub-tick" data-cat="finance" href="refinance-calculator.html">REFINANCE</a>
     <a class="tick sub-tick" data-cat="finance" href="tax-calculator.html">TAX</a>
+    <a class="tick sub-tick" data-cat="finance" href="paycheck-calculator.html">PAYCHECK</a>
     <a class="tick sub-tick" data-cat="finance" href="gst-vat-calculator.html">GST / VAT</a>
     <a class="tick sub-tick" data-cat="finance" href="investment-calculator.html">INVESTMENT</a>
+    <a class="tick sub-tick" data-cat="finance" href="sip-calculator.html">SIP</a>
+    <a class="tick sub-tick" data-cat="finance" href="compound-interest-calculator.html">COMPOUND INT.</a>
     <a class="tick sub-tick" data-cat="finance" href="discount-calculator.html">DISCOUNT</a>
     <a class="tick sub-tick" data-cat="finance" href="tip-calculator.html">TIP</a>
     <a class="tick sub-tick" data-cat="finance" href="fd-calculator.html">FD</a>
@@ -119,8 +123,12 @@
     <a class="tick sub-tick" data-cat="finance" href="ppf-calculator.html">PPF</a>
     <a class="tick sub-tick" data-cat="finance" href="hra-calculator.html">HRA</a>
     <a class="tick sub-tick" data-cat="finance" href="break-even-calculator.html">BREAK-EVEN</a>
+    <a class="tick sub-tick" data-cat="finance" href="debt-payoff-calculator.html">DEBT PAYOFF</a>
     <a class="tick sub-tick" data-cat="health" href="bmi-calculator.html">BMI</a>
     <a class="tick sub-tick" data-cat="health" href="calorie-calculator.html">CALORIE</a>
+    <a class="tick sub-tick" data-cat="health" href="macro-calculator.html">MACROS</a>
+    <a class="tick sub-tick" data-cat="health" href="pregnancy-calculator.html">PREGNANCY</a>
+    <a class="tick sub-tick" data-cat="health" href="ovulation-calculator.html">OVULATION</a>
     <a class="tick sub-tick" data-cat="education" href="gpa-calculator.html">GPA</a>
     <a class="tick sub-tick" data-cat="education" href="scientific-calculator.html">SCIENTIFIC</a>
     <a class="tick sub-tick" data-cat="everyday" href="percentage-calculator.html">PERCENT</a>
@@ -181,12 +189,36 @@
             <button type="button" data-standard="apac">Asia-Pacific (23 / 25)</button>
           </div>
         </div>
+        <div class="field"><label>Sex (for ideal weight &amp; body fat below)</label>
+          <div class="seg" id="bmiSexSeg">
+            <button type="button" class="active" data-sex="male">Male</button>
+            <button type="button" data-sex="female">Female</button>
+          </div>
+        </div>
       </div>
       <div class="readout">
         <div class="r-row"><span class="r-label">BMI</span><span class="r-value" id="bmiVal">0</span></div>
         <div class="r-row"><span class="r-label">Category</span><span class="r-value" id="bmiCat" style="font-size:16px;">—</span></div>
         <div class="r-row"><span class="r-label">BMI Prime</span><span class="r-sub" id="bmiPrime">—</span></div>
         <div class="r-row"><span class="r-label">Healthy weight range for your height</span><span class="r-sub" id="bmiIdeal">—</span></div>
+        <div class="r-row"><span class="r-label">Ideal weight (Devine formula)</span><span class="r-sub" id="bmiDevine">—</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="tool" id="bodyfat" style="padding-top:0;">
+    <div class="tool-head"><span class="tool-num">//</span><div><h2>Body fat % (optional)</h2><p class="tool-sub">US Navy method — needs a tape measure, not just a scale.</p></div></div>
+    <div class="card">
+      <div>
+        <div class="row2">
+          <div class="field"><label>Neck circumference (cm)</label><input type="number" id="bfNeck" value="38" min="0"></div>
+          <div class="field"><label>Waist circumference (cm)</label><input type="number" id="bfWaist" value="85" min="0"></div>
+        </div>
+        <div class="field" id="bfHipWrap" style="display:none;"><label>Hip circumference (cm, female only)</label><input type="number" id="bfHip" value="95" min="0"></div>
+      </div>
+      <div class="readout">
+        <div class="r-row"><span class="r-label">Estimated body fat</span><span class="r-value" id="bfPct">—</span></div>
+        <div class="r-row"><span class="r-label">Category</span><span class="r-sub" id="bfCat">—</span></div>
       </div>
     </div>
   </section>
@@ -220,6 +252,11 @@
     <p>The formula and the classic 18.5/25/30 thresholds are identical in the US, UK, and EU. India (and the WHO Asia-Pacific standard) uses the lower 23/25 cut-offs described above, reflecting population-level research on cardiometabolic risk — use the toggle above to switch between them instantly. If you're using this tool for a general check rather than clinical purposes, the difference mainly matters near the 23–25 boundary — someone reading "healthy" under the standard scale could be flagged "overweight" under the Asia-Pacific one.</p>
 
     <p><strong>Worked example:</strong> a person 175 cm tall weighing 72 kg has a BMI of 72 ÷ (1.75×1.75) = 72 ÷ 3.0625 ≈ 23.5 — healthy range under WHO standard thresholds, but at the edge of "overweight" under the Asia-Pacific 23-cut-off. Their BMI Prime is 23.5 ÷ 25 ≈ 0.94, and their healthy weight range at that height is roughly 56.7–76.3 kg.</p>
+
+    <h3>What is the Devine formula, and how is it different from the healthy weight range?</h3>
+    <p>The Devine formula gives a single "ideal weight" number (50 kg + 2.3 kg per inch over 5 feet for men, 45.5 kg + 2.3 kg per inch for women) — it was originally developed for drug dosing calculations, not general health guidance, which is why it lands on one specific number rather than the wider healthy range BMI produces. Treat it as a clinical reference point, not a personal target.</p>
+    <h3>How does the body fat % estimate work?</h3>
+    <p>The US Navy method estimates body fat from neck, waist, and (for women) hip circumference plus height, using a logarithmic formula validated against more expensive methods like DEXA scans. It's more informative than BMI alone since it separates fat from muscle, but a tape measure introduces its own error — measure at the same time of day, without clothing compression, for consistent tracking over time.</p>
   </section>
 
   <!-- TB:MORETOOLS:START -->
@@ -229,9 +266,13 @@
       <li><a href="currency-converter.html">Currency Converter</a></li>
       <li><a href="loan-calculator.html">Loan / EMI Calculator</a></li>
       <li><a href="mortgage-calculator.html">Mortgage Calculator</a></li>
+      <li><a href="refinance-calculator.html">Refinance Calculator</a></li>
       <li><a href="tax-calculator.html">Tax Calculator</a></li>
+      <li><a href="paycheck-calculator.html">Paycheck Calculator</a></li>
       <li><a href="gst-vat-calculator.html">GST / VAT Calculator</a></li>
       <li><a href="investment-calculator.html">Investment Calculator</a></li>
+      <li><a href="sip-calculator.html">SIP Calculator</a></li>
+      <li><a href="compound-interest-calculator.html">Compound Interest Calculator</a></li>
       <li><a href="discount-calculator.html">Discount Calculator</a></li>
       <li><a href="tip-calculator.html">Tip Calculator</a></li>
       <li><a href="fd-calculator.html">FD Calculator</a></li>
@@ -239,7 +280,11 @@
       <li><a href="ppf-calculator.html">PPF Calculator</a></li>
       <li><a href="hra-calculator.html">HRA Calculator</a></li>
       <li><a href="break-even-calculator.html">Break-Even &amp; Profit Margin Calculator</a></li>
+      <li><a href="debt-payoff-calculator.html">Debt Payoff Calculator</a></li>
       <li><a href="calorie-calculator.html">Calorie / BMR Calculator</a></li>
+      <li><a href="macro-calculator.html">Macro Calculator</a></li>
+      <li><a href="pregnancy-calculator.html">Pregnancy Due Date Calculator</a></li>
+      <li><a href="ovulation-calculator.html">Ovulation Calculator</a></li>
       <li><a href="gpa-calculator.html">GPA Calculator</a></li>
       <li><a href="scientific-calculator.html">Scientific Calculator</a></li>
       <li><a href="percentage-calculator.html">Percentage Calculator</a></li>
