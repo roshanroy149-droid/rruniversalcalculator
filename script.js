@@ -1,3 +1,48 @@
+// ---- Cookie consent gate (Google AdSense advertising cookies) ----
+(function(){
+  var CONSENT_KEY = 'tb_ad_consent'; // 'accepted' | 'rejected'
+  var ADSENSE_CLIENT = 'ca-pub-7800403656727097';
+
+  function loadAdsense(){
+    if (document.querySelector('script[src*="adsbygoogle.js"]')) return;
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + ADSENSE_CLIENT;
+    s.crossOrigin = 'anonymous';
+    document.head.appendChild(s);
+  }
+
+  function showBanner(){
+    var banner = document.createElement('div');
+    banner.id = 'cookieConsent';
+    banner.innerHTML =
+      '<p>This site uses cookies for ad personalization via Google AdSense. See the <a href="privacy-policy.html">Privacy Policy</a> for details and opt-out links.</p>' +
+      '<div class="btn-row">' +
+        '<button id="cookieAccept" type="button">Accept</button>' +
+        '<button class="ghost" id="cookieReject" type="button">Reject</button>' +
+      '</div>';
+    document.body.appendChild(banner);
+
+    document.getElementById('cookieAccept').addEventListener('click', function(){
+      localStorage.setItem(CONSENT_KEY, 'accepted');
+      banner.remove();
+      loadAdsense();
+    });
+    document.getElementById('cookieReject').addEventListener('click', function(){
+      localStorage.setItem(CONSENT_KEY, 'rejected');
+      banner.remove();
+    });
+  }
+
+  var consent = localStorage.getItem(CONSENT_KEY);
+  if (consent === 'accepted') {
+    loadAdsense();
+  } else if (consent !== 'rejected') {
+    if (document.body) showBanner();
+    else document.addEventListener('DOMContentLoaded', showBanner);
+  }
+})();
+
 // ---- Two-tier category nav (category tabs + collapsible sub-row) ----
 (function(){
   const path = window.location.pathname.split('/').pop() || 'index.html';

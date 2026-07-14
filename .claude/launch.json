@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "tallybench-dev",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["live-server", "--port=8080", "--no-browser", "--ignore=node_modules"],
+      "port": 8080
+    }
+  ]
+}
