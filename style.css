@@ -128,18 +128,21 @@ header{
   background:var(--orange);
 }
 
-/* Sub-ruler: second-tier row, collapses closed by default */
+/* Sub-ruler: second-tier row, collapses closed by default. Wraps onto as
+   many lines as needed instead of horizontally scrolling — a category like
+   Finance has 20+ tools, far more than fit in one line, and a scrollable
+   strip hid most of them with no visible affordance to scroll. */
 .sub-ruler{
   max-height:0;
-  overflow-x:auto;
+  overflow-x:visible;
   overflow-y:hidden;
-  -webkit-overflow-scrolling:touch;
+  flex-wrap:wrap;
   background:#141210;
   border-top:0 solid rgba(242,236,221,0.08);
   transition:max-height .22s ease;
 }
 .sub-ruler.open{
-  max-height:120px;
+  max-height:220px;
   border-top-width:1px;
 }
 .sub-tick{display:none;}
@@ -411,8 +414,11 @@ footer p{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--graph
 .article h3{font-family:'Space Grotesk',sans-serif;font-size:16px;margin:22px 0 8px;color:var(--ink);}
 
 /* HOMEPAGE TOOL DIRECTORY */
+/* Auto-fits as many ~240px-minimum columns as the row allows (typically 4
+   at the site's 1240px content width) instead of a fixed 2 columns — with
+   40 tools now, 2 wide desktop cards per row made for a very long page. */
 .tool-grid{
-  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;margin:20px 0 10px;
+  display:grid;grid-template-columns:repeat(auto-fill, minmax(240px, 1fr));gap:14px;margin:20px 0 10px;
 }
 .tool-card-link{
   display:flex;flex-direction:column;gap:2px;
@@ -420,7 +426,7 @@ footer p{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--graph
   background:linear-gradient(180deg, var(--card-hi), #FBF8F1);
   border:1px solid var(--paper-line);
   border-radius:var(--radius);
-  padding:20px 22px;
+  padding:16px 18px;
   text-decoration:none;
   box-shadow:var(--shadow-sm);
   transition:border-color .15s, box-shadow .18s, transform .18s;
@@ -430,9 +436,9 @@ footer p{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--graph
   box-shadow:var(--shadow-lg);
   transform:translateY(-3px);
 }
-.tcl-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.tcl-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
 .tcl-icon{
-  width:36px;height:36px;padding:8px;box-sizing:border-box;
+  width:32px;height:32px;padding:7px;box-sizing:border-box;
   border-radius:var(--radius-sm);
   background:rgba(61,90,115,0.10);
   color:var(--steel);
@@ -444,9 +450,12 @@ footer p{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--graph
   margin-bottom:0;
 }
 .tool-card-link h3{
-  font-family:'Space Grotesk',sans-serif;font-size:18px;margin:4px 0 4px;color:var(--ink);
+  font-family:'Space Grotesk',sans-serif;font-size:16px;margin:2px 0 3px;color:var(--ink);
 }
-.tool-card-link p{font-size:13px;color:var(--graphite);margin:0;line-height:1.5;}
+.tool-card-link p{
+  font-size:12.5px;color:var(--graphite);margin:0;line-height:1.45;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
 
 /* On mobile, 40 full-size description cards is an enormous scroll — switch
    to a dense, app-launcher-style icon grid instead: icon + short label only,
