@@ -19,13 +19,13 @@ $nl = "`r`n"
 
 function New-NavBlock($indent) {
     $lines = New-Object System.Collections.Generic.List[string]
-    $lines.Add("$indent<nav class=`"ruler cat-ruler`">")
+    $lines.Add("$indent<nav class=`"ruler cat-ruler`" aria-label=`"Category`">")
     $lines.Add("$indent  <a class=`"tick`" href=`"index.html`">HOME</a>")
     foreach ($cat in $data.categories) {
         $lines.Add("$indent  <button class=`"tick cat-tab`" type=`"button`" data-cat=`"$($cat.id)`">$($cat.label)</button>")
     }
     $lines.Add("$indent</nav>")
-    $lines.Add("$indent<nav class=`"ruler sub-ruler`" id=`"subRuler`">")
+    $lines.Add("$indent<nav class=`"ruler sub-ruler`" id=`"subRuler`" aria-label=`"Tools`">")
     foreach ($tool in $data.tools) {
         $lines.Add("$indent  <a class=`"tick sub-tick`" data-cat=`"$($tool.category)`" href=`"$($tool.file)`">$($tool.navLabel)</a>")
     }
@@ -35,7 +35,7 @@ function New-NavBlock($indent) {
 
 function New-MoreToolsBlock($indent, $selfId) {
     $lines = New-Object System.Collections.Generic.List[string]
-    $lines.Add("$indent<nav class=`"more-tools`">")
+    $lines.Add("$indent<nav class=`"more-tools`" aria-label=`"More calculators`">")
     $lines.Add("$indent  <h2>More calculators</h2>")
     $lines.Add("$indent  <ul>")
     foreach ($tool in $data.tools) {
