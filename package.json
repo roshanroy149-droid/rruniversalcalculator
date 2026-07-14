@@ -1,0 +1,20 @@
+{
+  "name": "tallybench",
+  "private": true,
+  "version": "1.0.0",
+  "description": "TallyBench — static calculator site. Dev tooling only; the site itself ships as plain HTML/CSS/JS, no build step required to deploy.",
+  "scripts": {
+    "serve": "live-server --port=8080 --no-browser",
+    "validate": "html-validate \"*.html\"",
+    "format": "prettier --write \"*.html\" \"*.css\" \"*.js\" \"build/*.json\"",
+    "format:check": "prettier --check \"*.html\" \"*.css\" \"*.js\" \"build/*.json\"",
+    "lighthouse": "lighthouse http://localhost:8080/index.html --output=html --output-path=./lighthouse-report.html --chrome-flags=\"--headless\"",
+    "sync-nav": "powershell -ExecutionPolicy Bypass -File build/Sync-Nav.ps1"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.2",
+    "html-validate": "^8.24.0",
+    "lighthouse": "^12.2.1",
+    "prettier": "^3.3.3"
+  }
+}
