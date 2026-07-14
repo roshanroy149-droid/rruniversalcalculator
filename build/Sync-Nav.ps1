@@ -1,15 +1,19 @@
-# Regenerates the shared header nav and "more calculators" blocks in every
-# HTML page from build/tools.json, the single source of truth for the tool list.
+# Regenerates the shared header nav, "more calculators" block, and header tool
+# count in every HTML page from build/tools.json, the single source of truth
+# for the tool list.
 #
 # Usage:  powershell -File build/Sync-Nav.ps1
 #
-# How it works: each page carries two marker pairs:
+# How it works: each page carries three marker pairs:
 #   <!-- TB:NAV:START --> ... <!-- TB:NAV:END -->
 #   <!-- TB:MORETOOLS:START --> ... <!-- TB:MORETOOLS:END -->
+#   <!-- TB:COUNT:START --> ... <!-- TB:COUNT:END -->
 # On first run (no markers present yet) the script wraps the existing
 # hand-written blocks with markers. On every run it regenerates the content
 # between the markers from tools.json, so adding/renaming/reordering a tool
-# only ever requires editing tools.json once.
+# (or just adding one, which used to require manually updating the "N TOOLS"
+# tagline text on every page by hand and was easy to forget) only ever
+# requires editing tools.json once.
 
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
@@ -48,6 +52,10 @@ function New-MoreToolsBlock($indent, $selfId) {
     return ($lines -join $nl)
 }
 
+function New-CountBlock($indent) {
+    return "$($data.tools.Count) TOOLS " + [char]0x00B7 + " 0 SIGN-UP"
+}
+
 function Sync-Marker($content, $markerName, $generator) {
     $startTag = "<!-- TB:${markerName}:START -->"
     $endTag = "<!-- TB:${markerName}:END -->"
@@ -83,6 +91,7 @@ function Migrate-IfNeeded($content, $markerName, $legacyPattern) {
 
 $navLegacyPattern = '[ \t]*<nav class="ruler cat-ruler">(?s).*?</nav>\s*<nav class="ruler sub-ruler" id="subRuler">(?s).*?</nav>'
 $moreToolsLegacyPattern = '[ \t]*<(?:nav|section) class="more-tools">(?s).*?</(?:nav|section)>'
+$countLegacyPattern = '\d+ TOOLS [^<]*SIGN-UP'
 
 $htmlFiles = Get-ChildItem -Path $root -Filter '*.html' -File
 $changed = @()
@@ -93,6 +102,7 @@ foreach ($f in $htmlFiles) {
 
     $content = Migrate-IfNeeded $content 'NAV' $navLegacyPattern
     $content = Migrate-IfNeeded $content 'MORETOOLS' $moreToolsLegacyPattern
+    $content = Migrate-IfNeeded $content 'COUNT' $countLegacyPattern
 
     $selfId = [System.IO.Path]::GetFileNameWithoutExtension($f.Name)
 
@@ -101,6 +111,9 @@ foreach ($f in $htmlFiles) {
 
     $moreToolsResult = Sync-Marker $content 'MORETOOLS' { param($indent) New-MoreToolsBlock $indent $selfId }
     if ($null -ne $moreToolsResult) { $content = $moreToolsResult }
+
+    $countResult = Sync-Marker $content 'COUNT' { param($indent) New-CountBlock $indent }
+    if ($null -ne $countResult) { $content = $countResult }
 
     if ($content -ne $original) {
         [System.IO.File]::WriteAllText($f.FullName, $content, $utf8NoBom)
