@@ -830,6 +830,13 @@
   const curSel = document.getElementById('invCur');
   if(curSel) curSel.addEventListener('change', ()=>{ calcSIP(); calcSWP(); calcCompound(); });
 
+  function setWarning(id, msg){
+    const el = document.getElementById(id);
+    if(!el) return;
+    if(msg){ el.textContent = msg; el.classList.add('show'); }
+    else { el.textContent = ''; el.classList.remove('show'); }
+  }
+
   // SIP
   function calcSIP(){
     const P = parseFloat(document.getElementById('sipAmt').value)||0;
@@ -839,6 +846,16 @@
     const stepUp = stepUpEl ? (parseFloat(stepUpEl.value)||0) : 0;
     const n = Math.round(years*12);
     const r = annual/100/12;
+
+    if(P < 0){
+      setWarning('sipWarning', 'Monthly investment can\'t be negative.');
+    } else if(years <= 0){
+      setWarning('sipWarning', 'Duration must be greater than zero years.');
+    } else if(annual <= -100){
+      setWarning('sipWarning', 'An annual return of -100% or lower means the investment loses everything — enter a realistic expected return.');
+    } else {
+      setWarning('sipWarning', null);
+    }
 
     let maturity, invested, finalMonthAmt;
     if(stepUp === 0){
@@ -886,6 +903,16 @@
     const annual = parseFloat(document.getElementById('swpRate').value)||0;
     const years = parseFloat(document.getElementById('swpYears').value)||0;
     const months = Math.round(years*12);
+
+    if(bal < 0){
+      setWarning('swpWarning', 'Initial investment can\'t be negative.');
+    } else if(withdraw < 0){
+      setWarning('swpWarning', 'Monthly withdrawal can\'t be negative.');
+    } else if(years <= 0){
+      setWarning('swpWarning', 'Duration must be greater than zero years.');
+    } else {
+      setWarning('swpWarning', null);
+    }
     const r = annual/100/12;
     let totalWithdrawn = 0;
     let depletedAt = null;
@@ -912,6 +939,17 @@
     const annual = parseFloat(document.getElementById('cmpRate').value)||0;
     const years = parseFloat(document.getElementById('cmpYears').value)||0;
     const n = parseFloat(document.getElementById('cmpFreq').value)||1;
+
+    if(P < 0){
+      setWarning('cmpWarning', 'Principal can\'t be negative.');
+    } else if(years <= 0){
+      setWarning('cmpWarning', 'Duration must be greater than zero years.');
+    } else if(annual <= -100*n){
+      setWarning('cmpWarning', 'That interest rate implies losing more than the full principal each compounding period — enter a realistic rate.');
+    } else {
+      setWarning('cmpWarning', null);
+    }
+
     const maturity = P*Math.pow(1+(annual/100)/n, n*years);
     document.getElementById('cmpPrincipalOut').textContent = money(P);
     document.getElementById('cmpInterest').textContent = money(Math.max(maturity-P,0));
@@ -1073,6 +1111,13 @@ function computeTaxFromScheme(scheme, gross){
     return { symbol:scheme.symbol, standardDeduction:0, brackets:scheme.brackets, extraDed, rebateThreshold:0 };
   }
 
+  function setWarning(msg){
+    const el = document.getElementById('taxWarning');
+    if(!el) return;
+    if(msg){ el.textContent = msg; el.classList.add('show'); }
+    else { el.textContent = ''; el.classList.remove('show'); }
+  }
+
   function calc(){
     updateFieldVisibility();
     const scheme = getScheme();
@@ -1081,6 +1126,21 @@ function computeTaxFromScheme(scheme, gross){
     const gross = salary+other;
     const totalDed = scheme.standardDeduction + scheme.extraDed;
     const taxable = Math.max(gross-totalDed, 0);
+
+    if(salary < 0 || other < 0){
+      setWarning('Income can\'t be negative — enter positive amounts for salary and other income.');
+    } else if(countrySel_.value==='in' && indiaRegime==='old'){
+      const rawC = parseFloat(document.getElementById('tax80c').value)||0;
+      const rawD = parseFloat(document.getElementById('tax80d').value)||0;
+      const rawHome = parseFloat(document.getElementById('taxHomeLoan').value)||0;
+      const capped = [];
+      if(rawC > 150000) capped.push('80C (capped at ₹1,50,000)');
+      if(rawD > 25000) capped.push('80D (capped at ₹25,000)');
+      if(rawHome > 200000) capped.push('Section 24 home loan interest (capped at ₹2,00,000)');
+      setWarning(capped.length ? 'You entered more than the statutory limit for: '+capped.join(', ')+'. The excess isn\'t deductible, so the calculation applies the cap automatically.' : null);
+    } else {
+      setWarning(null);
+    }
 
     stdDedLine.textContent = fmtMoney(scheme.symbol, scheme.standardDeduction);
 
@@ -1427,6 +1487,13 @@ function computeTaxFromScheme(scheme, gross){
     return rem===0 ? y+' yr' : y+' yr '+rem+' mo';
   }
 
+  function setWarning(msg){
+    const el = document.getElementById('mtgWarning');
+    if(!el) return;
+    if(msg){ el.textContent = msg; el.classList.add('show'); }
+    else { el.textContent = ''; el.classList.remove('show'); }
+  }
+
   function calc(){
     const cur = curEl.value;
     const price = parseFloat(priceEl.value)||0;
@@ -1436,6 +1503,20 @@ function computeTaxFromScheme(scheme, gross){
     const years = parseFloat(termEl.value)||1;
     const n = Math.round(years*12);
     const extra = extraEl ? (parseFloat(extraEl.value)||0) : 0;
+
+    if(price <= 0){
+      setWarning('Home price must be greater than zero.');
+    } else if(down < 0){
+      setWarning('Down payment can\'t be negative.');
+    } else if(down >= price){
+      setWarning('Down payment can\'t be greater than or equal to the home price — there would be nothing left to borrow.');
+    } else if(annualRate < 0){
+      setWarning('Interest rate can\'t be negative.');
+    } else if(years <= 0){
+      setWarning('Loan term must be greater than zero years.');
+    } else {
+      setWarning(null);
+    }
 
     const base = buildAmortization(principal, annualRate, n, 0);
     const acc  = extra>0 ? buildAmortization(principal, annualRate, n, extra) : base;
@@ -2352,14 +2433,29 @@ function amortizationToCSV(years, cur){
   if(!document.getElementById('hraBasic')) return;
   let city = 'metro';
   const seg = document.getElementById('hraCitySeg');
+  function setWarning(msg){
+    const el = document.getElementById('hraWarning');
+    if(!el) return;
+    if(msg){ el.textContent = msg; el.classList.add('show'); }
+    else { el.textContent = ''; el.classList.remove('show'); }
+  }
   function calc(){
     const basic = parseFloat(document.getElementById('hraBasic').value)||0;
     const received = parseFloat(document.getElementById('hraReceived').value)||0;
     const rent = parseFloat(document.getElementById('hraRent').value)||0;
+
+    if(basic < 0 || received < 0 || rent < 0){
+      setWarning('Salary, HRA received, and rent can\'t be negative — enter positive amounts.');
+    } else if(basic === 0 && received > 0){
+      setWarning('Basic salary is zero, so the 50%/40%-of-basic test contributes nothing — exemption is limited to actual HRA received or rent paid, whichever is lower.');
+    } else {
+      setWarning(null);
+    }
+
     const t1 = received;
     const t2 = Math.max(rent - 0.10*basic, 0);
     const t3 = (city==='metro'?0.50:0.40)*basic;
-    const exempt = Math.min(t1,t2,t3);
+    const exempt = Math.max(Math.min(t1,t2,t3), 0);
     const taxable = Math.max(received-exempt,0);
     let rule = '—';
     if(exempt===t1) rule='Actual HRA received';

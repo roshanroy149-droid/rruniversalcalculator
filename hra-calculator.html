@@ -26,6 +26,77 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7800403656727097" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How is HRA exemption calculated?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The exempt portion is the minimum of three amounts: (1) actual HRA received, (2) rent paid minus 10% of basic salary + DA, and (3) 50% of basic + DA in a metro city (Delhi, Mumbai, Kolkata, Chennai) or 40% elsewhere. Whatever HRA remains above the exemption is taxable as salary."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does HRA exemption apply in the new tax regime?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No — HRA exemption is available only under the old regime. If you claim significant HRA, that's often a major factor in whether the old regime beats the new one for you."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does the metro/non-metro distinction exist, and which cities count as metro?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The Income Tax Act designates Delhi, Mumbai, Kolkata, and Chennai as “metro” cities for this specific 50% rule, reflecting historically higher rents in these four cities. Every other city, including Bangalore, Hyderabad, and Pune, falls under the 40% non-metro rule."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I need rent receipts or the landlord's PAN?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Employers typically require rent receipts to process HRA exemption in payroll, and the landlord's PAN is mandatory when annual rent exceeds ₹1,00,000 for the year. Paying rent to a parent is legal if actually paid and declared in their income."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I claim HRA and a home loan deduction together?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, in genuine cases — for example, owning a home in one city (claiming home loan interest under Section 24) while renting in another city for work (claiming HRA). Both on the same property in the same city generally doesn't hold up under scrutiny."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What's the equivalent of HRA exemption outside India?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A broad tax exemption specifically for salaried employees' rent is unusual internationally. The US has a narrower parallel for clergy and military housing allowances; the UK offers no direct rent tax exemption for employees. India's HRA is distinctive in being baked directly into standard salary structuring for a wide swath of the salaried workforce."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "HRA Exemption Calculator — TallyBench",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any (runs in browser)",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "url": "https://tallybench.com/hra-calculator.html"
+}
+</script>
 </head>
 <body data-page-cat="finance">
 
@@ -100,6 +171,7 @@
         <div class="r-row"><span class="r-label">Taxable HRA</span><span class="r-value" id="hraTaxable">0</span></div>
         <div class="r-row"><span class="r-label">Limiting rule</span><span class="r-value" id="hraRule" style="font-size:13px;">—</span></div>
       </div>
+      <div class="field-warning" id="hraWarning"></div>
     </div>
   </section>
 
