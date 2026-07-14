@@ -86,12 +86,14 @@
         <div class="field"><label>Monthly deposit (₹)</label><input type="number" id="rdAmt" value="5000" step="500"></div>
         <div class="field"><label>Annual interest rate (%)</label><input type="number" id="rdRate" value="6.8" step="0.05"></div>
         <div class="field"><label>Tenure (months)</label><input type="number" id="rdMonths" value="60" min="6" step="1"></div>
+        <div class="field"><label>Annual step-up (%, optional — increases your monthly deposit each year)</label><input type="number" id="rdStepUp" value="0" step="1" min="0"></div>
         <div class="checks"><label><input type="checkbox" id="rdSenior"> Senior citizen (typically +0.50% bonus rate)</label></div>
       </div>
       <div class="readout">
         <div class="r-row"><span class="r-label">Total deposited</span><span class="r-value" id="rdInvested">0</span></div>
         <div class="r-row"><span class="r-label">Interest earned</span><span class="r-value" id="rdInterest">0</span></div>
         <div class="r-row"><span class="r-label">Maturity value</span><span class="r-value" id="rdMaturity">0</span></div>
+        <div class="r-row"><span class="r-label">Final month's deposit</span><span class="r-sub" id="rdFinalMonthAmt">—</span></div>
       </div>
     </div>
   </section>
@@ -104,6 +106,8 @@
     <p>Yes — like FD interest, RD interest is taxable at your slab rate and subject to TDS above the annual threshold (₹40,000, or ₹50,000 for senior citizens, combined across FD and RD interest at the same bank). The maturity value above is pre-tax; see the <a href="tax-calculator.html">Tax Calculator</a> to estimate the impact on your total liability.</p>
     <h3>What does the senior citizen toggle do?</h3>
     <p>Like FDs, most Indian banks offer RD depositors aged 60+ a bonus rate, typically 0.25–0.75% (0.50% is the common default used here) above the standard rate — a meaningful boost compounded over a multi-year RD, especially for seniors relying on these deposits as a steady, low-risk income source.</p>
+    <h3>What does the annual step-up field do?</h3>
+    <p>It increases your monthly deposit by a fixed percentage every 12 months, the same idea as a step-up SIP — useful for modeling an RD alongside rising income, rather than assuming you'll deposit the exact same amount for the entire tenure. A 10% step-up on a ₹5,000/month RD means depositing ₹5,500/month in year two, and so on; the "final month's deposit" readout shows what that grows to by the end of the term, worth checking against what you'd realistically expect to afford by then.</p>
     <h3>What if I miss a monthly installment?</h3>
     <p>Banks typically charge a small penalty per missed installment (often ₹1–2 per ₹100 per month) and may close RDs with several consecutive defaults — the projection above assumes every installment is paid on time. This is one meaningful difference from a SIP, where a missed month typically has no penalty beyond the lost growth on that installment.</p>
     <h3>RD vs SIP — what's the difference?</h3>

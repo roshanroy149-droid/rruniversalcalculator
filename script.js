@@ -1796,9 +1796,31 @@ function renderAmortTable(bodyId, years, cur){
   ).join('');
 }
 
+// ---- Shared CSV export ----
+// Triggers a client-side file download — no server involved, nothing leaves
+// the browser except the file itself landing in the user's downloads folder.
+function downloadCSV(filename, csvContent){
+  const blob = new Blob([csvContent], {type: 'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+function amortizationToCSV(years, cur){
+  const esc = s => String(s);
+  const headers = ['Year','Principal Paid ('+cur.trim()+')','Interest Paid ('+cur.trim()+')','Balance ('+cur.trim()+')'];
+  const rows = years.map(y => [y.year, Math.round(y.principal), Math.round(y.interest), Math.round(y.balance)]);
+  return [headers.join(','), ...rows.map(r=>r.map(esc).join(','))].join('\r\n');
+}
+
 // ---- Loan amortization hookup ----
 (function(){
   if(!document.getElementById('loanScheduleBody')) return;
+  let lastYears = [], lastCur = '$';
   function update(){
     const cur = document.getElementById('loanCur').value;
     const P = parseFloat(document.getElementById('loanAmt').value)||0;
@@ -1811,6 +1833,7 @@ function renderAmortTable(bodyId, years, cur){
     const extraEl = document.getElementById('loanExtra');
     const extra = extraEl ? (parseFloat(extraEl.value)||0) : 0;
     const {years} = buildAmortization(P, rate, months, extra);
+    lastYears = years; lastCur = cur;
     renderAmortChart('loanChart', years, P, cur);
     renderAmortTable('loanScheduleBody', years, cur);
   }
@@ -1821,6 +1844,11 @@ function renderAmortTable(bodyId, years, cur){
   });
   const seg=document.getElementById('loanTenureSeg');
   if(seg) seg.addEventListener('click',()=>setTimeout(update,0));
+  const csvBtn = document.getElementById('loanCsvBtn');
+  if(csvBtn) csvBtn.addEventListener('click', ()=>{
+    if(!lastYears.length) return;
+    downloadCSV('loan-amortization-schedule.csv', amortizationToCSV(lastYears, lastCur));
+  });
   update();
 })();
 
@@ -1916,6 +1944,7 @@ function renderAmortTable(bodyId, years, cur){
 })();
 (function(){
   if(!document.getElementById('mtgScheduleBody')) return;
+  let lastYears = [], lastCur = '$';
   function update(){
     const cur = document.getElementById('mtgCur').value;
     const price = parseFloat(document.getElementById('mtgPrice').value)||0;
@@ -1928,6 +1957,7 @@ function renderAmortTable(bodyId, years, cur){
     const extraEl = document.getElementById('mtgExtra');
     const extra = extraEl ? (parseFloat(extraEl.value)||0) : 0;
     const {years:sched} = buildAmortization(P, rate, months, extra);
+    lastYears = sched; lastCur = cur;
     renderAmortChart('mtgChart', sched, P, cur);
     renderAmortTable('mtgScheduleBody', sched, cur);
   }
@@ -1935,6 +1965,11 @@ function renderAmortTable(bodyId, years, cur){
     const el=document.getElementById(id);
     if(!el) return;
     el.addEventListener('input',update); el.addEventListener('change',update);
+  });
+  const csvBtn = document.getElementById('mtgCsvBtn');
+  if(csvBtn) csvBtn.addEventListener('click', ()=>{
+    if(!lastYears.length) return;
+    downloadCSV('mortgage-amortization-schedule.csv', amortizationToCSV(lastYears, lastCur));
   });
   update();
 })();
@@ -2178,19 +2213,26 @@ function renderAmortTable(bodyId, years, cur){
     const seniorEl = document.getElementById('rdSenior');
     if(seniorEl && seniorEl.checked) rate += 0.005;
     const months = parseInt(document.getElementById('rdMonths').value)||0;
+    const stepUpEl = document.getElementById('rdStepUp');
+    const stepUp = stepUpEl ? (parseFloat(stepUpEl.value)||0) : 0;
     // Each installment compounds quarterly for its remaining months
-    let maturity = 0;
+    let maturity = 0, invested = 0, finalMonthAmt = R;
     const iq = rate/4;
     for(let m=1;m<=months;m++){
+      const yearIndex = Math.floor((m-1)/12);
+      const amt = stepUp>0 ? R*Math.pow(1+stepUp/100, yearIndex) : R;
+      finalMonthAmt = amt;
+      invested += amt;
       const quartersLeft = (months - m + 1)/3;
-      maturity += R*Math.pow(1+iq, quartersLeft);
+      maturity += amt*Math.pow(1+iq, quartersLeft);
     }
-    const invested = R*months;
     document.getElementById('rdInvested').textContent = '₹'+Math.round(invested).toLocaleString('en-IN');
     document.getElementById('rdInterest').textContent = '₹'+Math.round(maturity-invested).toLocaleString('en-IN');
     document.getElementById('rdMaturity').textContent = '₹'+Math.round(maturity).toLocaleString('en-IN');
+    const finalAmtEl = document.getElementById('rdFinalMonthAmt');
+    if(finalAmtEl) finalAmtEl.textContent = stepUp>0 ? '₹'+Math.round(finalMonthAmt).toLocaleString('en-IN')+'/mo by the final year' : '—';
   }
-  ['rdAmt','rdRate','rdMonths','rdSenior'].forEach(id=>{
+  ['rdAmt','rdRate','rdMonths','rdSenior','rdStepUp'].forEach(id=>{
     const el=document.getElementById(id);
     if(!el) return;
     el.addEventListener('input',calc);
@@ -2254,16 +2296,24 @@ function renderAmortTable(bodyId, years, cur){
   calc();
 })();
 
-// ---- Universal Reset + Copy Result buttons ----
-// Adds a "Reset" and "Copy result" button to every calculator card that has
-// a .readout, using only the inputs/segmented-controls that belong to it.
-// Skipped on the scientific calculator page, which has its own AC/Copy controls
-// suited to its expression-based model rather than a fixed input form.
+// ---- Universal Reset + Copy Result + Deep-linkable URL state ----
+// Adds "Reset", "Copy result", and "Copy link" buttons to every calculator
+// card that has a .readout, using only the inputs/segmented-controls that
+// belong to it. Also reads/writes calculator state to the URL query string,
+// so a link with parameters pre-fills the calculator exactly as it was when
+// shared — no localStorage involved, state lives only in the URL itself.
+// Skipped on the scientific calculator page, which has its own AC/Copy
+// controls suited to its expression-based model rather than a fixed form.
 (function(){
   if(document.getElementById('sciGrid')) return;
 
   const cards = document.querySelectorAll('.tool .card');
   if(!cards.length) return;
+
+  // Flat, page-wide registry used for URL state (separate from the per-card
+  // Reset/Copy wiring below, since URL state covers the whole page at once).
+  const pageInputs = [];
+  const pageSegs = [];
 
   cards.forEach(card => {
     const readout = card.querySelector('.readout');
@@ -2281,7 +2331,31 @@ function renderAmortTable(bodyId, years, cur){
     }
 
     const formInputs = Array.from(scope.querySelectorAll('input, select'));
-    if(formInputs.length === 0) return; // nothing resettable (e.g. password generator has no inputs)
+    const segGroups = Array.from(scope.querySelectorAll('.seg'));
+
+    // Register every id'd input/seg once for page-wide URL state, even if
+    // this card turns out to have nothing resettable (formInputs.length===0
+    // just skips the Reset/Copy button creation below, not URL tracking).
+    formInputs.forEach(el => {
+      if(!el.id) return;
+      let kind = 'value', defaultValue;
+      if(el.tagName === 'SELECT'){
+        const opts = Array.from(el.options);
+        const defOpt = opts.find(o => o.defaultSelected) || opts[0];
+        defaultValue = defOpt ? defOpt.value : '';
+      } else if(el.type === 'checkbox' || el.type === 'radio'){
+        kind = 'checkbox'; defaultValue = el.defaultChecked;
+      } else {
+        defaultValue = el.defaultValue;
+      }
+      pageInputs.push({el, id:el.id, kind, defaultValue});
+    });
+    segGroups.forEach(seg => {
+      if(!seg.id) return;
+      pageSegs.push({seg, id:seg.id});
+    });
+
+    if(formInputs.length === 0) return; // nothing resettable via buttons (e.g. password generator)
 
     const defaults = formInputs.map(el => {
       if(el.tagName === 'SELECT'){
@@ -2295,7 +2369,6 @@ function renderAmortTable(bodyId, years, cur){
       return {el, kind:'value', value: el.defaultValue};
     });
 
-    const segGroups = Array.from(scope.querySelectorAll('.seg'));
     const segDefaults = segGroups.map(seg => ({
       seg, activeBtn: seg.querySelector('button.active') || seg.querySelector('button')
     }));
@@ -2309,11 +2382,13 @@ function renderAmortTable(bodyId, years, cur){
     row.style.cssText = 'display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;';
     row.innerHTML =
       '<button type="button" class="ghost result-reset" style="font-size:12px;padding:8px 14px;">Reset</button>'+
-      '<button type="button" class="ghost result-copy" style="font-size:12px;padding:8px 14px;">Copy result</button>';
+      '<button type="button" class="ghost result-copy" style="font-size:12px;padding:8px 14px;">Copy result</button>'+
+      '<button type="button" class="ghost result-link" style="font-size:12px;padding:8px 14px;">Copy link</button>';
     readout.appendChild(row);
 
     const resetBtn = row.querySelector('.result-reset');
     const copyBtn = row.querySelector('.result-copy');
+    const linkBtn = row.querySelector('.result-link');
 
     resetBtn.addEventListener('click', () => {
       defaults.forEach(d => {
@@ -2344,5 +2419,87 @@ function renderAmortTable(bodyId, years, cur){
         setTimeout(() => { copyBtn.textContent = orig; }, 1500);
       }).catch(() => {});
     });
+
+    linkBtn.addEventListener('click', () => {
+      navigator.clipboard.writeText(window.location.href).then(() => {
+        const orig = linkBtn.textContent;
+        linkBtn.textContent = 'Link copied!';
+        setTimeout(() => { linkBtn.textContent = orig; }, 1500);
+      }).catch(() => {});
+    });
   });
+
+  // Top-level tab groups (discount, investment) sit outside .card, as
+  // siblings of the tab-panel wrapper — tracked separately so a shared link
+  // can also open directly to a specific tab.
+  const pageTabs = Array.from(document.querySelectorAll('.tabs'))
+    .filter(t => t.id)
+    .map(t => ({tabs:t, id:t.id}));
+
+  // ---- Load state from the URL on page load ----
+  function loadFromURL(){
+    const params = new URLSearchParams(window.location.search);
+    if([...params].length === 0) return;
+
+    pageTabs.forEach(({tabs, id}) => {
+      const val = params.get(id);
+      if(val==null) return;
+      const btn = Array.from(tabs.querySelectorAll('button')).find(b => b.dataset.tab === val);
+      if(btn) btn.click();
+    });
+    pageSegs.forEach(({seg, id}) => {
+      const val = params.get(id);
+      if(val==null) return;
+      const btn = Array.from(seg.querySelectorAll('button')).find(b => Object.values(b.dataset).includes(val));
+      if(btn) btn.click();
+    });
+    pageInputs.forEach(({el, id, kind}) => {
+      if(!params.has(id)) return;
+      const val = params.get(id);
+      if(kind === 'checkbox') el.checked = (val === '1');
+      else el.value = val;
+      el.dispatchEvent(new Event('input', {bubbles:true}));
+      el.dispatchEvent(new Event('change', {bubbles:true}));
+    });
+  }
+
+  // ---- Sync current state to the URL (replaceState, no new history entries) ----
+  let urlSyncTimer = null;
+  function syncToURL(){
+    clearTimeout(urlSyncTimer);
+    urlSyncTimer = setTimeout(() => {
+      const params = new URLSearchParams();
+      pageTabs.forEach(({tabs, id}) => {
+        const active = tabs.querySelector('button.active');
+        if(active && active.dataset.tab) params.set(id, active.dataset.tab);
+      });
+      pageSegs.forEach(({seg, id}) => {
+        const active = seg.querySelector('button.active');
+        if(active){
+          const val = Object.values(active.dataset)[0];
+          if(val!=null) params.set(id, val);
+        }
+      });
+      pageInputs.forEach(({el, id, kind, defaultValue}) => {
+        const current = kind==='checkbox' ? el.checked : el.value;
+        if(kind==='checkbox'){
+          if(current !== defaultValue) params.set(id, current ? '1' : '0');
+        } else if(String(current) !== String(defaultValue)){
+          params.set(id, current);
+        }
+      });
+      const qs = params.toString();
+      const newUrl = window.location.pathname + (qs ? '?'+qs : '');
+      window.history.replaceState(null, '', newUrl);
+    }, 300);
+  }
+
+  loadFromURL();
+
+  pageInputs.forEach(({el}) => {
+    el.addEventListener('input', syncToURL);
+    el.addEventListener('change', syncToURL);
+  });
+  pageSegs.forEach(({seg}) => seg.addEventListener('click', () => setTimeout(syncToURL, 0)));
+  pageTabs.forEach(({tabs}) => tabs.addEventListener('click', () => setTimeout(syncToURL, 0)));
 })();

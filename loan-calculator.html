@@ -200,6 +200,7 @@
     <div class="table-scroll">
       <table class="bracket-table" style="margin-top:0;"><thead><tr><th>Year</th><th>Principal paid</th><th>Interest paid</th><th>Balance</th></tr></thead><tbody id="loanScheduleBody"></tbody></table>
     </div>
+    <button type="button" class="ghost" id="loanCsvBtn" style="margin-top:14px;font-size:12px;padding:8px 14px;">Download schedule (CSV)</button>
   </section>
 
   <section style="padding:32px 0;border-bottom:1px solid var(--paper-line);" id="loanCompareSection">
@@ -268,6 +269,8 @@
     <h3>How should I choose between a shorter term and investing the difference?</h3>
     <p>Mathematically: if your loan rate is higher than the after-tax return you'd reliably earn elsewhere, prepaying wins; if it's lower, investing wins. A 12% personal loan in India or a 24% credit-card balance anywhere should almost always be attacked first. A 3% mortgage locked in years ago is usually worth keeping while savings rates exceed it. In between, the honest answer is that certainty has value — the interest saved by prepayment is guaranteed, market returns aren't.</p>
 
+    <h3>Can I get the full schedule outside the browser?</h3>
+    <p>Yes — the "Download schedule (CSV)" button above the amortization table exports the full year-by-year breakdown (principal paid, interest paid, remaining balance) as a CSV file, which opens directly in Excel, Google Sheets, or Numbers for further analysis, record-keeping, or comparing against your lender's own statement.</p>
     <p><strong>Worked example:</strong> a $20,000 loan at 6.5% annual interest over 60 months has a monthly payment of about $391 and total interest of roughly $3,480. Add a $100 extra payment each month and it's paid off in about 47 months instead of 60, saving close to $800 of interest — enter these exact numbers above to watch the schedule and chart update.</p>
   </section>
 
