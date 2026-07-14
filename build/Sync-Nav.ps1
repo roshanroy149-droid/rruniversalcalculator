@@ -1,19 +1,20 @@
-# Regenerates the shared header nav, "more calculators" block, and header tool
-# count in every HTML page from build/tools.json, the single source of truth
-# for the tool list.
+# Regenerates the shared header nav, "more calculators" block, header tool
+# count, and (on index.html only) the homepage's category tool grids — all
+# from build/tools.json, the single source of truth for the tool list.
 #
 # Usage:  powershell -File build/Sync-Nav.ps1
 #
-# How it works: each page carries three marker pairs:
+# How it works: pages carry marker pairs:
 #   <!-- TB:NAV:START --> ... <!-- TB:NAV:END -->
 #   <!-- TB:MORETOOLS:START --> ... <!-- TB:MORETOOLS:END -->
 #   <!-- TB:COUNT:START --> ... <!-- TB:COUNT:END -->
+#   <!-- TB:HOMEGRID:START --> ... <!-- TB:HOMEGRID:END --> (index.html only)
 # On first run (no markers present yet) the script wraps the existing
 # hand-written blocks with markers. On every run it regenerates the content
 # between the markers from tools.json, so adding/renaming/reordering a tool
-# (or just adding one, which used to require manually updating the "N TOOLS"
-# tagline text on every page by hand and was easy to forget) only ever
-# requires editing tools.json once.
+# only ever requires editing tools.json once — this used to also require
+# manually updating the "N TOOLS" tagline and the homepage's category grids
+# by hand on every page, and both silently went stale more than once.
 
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
@@ -54,6 +55,37 @@ function New-MoreToolsBlock($indent, $selfId) {
 
 function New-CountBlock($indent) {
     return "$($data.tools.Count) TOOLS " + [char]0x00B7 + " 0 SIGN-UP"
+}
+
+# Maps a category id to the CSS modifier class used on homepage tool cards.
+# "everyday" historically used "cat-utility" rather than "cat-everyday", so
+# this isn't a straight "cat-$id" — kept as an explicit map to avoid guessing.
+$catCssClass = @{ finance = 'cat-finance'; health = 'cat-health'; education = 'cat-education'; everyday = 'cat-utility' }
+
+function New-HomeGridBlock($indent) {
+    $lines = New-Object System.Collections.Generic.List[string]
+    foreach ($cat in $data.categories) {
+        $toolsInCat = @($data.tools | Where-Object { $_.category -eq $cat.id })
+        if ($toolsInCat.Count -eq 0) { continue }
+        $label = (Get-Culture).TextInfo.ToTitleCase($cat.label.ToLower())
+        $lines.Add("$indent<section>")
+        $lines.Add("$indent<div class=`"section-head`">")
+        $lines.Add("$indent<h2>$label</h2>")
+        $lines.Add("$indent<p>$($cat.blurb)</p>")
+        $lines.Add("$indent</div>")
+        $lines.Add("$indent<div class=`"tool-grid`">")
+        $cssClass = $catCssClass[$cat.id]
+        foreach ($tool in $toolsInCat) {
+            $lines.Add("$indent<a class=`"tool-card-link $cssClass`" href=`"$($tool.file)`">")
+            $lines.Add("$indent<div class=`"tcl-top`"><div class=`"tcl-icon`"><svg><use href=`"icons.svg#$($tool.icon)`"/></svg></div></div>")
+            $lines.Add("$indent<h3>$($tool.title)</h3>")
+            $lines.Add("$indent<p>$($tool.blurb)</p>")
+            $lines.Add("$indent</a>")
+        }
+        $lines.Add("$indent</div>")
+        $lines.Add("$indent</section>")
+    }
+    return ($lines -join $nl)
 }
 
 function Sync-Marker($content, $markerName, $generator) {
@@ -114,6 +146,9 @@ foreach ($f in $htmlFiles) {
 
     $countResult = Sync-Marker $content 'COUNT' { param($indent) New-CountBlock $indent }
     if ($null -ne $countResult) { $content = $countResult }
+
+    $homeGridResult = Sync-Marker $content 'HOMEGRID' { param($indent) New-HomeGridBlock $indent }
+    if ($null -ne $homeGridResult) { $content = $homeGridResult }
 
     if ($content -ne $original) {
         [System.IO.File]::WriteAllText($f.FullName, $content, $utf8NoBom)

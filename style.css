@@ -357,7 +357,6 @@ footer p{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--graph
 .tool-grid{
   display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;margin:20px 0 10px;
 }
-@media(max-width:640px){.tool-grid{grid-template-columns:1fr;}}
 .tool-card-link{
   display:flex;flex-direction:column;gap:2px;
   position:relative;
@@ -391,6 +390,37 @@ footer p{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--graph
   font-family:'Space Grotesk',sans-serif;font-size:18px;margin:4px 0 4px;color:var(--ink);
 }
 .tool-card-link p{font-size:13px;color:var(--graphite);margin:0;line-height:1.5;}
+
+/* On mobile, 40 full-size description cards is an enormous scroll — switch
+   to a dense, app-launcher-style icon grid instead: icon + short label only,
+   no border/description, so browsing the whole directory takes a glance
+   rather than a scroll marathon. Must come after the base .tool-card-link
+   rules above so the override actually wins at matching specificity. */
+@media(max-width:640px){
+  .tool-grid{grid-template-columns:repeat(3, minmax(0,1fr));gap:10px;}
+  .tool-card-link{
+    padding:14px 6px;
+    align-items:center;
+    text-align:center;
+    gap:8px;
+    border-radius:16px;
+    box-shadow:none;
+  }
+  .tool-card-link:active{
+    transform:scale(0.94);
+    background:linear-gradient(180deg, #FBF8F1, var(--paper-line));
+  }
+  .tcl-top{justify-content:center;margin-bottom:0;}
+  .tcl-icon{width:48px;height:48px;padding:12px;border-radius:14px;}
+  .tool-card-link h3{
+    font-size:11px;line-height:1.3;font-weight:600;margin:0;
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+  }
+  .tool-card-link p{display:none;}
+}
+@media(max-width:349px){
+  .tool-grid{grid-template-columns:repeat(2, minmax(0,1fr));}
+}
 
 /* Category color coding */
 .cat-finance .tcl-icon,.cat-finance .hero-icon{background:rgba(192,138,52,0.14);color:var(--orange-dark);}
