@@ -33,60 +33,68 @@
 <div class="tagline"><!-- TB:COUNT:START -->
 40 TOOLS · 0 SIGN-UP
 <!-- TB:COUNT:END --></div>
+<button class="nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
 </div>
 </div>
 <!-- TB:NAV:START -->
-<nav class="ruler cat-ruler" aria-label="Category">
-  <a class="tick" href="index.html">HOME</a>
-  <button class="tick cat-tab" type="button" data-cat="finance">FINANCE</button>
-  <button class="tick cat-tab" type="button" data-cat="health">HEALTH</button>
-  <button class="tick cat-tab" type="button" data-cat="education">EDUCATION</button>
-  <button class="tick cat-tab" type="button" data-cat="everyday">EVERYDAY</button>
-</nav>
-<nav class="ruler sub-ruler" id="subRuler" aria-label="Tools">
-  <a class="tick sub-tick" data-cat="finance" href="currency-converter.html">CURRENCY</a>
-  <a class="tick sub-tick" data-cat="finance" href="loan-calculator.html">LOAN / EMI</a>
-  <a class="tick sub-tick" data-cat="finance" href="car-loan-calculator.html">CAR LOAN</a>
-  <a class="tick sub-tick" data-cat="finance" href="mortgage-calculator.html">MORTGAGE</a>
-  <a class="tick sub-tick" data-cat="finance" href="refinance-calculator.html">REFINANCE</a>
-  <a class="tick sub-tick" data-cat="finance" href="rent-vs-buy-calculator.html">RENT VS BUY</a>
-  <a class="tick sub-tick" data-cat="finance" href="tax-calculator.html">TAX</a>
-  <a class="tick sub-tick" data-cat="finance" href="paycheck-calculator.html">PAYCHECK</a>
-  <a class="tick sub-tick" data-cat="finance" href="gst-vat-calculator.html">GST / VAT</a>
-  <a class="tick sub-tick" data-cat="finance" href="investment-calculator.html">INVESTMENT</a>
-  <a class="tick sub-tick" data-cat="finance" href="sip-calculator.html">SIP</a>
-  <a class="tick sub-tick" data-cat="finance" href="compound-interest-calculator.html">COMPOUND INT.</a>
-  <a class="tick sub-tick" data-cat="finance" href="savings-goal-calculator.html">SAVINGS GOAL</a>
-  <a class="tick sub-tick" data-cat="finance" href="retirement-calculator.html">RETIREMENT</a>
-  <a class="tick sub-tick" data-cat="finance" href="net-worth-calculator.html">NET WORTH</a>
-  <a class="tick sub-tick" data-cat="finance" href="discount-calculator.html">DISCOUNT</a>
-  <a class="tick sub-tick" data-cat="finance" href="tip-calculator.html">TIP</a>
-  <a class="tick sub-tick" data-cat="finance" href="fd-calculator.html">FD</a>
-  <a class="tick sub-tick" data-cat="finance" href="rd-calculator.html">RD</a>
-  <a class="tick sub-tick" data-cat="finance" href="ppf-calculator.html">PPF</a>
-  <a class="tick sub-tick" data-cat="finance" href="hra-calculator.html">HRA</a>
-  <a class="tick sub-tick" data-cat="finance" href="break-even-calculator.html">BREAK-EVEN</a>
-  <a class="tick sub-tick" data-cat="finance" href="debt-payoff-calculator.html">DEBT PAYOFF</a>
-  <a class="tick sub-tick" data-cat="health" href="bmi-calculator.html">BMI</a>
-  <a class="tick sub-tick" data-cat="health" href="calorie-calculator.html">CALORIE</a>
-  <a class="tick sub-tick" data-cat="health" href="macro-calculator.html">MACROS</a>
-  <a class="tick sub-tick" data-cat="health" href="pregnancy-calculator.html">PREGNANCY</a>
-  <a class="tick sub-tick" data-cat="health" href="ovulation-calculator.html">OVULATION</a>
-  <a class="tick sub-tick" data-cat="education" href="gpa-calculator.html">GPA</a>
-  <a class="tick sub-tick" data-cat="education" href="scientific-calculator.html">SCIENTIFIC</a>
-  <a class="tick sub-tick" data-cat="everyday" href="percentage-calculator.html">PERCENT</a>
-  <a class="tick sub-tick" data-cat="everyday" href="age-calculator.html">AGE</a>
-  <a class="tick sub-tick" data-cat="everyday" href="days-calculator.html">DAYS</a>
-  <a class="tick sub-tick" data-cat="everyday" href="unit-converter.html">UNITS</a>
-  <a class="tick sub-tick" data-cat="everyday" href="week-number-calculator.html">WEEK #</a>
-  <a class="tick sub-tick" data-cat="everyday" href="cm-to-inches.html">CM→IN</a>
-  <a class="tick sub-tick" data-cat="everyday" href="kg-to-pounds.html">KG→LB</a>
-  <a class="tick sub-tick" data-cat="everyday" href="celsius-to-fahrenheit.html">°C→°F</a>
-  <a class="tick sub-tick" data-cat="everyday" href="password-generator.html">PASSWORD</a>
-  <a class="tick sub-tick" data-cat="everyday" href="word-counter.html">WORD COUNT</a>
-</nav>
+<div class="nav-drawer" id="navDrawer">
+  <div class="nav-drawer-head">
+    <span>Menu</span>
+    <button class="nav-close" id="navClose" type="button" aria-label="Close menu">&#10005;</button>
+  </div>
+  <nav class="ruler cat-ruler" aria-label="Category">
+    <a class="tick" href="index.html">HOME</a>
+    <button class="tick cat-tab" type="button" data-cat="finance">FINANCE</button>
+    <button class="tick cat-tab" type="button" data-cat="health">HEALTH</button>
+    <button class="tick cat-tab" type="button" data-cat="education">EDUCATION</button>
+    <button class="tick cat-tab" type="button" data-cat="everyday">EVERYDAY</button>
+  </nav>
+  <nav class="ruler sub-ruler" id="subRuler" aria-label="Tools">
+    <a class="tick sub-tick" data-cat="finance" href="currency-converter.html">CURRENCY</a>
+    <a class="tick sub-tick" data-cat="finance" href="loan-calculator.html">LOAN / EMI</a>
+    <a class="tick sub-tick" data-cat="finance" href="car-loan-calculator.html">CAR LOAN</a>
+    <a class="tick sub-tick" data-cat="finance" href="mortgage-calculator.html">MORTGAGE</a>
+    <a class="tick sub-tick" data-cat="finance" href="refinance-calculator.html">REFINANCE</a>
+    <a class="tick sub-tick" data-cat="finance" href="rent-vs-buy-calculator.html">RENT VS BUY</a>
+    <a class="tick sub-tick" data-cat="finance" href="tax-calculator.html">TAX</a>
+    <a class="tick sub-tick" data-cat="finance" href="paycheck-calculator.html">PAYCHECK</a>
+    <a class="tick sub-tick" data-cat="finance" href="gst-vat-calculator.html">GST / VAT</a>
+    <a class="tick sub-tick" data-cat="finance" href="investment-calculator.html">INVESTMENT</a>
+    <a class="tick sub-tick" data-cat="finance" href="sip-calculator.html">SIP</a>
+    <a class="tick sub-tick" data-cat="finance" href="compound-interest-calculator.html">COMPOUND INT.</a>
+    <a class="tick sub-tick" data-cat="finance" href="savings-goal-calculator.html">SAVINGS GOAL</a>
+    <a class="tick sub-tick" data-cat="finance" href="retirement-calculator.html">RETIREMENT</a>
+    <a class="tick sub-tick" data-cat="finance" href="net-worth-calculator.html">NET WORTH</a>
+    <a class="tick sub-tick" data-cat="finance" href="discount-calculator.html">DISCOUNT</a>
+    <a class="tick sub-tick" data-cat="finance" href="tip-calculator.html">TIP</a>
+    <a class="tick sub-tick" data-cat="finance" href="fd-calculator.html">FD</a>
+    <a class="tick sub-tick" data-cat="finance" href="rd-calculator.html">RD</a>
+    <a class="tick sub-tick" data-cat="finance" href="ppf-calculator.html">PPF</a>
+    <a class="tick sub-tick" data-cat="finance" href="hra-calculator.html">HRA</a>
+    <a class="tick sub-tick" data-cat="finance" href="break-even-calculator.html">BREAK-EVEN</a>
+    <a class="tick sub-tick" data-cat="finance" href="debt-payoff-calculator.html">DEBT PAYOFF</a>
+    <a class="tick sub-tick" data-cat="health" href="bmi-calculator.html">BMI</a>
+    <a class="tick sub-tick" data-cat="health" href="calorie-calculator.html">CALORIE</a>
+    <a class="tick sub-tick" data-cat="health" href="macro-calculator.html">MACROS</a>
+    <a class="tick sub-tick" data-cat="health" href="pregnancy-calculator.html">PREGNANCY</a>
+    <a class="tick sub-tick" data-cat="health" href="ovulation-calculator.html">OVULATION</a>
+    <a class="tick sub-tick" data-cat="education" href="gpa-calculator.html">GPA</a>
+    <a class="tick sub-tick" data-cat="education" href="scientific-calculator.html">SCIENTIFIC</a>
+    <a class="tick sub-tick" data-cat="everyday" href="percentage-calculator.html">PERCENT</a>
+    <a class="tick sub-tick" data-cat="everyday" href="age-calculator.html">AGE</a>
+    <a class="tick sub-tick" data-cat="everyday" href="days-calculator.html">DAYS</a>
+    <a class="tick sub-tick" data-cat="everyday" href="unit-converter.html">UNITS</a>
+    <a class="tick sub-tick" data-cat="everyday" href="week-number-calculator.html">WEEK #</a>
+    <a class="tick sub-tick" data-cat="everyday" href="cm-to-inches.html">CM→IN</a>
+    <a class="tick sub-tick" data-cat="everyday" href="kg-to-pounds.html">KG→LB</a>
+    <a class="tick sub-tick" data-cat="everyday" href="celsius-to-fahrenheit.html">°C→°F</a>
+    <a class="tick sub-tick" data-cat="everyday" href="password-generator.html">PASSWORD</a>
+    <a class="tick sub-tick" data-cat="everyday" href="word-counter.html">WORD COUNT</a>
+  </nav>
+</div>
 <!-- TB:NAV:END -->
 </header>
+<div class="nav-backdrop" id="navBackdrop"></div>
 <div class="wrap">
 <p class="crumb"><a href="index.html">TallyBench</a> / Percentage Calculator</p>
 

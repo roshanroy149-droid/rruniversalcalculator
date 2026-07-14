@@ -90,6 +90,31 @@
       }
     });
   });
+
+  // Mobile hamburger menu: the same nav markup above becomes a slide-in
+  // drawer below the mobile breakpoint (see style.css), toggled by adding/
+  // removing a class on <body> — the hamburger and drawer are hidden
+  // entirely on desktop, so this is inert there.
+  const navToggle = document.getElementById('navToggle');
+  const navClose = document.getElementById('navClose');
+  const navBackdrop = document.getElementById('navBackdrop');
+
+  function openDrawer(){
+    document.body.classList.add('nav-open');
+    if(navToggle) navToggle.setAttribute('aria-expanded', 'true');
+  }
+  function closeDrawer(){
+    document.body.classList.remove('nav-open');
+    if(navToggle) navToggle.setAttribute('aria-expanded', 'false');
+  }
+  if(navToggle){
+    navToggle.addEventListener('click', ()=>{
+      if(document.body.classList.contains('nav-open')) closeDrawer();
+      else openDrawer();
+    });
+  }
+  if(navClose) navClose.addEventListener('click', closeDrawer);
+  if(navBackdrop) navBackdrop.addEventListener('click', closeDrawer);
 })();
 
 // ---- Tip ----
