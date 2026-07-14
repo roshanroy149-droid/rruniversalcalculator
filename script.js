@@ -57,7 +57,8 @@
     const cur = document.getElementById('tipCur').value;
     const bill = parseFloat(document.getElementById('tipBill').value)||0;
     const pct = parseFloat(document.getElementById('tipPct').value)||0;
-    const people = parseInt(document.getElementById('tipPeople').value)||1;
+    const peopleRaw = parseInt(document.getElementById('tipPeople').value);
+    const people = (peopleRaw && peopleRaw>0) ? peopleRaw : 1;
     let tip = bill*pct/100;
     let total = bill+tip;
 
@@ -74,6 +75,16 @@
     document.getElementById('tipAmt').textContent = cur+tip.toFixed(2);
     document.getElementById('tipTotal').textContent = cur+total.toFixed(2);
     document.getElementById('tipEach').textContent = cur+(total/people).toFixed(2);
+
+    const warnEl = document.getElementById('tipWarning');
+    if(warnEl){
+      let msg = null;
+      if(peopleRaw!==undefined && peopleRaw<=0) msg = 'Number of people must be at least 1 — using 1 for this calculation.';
+      else if(bill<0) msg = 'Bill amount is negative — enter a positive amount.';
+      else if(pct<0) msg = 'Tip percent is negative — enter 0 or a positive percentage.';
+      if(msg){ warnEl.textContent = msg; warnEl.classList.add('show'); }
+      else { warnEl.textContent=''; warnEl.classList.remove('show'); }
+    }
   }
   if(presets){
     presets.addEventListener('click',(e)=>{
@@ -102,6 +113,13 @@
     return Math.abs(v) >= 1e12 ? v.toExponential(2) : parseFloat(v.toFixed(4)).toLocaleString();
   };
 
+  function setWarn(id, msg){
+    const el = $(id);
+    if(!el) return;
+    if(msg){ el.textContent = msg; el.classList.add('show'); }
+    else { el.textContent = ''; el.classList.remove('show'); }
+  }
+
   function calcAll(){
     // 1. X% of Y
     $('pcOfOut').textContent = fmt(num('pcOfNum')*num('pcOfPct')/100);
@@ -109,10 +127,12 @@
     // 2. A is what % of B
     const b = num('pcWhatB');
     $('pcWhatOut').textContent = b===0 ? '—' : fmt(num('pcWhatA')/b*100)+'%';
+    setWarn('pcWhatWarning', b===0 ? 'The "whole" (B) is zero — a percentage of zero is undefined, so there\'s nothing to calculate.' : null);
 
     // 3. X% of what is Z (reverse)
     const rp = num('pcRevPct');
     $('pcRevOut').textContent = rp===0 ? '—' : fmt(num('pcRevVal')/(rp/100));
+    setWarn('pcRevWarning', rp===0 ? 'The percent is zero — "0% of what number is Z" has no solution unless Z is also zero.' : null);
 
     // 4. Percentage change (old -> new)
     const oldV = num('pcChgOld'), newV = num('pcChgNew');
@@ -134,6 +154,7 @@
     const d1 = num('pcDiffA'), d2 = num('pcDiffB');
     const avg = (d1+d2)/2;
     $('pcDiffOut').textContent = avg===0 ? '—' : fmt(Math.abs(d1-d2)/Math.abs(avg)*100)+'%';
+    setWarn('pcDiffWarning', avg===0 ? 'The average of these two values is zero (e.g. one positive, one equally negative) — percentage difference is undefined in that case.' : null);
   }
 
   ['pcOfPct','pcOfNum','pcWhatA','pcWhatB','pcRevPct','pcRevVal',
@@ -373,6 +394,18 @@
       result = base/unitDefs[cat][to];
     }
     document.getElementById('unitOut').textContent = result.toFixed(4)+' '+(labels[to]||to);
+
+    const warnEl = document.getElementById('unitWarning');
+    if(warnEl){
+      let msg = null;
+      if(cat==='temperature'){
+        if(from==='k' && val<0) msg = 'Kelvin can\'t go below 0 (absolute zero) — this value isn\'t physically possible.';
+      } else if(val<0){
+        msg = 'Negative value entered — most physical quantities in this category (like length or weight) can\'t be negative in the real world, though the math still computes correctly.';
+      }
+      if(msg){ warnEl.textContent = msg; warnEl.classList.add('show'); }
+      else { warnEl.textContent=''; warnEl.classList.remove('show'); }
+    }
   }
   document.getElementById('unitCat').addEventListener('change',populateUnits);
   ['unitVal','unitFrom','unitTo'].forEach(id=>document.getElementById(id).addEventListener('input',calcUnit));
@@ -414,6 +447,13 @@
     const amt = parseFloat(amtEl.value)||0;
     const from = fromEl.value, to = toEl.value;
     if(!from || !to) return;
+
+    const warnEl = document.getElementById('curWarning');
+    if(warnEl){
+      if(amt<0){ warnEl.textContent = 'Amount is negative — enter a positive value.'; warnEl.classList.add('show'); }
+      else { warnEl.textContent=''; warnEl.classList.remove('show'); }
+    }
+
     if(!ratesUSD){
       outEl.textContent = 'Rate unavailable';
       rateEl.textContent = 'Exchange rate data has not loaded yet.';
@@ -452,6 +492,15 @@
   amtEl.addEventListener('input', convert);
   fromEl.addEventListener('change', convert);
   toEl.addEventListener('change', convert);
+  const curPresets = document.getElementById('curPresets');
+  if(curPresets){
+    curPresets.addEventListener('click', (e)=>{
+      const btn = e.target.closest('button');
+      if(!btn) return;
+      amtEl.value = btn.dataset.amt;
+      convert();
+    });
+  }
   swapBtn.addEventListener('click', ()=>{
     const tmp = fromEl.value;
     fromEl.value = toEl.value;
@@ -1258,6 +1307,14 @@ function computeTaxFromScheme(scheme, gross){
     if(speakEl) speakEl.textContent = fmtTime(words/140*60);
   }
   document.getElementById('wcText').addEventListener('input',calcWords);
+  const exampleBtn = document.getElementById('wcExample');
+  if(exampleBtn){
+    exampleBtn.addEventListener('click', ()=>{
+      const textEl = document.getElementById('wcText');
+      textEl.value = 'A blog post rarely needs to be long to be useful — it needs to answer the reader\'s question quickly and clearly.\n\nAim for short paragraphs, concrete examples, and a title that matches what someone would actually type into a search bar. Reading time matters more than word count on its own: a dense 400-word post can take longer to read than a loosely written 700-word one.\n\nCheck this against your own draft above, then paste your actual text in to see the real numbers.';
+      textEl.dispatchEvent(new Event('input', {bubbles:true}));
+    });
+  }
 })();
 
 // ---- Days Between Dates ----
@@ -1457,6 +1514,15 @@ function computeTaxFromScheme(scheme, gross){
         ? (tax/2).toFixed(2)+' CGST + '+(tax/2).toFixed(2)+' SGST'
         : '—';
     }
+
+    const warnEl = document.getElementById('gstWarning');
+    if(warnEl){
+      let msg = null;
+      if(amt<0) msg = 'Amount is negative — enter a positive value.';
+      else if(rate<0) msg = 'Tax rate is negative — enter 0 or a positive percentage.';
+      if(msg){ warnEl.textContent = msg; warnEl.classList.add('show'); }
+      else { warnEl.textContent=''; warnEl.classList.remove('show'); }
+    }
   }
 
   amtEl.addEventListener('input', calc);
@@ -1572,6 +1638,13 @@ function computeTaxFromScheme(scheme, gross){
 
   function cur(){ return document.getElementById('discCur').value; }
 
+  function setWarning(id, msg){
+    const el = document.getElementById(id);
+    if(!el) return;
+    if(msg){ el.textContent = msg; el.classList.add('show'); }
+    else { el.textContent = ''; el.classList.remove('show'); }
+  }
+
   function calcSale(){
     const c = cur();
     const original = parseFloat(document.getElementById('discOriginal').value)||0;
@@ -1584,6 +1657,11 @@ function computeTaxFromScheme(scheme, gross){
     document.getElementById('discSalePrice').textContent = c+salePrice.toFixed(2);
     const withTaxEl = document.getElementById('discFinalWithTax');
     if(withTaxEl) withTaxEl.textContent = tax>0 ? c+(salePrice*(1+tax/100)).toFixed(2) : '—';
+
+    if(pct > 100) setWarning('discSaleWarning', 'A discount over 100% means the customer is paid to take the item — double-check this figure.');
+    else if(pct === 100) setWarning('discSaleWarning', 'A 100% discount means the item is free — the sale price is correctly $0.');
+    else if(original < 0) setWarning('discSaleWarning', 'Original price is negative — enter a positive amount.');
+    else setWarning('discSaleWarning', null);
   }
   function calcOriginal(){
     const c = cur();
@@ -1591,8 +1669,12 @@ function computeTaxFromScheme(scheme, gross){
     const pct = parseFloat(document.getElementById('discPct2').value)||0;
     const original = pct<100 ? sale/(1-pct/100) : 0;
     const saved = original-sale;
-    document.getElementById('discOriginalOut').textContent = c+original.toFixed(2);
-    document.getElementById('discSavedOut').textContent = c+Math.max(saved,0).toFixed(2);
+    document.getElementById('discOriginalOut').textContent = pct<100 ? c+original.toFixed(2) : '—';
+    document.getElementById('discSavedOut').textContent = pct<100 ? c+Math.max(saved,0).toFixed(2) : '—';
+
+    if(pct >= 100) setWarning('discOriginalWarning', 'A discount of 100% or more can\'t be reversed this way — there\'s no original price that produces a $0 (or negative) sale price through a percentage discount alone.');
+    else if(sale < 0) setWarning('discOriginalWarning', 'Sale price is negative — enter a positive amount.');
+    else setWarning('discOriginalWarning', null);
   }
   function calcStack(){
     const c = cur();
@@ -1605,6 +1687,10 @@ function computeTaxFromScheme(scheme, gross){
     document.getElementById('discStackMid').textContent = c+mid.toFixed(2);
     document.getElementById('discStackFinal').textContent = c+final.toFixed(2);
     document.getElementById('discStackCombined').textContent = combined.toFixed(1)+'% off (not '+(p1+p2)+'%)';
+
+    if(p1 > 100 || p2 > 100) setWarning('discStackWarning', 'A discount over 100% means the customer is paid to take the item — double-check these figures.');
+    else if(original < 0) setWarning('discStackWarning', 'Original price is negative — enter a positive amount.');
+    else setWarning('discStackWarning', null);
   }
 
   ['discOriginal','discPct','discCur','discTax'].forEach(id=>{
