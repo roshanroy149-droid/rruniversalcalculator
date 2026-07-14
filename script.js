@@ -2106,6 +2106,7 @@ function computeTaxFromScheme(scheme, gross){
   if(!rowsWrap) return;
   const addBtn = document.getElementById('gpaAddRow');
   const scaleEl = document.getElementById('gpaScale');
+  const weightedEl = document.getElementById('gpaWeighted');
 
   const gradePoints = {
     4:  [['A',4.0],['A-',3.7],['B+',3.3],['B',3.0],['B-',2.7],['C+',2.3],['C',2.0],['C-',1.7],['D',1.0],['F',0.0]],
@@ -2140,6 +2141,18 @@ function computeTaxFromScheme(scheme, gross){
       el.addEventListener('input', calc);
       el.addEventListener('change', calc);
     });
+    updateWeightedUI();
+  }
+
+  function updateWeightedUI(){
+    const weighted = weightedEl.checked;
+    document.querySelectorAll('.gpaCredits').forEach(el=>{
+      el.closest('.field').style.display = weighted ? '' : 'none';
+    });
+    const creditsLabel = document.getElementById('gpaCreditsLabel');
+    if(creditsLabel) creditsLabel.textContent = weighted ? 'Total credit hours' : 'Number of courses';
+    const remLabel = document.getElementById('tgRemainingLabel');
+    if(remLabel) remLabel.textContent = weighted ? 'Credit hours remaining (courses not yet in the list above)' : 'Courses remaining (not yet in the list above)';
   }
 
   function rebuildGradeOptions(){
@@ -2151,11 +2164,12 @@ function computeTaxFromScheme(scheme, gross){
 
   function calc(){
     const scale = scaleEl.value;
+    const weighted = weightedEl.checked;
     const map = Object.fromEntries(gradePoints[scale]);
     let totalCredits = 0, totalPoints = 0;
     document.querySelectorAll('#gpaRows .row3').forEach(row=>{
       const grade = row.querySelector('.gpaGrade').value;
-      const credits = parseFloat(row.querySelector('.gpaCredits').value)||0;
+      const credits = weighted ? (parseFloat(row.querySelector('.gpaCredits').value)||0) : 1;
       const points = map[grade] !== undefined ? map[grade] : 0;
       totalCredits += credits;
       totalPoints += credits*points;
@@ -2177,7 +2191,7 @@ function computeTaxFromScheme(scheme, gross){
 
     if(remaining<=0){
       neededEl.textContent = '—';
-      feasibleEl.textContent = 'Enter remaining credit hours to plan ahead';
+      feasibleEl.textContent = weightedEl.checked ? 'Enter remaining credit hours to plan ahead' : 'Enter remaining courses to plan ahead';
       return;
     }
     const neededPoints = target*(totalCredits+remaining) - totalPoints;
@@ -2196,6 +2210,7 @@ function computeTaxFromScheme(scheme, gross){
 
   addBtn.addEventListener('click', ()=>addRow());
   scaleEl.addEventListener('change', rebuildGradeOptions);
+  weightedEl.addEventListener('change', ()=>{ updateWeightedUI(); calc(); });
   ['tgTarget','tgRemaining'].forEach(id=>{
     const el = document.getElementById(id);
     if(el) el.addEventListener('input', calc);

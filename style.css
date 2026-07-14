@@ -151,6 +151,23 @@ header{
   background:var(--orange);
 }
 
+/* On narrow screens, wrap nav ticks onto multiple lines instead of a
+   horizontally-scrolling row with no visible scroll affordance — otherwise
+   trailing items (e.g. EVERYDAY) are clipped off-screen with no indication. */
+@media(max-width:640px){
+  .cat-ruler{
+    flex-wrap:wrap;
+    overflow-x:visible;
+  }
+  .sub-ruler{
+    flex-wrap:wrap;
+    overflow-x:visible;
+  }
+  .sub-ruler.open{
+    max-height:600px;
+  }
+}
+
 /* HERO */
 .hero{padding:60px 0 42px;border-bottom:1px solid var(--paper-line);}
 .hero .eyebrow{
