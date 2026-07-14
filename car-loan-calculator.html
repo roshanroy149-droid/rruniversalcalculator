@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CM to Inches Converter | TallyBench</title>
-<meta name="description" content="Convert centimeters to inches and inches to centimeters instantly, plus a quick-reference table of common conversions.">
-<link rel="canonical" href="https://tallybench.com/cm-to-inches.html">
+<title>Car Loan Calculator — With Trade-In &amp; Sales Tax | TallyBench</title>
+<meta name="description" content="Free car loan calculator with trade-in value and sales tax. See your monthly payment, total interest, and full amortization schedule.">
+<link rel="canonical" href="https://tallybench.com/car-loan-calculator.html">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.svg">
@@ -15,14 +15,15 @@
 <meta name="apple-mobile-web-app-title" content="TallyBench">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TallyBench">
-<meta property="og:title" content="CM to Inches Converter">
-<meta property="og:description" content="Convert centimeters to inches and inches to centimeters instantly, plus a quick-reference table of common conversions.">
-<meta property="og:url" content="https://tallybench.com/cm-to-inches.html">
+<meta property="og:title" content="Car Loan Calculator — With Trade-In &amp; Sales Tax">
+<meta property="og:description" content="Free car loan calculator with trade-in value and sales tax. See your monthly payment, total interest, and full amortization schedule.">
+<meta property="og:url" content="https://tallybench.com/car-loan-calculator.html">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="CM to Inches Converter">
-<meta name="twitter:description" content="Convert centimeters to inches and inches to centimeters instantly, plus a quick-reference table of common conversions.">
+<meta name="twitter:title" content="Car Loan Calculator — With Trade-In &amp; Sales Tax">
+<meta name="twitter:description" content="Free car loan calculator with trade-in value and sales tax. See your monthly payment, total interest, and full amortization schedule.">
 <link rel="stylesheet" href="fonts/fonts.css">
 <link rel="stylesheet" href="style.css">
+
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -30,18 +31,26 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "How do I convert cm to inches?",
+      "name": "How does the trade-in value affect the loan?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Divide the centimeter value by 2.54 — 1 inch is defined as exactly 2.54 cm, so this conversion is exact, not an approximation."
+        "text": "Your trade-in reduces the amount you need to finance, just like a down payment. In most US states, it also reduces the taxable amount — sales tax applies to (price minus trade-in), not the full price, which is why the trade-in shows up twice in the math."
       }
     },
     {
       "@type": "Question",
-      "name": "How do I convert inches to cm?",
+      "name": "Why is sales tax financed into the loan?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Multiply the inch value by 2.54. For example, 10 inches × 2.54 = 25.4 cm."
+        "text": "Most buyers roll sales tax into the loan rather than paying it upfront in cash, so this calculator adds it to the financed amount by default. If you're paying tax separately in cash, set the sales tax rate to 0 here and account for it outside the calculator."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What loan terms are typical for cars?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "36, 48, 60, and 72 months are the most common terms in the US, with 72 and even 84 months increasingly common as vehicle prices rise. Longer terms lower the monthly payment but increase total interest paid and raise the risk of owing more than the car is worth."
       }
     }
   ]
@@ -51,7 +60,7 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "CM to Inches Converter — TallyBench",
+  "name": "Car Loan Calculator — TallyBench",
   "applicationCategory": "UtilitiesApplication",
   "operatingSystem": "Any (runs in browser)",
   "offers": {
@@ -59,11 +68,11 @@
     "price": "0",
     "priceCurrency": "USD"
   },
-  "url": "https://tallybench.com/cm-to-inches.html"
+  "url": "https://tallybench.com/car-loan-calculator.html"
 }
 </script>
 </head>
-<body data-page-cat="everyday">
+<body data-page-cat="finance">
 
 <header>
   <div class="wrap">
@@ -126,48 +135,81 @@
 </header>
 
 <div class="wrap">
-  <div class="crumb"><a href="index.html">TallyBench</a> / CM to Inches</div>
+  <div class="crumb"><a href="index.html">TallyBench</a> / Car Loan Calculator</div>
 
   <section class="hero">
-    <div class="hero-icon-row cat-utility">
-      <div class="hero-icon"><svg><use href="icons.svg#icon-units"/></svg></div>
-      <div class="eyebrow">// CM ↔ INCHES CONVERTER</div>
+    <div class="hero-icon-row cat-finance">
+      <div class="hero-icon"><svg><use href="icons.svg#icon-loan"/></svg></div>
+      <div class="eyebrow">// CAR LOAN CALCULATOR</div>
     </div>
-    <h1>Centimeters to inches, both ways.</h1>
-    <p>Type into either field — the exact conversion (1 in = 2.54 cm) updates live.</p>
+    <h1>Your real monthly payment, trade-in and tax included.</h1>
+    <p>Enter the vehicle price, down payment, trade-in value, and sales tax rate to see the actual amount financed and your monthly payment.</p>
   </section>
 
-  <section class="tool" id="cmin">
+  <section class="tool" id="carloan">
+    <div class="disclaimer">
+      <strong>Estimate only — not a loan offer.</strong> Actual rates, fees, and tax rules vary by lender, dealer, and location. Use this to compare scenarios, not as a binding quote.
+    </div>
+    <div class="field" style="max-width:260px;margin-bottom:20px;">
+      <label>Currency</label>
+      <select id="clCur">
+        <option value="$" selected>USD ($)</option>
+        <option value="£">GBP (£)</option>
+        <option value="€">EUR (€)</option>
+        <option value="₹">INR (₹)</option>
+      </select>
+    </div>
     <div class="card">
       <div>
-        <div class="field"><label>Centimeters</label><input type="number" id="ctiCm" value="170" step="0.1"></div>
-        <div class="field"><label>Inches</label><input type="number" id="ctiIn" value="66.93" step="0.01"></div>
+        <div class="row2">
+          <div class="field"><label>Vehicle price</label><input type="number" id="clPrice" value="32000" step="500"></div>
+          <div class="field"><label>Down payment</label><input type="number" id="clDown" value="4000" step="500"></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label>Trade-in value</label><input type="number" id="clTradeIn" value="0" step="500"></div>
+          <div class="field"><label>Sales tax rate (%)</label><input type="number" id="clTaxRate" value="7" step="0.1"></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label>Annual interest rate (%)</label><input type="number" id="clRate" value="6.5" step="0.01"></div>
+          <div class="field"><label>Loan term (months)</label>
+            <select id="clTerm">
+              <option value="36">36 months</option>
+              <option value="48">48 months</option>
+              <option value="60" selected>60 months</option>
+              <option value="72">72 months</option>
+              <option value="84">84 months</option>
+            </select>
+          </div>
+        </div>
       </div>
       <div class="readout">
-        <div class="r-row"><span class="r-label">170 cm equals</span><span class="r-value" id="ctiResult">66.93 in</span></div>
+        <div class="r-row"><span class="r-label">Amount financed</span><span class="r-value" id="clLoanAmt">0</span></div>
+        <div class="r-row"><span class="r-label">Monthly payment</span><span class="r-value" id="clPayment">0</span></div>
+        <div class="r-row"><span class="r-label">Total interest</span><span class="r-sub" id="clTotalInterest">0</span></div>
+        <div class="r-row"><span class="r-label">Total cost of loan</span><span class="r-sub" id="clTotalCost">0</span></div>
       </div>
-      <div class="field-warning" id="ctiWarning"></div>
+      <div class="field-warning" id="clWarning"></div>
     </div>
   </section>
 
-  <section class="tool" id="reference">
-    <div class="tool-head"><span class="tool-num">//</span><div><h2>Quick reference</h2><p class="tool-sub">Common centimeter-to-inch conversions.</p></div></div>
+  <section style="padding:32px 0;border-bottom:1px solid var(--paper-line);">
+    <h2 style="font-family:'Space Grotesk',sans-serif;font-size:20px;margin:0 0 6px;">Amortization schedule</h2>
+    <p style="color:var(--graphite);font-size:13px;margin:0 0 16px;">How each year's payments split between principal and interest, and how the balance falls.</p>
+    <div id="clChart" style="margin-bottom:16px;"></div>
     <div class="table-scroll">
-      <table class="bracket-table" id="ctiTable">
-        <thead><tr><th>Centimeters</th><th>Inches</th></tr></thead>
-        <tbody></tbody>
-      </table>
+      <table class="bracket-table" style="margin-top:0;"><thead><tr><th>Year</th><th>Principal paid</th><th>Interest paid</th><th>Balance</th></tr></thead><tbody id="clScheduleBody"></tbody></table>
     </div>
+    <button type="button" class="ghost" id="clCsvBtn" style="margin-top:14px;font-size:12px;padding:8px 14px;">Download schedule (CSV)</button>
   </section>
 
   <section class="article">
-    <h3>How do I convert cm to inches?</h3>
-    <p>Divide the centimeter value by 2.54: <strong>inches = cm ÷ 2.54</strong>. 1 inch is defined as exactly 2.54 cm by international agreement, so this conversion is exact, not an approximation.</p>
-    <h3>How do I convert inches to cm?</h3>
-    <p>Multiply the inch value by 2.54: <strong>cm = inches × 2.54</strong>. For example, 10 inches × 2.54 = 25.4 cm.</p>
-    <h3>Where does 2.54 come from?</h3>
-    <p>The international inch was formally standardized as exactly 2.54 cm in 1959 by agreement between the US, UK, and other Commonwealth countries, replacing several slightly different national definitions that existed before then.</p>
-    <p><strong>Worked example:</strong> a 175 cm height converts to 175 ÷ 2.54 ≈ 68.9 inches (5 ft 8.9 in). Need feet and inches specifically, or other length/weight/volume units? Try the full <a href="unit-converter.html">Unit Converter</a>.</p>
+    <h3>How does the trade-in value affect the loan?</h3>
+    <p>Your trade-in reduces the amount you need to finance, just like a down payment. In most US states, it also reduces the taxable amount — sales tax applies to (price − trade-in), not the full price, which is why the trade-in appears twice in the math: once reducing the loan amount directly, and once reducing the tax added on top.</p>
+    <h3>Why is sales tax financed into the loan?</h3>
+    <p>Most buyers roll sales tax into the loan rather than paying it upfront in cash, so this calculator adds it to the financed amount by default. If you're paying tax separately in cash, set the sales tax rate to 0 here and account for it outside the calculator.</p>
+    <h3>What loan terms are typical for cars?</h3>
+    <p>36, 48, 60, and 72 months are the most common terms in the US, with 72 and even 84 months increasingly common as vehicle prices rise. Longer terms lower the monthly payment but increase total interest paid substantially and raise the risk of owing more than the car is worth ("upside down") for longer, since cars depreciate faster than a long loan pays down principal.</p>
+    <p><strong>Worked example:</strong> a $32,000 car with a $4,000 down payment, no trade-in, and 7% sales tax has a taxable amount of $32,000, adding $2,240 in tax — financing $30,240 at 6.5% over 60 months costs roughly $592/month and about $5,261 in total interest.</p>
   </section>
 
   <!-- TB:MORETOOLS:START -->
@@ -176,7 +218,6 @@
     <ul>
       <li><a href="currency-converter.html">Currency Converter</a></li>
       <li><a href="loan-calculator.html">Loan / EMI Calculator</a></li>
-      <li><a href="car-loan-calculator.html">Car Loan Calculator</a></li>
       <li><a href="mortgage-calculator.html">Mortgage Calculator</a></li>
       <li><a href="refinance-calculator.html">Refinance Calculator</a></li>
       <li><a href="rent-vs-buy-calculator.html">Rent vs. Buy Calculator</a></li>
@@ -209,6 +250,7 @@
       <li><a href="days-calculator.html">Days Between Dates</a></li>
       <li><a href="unit-converter.html">Unit Converter</a></li>
       <li><a href="week-number-calculator.html">Week Number Calculator</a></li>
+      <li><a href="cm-to-inches.html">CM to Inches</a></li>
       <li><a href="kg-to-pounds.html">KG to Pounds</a></li>
       <li><a href="celsius-to-fahrenheit.html">Celsius to Fahrenheit</a></li>
       <li><a href="password-generator.html">Password Generator</a></li>

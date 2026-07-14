@@ -2972,6 +2972,331 @@ const payrollTaxLabels = { us:'Social Security + Medicare', in:'EPF contribution
   calc();
 })();
 
+// ---- Net Worth Calculator ----
+(function(){
+  const assetsWrap = document.getElementById('nwAssets');
+  if(!assetsWrap) return;
+  const liabWrap = document.getElementById('nwLiabilities');
+  const curSel = document.getElementById('nwCur');
+  function money(n){
+    const cur = curSel ? curSel.value : '$';
+    return (n<0?'-':'')+cur+Math.round(Math.abs(n)).toLocaleString();
+  }
+  function addRow(wrap, name, amount){
+    const row = document.createElement('div');
+    row.className = 'row2';
+    row.style.marginBottom = '10px';
+    row.innerHTML = `
+      <div class="field"><label>Item</label><input type="text" class="nwName" placeholder="e.g. Savings account" value="${name||''}"></div>
+      <div class="field"><label>Value</label><input type="number" class="nwAmount" value="${amount||0}" step="100"></div>
+    `;
+    const removeBtn = document.createElement('button');
+    removeBtn.type = 'button';
+    removeBtn.className = 'ghost';
+    removeBtn.textContent = 'Remove';
+    removeBtn.style.marginBottom = '14px';
+    removeBtn.addEventListener('click', ()=>{ row.remove(); calc(); });
+    row.appendChild(removeBtn);
+    wrap.appendChild(row);
+    row.querySelectorAll('input').forEach(inp=>inp.addEventListener('input', calc));
+  }
+  function sumWrap(wrap){
+    let total = 0;
+    wrap.querySelectorAll('.row2').forEach(row=>{
+      total += parseFloat(row.querySelector('.nwAmount').value)||0;
+    });
+    return total;
+  }
+  function calc(){
+    const assets = sumWrap(assetsWrap);
+    const liabilities = sumWrap(liabWrap);
+    document.getElementById('nwTotalAssets').textContent = money(assets);
+    document.getElementById('nwTotalLiabilities').textContent = money(liabilities);
+    document.getElementById('nwNetWorth').textContent = money(assets-liabilities);
+  }
+  document.getElementById('nwAddAsset').addEventListener('click', ()=>addRow(assetsWrap));
+  document.getElementById('nwAddLiability').addEventListener('click', ()=>addRow(liabWrap));
+  if(curSel) curSel.addEventListener('change', calc);
+
+  addRow(assetsWrap, 'Cash & savings', 10000);
+  addRow(assetsWrap, 'Investments', 20000);
+  addRow(liabWrap, 'Credit card debt', 2000);
+  addRow(liabWrap, 'Student loan', 15000);
+  calc();
+})();
+
+// ---- Savings Goal Calculator ----
+(function(){
+  const tabs = document.getElementById('sgTabs');
+  if(!tabs) return;
+  tabs.addEventListener('click', (e)=>{
+    const btn = e.target.closest('button');
+    if(!btn) return;
+    tabs.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('#savingsgoal .tab-panel').forEach(p=>p.classList.remove('active'));
+    document.getElementById('panel-sg-'+btn.dataset.tab).classList.add('active');
+  });
+  const curSel = document.getElementById('sgCur');
+  function money(n){
+    const cur = curSel ? curSel.value : '$';
+    return cur+Math.round(n).toLocaleString();
+  }
+
+  function calcTime(){
+    const goal = parseFloat(document.getElementById('sgtGoal').value)||0;
+    const current = parseFloat(document.getElementById('sgtCurrent').value)||0;
+    const monthly = parseFloat(document.getElementById('sgtMonthly').value)||0;
+    const annual = parseFloat(document.getElementById('sgtRate').value)||0;
+    const r = annual/100/12;
+    let balance = current, months = 0;
+    const maxMonths = 1200;
+    const warnEl = document.getElementById('sgtWarning');
+    const resultEl = document.getElementById('sgtResult');
+    if(balance>=goal){
+      resultEl.textContent = 'Goal already met';
+      if(warnEl){ warnEl.textContent=''; warnEl.classList.remove('show'); }
+      return;
+    }
+    while(balance<goal && months<maxMonths){
+      balance = balance*(1+r) + monthly;
+      months++;
+    }
+    if(balance<goal){
+      resultEl.textContent = 'Not reachable';
+      if(warnEl){ warnEl.textContent = 'At this contribution and rate, the goal is never reached within 100 years — increase your monthly contribution or return rate.'; warnEl.classList.add('show'); }
+    } else {
+      const yrs = Math.floor(months/12), rem = months%12;
+      resultEl.textContent = (yrs>0 ? yrs+'y ' : '')+rem+'mo';
+      if(warnEl){ warnEl.textContent=''; warnEl.classList.remove('show'); }
+    }
+  }
+  function calcMonthly(){
+    const goal = parseFloat(document.getElementById('sgmGoal').value)||0;
+    const current = parseFloat(document.getElementById('sgmCurrent').value)||0;
+    const years = parseFloat(document.getElementById('sgmYears').value)||0;
+    const annual = parseFloat(document.getElementById('sgmRate').value)||0;
+    const n = Math.round(years*12);
+    const r = annual/100/12;
+    const warnEl = document.getElementById('sgmWarning');
+    if(years<=0){
+      if(warnEl){ warnEl.textContent = 'Enter a timeframe greater than zero.'; warnEl.classList.add('show'); }
+      document.getElementById('sgmResult').textContent = '—';
+      return;
+    }
+    if(warnEl){ warnEl.textContent=''; warnEl.classList.remove('show'); }
+    const futureCurrent = current*Math.pow(1+r, n);
+    const remaining = goal-futureCurrent;
+    let monthly;
+    if(remaining<=0) monthly = 0;
+    else if(r===0) monthly = remaining/n;
+    else monthly = remaining / (((Math.pow(1+r,n)-1)/r)*(1+r));
+    document.getElementById('sgmResult').textContent = money(Math.max(monthly,0));
+  }
+  ['sgtGoal','sgtCurrent','sgtMonthly','sgtRate'].forEach(id=>{
+    const e = document.getElementById(id);
+    if(e) e.addEventListener('input', calcTime);
+  });
+  ['sgmGoal','sgmCurrent','sgmYears','sgmRate'].forEach(id=>{
+    const e = document.getElementById(id);
+    if(e) e.addEventListener('input', calcMonthly);
+  });
+  if(curSel) curSel.addEventListener('change', ()=>{ calcTime(); calcMonthly(); });
+  calcTime();
+  calcMonthly();
+})();
+
+// ---- Rent vs Buy Calculator ----
+(function(){
+  const priceEl = document.getElementById('rvbHomePrice');
+  if(!priceEl) return;
+  const curSel = document.getElementById('rvbCur');
+  function money(n){
+    const cur = curSel ? curSel.value : '$';
+    return (n<0?'-':'')+cur+Math.round(Math.abs(n)).toLocaleString();
+  }
+
+  function calc(){
+    const price = parseFloat(priceEl.value)||0;
+    const down = parseFloat(document.getElementById('rvbDown').value)||0;
+    const rate = parseFloat(document.getElementById('rvbRate').value)||0;
+    const termYears = parseFloat(document.getElementById('rvbTerm').value)||30;
+    const taxRate = parseFloat(document.getElementById('rvbTaxRate').value)||0;
+    const insurance = parseFloat(document.getElementById('rvbInsurance').value)||0;
+    const maintRate = parseFloat(document.getElementById('rvbMaint').value)||0;
+    const hoa = parseFloat(document.getElementById('rvbHoa').value)||0;
+    const appreciation = parseFloat(document.getElementById('rvbAppreciation').value)||0;
+    const closingPct = parseFloat(document.getElementById('rvbClosingPct').value)||0;
+    const sellingPct = parseFloat(document.getElementById('rvbSellingPct').value)||0;
+    const rent = parseFloat(document.getElementById('rvbRent').value)||0;
+    const rentIncrease = parseFloat(document.getElementById('rvbRentIncrease').value)||0;
+    const investReturn = parseFloat(document.getElementById('rvbInvestReturn').value)||0;
+    const years = parseFloat(document.getElementById('rvbYears').value)||7;
+
+    const loanAmt = Math.max(price-down, 0);
+    const closingCosts = price*closingPct/100;
+    const termMonths = Math.round(termYears*12);
+    const amort = buildAmortization(loanAmt, rate, termMonths, 0);
+    const monthlyPI = amort.pay;
+    const monthlyExtras = (price*taxRate/100)/12 + insurance/12 + (price*maintRate/100)/12 + hoa;
+    const monthlyBuyCost = monthlyPI + monthlyExtras;
+
+    function balanceAtYear(y){
+      if(y<=0) return loanAmt;
+      if(y>=termYears) return 0;
+      const row = amort.years.find(r=>r.year===Math.round(y));
+      return row ? row.balance : 0;
+    }
+    function buyNetCost(y){
+      const homeValue = price*Math.pow(1+appreciation/100, y);
+      const balance = balanceAtYear(y);
+      const sellingCosts = homeValue*sellingPct/100;
+      const equity = homeValue - balance - sellingCosts;
+      const totalPaid = down + closingCosts + monthlyBuyCost*12*y;
+      return totalPaid - equity;
+    }
+    function rentNetCost(y){
+      let totalRent = 0;
+      for(let i=0;i<y;i++){
+        totalRent += rent*Math.pow(1+rentIncrease/100, i)*12;
+      }
+      const investPrincipal = down+closingCosts;
+      const investFV = investPrincipal*Math.pow(1+investReturn/100, y);
+      const investGain = investFV-investPrincipal;
+      return totalRent - investGain;
+    }
+
+    const buyCost = buyNetCost(years);
+    const rentCost = rentNetCost(years);
+    document.getElementById('rvbBuyCost').textContent = money(buyCost);
+    document.getElementById('rvbRentCost').textContent = money(rentCost);
+    document.getElementById('rvbMonthlyBuy').textContent = money(monthlyBuyCost);
+    document.getElementById('rvbMonthlyRent').textContent = money(rent);
+    const diff = rentCost-buyCost;
+    const verdictEl = document.getElementById('rvbVerdict');
+    if(verdictEl){
+      verdictEl.textContent = diff>0
+        ? `Buying looks cheaper by ${money(Math.abs(diff))} over ${years} years, on these numbers.`
+        : `Renting looks cheaper by ${money(Math.abs(diff))} over ${years} years, on these numbers.`;
+    }
+
+    let breakEven = null;
+    for(let y=1;y<=30;y++){
+      if(buyNetCost(y) <= rentNetCost(y)){ breakEven = y; break; }
+    }
+    const breakEvenEl = document.getElementById('rvbBreakEven');
+    if(breakEvenEl) breakEvenEl.textContent = breakEven ? (breakEven+' years') : 'Not within 30 years at these numbers';
+  }
+  ['rvbHomePrice','rvbDown','rvbRate','rvbTerm','rvbTaxRate','rvbInsurance','rvbMaint','rvbHoa','rvbAppreciation','rvbClosingPct','rvbSellingPct','rvbRent','rvbRentIncrease','rvbInvestReturn','rvbYears','rvbCur'].forEach(id=>{
+    const e = document.getElementById(id);
+    if(e){ e.addEventListener('input', calc); e.addEventListener('change', calc); }
+  });
+  calc();
+})();
+
+// ---- Car Loan Calculator ----
+(function(){
+  const priceEl = document.getElementById('clPrice');
+  if(!priceEl) return;
+  const curSel = document.getElementById('clCur');
+  function money(n){
+    const cur = curSel ? curSel.value : '$';
+    return cur+Math.round(n).toLocaleString();
+  }
+  function setWarning(id, msg){
+    const w = document.getElementById(id);
+    if(!w) return;
+    if(msg){ w.textContent = msg; w.classList.add('show'); } else { w.textContent=''; w.classList.remove('show'); }
+  }
+  let lastYears = [], lastCur = '$';
+  function calc(){
+    const price = parseFloat(priceEl.value)||0;
+    const down = parseFloat(document.getElementById('clDown').value)||0;
+    const tradeIn = parseFloat(document.getElementById('clTradeIn').value)||0;
+    const taxRate = parseFloat(document.getElementById('clTaxRate').value)||0;
+    const rate = parseFloat(document.getElementById('clRate').value)||0;
+    const termMonths = parseFloat(document.getElementById('clTerm').value)||60;
+
+    const taxableAmt = Math.max(price-tradeIn, 0);
+    const tax = taxableAmt*taxRate/100;
+    const loanAmt = Math.max(price-down-tradeIn+tax, 0);
+
+    setWarning('clWarning', loanAmt<=0 ? 'Down payment plus trade-in covers the full price — no loan needed.' : null);
+
+    const amort = buildAmortization(loanAmt, rate, termMonths, 0);
+    document.getElementById('clLoanAmt').textContent = money(loanAmt);
+    document.getElementById('clPayment').textContent = money(amort.pay);
+    document.getElementById('clTotalInterest').textContent = money(amort.totalInterest);
+    document.getElementById('clTotalCost').textContent = money(loanAmt+amort.totalInterest);
+
+    lastYears = amort.years;
+    lastCur = curSel ? curSel.value : '$';
+    renderAmortChart('clChart', amort.years, loanAmt, lastCur);
+    renderAmortTable('clScheduleBody', amort.years, lastCur);
+  }
+  ['clPrice','clDown','clTradeIn','clTaxRate','clRate','clTerm','clCur'].forEach(id=>{
+    const e = document.getElementById(id);
+    if(e){ e.addEventListener('input', calc); e.addEventListener('change', calc); }
+  });
+  const csvBtn = document.getElementById('clCsvBtn');
+  if(csvBtn) csvBtn.addEventListener('click', ()=>downloadCSV('car-loan-amortization.csv', amortizationToCSV(lastYears, lastCur)));
+  calc();
+})();
+
+// ---- Retirement Calculator ----
+(function(){
+  const ageEl = document.getElementById('retCurrentAge');
+  if(!ageEl) return;
+  const curSel = document.getElementById('retCur');
+  function money(n){
+    const cur = curSel ? curSel.value : '$';
+    return cur+Math.round(n).toLocaleString();
+  }
+  function calc(){
+    const currentAge = parseFloat(ageEl.value)||0;
+    const retireAge = parseFloat(document.getElementById('retRetireAge').value)||0;
+    const current = parseFloat(document.getElementById('retCurrentSavings').value)||0;
+    const monthly = parseFloat(document.getElementById('retMonthly').value)||0;
+    const matchPct = parseFloat(document.getElementById('retMatchPct').value)||0;
+    const matchCap = parseFloat(document.getElementById('retMatchCap').value)||0;
+    const annual = parseFloat(document.getElementById('retRate').value)||0;
+    const infl = parseFloat(document.getElementById('retInflation').value)||0;
+    const withdrawRate = parseFloat(document.getElementById('retWithdrawRate').value)||4;
+
+    const years = Math.max(retireAge-currentAge, 0);
+    const n = Math.round(years*12);
+    const r = annual/100/12;
+    const employerMatch = Math.min(monthly*matchPct/100, matchCap);
+    const totalMonthly = monthly+employerMatch;
+
+    let balance = current, invested = current;
+    const yearRows = [];
+    for(let m=1; m<=n; m++){
+      balance = balance*(1+r) + totalMonthly;
+      invested += totalMonthly;
+      if(m%12===0 || m===n) yearRows.push({year:Math.ceil(m/12), invested, value:balance});
+    }
+    const nominal = balance;
+    const real = years>0 ? nominal/Math.pow(1+infl/100, years) : nominal;
+    const annualIncome = nominal*withdrawRate/100;
+
+    document.getElementById('retNominal').textContent = money(nominal);
+    document.getElementById('retReal').textContent = money(real);
+    document.getElementById('retAnnualIncome').textContent = money(annualIncome);
+    document.getElementById('retMonthlyIncome').textContent = money(annualIncome/12);
+    const matchEl = document.getElementById('retEmployerMatch');
+    if(matchEl) matchEl.textContent = money(employerMatch)+'/mo';
+
+    const body = document.getElementById('retGrowthBody');
+    if(body) body.innerHTML = yearRows.map(r=>`<tr><td>${r.year}</td><td>${money(r.invested)}</td><td>${money(r.value)}</td><td>${money(r.value-r.invested)}</td></tr>`).join('');
+  }
+  ['retCurrentAge','retRetireAge','retCurrentSavings','retMonthly','retMatchPct','retMatchCap','retRate','retInflation','retWithdrawRate','retCur'].forEach(id=>{
+    const e = document.getElementById(id);
+    if(e){ e.addEventListener('input', calc); e.addEventListener('change', calc); }
+  });
+  calc();
+})();
+
 // ---- PWA: register service worker for offline/instant-load support ----
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
