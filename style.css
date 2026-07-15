@@ -824,9 +824,22 @@ body.nav-open .tb-chat-panel{display:none;}
 .tb-embed-mode .tb-chat-panel{display:none !important;}
 .tb-embed-mode .wrap{padding:0 14px;max-width:100%;}
 .tb-embed-mode .tool{padding-top:14px;}
+/* Reserve room for the fixed credit bar below so it never overlaps the
+   calculator's own content when the page is shown at its natural height. */
+.tb-embed-mode{padding-bottom:34px;}
+/* position:fixed (not static/sticky) so the credit bar always renders at
+   the bottom of whatever visible area the embedder's <iframe> shows —
+   sticky only kicks in during scroll, so a host page that sets a short,
+   non-scrolling iframe height would otherwise be able to clip a
+   statically-positioned bar out of view entirely. Fixed pins it to the
+   iframe's own viewport regardless of height or scroll state, so the
+   only way to hide it is to shrink the iframe enough to hide the
+   calculator too — which defeats the point of embedding it. */
 .tb-embed-credit{
+  position:fixed;left:0;right:0;bottom:0;z-index:10;
   display:block;text-align:center;font-family:'JetBrains Mono',monospace;
   font-size:10px;letter-spacing:0.05em;color:var(--graphite);
-  text-decoration:none;padding:10px 0 16px;
+  text-decoration:none;padding:9px 0;
+  background:var(--paper);border-top:1px solid var(--paper-line);
 }
 .tb-embed-credit:hover{color:var(--teal-dark);text-decoration:underline;}

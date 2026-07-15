@@ -5035,7 +5035,7 @@ function amortizationToCSV(years, cur){
     creditBar.href = canonicalUrl;
     creditBar.target = '_top';
     creditBar.rel = 'noopener';
-    creditBar.textContent = 'Powered by TallyBench';
+    creditBar.textContent = 'Powered by TallyBench.com';
     document.body.appendChild(creditBar);
 
     function reportHeight(){
