@@ -1,7 +1,7 @@
 {
   "name": "TallyBench — Everyday Calculators",
   "short_name": "TallyBench",
-  "description": "40 free calculators covering finance (loan, mortgage, refinance, car loan, rent vs. buy, tax, paycheck, retirement, net worth, savings goal, debt payoff, GST/VAT, SIP/investment), health (BMI, calorie/BMR, macros, pregnancy, ovulation), education (GPA, scientific), and everyday math.",
+  "description": "49 free calculators covering finance (loan, mortgage, refinance, car loan, rent vs. buy, tax, paycheck, salary, sales tax, CD, retirement, net worth, savings goal, debt payoff, GST/VAT, SIP/investment), health (BMI, calorie/BMR, macros, pregnancy, ovulation, ideal weight), education (GPA, grade, scientific, fraction, statistics), and everyday math (time, random number).",
   "start_url": "/?source=pwa",
   "scope": "/",
   "display": "standalone",

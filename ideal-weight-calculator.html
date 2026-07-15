@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SIP Calculator — Systematic Investment Plan Returns | TallyBench</title>
-<meta name="description" content="Free SIP calculator: project your mutual fund SIP maturity value with step-up contributions and an inflation-adjusted real value, year by year.">
-<link rel="canonical" href="https://tallybench.com/sip-calculator.html">
+<title>Ideal Weight Calculator — Devine, Robinson, Miller &amp; Hamwi | TallyBench</title>
+<meta name="description" content="Free ideal weight calculator using four medical formulas — Devine, Robinson, Miller, and Hamwi — plus the healthy BMI weight range for your height.">
+<link rel="canonical" href="https://tallybench.com/ideal-weight-calculator.html">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.svg">
@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="TallyBench">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TallyBench">
-<meta property="og:title" content="SIP Calculator — Systematic Investment Plan Returns">
-<meta property="og:description" content="Free SIP calculator: project your mutual fund SIP maturity value with step-up contributions and an inflation-adjusted real value, year by year.">
-<meta property="og:url" content="https://tallybench.com/sip-calculator.html">
+<meta property="og:title" content="Ideal Weight Calculator — Devine, Robinson, Miller &amp; Hamwi">
+<meta property="og:description" content="Four medical ideal-weight formulas side by side, plus the healthy BMI weight range for your height.">
+<meta property="og:url" content="https://tallybench.com/ideal-weight-calculator.html">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="SIP Calculator — Systematic Investment Plan Returns">
-<meta name="twitter:description" content="Free SIP calculator: project your mutual fund SIP maturity value with step-up contributions and an inflation-adjusted real value, year by year.">
+<meta name="twitter:title" content="Ideal Weight Calculator — Devine, Robinson, Miller &amp; Hamwi">
+<meta name="twitter:description" content="Four medical ideal-weight formulas side by side, plus the healthy BMI weight range for your height.">
 <link rel="stylesheet" href="fonts/fonts.css">
 <link rel="stylesheet" href="style.css">
 
@@ -31,34 +31,34 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "How is SIP maturity value calculated?",
+      "name": "Why do the four formulas give different numbers?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "SIP uses the future value of an annuity formula: each monthly investment compounds at the monthly rate for the remaining months, and all installments are summed. Returns are estimates, not guarantees — actual market returns vary and aren't linear."
+        "text": "Devine, Robinson, Miller, and Hamwi were each derived from different population studies at different times, mostly for medical dosing rather than general health guidance. They agree roughly but not exactly — treat the spread between them as the honest uncertainty in any single-number ideal weight, not a sign one is wrong."
       }
     },
     {
       "@type": "Question",
-      "name": "What does the annual step-up field do?",
+      "name": "Which formula should I actually use?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "A step-up SIP increases your monthly contribution by a fixed percentage every 12 months, roughly matching how income tends to grow over time. This produces a noticeably larger maturity value than a flat SIP of the same starting amount."
+        "text": "None of them individually — they were built for clinical drug dosing, not personal health targets. The average of all four, or better, the healthy BMI weight range shown below, is a more honest general-purpose reference than any single formula's exact figure."
       }
     },
     {
       "@type": "Question",
-      "name": "What does the real value figure mean?",
+      "name": "Do these formulas account for muscle mass or body frame?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Maturity value is the nominal future amount; real value discounts that by your expected inflation rate to show what it's actually worth in today's purchasing power."
+        "text": "No — all four are based purely on height and sex, the same limitation BMI has. A muscular or large-framed person will show a lower \"ideal weight\" than what's actually healthy for their build."
       }
     },
     {
       "@type": "Question",
-      "name": "How realistic is a 12% annual return assumption?",
+      "name": "Do these apply to children?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "12% is a commonly used illustrative assumption for equity mutual funds in India based on long-term historical averages, but actual returns vary year to year and aren't guaranteed — treat it as a planning estimate, not a promise."
+        "text": "No — all four formulas were derived from adult populations. A pediatrician's growth chart is the correct tool for a child's healthy weight, not any adult ideal-weight formula."
       }
     }
   ]
@@ -68,7 +68,7 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "SIP Calculator — TallyBench",
+  "name": "Ideal Weight Calculator — TallyBench",
   "applicationCategory": "UtilitiesApplication",
   "operatingSystem": "Any (runs in browser)",
   "offers": {
@@ -76,11 +76,11 @@
     "price": "0",
     "priceCurrency": "USD"
   },
-  "url": "https://tallybench.com/sip-calculator.html"
+  "url": "https://tallybench.com/ideal-weight-calculator.html"
 }
 </script>
 </head>
-<body data-page-cat="finance">
+<body data-page-cat="health">
 
 <header>
   <div class="wrap">
@@ -162,70 +162,70 @@
 <div class="nav-backdrop" id="navBackdrop"></div>
 
 <div class="wrap">
-  <div class="crumb"><a href="index.html">TallyBench</a> / SIP Calculator</div>
+  <div class="crumb"><a href="index.html">TallyBench</a> / Ideal Weight Calculator</div>
 
   <section class="hero">
-    <div class="hero-icon-row cat-finance">
-      <div class="hero-icon"><svg><use href="icons.svg#icon-investment"/></svg></div>
-      <div class="eyebrow">// SIP CALCULATOR</div>
+    <div class="hero-icon-row cat-health">
+      <div class="hero-icon"><svg><use href="icons.svg#icon-bmi"/></svg></div>
+      <div class="eyebrow">// IDEAL WEIGHT CALCULATOR</div>
     </div>
-    <h1>What your monthly SIP grows into.</h1>
-    <p>Enter a monthly investment, expected return, and duration to project your systematic investment plan's maturity value — with optional annual step-up and inflation-adjusted real value.</p>
+    <h1>Four formulas, one honest answer: a range, not a number.</h1>
+    <p>Devine, Robinson, Miller, and Hamwi were all built for clinical dosing, not personal targets — seeing all four side by side (and their average) is more useful than trusting any single one.</p>
   </section>
 
-  <section class="tool" id="sip">
+  <section class="tool" id="idealweight">
     <div class="disclaimer">
-      <strong>Estimate only — not investment advice.</strong> This projects growth using a constant assumed return rate you enter. Real markets fluctuate, and past or assumed returns don't guarantee future performance.
-    </div>
-    <div class="field" style="max-width:260px;margin-bottom:20px;">
-      <label>Currency</label>
-      <select id="dsipCur">
-        <option value="₹" selected>INR (₹)</option>
-        <option value="$">USD ($)</option>
-        <option value="€">EUR (€)</option>
-        <option value="£">GBP (£)</option>
-      </select>
+      <strong>Reference estimate only — not medical advice.</strong> These formulas use only height and sex; they don't account for muscle mass, frame size, or age. Consult a healthcare professional for personalized guidance.
     </div>
     <div class="card">
       <div>
-        <div class="field"><label>Monthly investment</label><input type="number" id="dsipAmt" value="10000" step="100"></div>
-        <div class="field"><label>Expected annual return (%)</label><input type="number" id="dsipRate" value="12" step="0.1"></div>
-        <div class="field"><label>Duration (years)</label><input type="number" id="dsipYears" value="10" min="1"></div>
-        <div class="field"><label>Annual step-up (%, optional)</label><input type="number" id="dsipStepUp" value="0" step="1" min="0"></div>
-        <div class="field"><label>Expected inflation (%, for real-value estimate)</label><input type="number" id="dsipInflation" value="6" step="0.1" min="0"></div>
+        <div class="field"><label>Sex</label>
+          <div class="seg" id="iwSexSeg">
+            <button type="button" class="active" data-sex="male">Male</button>
+            <button type="button" data-sex="female">Female</button>
+          </div>
+        </div>
+        <div class="field"><label>Height unit</label>
+          <select id="iwUnit">
+            <option value="cm">Centimeters</option>
+            <option value="ft">Feet &amp; inches</option>
+          </select>
+        </div>
+        <div class="field" id="iwCmWrap"><label>Height (cm)</label><input type="number" id="iwH" value="170"></div>
+        <div class="row2" id="iwFtWrap" style="display:none;">
+          <div class="field"><label>Height (ft)</label><input type="number" id="iwFt" value="5" min="0"></div>
+          <div class="field"><label>Height (in)</label><input type="number" id="iwIn" value="7" min="0" max="11"></div>
+        </div>
       </div>
       <div class="readout">
-        <div class="r-row"><span class="r-label">Total invested</span><span class="r-value" id="dsipInvested">0</span></div>
-        <div class="r-row"><span class="r-label">Estimated returns</span><span class="r-value" id="dsipReturns">0</span></div>
-        <div class="r-row"><span class="r-label">Maturity value</span><span class="r-value" id="dsipMaturity">0</span></div>
-        <div class="r-row"><span class="r-label">Real value (today's purchasing power)</span><span class="r-sub" id="dsipRealValue">—</span></div>
-        <div class="r-row"><span class="r-label">Final month's investment</span><span class="r-sub" id="dsipFinalMonthAmt">—</span></div>
+        <div class="r-row"><span class="r-label">Devine formula</span><span class="r-value" id="iwDevine">—</span></div>
+        <div class="r-row"><span class="r-label">Robinson formula</span><span class="r-value" id="iwRobinson">—</span></div>
+        <div class="r-row"><span class="r-label">Miller formula</span><span class="r-value" id="iwMiller">—</span></div>
+        <div class="r-row"><span class="r-label">Hamwi formula</span><span class="r-value" id="iwHamwi">—</span></div>
+        <div class="r-row"><span class="r-label">Average of all four</span><span class="r-value" id="iwAvg">—</span></div>
+        <div class="r-row"><span class="r-label">Healthy BMI weight range</span><span class="r-sub" id="iwBmiRange">—</span></div>
       </div>
-      <div class="field-warning" id="dsipWarning"></div>
-    </div>
-  </section>
-
-  <section style="padding:32px 0;border-bottom:1px solid var(--paper-line);">
-    <h2 style="font-family:'Space Grotesk',sans-serif;font-size:20px;margin:0 0 6px;">Year-by-year growth</h2>
-    <p style="color:var(--graphite);font-size:13px;margin:0 0 16px;">Cumulative invested amount vs. projected value, year by year.</p>
-    <div class="table-scroll">
-      <table class="bracket-table" style="margin-top:0;"><thead><tr><th>Year</th><th>Invested (cumulative)</th><th>Value</th><th>Growth</th></tr></thead><tbody id="dsipGrowthBody"></tbody></table>
     </div>
   </section>
 
   <section class="article">
-    <h3>How is SIP maturity value calculated?</h3>
-    <p>SIP uses the future value of an annuity formula: each monthly investment compounds at the monthly rate for the remaining months, and all installments are summed — <strong>maturity = P × [(1+r)^n − 1] / r × (1+r)</strong>, where P is your monthly amount, r the monthly rate, and n the number of months. Returns are estimates, not guarantees.</p>
-    <h3>What does the annual step-up field do?</h3>
-    <p>A step-up SIP increases your monthly contribution by a fixed percentage every 12 months — matching how most people's investable income actually grows. A 10% step-up on a ₹10,000/month SIP means ₹11,000/month in year two, ₹12,100/month in year three, and so on. Because later, larger contributions still get meaningful time to compound, a step-up SIP produces a noticeably larger maturity value than a flat SIP with the same starting amount.</p>
-    <h3>What does the "real value" figure mean?</h3>
-    <p>Maturity value is the nominal future amount; real value discounts that by your expected inflation rate to show what it's actually worth in today's purchasing power: <strong>real value = maturity ÷ (1 + inflation%)^years</strong>. A large maturity number can still lose to inflation if the assumed return barely beats it.</p>
-    <h3>How realistic is a 12% annual return assumption?</h3>
-    <p>12% is a commonly used illustrative assumption for equity mutual funds in India based on long-term historical averages, but actual returns vary year to year and aren't guaranteed. Consider also running the numbers at a more conservative rate (e.g. 8–10%) as a stress test.</p>
-    <p><strong>Worked example:</strong> investing ₹10,000/month for 10 years at an assumed 12% annual return grows to roughly ₹23.2 lakh, of which ₹12 lakh is your own contribution and about ₹11.2 lakh is projected growth.</p>
+    <h3>Why do the four formulas give different numbers?</h3>
+    <p>Devine (1974), Robinson (1983), Miller (1983), and Hamwi (1964) were each derived from different population samples at different times, mostly to standardize medication dosing (many drug doses scale with body weight, and clinicians needed a consistent reference weight rather than a patient's actual, more variable weight). They broadly agree but never match exactly — the spread between them is the honest range of uncertainty in any single "ideal weight" number, not a sign that one formula is more correct than another.</p>
+    <h3>Which formula should I actually use?</h3>
+    <p>Strictly, none of them for personal health goals — they exist for clinical dosing calculations, not as targets to diet toward. The average of all four gives a reasonable single reference point, but the <strong>healthy BMI weight range</strong> shown above is the more defensible general-purpose answer, since it's a range (reflecting that a healthy weight varies by frame and build) rather than a falsely precise single number.</p>
+    <h3>Do these formulas account for muscle mass or body frame?</h3>
+    <p>No — all four use only height and sex, the same core limitation BMI has. A muscular or large-framed person will compute a lower "ideal weight" than is actually healthy for their build, since none of these formulas can distinguish muscle from fat or account for bone structure.</p>
+    <h3>The formulas, explained</h3>
+    <p><strong>Devine:</strong> 50 kg + 2.3 kg per inch over 5 feet (men); 45.5 kg + 2.3 kg per inch over 5 feet (women). The most widely used in clinical practice today, especially for drug dosing.<br>
+    <strong>Robinson:</strong> 52 kg + 1.9 kg per inch over 5 feet (men); 49 kg + 1.7 kg per inch over 5 feet (women). A 1983 refinement of Devine using a larger dataset.<br>
+    <strong>Miller:</strong> 56.2 kg + 1.41 kg per inch over 5 feet (men); 53.1 kg + 1.36 kg per inch over 5 feet (women). Tends to produce the highest estimates of the four.<br>
+    <strong>Hamwi:</strong> 48 kg + 2.7 kg per inch over 5 feet (men); 45.5 kg + 2.2 kg per inch over 5 feet (women). The oldest of the four, originally a quick mental-math rule of thumb for clinicians.</p>
+    <h3>How does this relate to BMI?</h3>
+    <p>BMI works backward from a healthy range (18.5–24.9) to a weight range for your height, which is a fundamentally different approach from these four formulas — it doesn't target one "ideal" number, just a band. Use the <a href="bmi-calculator.html">BMI Calculator</a> for that range-based view, and treat this page's four formulas as clinical reference points for comparison, not competing "correct" answers.</p>
+    <h3>Do these apply to children or very short/tall adults?</h3>
+    <p>No — all four were derived from adult populations of typical height ranges; a pediatrician's growth chart is the correct tool for a child's healthy weight. At the extremes of adult height, all four formulas become less reliable, since none were validated on those populations specifically.</p>
+    <p><strong>Worked example:</strong> a 5'7" (170 cm) man — 7 inches over 5 feet: Devine = 50 + 2.3×7 = 66.1 kg; Robinson = 52 + 1.9×7 = 65.3 kg; Miller = 56.2 + 1.41×7 = 66.1 kg; Hamwi = 48 + 2.7×7 = 66.9 kg. Average ≈ 66.1 kg (145.7 lb) — and his healthy BMI weight range at 170 cm is roughly 53.5–72.0 kg, comfortably containing all four estimates.</p>
   </section>
-
-  <p style="font-size:13px;color:var(--graphite);margin:0 0 24px;">Also want SWP or CAGR projections? Use the combined <a href="investment-calculator.html">Investment Calculator</a>.</p>
 
   <!-- TB:MORETOOLS:START -->
   <nav class="more-tools" aria-label="More calculators">
@@ -241,6 +241,7 @@
       <li><a href="paycheck-calculator.html">Paycheck Calculator</a></li>
       <li><a href="gst-vat-calculator.html">GST / VAT Calculator</a></li>
       <li><a href="investment-calculator.html">Investment Calculator</a></li>
+      <li><a href="sip-calculator.html">SIP Calculator</a></li>
       <li><a href="compound-interest-calculator.html">Compound Interest Calculator</a></li>
       <li><a href="savings-goal-calculator.html">Savings Goal Calculator</a></li>
       <li><a href="retirement-calculator.html">Retirement Calculator</a></li>
@@ -261,7 +262,6 @@
       <li><a href="macro-calculator.html">Macro Calculator</a></li>
       <li><a href="pregnancy-calculator.html">Pregnancy Due Date Calculator</a></li>
       <li><a href="ovulation-calculator.html">Ovulation Calculator</a></li>
-      <li><a href="ideal-weight-calculator.html">Ideal Weight Calculator</a></li>
       <li><a href="gpa-calculator.html">GPA Calculator</a></li>
       <li><a href="grade-calculator.html">Grade Calculator</a></li>
       <li><a href="scientific-calculator.html">Scientific Calculator</a></li>
@@ -284,7 +284,7 @@
   <!-- TB:MORETOOLS:END -->
 
   <footer>
-    <p>TallyBench · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
+    <p>TALLYBENCH · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
   </footer>
 </div>
 

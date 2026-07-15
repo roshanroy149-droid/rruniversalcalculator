@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SIP Calculator — Systematic Investment Plan Returns | TallyBench</title>
-<meta name="description" content="Free SIP calculator: project your mutual fund SIP maturity value with step-up contributions and an inflation-adjusted real value, year by year.">
-<link rel="canonical" href="https://tallybench.com/sip-calculator.html">
+<title>Statistics Calculator — Mean, Median, Mode &amp; Standard Deviation | TallyBench</title>
+<meta name="description" content="Free statistics calculator. Paste a list of numbers to instantly get count, sum, mean, median, mode, range, variance, and standard deviation (population and sample).">
+<link rel="canonical" href="https://tallybench.com/statistics-calculator.html">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.svg">
@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="TallyBench">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TallyBench">
-<meta property="og:title" content="SIP Calculator — Systematic Investment Plan Returns">
-<meta property="og:description" content="Free SIP calculator: project your mutual fund SIP maturity value with step-up contributions and an inflation-adjusted real value, year by year.">
-<meta property="og:url" content="https://tallybench.com/sip-calculator.html">
+<meta property="og:title" content="Statistics Calculator — Mean, Median, Mode &amp; Standard Deviation">
+<meta property="og:description" content="Paste a list of numbers to instantly get count, sum, mean, median, mode, range, variance, and standard deviation.">
+<meta property="og:url" content="https://tallybench.com/statistics-calculator.html">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="SIP Calculator — Systematic Investment Plan Returns">
-<meta name="twitter:description" content="Free SIP calculator: project your mutual fund SIP maturity value with step-up contributions and an inflation-adjusted real value, year by year.">
+<meta name="twitter:title" content="Statistics Calculator — Mean, Median, Mode &amp; Standard Deviation">
+<meta name="twitter:description" content="Paste a list of numbers to instantly get count, sum, mean, median, mode, range, variance, and standard deviation.">
 <link rel="stylesheet" href="fonts/fonts.css">
 <link rel="stylesheet" href="style.css">
 
@@ -31,34 +31,34 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "How is SIP maturity value calculated?",
+      "name": "What's the difference between population and sample standard deviation?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "SIP uses the future value of an annuity formula: each monthly investment compounds at the monthly rate for the remaining months, and all installments are summed. Returns are estimates, not guarantees — actual market returns vary and aren't linear."
+        "text": "Population standard deviation divides by n (the count) and is used when your data is the entire group you care about. Sample standard deviation divides by n−1 and is used when your data is a sample used to estimate a larger population — dividing by the smaller number (n−1) corrects for the fact that a sample tends to underestimate the true population variance."
       }
     },
     {
       "@type": "Question",
-      "name": "What does the annual step-up field do?",
+      "name": "What if there are multiple modes, or no mode at all?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "A step-up SIP increases your monthly contribution by a fixed percentage every 12 months, roughly matching how income tends to grow over time. This produces a noticeably larger maturity value than a flat SIP of the same starting amount."
+        "text": "If two or more values are tied for the most frequent, all of them are shown (a dataset can be bimodal or multimodal). If every value appears exactly once, there is no mode, and this is shown as such rather than picking an arbitrary value."
       }
     },
     {
       "@type": "Question",
-      "name": "What does the real value figure mean?",
+      "name": "How is the median calculated with an even number of values?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Maturity value is the nominal future amount; real value discounts that by your expected inflation rate to show what it's actually worth in today's purchasing power."
+        "text": "Sort the values, then average the two middle numbers. With an odd count, the median is simply the single middle value after sorting."
       }
     },
     {
       "@type": "Question",
-      "name": "How realistic is a 12% annual return assumption?",
+      "name": "What input formats does this accept?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "12% is a commonly used illustrative assumption for equity mutual funds in India based on long-term historical averages, but actual returns vary year to year and aren't guaranteed — treat it as a planning estimate, not a promise."
+        "text": "Numbers separated by commas, spaces, or line breaks — or any mix of the three. Non-numeric text is ignored automatically."
       }
     }
   ]
@@ -68,7 +68,7 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "SIP Calculator — TallyBench",
+  "name": "Statistics Calculator — TallyBench",
   "applicationCategory": "UtilitiesApplication",
   "operatingSystem": "Any (runs in browser)",
   "offers": {
@@ -76,11 +76,11 @@
     "price": "0",
     "priceCurrency": "USD"
   },
-  "url": "https://tallybench.com/sip-calculator.html"
+  "url": "https://tallybench.com/statistics-calculator.html"
 }
 </script>
 </head>
-<body data-page-cat="finance">
+<body data-page-cat="education">
 
 <header>
   <div class="wrap">
@@ -162,70 +162,53 @@
 <div class="nav-backdrop" id="navBackdrop"></div>
 
 <div class="wrap">
-  <div class="crumb"><a href="index.html">TallyBench</a> / SIP Calculator</div>
+  <div class="crumb"><a href="index.html">TallyBench</a> / Statistics Calculator</div>
 
   <section class="hero">
-    <div class="hero-icon-row cat-finance">
-      <div class="hero-icon"><svg><use href="icons.svg#icon-investment"/></svg></div>
-      <div class="eyebrow">// SIP CALCULATOR</div>
+    <div class="hero-icon-row cat-education">
+      <div class="hero-icon"><svg><use href="icons.svg#icon-scientific"/></svg></div>
+      <div class="eyebrow">// STATISTICS CALCULATOR</div>
     </div>
-    <h1>What your monthly SIP grows into.</h1>
-    <p>Enter a monthly investment, expected return, and duration to project your systematic investment plan's maturity value — with optional annual step-up and inflation-adjusted real value.</p>
+    <h1>Paste your numbers, get every basic statistic at once.</h1>
+    <p>Comma, space, or line-separated — enter any list of numbers to get count, sum, mean, median, mode, range, variance, and standard deviation instantly.</p>
   </section>
 
-  <section class="tool" id="sip">
-    <div class="disclaimer">
-      <strong>Estimate only — not investment advice.</strong> This projects growth using a constant assumed return rate you enter. Real markets fluctuate, and past or assumed returns don't guarantee future performance.
-    </div>
-    <div class="field" style="max-width:260px;margin-bottom:20px;">
-      <label>Currency</label>
-      <select id="dsipCur">
-        <option value="₹" selected>INR (₹)</option>
-        <option value="$">USD ($)</option>
-        <option value="€">EUR (€)</option>
-        <option value="£">GBP (£)</option>
-      </select>
-    </div>
-    <div class="card">
+  <section class="tool" id="stats">
+    <div class="card" style="grid-template-columns:1fr;">
       <div>
-        <div class="field"><label>Monthly investment</label><input type="number" id="dsipAmt" value="10000" step="100"></div>
-        <div class="field"><label>Expected annual return (%)</label><input type="number" id="dsipRate" value="12" step="0.1"></div>
-        <div class="field"><label>Duration (years)</label><input type="number" id="dsipYears" value="10" min="1"></div>
-        <div class="field"><label>Annual step-up (%, optional)</label><input type="number" id="dsipStepUp" value="0" step="1" min="0"></div>
-        <div class="field"><label>Expected inflation (%, for real-value estimate)</label><input type="number" id="dsipInflation" value="6" step="0.1" min="0"></div>
+        <div class="field"><label>Numbers (comma, space, or line separated)</label>
+          <textarea id="statInput" rows="5">4, 8, 6, 5, 3, 9, 8, 7, 2, 8</textarea>
+        </div>
       </div>
       <div class="readout">
-        <div class="r-row"><span class="r-label">Total invested</span><span class="r-value" id="dsipInvested">0</span></div>
-        <div class="r-row"><span class="r-label">Estimated returns</span><span class="r-value" id="dsipReturns">0</span></div>
-        <div class="r-row"><span class="r-label">Maturity value</span><span class="r-value" id="dsipMaturity">0</span></div>
-        <div class="r-row"><span class="r-label">Real value (today's purchasing power)</span><span class="r-sub" id="dsipRealValue">—</span></div>
-        <div class="r-row"><span class="r-label">Final month's investment</span><span class="r-sub" id="dsipFinalMonthAmt">—</span></div>
+        <div class="r-row"><span class="r-label">Count</span><span class="r-value" id="statCount">0</span></div>
+        <div class="r-row"><span class="r-label">Sum</span><span class="r-value" id="statSum">0</span></div>
+        <div class="r-row"><span class="r-label">Mean (average)</span><span class="r-value" id="statMean">0</span></div>
+        <div class="r-row"><span class="r-label">Median</span><span class="r-value" id="statMedian">0</span></div>
+        <div class="r-row"><span class="r-label">Mode</span><span class="r-value" id="statMode">—</span></div>
+        <div class="r-row"><span class="r-label">Min / Max</span><span class="r-sub" id="statMinMax">—</span></div>
+        <div class="r-row"><span class="r-label">Range</span><span class="r-value" id="statRange">0</span></div>
+        <div class="r-row"><span class="r-label">Variance (population / sample)</span><span class="r-sub" id="statVariance">—</span></div>
+        <div class="r-row"><span class="r-label">Standard deviation (population / sample)</span><span class="r-sub" id="statStdDev">—</span></div>
       </div>
-      <div class="field-warning" id="dsipWarning"></div>
-    </div>
-  </section>
-
-  <section style="padding:32px 0;border-bottom:1px solid var(--paper-line);">
-    <h2 style="font-family:'Space Grotesk',sans-serif;font-size:20px;margin:0 0 6px;">Year-by-year growth</h2>
-    <p style="color:var(--graphite);font-size:13px;margin:0 0 16px;">Cumulative invested amount vs. projected value, year by year.</p>
-    <div class="table-scroll">
-      <table class="bracket-table" style="margin-top:0;"><thead><tr><th>Year</th><th>Invested (cumulative)</th><th>Value</th><th>Growth</th></tr></thead><tbody id="dsipGrowthBody"></tbody></table>
     </div>
   </section>
 
   <section class="article">
-    <h3>How is SIP maturity value calculated?</h3>
-    <p>SIP uses the future value of an annuity formula: each monthly investment compounds at the monthly rate for the remaining months, and all installments are summed — <strong>maturity = P × [(1+r)^n − 1] / r × (1+r)</strong>, where P is your monthly amount, r the monthly rate, and n the number of months. Returns are estimates, not guarantees.</p>
-    <h3>What does the annual step-up field do?</h3>
-    <p>A step-up SIP increases your monthly contribution by a fixed percentage every 12 months — matching how most people's investable income actually grows. A 10% step-up on a ₹10,000/month SIP means ₹11,000/month in year two, ₹12,100/month in year three, and so on. Because later, larger contributions still get meaningful time to compound, a step-up SIP produces a noticeably larger maturity value than a flat SIP with the same starting amount.</p>
-    <h3>What does the "real value" figure mean?</h3>
-    <p>Maturity value is the nominal future amount; real value discounts that by your expected inflation rate to show what it's actually worth in today's purchasing power: <strong>real value = maturity ÷ (1 + inflation%)^years</strong>. A large maturity number can still lose to inflation if the assumed return barely beats it.</p>
-    <h3>How realistic is a 12% annual return assumption?</h3>
-    <p>12% is a commonly used illustrative assumption for equity mutual funds in India based on long-term historical averages, but actual returns vary year to year and aren't guaranteed. Consider also running the numbers at a more conservative rate (e.g. 8–10%) as a stress test.</p>
-    <p><strong>Worked example:</strong> investing ₹10,000/month for 10 years at an assumed 12% annual return grows to roughly ₹23.2 lakh, of which ₹12 lakh is your own contribution and about ₹11.2 lakh is projected growth.</p>
+    <h3>What's the difference between population and sample standard deviation?</h3>
+    <p>Population standard deviation treats your data as the <em>entire</em> group you care about, and divides the sum of squared differences by n (the count): <strong>σ = √(Σ(x − mean)² ÷ n)</strong>. Sample standard deviation treats your data as a sample drawn from a larger population you're trying to estimate, and divides by n−1 instead: <strong>s = √(Σ(x − mean)² ÷ (n−1))</strong>. Dividing by the smaller number (n−1) — known as Bessel's correction — makes the sample figure slightly larger, correcting for the fact that a sample's own mean is closer to its own data points than the true population mean would be, which would otherwise make sample variance systematically underestimate the truth.</p>
+    <h3>Which one should I use?</h3>
+    <p>If you have every value that exists (every student in one specific class, every day in a specific month), use population statistics. If your numbers are a sample meant to represent a bigger group you haven't fully measured (a survey sample, a handful of test batches, a subset of transactions), use sample statistics. When in doubt, sample statistics is the more common and conservative choice in research and quality-control contexts.</p>
+    <h3>What if there are multiple modes, or no mode at all?</h3>
+    <p>If two or more values tie for the highest frequency, this calculator lists all of them — a dataset can genuinely be bimodal or multimodal, and picking just one would be misleading. If every value in the list appears exactly once, there's no meaningful mode, and that's shown explicitly rather than defaulting to an arbitrary number.</p>
+    <h3>How is the median calculated?</h3>
+    <p>Sort all values from smallest to largest. With an odd count, the median is the single middle value. With an even count, it's the average of the two middle values. Unlike the mean, the median isn't pulled around by extreme outliers — a useful cross-check whenever the mean and median differ substantially, which usually signals a skewed distribution.</p>
+    <h3>What does a large standard deviation actually tell you?</h3>
+    <p>Standard deviation measures how spread out values are around the mean — a small standard deviation means most values cluster close to the average, while a large one means values are widely scattered. Two datasets can have the identical mean but very different standard deviations, which is exactly why reporting an average alone (without any measure of spread) can be misleading.</p>
+    <h3>What input formats does this accept?</h3>
+    <p>Numbers separated by commas, spaces, line breaks, or any mix — paste directly from a spreadsheet column or a comma-separated list and it parses correctly either way. Non-numeric text is simply ignored.</p>
+    <p><strong>Worked example:</strong> the list 4, 8, 6, 5, 3, 9, 8, 7, 2, 8 has count 10, sum 60, mean 6.0, sorted order 2,3,4,5,6,7,8,8,8,9 giving a median of (6+7)/2 = 6.5, a mode of 8 (appears three times), a range of 9−2=7, a population standard deviation of about 2.28, and a slightly larger sample standard deviation of about 2.40.</p>
   </section>
-
-  <p style="font-size:13px;color:var(--graphite);margin:0 0 24px;">Also want SWP or CAGR projections? Use the combined <a href="investment-calculator.html">Investment Calculator</a>.</p>
 
   <!-- TB:MORETOOLS:START -->
   <nav class="more-tools" aria-label="More calculators">
@@ -241,6 +224,7 @@
       <li><a href="paycheck-calculator.html">Paycheck Calculator</a></li>
       <li><a href="gst-vat-calculator.html">GST / VAT Calculator</a></li>
       <li><a href="investment-calculator.html">Investment Calculator</a></li>
+      <li><a href="sip-calculator.html">SIP Calculator</a></li>
       <li><a href="compound-interest-calculator.html">Compound Interest Calculator</a></li>
       <li><a href="savings-goal-calculator.html">Savings Goal Calculator</a></li>
       <li><a href="retirement-calculator.html">Retirement Calculator</a></li>
@@ -266,7 +250,6 @@
       <li><a href="grade-calculator.html">Grade Calculator</a></li>
       <li><a href="scientific-calculator.html">Scientific Calculator</a></li>
       <li><a href="fraction-calculator.html">Fraction Calculator</a></li>
-      <li><a href="statistics-calculator.html">Statistics Calculator</a></li>
       <li><a href="percentage-calculator.html">Percentage Calculator</a></li>
       <li><a href="age-calculator.html">Age Calculator</a></li>
       <li><a href="days-calculator.html">Days Between Dates</a></li>
@@ -284,7 +267,7 @@
   <!-- TB:MORETOOLS:END -->
 
   <footer>
-    <p>TallyBench · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
+    <p>TALLYBENCH · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
   </footer>
 </div>
 

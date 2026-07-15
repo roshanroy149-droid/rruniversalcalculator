@@ -4131,3 +4131,578 @@ function amortizationToCSV(years, cur){
   pageSegs.forEach(({seg}) => seg.addEventListener('click', () => setTimeout(syncToURL, 0)));
   pageTabs.forEach(({tabs}) => tabs.addEventListener('click', () => setTimeout(syncToURL, 0)));
 })();
+
+// ---- Salary calculator ----
+(function(){
+  if(!document.getElementById('salAmt')) return;
+  function money(n){
+    const cur = document.getElementById('salCur').value;
+    return cur+n.toLocaleString(undefined,{maximumFractionDigits:2});
+  }
+  function calc(){
+    const amt = parseFloat(document.getElementById('salAmt').value)||0;
+    const period = document.getElementById('salPeriod').value;
+    const hours = parseFloat(document.getElementById('salHours').value)||0;
+    const days = parseFloat(document.getElementById('salDays').value)||0;
+    const weeks = parseFloat(document.getElementById('salWeeks').value)||0;
+
+    let annual = 0;
+    if(period==='hour') annual = amt*hours*weeks;
+    else if(period==='day') annual = amt*days*weeks;
+    else if(period==='week') annual = amt*weeks;
+    else if(period==='biweek') annual = amt*(weeks/2);
+    else if(period==='semimonth') annual = amt*24;
+    else if(period==='month') annual = amt*12;
+    else if(period==='year') annual = amt;
+
+    const hourly = (hours*weeks)>0 ? annual/(hours*weeks) : 0;
+    const daily = (days*weeks)>0 ? annual/(days*weeks) : 0;
+    const weekly = weeks>0 ? annual/weeks : 0;
+    const biweekly = weeks>0 ? annual/(weeks/2) : 0;
+    const semimonth = annual/24;
+    const monthly = annual/12;
+
+    document.getElementById('salHourly').textContent = money(hourly);
+    document.getElementById('salDaily').textContent = money(daily);
+    document.getElementById('salWeekly').textContent = money(weekly);
+    document.getElementById('salBiweekly').textContent = money(biweekly);
+    document.getElementById('salSemimonth').textContent = money(semimonth);
+    document.getElementById('salMonthly').textContent = money(monthly);
+    document.getElementById('salAnnual').textContent = money(annual);
+  }
+  ['salAmt','salCur','salPeriod','salHours','salDays','salWeeks'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+  calc();
+})();
+
+// ---- Sales tax calculator ----
+(function(){
+  if(!document.getElementById('stAmt')) return;
+  const seg = document.getElementById('stModeSeg');
+  const amtLabel = document.getElementById('stAmtLabel');
+  function money(n){
+    const cur = document.getElementById('stCur').value;
+    return cur+n.toLocaleString(undefined,{maximumFractionDigits:2});
+  }
+  function mode(){
+    const btn = seg.querySelector('button.active');
+    return btn ? btn.dataset.mode : 'add';
+  }
+  function calc(){
+    const amt = parseFloat(document.getElementById('stAmt').value)||0;
+    const rate = (parseFloat(document.getElementById('stRate').value)||0)/100;
+    let before, tax, total;
+    if(mode()==='add'){
+      before = amt; tax = before*rate; total = before+tax;
+    } else {
+      total = amt; before = total/(1+rate); tax = total-before;
+    }
+    document.getElementById('stBefore').textContent = money(before);
+    document.getElementById('stTax').textContent = money(tax);
+    document.getElementById('stTotal').textContent = money(total);
+  }
+  seg.addEventListener('click', (e)=>{
+    const btn = e.target.closest('button');
+    if(!btn) return;
+    seg.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    amtLabel.textContent = btn.dataset.mode==='add' ? 'Price before tax' : 'Total price (tax included)';
+    calc();
+  });
+  ['stAmt','stCur','stRate'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+  calc();
+})();
+
+// ---- CD calculator ----
+(function(){
+  if(!document.getElementById('cdAmt')) return;
+  let lastInterest = 0, lastYears = 1;
+  function calc(){
+    const P = parseFloat(document.getElementById('cdAmt').value)||0;
+    const apy = (parseFloat(document.getElementById('cdRate').value)||0)/100;
+    const months = parseFloat(document.getElementById('cdTerm').value)||12;
+    const years = months/12;
+    const maturity = P*Math.pow(1+apy, years);
+    const interest = maturity-P;
+    document.getElementById('cdInvested').textContent = '$'+Math.round(P).toLocaleString();
+    document.getElementById('cdInterest').textContent = '$'+interest.toFixed(2);
+    document.getElementById('cdMaturity').textContent = '$'+maturity.toFixed(2);
+    lastInterest = interest; lastYears = years;
+    calcPenalty(maturity);
+  }
+  function calcPenalty(maturity){
+    const penEl = document.getElementById('cdPenaltyMonths');
+    if(!penEl) return;
+    const penaltyMonths = parseFloat(penEl.value)||0;
+    const monthlyInterest = lastYears>0 ? (lastInterest/lastYears)/12 : 0;
+    const penaltyAmt = monthlyInterest*penaltyMonths;
+    document.getElementById('cdPenaltyAmt').textContent = '$'+penaltyAmt.toFixed(2);
+    document.getElementById('cdPenaltyNet').textContent = '$'+Math.max(maturity-penaltyAmt,0).toFixed(2);
+  }
+  ['cdAmt','cdRate','cdTerm'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+  const penEl = document.getElementById('cdPenaltyMonths');
+  if(penEl){
+    penEl.addEventListener('input', calc);
+    penEl.addEventListener('change', calc);
+  }
+  calc();
+})();
+
+// ---- Ideal weight calculator ----
+(function(){
+  if(!document.getElementById('iwH')) return;
+  const sexSeg = document.getElementById('iwSexSeg');
+  const unitEl = document.getElementById('iwUnit');
+  const cmWrap = document.getElementById('iwCmWrap');
+  const ftWrap = document.getElementById('iwFtWrap');
+
+  function fmt(kg){
+    if(kg<=0) return '—';
+    const lb = kg*2.20462;
+    return kg.toFixed(1)+' kg ('+lb.toFixed(1)+' lb)';
+  }
+
+  function heightCm(){
+    if(unitEl.value==='cm'){
+      return parseFloat(document.getElementById('iwH').value)||0;
+    }
+    const ft = parseFloat(document.getElementById('iwFt').value)||0;
+    const inch = parseFloat(document.getElementById('iwIn').value)||0;
+    return (ft*12+inch)*2.54;
+  }
+
+  function calc(){
+    const cm = heightCm();
+    const totalInches = cm/2.54;
+    const overFeet = totalInches-60;
+    const sexBtn = sexSeg.querySelector('button.active');
+    const male = !sexBtn || sexBtn.dataset.sex==='male';
+
+    if(cm<=0){
+      ['iwDevine','iwRobinson','iwMiller','iwHamwi','iwAvg'].forEach(id=>{
+        document.getElementById(id).textContent = '—';
+      });
+      document.getElementById('iwBmiRange').textContent = '—';
+      return;
+    }
+
+    const devine = male ? 50+2.3*overFeet : 45.5+2.3*overFeet;
+    const robinson = male ? 52+1.9*overFeet : 49+1.7*overFeet;
+    const miller = male ? 56.2+1.41*overFeet : 53.1+1.36*overFeet;
+    const hamwi = male ? 48+2.7*overFeet : 45.5+2.2*overFeet;
+    const avg = (devine+robinson+miller+hamwi)/4;
+
+    document.getElementById('iwDevine').textContent = fmt(devine);
+    document.getElementById('iwRobinson').textContent = fmt(robinson);
+    document.getElementById('iwMiller').textContent = fmt(miller);
+    document.getElementById('iwHamwi').textContent = fmt(hamwi);
+    document.getElementById('iwAvg').textContent = fmt(avg);
+
+    const m = cm/100;
+    const low = 18.5*m*m, high = 24.9*m*m;
+    document.getElementById('iwBmiRange').textContent = fmt(low).split(' (')[0]+' – '+fmt(high);
+  }
+
+  if(sexSeg){
+    sexSeg.addEventListener('click', (e)=>{
+      const btn = e.target.closest('button');
+      if(!btn) return;
+      sexSeg.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      calc();
+    });
+  }
+  unitEl.addEventListener('change', ()=>{
+    const isCm = unitEl.value==='cm';
+    cmWrap.style.display = isCm ? '' : 'none';
+    ftWrap.style.display = isCm ? 'none' : '';
+    calc();
+  });
+  ['iwH','iwFt','iwIn'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+  calc();
+})();
+
+// ---- Grade calculator ----
+(function(){
+  const rowsWrap = document.getElementById('gcRows');
+  if(!rowsWrap) return;
+  const addBtn = document.getElementById('gcAddRow');
+
+  function letterFor(pct){
+    if(pct>=90) return 'A';
+    if(pct>=80) return 'B';
+    if(pct>=70) return 'C';
+    if(pct>=60) return 'D';
+    return 'F';
+  }
+
+  let rowId = 0;
+  function addRow(name, weight, score){
+    rowId++;
+    const id = 'gcRow'+rowId;
+    const row = document.createElement('div');
+    row.className = 'row3';
+    row.id = id;
+    row.style.marginBottom = '10px';
+    row.innerHTML = `
+      <div class="field"><label>Category</label><input type="text" class="gcCatName" value="${name||''}" placeholder="e.g. Homework"></div>
+      <div class="field"><label>Weight (%)</label><input type="number" class="gcWeight" value="${weight!=null?weight:20}" min="0" step="1"></div>
+      <div class="field"><label>Score (%)</label><input type="number" class="gcScore" value="${score!=null?score:90}" min="0" step="0.1"></div>
+    `;
+    const removeBtn = document.createElement('button');
+    removeBtn.type = 'button';
+    removeBtn.className = 'ghost';
+    removeBtn.textContent = 'Remove';
+    removeBtn.style.marginBottom = '14px';
+    removeBtn.addEventListener('click', ()=>{ row.remove(); calc(); });
+    row.querySelector('.gcScore').closest('.field').after(removeBtn);
+    rowsWrap.appendChild(row);
+    row.querySelectorAll('input').forEach(el=>{
+      el.addEventListener('input', calc);
+      el.addEventListener('change', calc);
+    });
+  }
+
+  function calc(){
+    let totalWeight = 0, totalPoints = 0;
+    document.querySelectorAll('#gcRows .row3').forEach(row=>{
+      const weight = parseFloat(row.querySelector('.gcWeight').value)||0;
+      const score = parseFloat(row.querySelector('.gcScore').value)||0;
+      totalWeight += weight;
+      totalPoints += weight*score;
+    });
+    const grade = totalWeight>0 ? totalPoints/totalWeight : 0;
+    document.getElementById('gcTotalWeight').textContent = totalWeight.toFixed(1)+'%';
+    document.getElementById('gcResult').textContent = grade.toFixed(1)+'%';
+    document.getElementById('gcLetter').textContent = totalWeight>0 ? letterFor(grade) : '—';
+  }
+
+  addBtn.addEventListener('click', ()=>addRow());
+  addRow('Homework', 20, 92);
+  addRow('Midterm', 30, 85);
+  addRow('Quizzes', 15, 88);
+  calc();
+
+  // ---- Final exam grade needed ----
+  function calcFinal(){
+    const currentEl = document.getElementById('fnCurrent');
+    if(!currentEl) return;
+    const current = parseFloat(currentEl.value)||0;
+    const target = parseFloat(document.getElementById('fnTarget').value)||0;
+    const weight = (parseFloat(document.getElementById('fnWeight').value)||0)/100;
+    const neededEl = document.getElementById('fnNeeded');
+    const feasibleEl = document.getElementById('fnFeasible');
+    if(weight<=0){
+      neededEl.textContent = '—';
+      feasibleEl.textContent = 'Enter the final\'s weight to calculate';
+      return;
+    }
+    const needed = (target - current*(1-weight))/weight;
+    neededEl.textContent = needed.toFixed(1)+'%';
+    if(needed>100){
+      feasibleEl.textContent = 'Not achievable — would need above 100%';
+    } else if(needed<=0){
+      feasibleEl.textContent = 'Already locked in, even with a 0% on the final';
+    } else {
+      feasibleEl.textContent = 'Achievable';
+    }
+  }
+  ['fnCurrent','fnTarget','fnWeight'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el){ el.addEventListener('input', calcFinal); el.addEventListener('change', calcFinal); }
+  });
+  calcFinal();
+})();
+
+// ---- Fraction calculator ----
+(function(){
+  if(!document.getElementById('frA1')) return;
+
+  function gcd(a,b){ a=Math.abs(a); b=Math.abs(b); while(b){ [a,b]=[b,a%b]; } return a||1; }
+
+  function simplify(num, den){
+    if(den===0) return null;
+    if(den<0){ num=-num; den=-den; }
+    const g = gcd(num, den);
+    return [num/g, den/g];
+  }
+
+  function toMixed(num, den){
+    const sign = (num<0) !== (den<0) ? '-' : '';
+    num = Math.abs(num); den = Math.abs(den);
+    const whole = Math.floor(num/den);
+    const rem = num%den;
+    if(rem===0) return sign+whole;
+    if(whole===0) return sign+num+'/'+den;
+    return sign+whole+' '+rem+'/'+den;
+  }
+
+  function opSeg(){
+    const seg = document.getElementById('frOpSeg');
+    const btn = seg.querySelector('button.active');
+    return btn ? btn.dataset.op : 'add';
+  }
+
+  function calc(){
+    const a1 = parseInt(document.getElementById('frA1').value)||0;
+    const b1 = parseInt(document.getElementById('frB1').value)||0;
+    const a2 = parseInt(document.getElementById('frA2').value)||0;
+    const b2 = parseInt(document.getElementById('frB2').value)||0;
+    const resEl = document.getElementById('frResult');
+    const decEl = document.getElementById('frDecimal');
+    const mixEl = document.getElementById('frMixed');
+    if(b1===0 || b2===0){
+      resEl.textContent = 'Undefined (denominator is 0)';
+      decEl.textContent = '—'; mixEl.textContent = '—';
+      return;
+    }
+    const op = opSeg();
+    let num, den;
+    if(op==='add'){ num = a1*b2 + a2*b1; den = b1*b2; }
+    else if(op==='sub'){ num = a1*b2 - a2*b1; den = b1*b2; }
+    else if(op==='mul'){ num = a1*a2; den = b1*b2; }
+    else { if(a2===0){ resEl.textContent='Undefined (divide by zero)'; decEl.textContent='—'; mixEl.textContent='—'; return; } num = a1*b2; den = b1*a2; }
+
+    const simp = simplify(num, den);
+    resEl.textContent = simp[0]+'/'+simp[1];
+    decEl.textContent = (simp[1]!==0 ? (simp[0]/simp[1]) : 0).toLocaleString(undefined,{maximumFractionDigits:6});
+    mixEl.textContent = toMixed(simp[0], simp[1]);
+  }
+
+  const seg = document.getElementById('frOpSeg');
+  seg.addEventListener('click', (e)=>{
+    const btn = e.target.closest('button');
+    if(!btn) return;
+    seg.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    calc();
+  });
+  ['frA1','frB1','frA2','frB2'].forEach(id=>{
+    document.getElementById(id).addEventListener('input', calc);
+  });
+  calc();
+
+  // ---- Simplify a fraction ----
+  function calcSimplify(){
+    const a = parseInt(document.getElementById('smA').value)||0;
+    const b = parseInt(document.getElementById('smB').value)||0;
+    const resEl = document.getElementById('smResult');
+    const decEl = document.getElementById('smDecimal');
+    if(b===0){ resEl.textContent='Undefined (denominator is 0)'; decEl.textContent='—'; return; }
+    const simp = simplify(a, b);
+    resEl.textContent = simp[0]+'/'+simp[1];
+    decEl.textContent = (simp[0]/simp[1]).toLocaleString(undefined,{maximumFractionDigits:6});
+  }
+  ['smA','smB'].forEach(id=>{
+    document.getElementById(id).addEventListener('input', calcSimplify);
+  });
+  calcSimplify();
+})();
+
+// ---- Statistics calculator ----
+(function(){
+  const input = document.getElementById('statInput');
+  if(!input) return;
+
+  function parseNums(text){
+    return text.split(/[,\s]+/).map(s=>parseFloat(s)).filter(n=>!isNaN(n));
+  }
+
+  function calc(){
+    const nums = parseNums(input.value);
+    const n = nums.length;
+    if(n===0){
+      ['statCount','statSum','statMean','statMedian','statRange'].forEach(id=>{ document.getElementById(id).textContent='0'; });
+      ['statMode','statMinMax','statVariance','statStdDev'].forEach(id=>{ document.getElementById(id).textContent='—'; });
+      return;
+    }
+    const sum = nums.reduce((a,b)=>a+b,0);
+    const mean = sum/n;
+    const sorted = [...nums].sort((a,b)=>a-b);
+    const mid = Math.floor(n/2);
+    const median = n%2===0 ? (sorted[mid-1]+sorted[mid])/2 : sorted[mid];
+    const min = sorted[0], max = sorted[n-1];
+
+    const freq = {};
+    nums.forEach(x=>{ freq[x] = (freq[x]||0)+1; });
+    const maxFreq = Math.max(...Object.values(freq));
+    const modes = Object.keys(freq).filter(k=>freq[k]===maxFreq).map(Number);
+    const modeText = maxFreq<=1 ? 'None (all values unique)' : modes.sort((a,b)=>a-b).join(', ');
+
+    const sqDiffs = nums.reduce((a,x)=>a+Math.pow(x-mean,2),0);
+    const popVar = sqDiffs/n;
+    const sampVar = n>1 ? sqDiffs/(n-1) : 0;
+    const popStd = Math.sqrt(popVar);
+    const sampStd = Math.sqrt(sampVar);
+
+    const fmt = x => Number.isInteger(x) ? x.toString() : x.toLocaleString(undefined,{maximumFractionDigits:4});
+
+    document.getElementById('statCount').textContent = n.toString();
+    document.getElementById('statSum').textContent = fmt(sum);
+    document.getElementById('statMean').textContent = fmt(mean);
+    document.getElementById('statMedian').textContent = fmt(median);
+    document.getElementById('statMode').textContent = modeText;
+    document.getElementById('statMinMax').textContent = fmt(min)+' / '+fmt(max);
+    document.getElementById('statRange').textContent = fmt(max-min);
+    document.getElementById('statVariance').textContent = fmt(popVar)+' / '+(n>1?fmt(sampVar):'—');
+    document.getElementById('statStdDev').textContent = fmt(popStd)+' / '+(n>1?fmt(sampStd):'—');
+  }
+
+  input.addEventListener('input', calc);
+  calc();
+})();
+
+// ---- Time calculator (duration add/subtract + hours worked) ----
+(function(){
+  if(!document.getElementById('tcH1')) return;
+  const seg = document.getElementById('tcOpSeg');
+
+  function fmtHMS(totalSeconds){
+    const sign = totalSeconds<0 ? '-' : '';
+    totalSeconds = Math.abs(Math.round(totalSeconds));
+    const h = Math.floor(totalSeconds/3600);
+    const m = Math.floor((totalSeconds%3600)/60);
+    const s = totalSeconds%60;
+    return sign+h+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+  }
+
+  function calc(){
+    const h1 = parseFloat(document.getElementById('tcH1').value)||0;
+    const m1 = parseFloat(document.getElementById('tcM1').value)||0;
+    const s1 = parseFloat(document.getElementById('tcS1').value)||0;
+    const h2 = parseFloat(document.getElementById('tcH2').value)||0;
+    const m2 = parseFloat(document.getElementById('tcM2').value)||0;
+    const s2 = parseFloat(document.getElementById('tcS2').value)||0;
+    const op = (seg.querySelector('button.active')||{}).dataset ? seg.querySelector('button.active').dataset.op : 'add';
+
+    const t1 = h1*3600+m1*60+s1;
+    const t2 = h2*3600+m2*60+s2;
+    const total = op==='add' ? t1+t2 : t1-t2;
+
+    document.getElementById('tcResult').textContent = fmtHMS(total);
+    document.getElementById('tcTotalMin').textContent = (total/60).toLocaleString(undefined,{maximumFractionDigits:2});
+    document.getElementById('tcTotalHours').textContent = (total/3600).toLocaleString(undefined,{maximumFractionDigits:4});
+  }
+
+  seg.addEventListener('click', (e)=>{
+    const btn = e.target.closest('button');
+    if(!btn) return;
+    seg.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    calc();
+  });
+  ['tcH1','tcM1','tcS1','tcH2','tcM2','tcS2'].forEach(id=>{
+    document.getElementById(id).addEventListener('input', calc);
+  });
+  calc();
+
+  // ---- Hours worked between two clock times ----
+  function calcHours(){
+    const startEl = document.getElementById('hwStart');
+    if(!startEl) return;
+    const [sh,sm] = startEl.value.split(':').map(Number);
+    const [eh,em] = document.getElementById('hwEnd').value.split(':').map(Number);
+    if([sh,sm,eh,em].some(v=>isNaN(v))) return;
+    const breakMin = parseFloat(document.getElementById('hwBreak').value)||0;
+    const rate = parseFloat(document.getElementById('hwRate').value)||0;
+
+    let startMin = sh*60+sm;
+    let endMin = eh*60+em;
+    if(endMin<startMin) endMin += 24*60;
+    const workedMin = Math.max(endMin-startMin-breakMin, 0);
+    const workedHours = workedMin/60;
+
+    document.getElementById('hwHM').textContent = Math.floor(workedMin/60)+':'+String(Math.round(workedMin%60)).padStart(2,'0');
+    document.getElementById('hwDecimal').textContent = workedHours.toLocaleString(undefined,{maximumFractionDigits:2});
+    document.getElementById('hwPay').textContent = rate>0 ? '$'+(workedHours*rate).toFixed(2) : '—';
+  }
+  ['hwStart','hwEnd','hwBreak','hwRate'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el){ el.addEventListener('input', calcHours); el.addEventListener('change', calcHours); }
+  });
+  calcHours();
+})();
+
+// ---- Random number generator ----
+(function(){
+  const genBtn = document.getElementById('rngGenerate');
+  if(!genBtn) return;
+
+  function randInt(min, max){
+    return Math.floor(Math.random()*(max-min+1))+min;
+  }
+
+  function generate(){
+    let min = parseInt(document.getElementById('rngMin').value)||0;
+    let max = parseInt(document.getElementById('rngMax').value)||0;
+    if(min>max){ [min,max]=[max,min]; }
+    const count = Math.max(parseInt(document.getElementById('rngCount').value)||1, 1);
+    const unique = document.getElementById('rngUnique').checked;
+    const sort = document.getElementById('rngSort').checked;
+    const warnEl = document.getElementById('rngWarning');
+    const rangeSize = max-min+1;
+
+    if(unique && count>rangeSize){
+      warnEl.textContent = `Can't generate ${count} unique numbers — the range ${min}–${max} only has ${rangeSize} possible values.`;
+      document.getElementById('rngResult').textContent = '—';
+      return;
+    }
+    warnEl.textContent = '';
+
+    let results = [];
+    if(unique){
+      const pool = [];
+      for(let i=min;i<=max;i++) pool.push(i);
+      for(let i=pool.length-1;i>0;i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [pool[i],pool[j]] = [pool[j],pool[i]];
+      }
+      results = pool.slice(0,count);
+    } else {
+      for(let i=0;i<count;i++) results.push(randInt(min,max));
+    }
+    if(sort) results.sort((a,b)=>a-b);
+    document.getElementById('rngResult').textContent = results.join(', ');
+  }
+
+  genBtn.addEventListener('click', generate);
+  generate();
+
+  // ---- Coin flip & dice roll ----
+  const coinBtn = document.getElementById('coinFlip');
+  if(coinBtn){
+    coinBtn.addEventListener('click', ()=>{
+      document.getElementById('coinResult').textContent = Math.random()<0.5 ? 'Heads' : 'Tails';
+    });
+  }
+  const diceBtn = document.getElementById('diceRoll');
+  if(diceBtn){
+    diceBtn.addEventListener('click', ()=>{
+      const count = Math.max(parseInt(document.getElementById('diceCount').value)||1, 1);
+      const sides = parseInt(document.getElementById('diceSides').value)||6;
+      const rolls = [];
+      for(let i=0;i<count;i++) rolls.push(randInt(1,sides));
+      document.getElementById('diceResult').textContent = rolls.join(', ');
+      document.getElementById('diceSum').textContent = rolls.reduce((a,b)=>a+b,0).toString();
+    });
+  }
+})();

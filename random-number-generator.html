@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SIP Calculator — Systematic Investment Plan Returns | TallyBench</title>
-<meta name="description" content="Free SIP calculator: project your mutual fund SIP maturity value with step-up contributions and an inflation-adjusted real value, year by year.">
-<link rel="canonical" href="https://tallybench.com/sip-calculator.html">
+<title>Random Number Generator — Plus Coin Flip &amp; Dice Roll | TallyBench</title>
+<meta name="description" content="Free random number generator. Generate random integers in any range, with optional no-repeat mode and sorting, plus quick coin flip and dice roll tools.">
+<link rel="canonical" href="https://tallybench.com/random-number-generator.html">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.svg">
@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="TallyBench">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TallyBench">
-<meta property="og:title" content="SIP Calculator — Systematic Investment Plan Returns">
-<meta property="og:description" content="Free SIP calculator: project your mutual fund SIP maturity value with step-up contributions and an inflation-adjusted real value, year by year.">
-<meta property="og:url" content="https://tallybench.com/sip-calculator.html">
+<meta property="og:title" content="Random Number Generator — Plus Coin Flip &amp; Dice Roll">
+<meta property="og:description" content="Generate random integers in any range, with optional no-repeat mode and sorting, plus quick coin flip and dice roll tools.">
+<meta property="og:url" content="https://tallybench.com/random-number-generator.html">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="SIP Calculator — Systematic Investment Plan Returns">
-<meta name="twitter:description" content="Free SIP calculator: project your mutual fund SIP maturity value with step-up contributions and an inflation-adjusted real value, year by year.">
+<meta name="twitter:title" content="Random Number Generator — Plus Coin Flip &amp; Dice Roll">
+<meta name="twitter:description" content="Generate random integers in any range, with optional no-repeat mode and sorting, plus quick coin flip and dice roll tools.">
 <link rel="stylesheet" href="fonts/fonts.css">
 <link rel="stylesheet" href="style.css">
 
@@ -31,34 +31,34 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "How is SIP maturity value calculated?",
+      "name": "How random are these numbers, really?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "SIP uses the future value of an annuity formula: each monthly investment compounds at the monthly rate for the remaining months, and all installments are summed. Returns are estimates, not guarantees — actual market returns vary and aren't linear."
+        "text": "This tool uses your browser's built-in random number generator (Math.random), which is fine for games, raffles, sampling, and everyday decision-making. It is not cryptographically secure — don't use it to generate passwords, encryption keys, or anything security-sensitive."
       }
     },
     {
       "@type": "Question",
-      "name": "What does the annual step-up field do?",
+      "name": "What does \"no repeats\" mean and when can't it be used?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "A step-up SIP increases your monthly contribution by a fixed percentage every 12 months, roughly matching how income tends to grow over time. This produces a noticeably larger maturity value than a flat SIP of the same starting amount."
+        "text": "With no repeats enabled, every generated number is unique, like drawing raffle tickets without putting them back. This is only possible if the count you're generating is less than or equal to the total amount of numbers in your min-max range — otherwise there aren't enough unique values to satisfy the request."
       }
     },
     {
       "@type": "Question",
-      "name": "What does the real value figure mean?",
+      "name": "Can I generate decimal numbers instead of integers?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Maturity value is the nominal future amount; real value discounts that by your expected inflation rate to show what it's actually worth in today's purchasing power."
+        "text": "This tool generates whole numbers (integers) only, which covers the overwhelming majority of use cases — raffle numbers, dice, lottery picks, random sampling by ID. For a random decimal, generate a wide-range integer and divide it yourself."
       }
     },
     {
       "@type": "Question",
-      "name": "How realistic is a 12% annual return assumption?",
+      "name": "Is a coin flip really 50/50 on this tool?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "12% is a commonly used illustrative assumption for equity mutual funds in India based on long-term historical averages, but actual returns vary year to year and aren't guaranteed — treat it as a planning estimate, not a promise."
+        "text": "As close to 50/50 as JavaScript's random function provides, which is statistically fine for casual use — over many flips it converges on an even split, same as the random-integer generator above it."
       }
     }
   ]
@@ -68,7 +68,7 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "SIP Calculator — TallyBench",
+  "name": "Random Number Generator — TallyBench",
   "applicationCategory": "UtilitiesApplication",
   "operatingSystem": "Any (runs in browser)",
   "offers": {
@@ -76,11 +76,11 @@
     "price": "0",
     "priceCurrency": "USD"
   },
-  "url": "https://tallybench.com/sip-calculator.html"
+  "url": "https://tallybench.com/random-number-generator.html"
 }
 </script>
 </head>
-<body data-page-cat="finance">
+<body data-page-cat="everyday">
 
 <header>
   <div class="wrap">
@@ -162,70 +162,87 @@
 <div class="nav-backdrop" id="navBackdrop"></div>
 
 <div class="wrap">
-  <div class="crumb"><a href="index.html">TallyBench</a> / SIP Calculator</div>
+  <div class="crumb"><a href="index.html">TallyBench</a> / Random Number Generator</div>
 
   <section class="hero">
-    <div class="hero-icon-row cat-finance">
-      <div class="hero-icon"><svg><use href="icons.svg#icon-investment"/></svg></div>
-      <div class="eyebrow">// SIP CALCULATOR</div>
+    <div class="hero-icon-row cat-utility">
+      <div class="hero-icon"><svg><use href="icons.svg#icon-password"/></svg></div>
+      <div class="eyebrow">// RANDOM NUMBER GENERATOR</div>
     </div>
-    <h1>What your monthly SIP grows into.</h1>
-    <p>Enter a monthly investment, expected return, and duration to project your systematic investment plan's maturity value — with optional annual step-up and inflation-adjusted real value.</p>
+    <h1>Pick a range, get your numbers.</h1>
+    <p>Generate one or many random integers in any range, with optional no-repeat mode and sorting — plus quick coin flip and dice roll tools below.</p>
   </section>
 
-  <section class="tool" id="sip">
-    <div class="disclaimer">
-      <strong>Estimate only — not investment advice.</strong> This projects growth using a constant assumed return rate you enter. Real markets fluctuate, and past or assumed returns don't guarantee future performance.
-    </div>
-    <div class="field" style="max-width:260px;margin-bottom:20px;">
-      <label>Currency</label>
-      <select id="dsipCur">
-        <option value="₹" selected>INR (₹)</option>
-        <option value="$">USD ($)</option>
-        <option value="€">EUR (€)</option>
-        <option value="£">GBP (£)</option>
-      </select>
-    </div>
+  <section class="tool" id="rng">
     <div class="card">
       <div>
-        <div class="field"><label>Monthly investment</label><input type="number" id="dsipAmt" value="10000" step="100"></div>
-        <div class="field"><label>Expected annual return (%)</label><input type="number" id="dsipRate" value="12" step="0.1"></div>
-        <div class="field"><label>Duration (years)</label><input type="number" id="dsipYears" value="10" min="1"></div>
-        <div class="field"><label>Annual step-up (%, optional)</label><input type="number" id="dsipStepUp" value="0" step="1" min="0"></div>
-        <div class="field"><label>Expected inflation (%, for real-value estimate)</label><input type="number" id="dsipInflation" value="6" step="0.1" min="0"></div>
+        <div class="row2">
+          <div class="field"><label>Minimum</label><input type="number" id="rngMin" value="1" step="1"></div>
+          <div class="field"><label>Maximum</label><input type="number" id="rngMax" value="100" step="1"></div>
+        </div>
+        <div class="field"><label>How many numbers</label><input type="number" id="rngCount" value="1" min="1" step="1"></div>
+        <div class="checks">
+          <label><input type="checkbox" id="rngUnique"> No repeats (each number unique)</label>
+        </div>
+        <div class="checks">
+          <label><input type="checkbox" id="rngSort"> Sort results</label>
+        </div>
+        <div class="btn-row">
+          <button type="button" id="rngGenerate">Generate</button>
+        </div>
       </div>
       <div class="readout">
-        <div class="r-row"><span class="r-label">Total invested</span><span class="r-value" id="dsipInvested">0</span></div>
-        <div class="r-row"><span class="r-label">Estimated returns</span><span class="r-value" id="dsipReturns">0</span></div>
-        <div class="r-row"><span class="r-label">Maturity value</span><span class="r-value" id="dsipMaturity">0</span></div>
-        <div class="r-row"><span class="r-label">Real value (today's purchasing power)</span><span class="r-sub" id="dsipRealValue">—</span></div>
-        <div class="r-row"><span class="r-label">Final month's investment</span><span class="r-sub" id="dsipFinalMonthAmt">—</span></div>
+        <div class="r-row"><span class="r-label">Result</span><span class="r-value" id="rngResult" style="font-size:20px;">—</span></div>
+        <div class="field-warning" id="rngWarning"></div>
       </div>
-      <div class="field-warning" id="dsipWarning"></div>
     </div>
   </section>
 
-  <section style="padding:32px 0;border-bottom:1px solid var(--paper-line);">
-    <h2 style="font-family:'Space Grotesk',sans-serif;font-size:20px;margin:0 0 6px;">Year-by-year growth</h2>
-    <p style="color:var(--graphite);font-size:13px;margin:0 0 16px;">Cumulative invested amount vs. projected value, year by year.</p>
-    <div class="table-scroll">
-      <table class="bracket-table" style="margin-top:0;"><thead><tr><th>Year</th><th>Invested (cumulative)</th><th>Value</th><th>Growth</th></tr></thead><tbody id="dsipGrowthBody"></tbody></table>
+  <section class="tool" id="quick" style="margin-top:8px;">
+    <div class="tool-head"><span class="tool-num">//</span><div><h2>Coin flip &amp; dice roll</h2><p class="tool-sub">One tap, instant result.</p></div></div>
+    <div class="card">
+      <div>
+        <div class="btn-row">
+          <button type="button" id="coinFlip">Flip a coin</button>
+        </div>
+        <div class="row2" style="margin-top:16px;">
+          <div class="field"><label>Number of dice</label><input type="number" id="diceCount" value="1" min="1" max="20" step="1"></div>
+          <div class="field"><label>Sides per die</label>
+            <select id="diceSides">
+              <option value="4">4</option>
+              <option value="6" selected>6</option>
+              <option value="8">8</option>
+              <option value="10">10</option>
+              <option value="12">12</option>
+              <option value="20">20</option>
+            </select>
+          </div>
+        </div>
+        <div class="btn-row">
+          <button type="button" id="diceRoll">Roll dice</button>
+        </div>
+      </div>
+      <div class="readout">
+        <div class="r-row"><span class="r-label">Coin</span><span class="r-value" id="coinResult">—</span></div>
+        <div class="r-row"><span class="r-label">Dice</span><span class="r-value" id="diceResult">—</span></div>
+        <div class="r-row"><span class="r-label">Dice total</span><span class="r-sub" id="diceSum">—</span></div>
+      </div>
     </div>
   </section>
 
   <section class="article">
-    <h3>How is SIP maturity value calculated?</h3>
-    <p>SIP uses the future value of an annuity formula: each monthly investment compounds at the monthly rate for the remaining months, and all installments are summed — <strong>maturity = P × [(1+r)^n − 1] / r × (1+r)</strong>, where P is your monthly amount, r the monthly rate, and n the number of months. Returns are estimates, not guarantees.</p>
-    <h3>What does the annual step-up field do?</h3>
-    <p>A step-up SIP increases your monthly contribution by a fixed percentage every 12 months — matching how most people's investable income actually grows. A 10% step-up on a ₹10,000/month SIP means ₹11,000/month in year two, ₹12,100/month in year three, and so on. Because later, larger contributions still get meaningful time to compound, a step-up SIP produces a noticeably larger maturity value than a flat SIP with the same starting amount.</p>
-    <h3>What does the "real value" figure mean?</h3>
-    <p>Maturity value is the nominal future amount; real value discounts that by your expected inflation rate to show what it's actually worth in today's purchasing power: <strong>real value = maturity ÷ (1 + inflation%)^years</strong>. A large maturity number can still lose to inflation if the assumed return barely beats it.</p>
-    <h3>How realistic is a 12% annual return assumption?</h3>
-    <p>12% is a commonly used illustrative assumption for equity mutual funds in India based on long-term historical averages, but actual returns vary year to year and aren't guaranteed. Consider also running the numbers at a more conservative rate (e.g. 8–10%) as a stress test.</p>
-    <p><strong>Worked example:</strong> investing ₹10,000/month for 10 years at an assumed 12% annual return grows to roughly ₹23.2 lakh, of which ₹12 lakh is your own contribution and about ₹11.2 lakh is projected growth.</p>
+    <h3>How random are these numbers, really?</h3>
+    <p>This tool uses your browser's built-in random number generator (<code>Math.random</code>), which is more than sufficient for games, raffles, classroom sampling, and everyday decision-making. It is <strong>not</strong> cryptographically secure, so don't use it to generate passwords, encryption keys, or anything security-sensitive — use the <a href="password-generator.html">Password Generator</a> for that instead, which is built on the browser's cryptographic random source.</p>
+    <h3>What does "no repeats" mean, and when can't it be used?</h3>
+    <p>With no repeats enabled, every number generated is unique — like drawing raffle tickets without putting them back in the bowl. This only works if the count you're requesting is less than or equal to the total number of values in your min–max range; asking for 50 unique numbers between 1 and 10 is mathematically impossible, and the tool will tell you so rather than silently generating duplicates.</p>
+    <h3>Can I generate decimal numbers instead of whole numbers?</h3>
+    <p>This tool generates integers only, which covers the large majority of real use cases — raffle draws, lottery number picks, random sample IDs, dice. If you specifically need a random decimal within a range, generate a wide-range integer here and divide it by a fixed number yourself (e.g., an integer 0–100 divided by 100 gives a random value between 0 and 1).</p>
+    <h3>Is a coin flip really 50/50 here?</h3>
+    <p>As close to 50/50 as JavaScript's random function provides — over many flips, the split converges to even, the same underlying mechanism as the range generator above. For a single flip, of course, either outcome is equally likely regardless.</p>
+    <h3>Common uses for a random number generator</h3>
+    <p>Picking a raffle or giveaway winner from a list of ticket numbers, randomly assigning students or team members to groups, choosing a random sample for a survey or audit, settling a decision fairly, or generating test data for a spreadsheet or database — anywhere a genuinely unpredictable number (rather than a manually "random-feeling" one) matters.</p>
+    <p><strong>Worked example:</strong> generating 6 unique numbers between 1 and 49 with sorting enabled mimics a lottery draw — each of the 49 numbers has an equal chance, no number repeats, and the result comes back in ascending order for easy reading.</p>
   </section>
-
-  <p style="font-size:13px;color:var(--graphite);margin:0 0 24px;">Also want SWP or CAGR projections? Use the combined <a href="investment-calculator.html">Investment Calculator</a>.</p>
 
   <!-- TB:MORETOOLS:START -->
   <nav class="more-tools" aria-label="More calculators">
@@ -241,6 +258,7 @@
       <li><a href="paycheck-calculator.html">Paycheck Calculator</a></li>
       <li><a href="gst-vat-calculator.html">GST / VAT Calculator</a></li>
       <li><a href="investment-calculator.html">Investment Calculator</a></li>
+      <li><a href="sip-calculator.html">SIP Calculator</a></li>
       <li><a href="compound-interest-calculator.html">Compound Interest Calculator</a></li>
       <li><a href="savings-goal-calculator.html">Savings Goal Calculator</a></li>
       <li><a href="retirement-calculator.html">Retirement Calculator</a></li>
@@ -277,14 +295,13 @@
       <li><a href="kg-to-pounds.html">KG to Pounds</a></li>
       <li><a href="celsius-to-fahrenheit.html">Celsius to Fahrenheit</a></li>
       <li><a href="password-generator.html">Password Generator</a></li>
-      <li><a href="random-number-generator.html">Random Number Generator</a></li>
       <li><a href="word-counter.html">Word Counter</a></li>
     </ul>
   </nav>
   <!-- TB:MORETOOLS:END -->
 
   <footer>
-    <p>TallyBench · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
+    <p>TALLYBENCH · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
   </footer>
 </div>
 

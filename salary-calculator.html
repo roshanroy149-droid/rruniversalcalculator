@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SIP Calculator — Systematic Investment Plan Returns | TallyBench</title>
-<meta name="description" content="Free SIP calculator: project your mutual fund SIP maturity value with step-up contributions and an inflation-adjusted real value, year by year.">
-<link rel="canonical" href="https://tallybench.com/sip-calculator.html">
+<title>Salary Calculator — Hourly, Weekly, Monthly &amp; Annual Pay | TallyBench</title>
+<meta name="description" content="Free salary calculator that converts pay between hourly, daily, weekly, bi-weekly, semi-monthly, monthly, and annual. Enter any one figure and see the rest instantly.">
+<link rel="canonical" href="https://tallybench.com/salary-calculator.html">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.svg">
@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="TallyBench">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TallyBench">
-<meta property="og:title" content="SIP Calculator — Systematic Investment Plan Returns">
-<meta property="og:description" content="Free SIP calculator: project your mutual fund SIP maturity value with step-up contributions and an inflation-adjusted real value, year by year.">
-<meta property="og:url" content="https://tallybench.com/sip-calculator.html">
+<meta property="og:title" content="Salary Calculator — Hourly, Weekly, Monthly &amp; Annual Pay">
+<meta property="og:description" content="Free salary calculator that converts pay between hourly, daily, weekly, bi-weekly, semi-monthly, monthly, and annual.">
+<meta property="og:url" content="https://tallybench.com/salary-calculator.html">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="SIP Calculator — Systematic Investment Plan Returns">
-<meta name="twitter:description" content="Free SIP calculator: project your mutual fund SIP maturity value with step-up contributions and an inflation-adjusted real value, year by year.">
+<meta name="twitter:title" content="Salary Calculator — Hourly, Weekly, Monthly &amp; Annual Pay">
+<meta name="twitter:description" content="Free salary calculator that converts pay between hourly, daily, weekly, bi-weekly, semi-monthly, monthly, and annual.">
 <link rel="stylesheet" href="fonts/fonts.css">
 <link rel="stylesheet" href="style.css">
 
@@ -31,34 +31,42 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "How is SIP maturity value calculated?",
+      "name": "How do I convert an hourly wage to an annual salary?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "SIP uses the future value of an annuity formula: each monthly investment compounds at the monthly rate for the remaining months, and all installments are summed. Returns are estimates, not guarantees — actual market returns vary and aren't linear."
+        "text": "Multiply the hourly rate by your hours per week, then by the number of weeks you actually work per year: annual = hourly × hours/week × weeks/year. A $25/hour job at 40 hours/week for 52 weeks is $52,000/year."
       }
     },
     {
       "@type": "Question",
-      "name": "What does the annual step-up field do?",
+      "name": "What's the difference between bi-weekly and semi-monthly pay?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "A step-up SIP increases your monthly contribution by a fixed percentage every 12 months, roughly matching how income tends to grow over time. This produces a noticeably larger maturity value than a flat SIP of the same starting amount."
+        "text": "Bi-weekly means every two weeks — 26 paychecks a year, and twice a year you get three paychecks in a month. Semi-monthly means twice a month on fixed dates (like the 15th and last day) — always 24 paychecks a year. They're commonly confused but produce different per-paycheck amounts for the same annual salary."
       }
     },
     {
       "@type": "Question",
-      "name": "What does the real value figure mean?",
+      "name": "Does this calculator include taxes?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Maturity value is the nominal future amount; real value discounts that by your expected inflation rate to show what it's actually worth in today's purchasing power."
+        "text": "No — every figure here is gross pay, before tax and other deductions. For take-home pay per paycheck, use the Paycheck Calculator once you know your annual or hourly gross rate from this page."
       }
     },
     {
       "@type": "Question",
-      "name": "How realistic is a 12% annual return assumption?",
+      "name": "What if I don't work a standard 40-hour, 5-day week?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "12% is a commonly used illustrative assumption for equity mutual funds in India based on long-term historical averages, but actual returns vary year to year and aren't guaranteed — treat it as a planning estimate, not a promise."
+        "text": "Adjust the hours-per-week and days-per-week fields to match your actual schedule — the conversion recalculates for your real hours rather than assuming a standard full-time week."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does unpaid time off affect the conversion?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Lower the \"weeks worked per year\" field below 52 to reflect unpaid weeks off. Salaried employees with paid time off should generally leave it at 52, since PTO doesn't reduce actual annual pay."
       }
     }
   ]
@@ -68,7 +76,7 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "SIP Calculator — TallyBench",
+  "name": "Salary Calculator — TallyBench",
   "applicationCategory": "UtilitiesApplication",
   "operatingSystem": "Any (runs in browser)",
   "offers": {
@@ -76,7 +84,7 @@
     "price": "0",
     "priceCurrency": "USD"
   },
-  "url": "https://tallybench.com/sip-calculator.html"
+  "url": "https://tallybench.com/salary-calculator.html"
 }
 </script>
 </head>
@@ -162,70 +170,86 @@
 <div class="nav-backdrop" id="navBackdrop"></div>
 
 <div class="wrap">
-  <div class="crumb"><a href="index.html">TallyBench</a> / SIP Calculator</div>
+  <div class="crumb"><a href="index.html">TallyBench</a> / Salary Calculator</div>
 
   <section class="hero">
     <div class="hero-icon-row cat-finance">
-      <div class="hero-icon"><svg><use href="icons.svg#icon-investment"/></svg></div>
-      <div class="eyebrow">// SIP CALCULATOR</div>
+      <div class="hero-icon"><svg><use href="icons.svg#icon-tax"/></svg></div>
+      <div class="eyebrow">// SALARY CALCULATOR</div>
     </div>
-    <h1>What your monthly SIP grows into.</h1>
-    <p>Enter a monthly investment, expected return, and duration to project your systematic investment plan's maturity value — with optional annual step-up and inflation-adjusted real value.</p>
+    <h1>See what your pay works out to, in every pay period.</h1>
+    <p>Enter your pay at any interval — hourly, weekly, monthly, or annual — and instantly see what it converts to across the rest, adjusted for your actual hours and weeks worked.</p>
   </section>
 
-  <section class="tool" id="sip">
-    <div class="disclaimer">
-      <strong>Estimate only — not investment advice.</strong> This projects growth using a constant assumed return rate you enter. Real markets fluctuate, and past or assumed returns don't guarantee future performance.
-    </div>
-    <div class="field" style="max-width:260px;margin-bottom:20px;">
-      <label>Currency</label>
-      <select id="dsipCur">
-        <option value="₹" selected>INR (₹)</option>
-        <option value="$">USD ($)</option>
-        <option value="€">EUR (€)</option>
-        <option value="£">GBP (£)</option>
-      </select>
-    </div>
+  <section class="tool" id="salary">
     <div class="card">
       <div>
-        <div class="field"><label>Monthly investment</label><input type="number" id="dsipAmt" value="10000" step="100"></div>
-        <div class="field"><label>Expected annual return (%)</label><input type="number" id="dsipRate" value="12" step="0.1"></div>
-        <div class="field"><label>Duration (years)</label><input type="number" id="dsipYears" value="10" min="1"></div>
-        <div class="field"><label>Annual step-up (%, optional)</label><input type="number" id="dsipStepUp" value="0" step="1" min="0"></div>
-        <div class="field"><label>Expected inflation (%, for real-value estimate)</label><input type="number" id="dsipInflation" value="6" step="0.1" min="0"></div>
+        <div class="row2">
+          <div class="field"><label>Pay amount</label><input type="number" id="salAmt" value="25" step="0.01"></div>
+          <div class="field"><label>Currency</label>
+            <select id="salCur">
+              <option value="$" selected>USD ($)</option>
+              <option value="€">EUR (€)</option>
+              <option value="£">GBP (£)</option>
+              <option value="₹">INR (₹)</option>
+              <option value="¥">JPY (¥)</option>
+              <option value="A$">AUD (A$)</option>
+              <option value="C$">CAD (C$)</option>
+              <option value="CHF ">CHF</option>
+              <option value="CN¥">CNY (CN¥)</option>
+              <option value="S$">SGD (S$)</option>
+              <option value="AED ">AED</option>
+              <option value="NZ$">NZD (NZ$)</option>
+              <option value="R">ZAR (R)</option>
+              <option value="R$">BRL (R$)</option>
+              <option value="MX$">MXN (MX$)</option>
+            </select>
+          </div>
+        </div>
+        <div class="field"><label>That amount is per</label>
+          <select id="salPeriod">
+            <option value="hour" selected>Hour</option>
+            <option value="day">Day</option>
+            <option value="week">Week</option>
+            <option value="biweek">Two weeks (bi-weekly)</option>
+            <option value="semimonth">Twice a month (semi-monthly)</option>
+            <option value="month">Month</option>
+            <option value="year">Year</option>
+          </select>
+        </div>
+        <div class="row2">
+          <div class="field"><label>Hours per week</label><input type="number" id="salHours" value="40" min="0" step="0.5"></div>
+          <div class="field"><label>Days per week</label><input type="number" id="salDays" value="5" min="0" max="7" step="0.5"></div>
+        </div>
+        <div class="field"><label>Weeks worked per year</label><input type="number" id="salWeeks" value="52" min="1" max="52" step="0.5"></div>
       </div>
       <div class="readout">
-        <div class="r-row"><span class="r-label">Total invested</span><span class="r-value" id="dsipInvested">0</span></div>
-        <div class="r-row"><span class="r-label">Estimated returns</span><span class="r-value" id="dsipReturns">0</span></div>
-        <div class="r-row"><span class="r-label">Maturity value</span><span class="r-value" id="dsipMaturity">0</span></div>
-        <div class="r-row"><span class="r-label">Real value (today's purchasing power)</span><span class="r-sub" id="dsipRealValue">—</span></div>
-        <div class="r-row"><span class="r-label">Final month's investment</span><span class="r-sub" id="dsipFinalMonthAmt">—</span></div>
+        <div class="r-row"><span class="r-label">Hourly</span><span class="r-value" id="salHourly">0</span></div>
+        <div class="r-row"><span class="r-label">Daily</span><span class="r-value" id="salDaily">0</span></div>
+        <div class="r-row"><span class="r-label">Weekly</span><span class="r-value" id="salWeekly">0</span></div>
+        <div class="r-row"><span class="r-label">Bi-weekly</span><span class="r-value" id="salBiweekly">0</span></div>
+        <div class="r-row"><span class="r-label">Semi-monthly</span><span class="r-value" id="salSemimonth">0</span></div>
+        <div class="r-row"><span class="r-label">Monthly</span><span class="r-value" id="salMonthly">0</span></div>
+        <div class="r-row"><span class="r-label">Annual</span><span class="r-value" id="salAnnual">0</span></div>
       </div>
-      <div class="field-warning" id="dsipWarning"></div>
-    </div>
-  </section>
-
-  <section style="padding:32px 0;border-bottom:1px solid var(--paper-line);">
-    <h2 style="font-family:'Space Grotesk',sans-serif;font-size:20px;margin:0 0 6px;">Year-by-year growth</h2>
-    <p style="color:var(--graphite);font-size:13px;margin:0 0 16px;">Cumulative invested amount vs. projected value, year by year.</p>
-    <div class="table-scroll">
-      <table class="bracket-table" style="margin-top:0;"><thead><tr><th>Year</th><th>Invested (cumulative)</th><th>Value</th><th>Growth</th></tr></thead><tbody id="dsipGrowthBody"></tbody></table>
     </div>
   </section>
 
   <section class="article">
-    <h3>How is SIP maturity value calculated?</h3>
-    <p>SIP uses the future value of an annuity formula: each monthly investment compounds at the monthly rate for the remaining months, and all installments are summed — <strong>maturity = P × [(1+r)^n − 1] / r × (1+r)</strong>, where P is your monthly amount, r the monthly rate, and n the number of months. Returns are estimates, not guarantees.</p>
-    <h3>What does the annual step-up field do?</h3>
-    <p>A step-up SIP increases your monthly contribution by a fixed percentage every 12 months — matching how most people's investable income actually grows. A 10% step-up on a ₹10,000/month SIP means ₹11,000/month in year two, ₹12,100/month in year three, and so on. Because later, larger contributions still get meaningful time to compound, a step-up SIP produces a noticeably larger maturity value than a flat SIP with the same starting amount.</p>
-    <h3>What does the "real value" figure mean?</h3>
-    <p>Maturity value is the nominal future amount; real value discounts that by your expected inflation rate to show what it's actually worth in today's purchasing power: <strong>real value = maturity ÷ (1 + inflation%)^years</strong>. A large maturity number can still lose to inflation if the assumed return barely beats it.</p>
-    <h3>How realistic is a 12% annual return assumption?</h3>
-    <p>12% is a commonly used illustrative assumption for equity mutual funds in India based on long-term historical averages, but actual returns vary year to year and aren't guaranteed. Consider also running the numbers at a more conservative rate (e.g. 8–10%) as a stress test.</p>
-    <p><strong>Worked example:</strong> investing ₹10,000/month for 10 years at an assumed 12% annual return grows to roughly ₹23.2 lakh, of which ₹12 lakh is your own contribution and about ₹11.2 lakh is projected growth.</p>
+    <h3>How does this conversion work?</h3>
+    <p>Every field is derived from a single common figure — your annual gross pay — computed from whichever period you entered: <strong>annual = hourly × hours/week × weeks/year</strong> (or the equivalent for daily, weekly, and monthly). Once the annual figure is known, every other period is just that number divided back down: weekly = annual ÷ weeks/year, monthly = annual ÷ 12, and so on.</p>
+    <h3>What's the difference between bi-weekly and semi-monthly pay?</h3>
+    <p>They're easy to mix up but genuinely different. <strong>Bi-weekly</strong> means every two weeks on the same weekday (e.g., every other Friday) — that's 26 pay periods a year, and twice a year the calendar gives you three paychecks in one month. <strong>Semi-monthly</strong> means twice a month on fixed calendar dates (like the 15th and the last day) — always exactly 24 pay periods a year, but the number of days between checks varies slightly (14–17 days). For the same annual salary, bi-weekly paychecks are smaller than semi-monthly ones, since the same total is split 26 ways instead of 24.</p>
+    <h3>Does this include taxes or deductions?</h3>
+    <p>No — every number above is gross pay, before income tax, payroll tax, or benefit deductions. Once you know your annual or hourly gross figure here, the <a href="paycheck-calculator.html">Paycheck Calculator</a> estimates what actually lands in your bank account after tax and payroll withholding.</p>
+    <h3>What if I don't work a standard schedule?</h3>
+    <p>Adjust the hours-per-week and days-per-week fields to your real schedule — part-time, four-day weeks, and irregular schedules all convert correctly once those two numbers reflect reality rather than the default full-time assumption of 40 hours across 5 days.</p>
+    <h3>How does unpaid time off change the numbers?</h3>
+    <p>Lower "weeks worked per year" below 52 to account for unpaid leave — a contractor who takes 4 unpaid weeks off should use 48, not 52, since those weeks don't contribute to actual annual earnings. Salaried employees with <em>paid</em> time off should generally leave it at 52, since PTO is already paid and doesn't reduce total annual pay.</p>
+    <h3>Why would a salaried employee want an hourly-equivalent number?</h3>
+    <p>Comparing job offers, moonlighting rates, freelance quotes, or the value of unpaid overtime all become easier once a salary is expressed as an hourly rate — it's the only unit that's directly comparable across a full-time job, a part-time job, and a freelance contract. Keep in mind this reverse-calculated hourly figure is for comparison only; it doesn't imply the job actually pays overtime the way an hourly position legally must.</p>
+    <p><strong>Worked example:</strong> $30/hour, 40 hours/week, 52 weeks/year → annual = 30 × 40 × 52 = $62,400. From there: weekly = $1,200, bi-weekly = $2,400, semi-monthly = $2,600, monthly = $5,200. Notice semi-monthly ($2,600) is higher than half of bi-weekly's fortnightly figure ($2,400) — that's the 24-vs-26-periods difference in action, not a rounding error.</p>
   </section>
-
-  <p style="font-size:13px;color:var(--graphite);margin:0 0 24px;">Also want SWP or CAGR projections? Use the combined <a href="investment-calculator.html">Investment Calculator</a>.</p>
 
   <!-- TB:MORETOOLS:START -->
   <nav class="more-tools" aria-label="More calculators">
@@ -241,6 +265,7 @@
       <li><a href="paycheck-calculator.html">Paycheck Calculator</a></li>
       <li><a href="gst-vat-calculator.html">GST / VAT Calculator</a></li>
       <li><a href="investment-calculator.html">Investment Calculator</a></li>
+      <li><a href="sip-calculator.html">SIP Calculator</a></li>
       <li><a href="compound-interest-calculator.html">Compound Interest Calculator</a></li>
       <li><a href="savings-goal-calculator.html">Savings Goal Calculator</a></li>
       <li><a href="retirement-calculator.html">Retirement Calculator</a></li>
@@ -253,7 +278,6 @@
       <li><a href="hra-calculator.html">HRA Calculator</a></li>
       <li><a href="break-even-calculator.html">Break-Even &amp; Profit Margin Calculator</a></li>
       <li><a href="debt-payoff-calculator.html">Debt Payoff Calculator</a></li>
-      <li><a href="salary-calculator.html">Salary Calculator</a></li>
       <li><a href="sales-tax-calculator.html">Sales Tax Calculator</a></li>
       <li><a href="cd-calculator.html">CD Calculator</a></li>
       <li><a href="bmi-calculator.html">BMI Calculator</a></li>
@@ -284,7 +308,7 @@
   <!-- TB:MORETOOLS:END -->
 
   <footer>
-    <p>TallyBench · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
+    <p>TALLYBENCH · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
   </footer>
 </div>
 
