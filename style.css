@@ -773,3 +773,60 @@ footer p{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--graph
    body-level element just by having a bigger z-index of its own. */
 body.nav-open .tb-chat-toggle,
 body.nav-open .tb-chat-panel{display:none;}
+
+/* EMBED WIDGET — "Embed this calculator" button + modal (normal page view) */
+.tb-embed-row{margin:-8px 0 20px;}
+.tb-embed-row button{font-size:11px;}
+.tb-embed-backdrop{
+  position:fixed;inset:0;z-index:300;
+  background:rgba(20,18,15,0.55);
+  display:flex;align-items:center;justify-content:center;padding:20px;
+}
+.tb-embed-backdrop[hidden]{display:none;}
+.tb-embed-modal{
+  background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow-lg);
+  width:min(560px, 100%);max-height:88vh;overflow-y:auto;
+}
+.tb-embed-modal-head{
+  background:linear-gradient(165deg, #211E19, var(--ink));color:var(--text-on-dark);
+  padding:14px 18px;display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;
+}
+.tb-embed-modal-head strong{font-family:'Space Grotesk',sans-serif;font-size:15px;}
+.tb-embed-close{
+  background:transparent;box-shadow:none;color:rgba(242,236,221,0.7);
+  padding:4px 8px;font-size:14px;
+}
+.tb-embed-close:hover{color:#fff;background:rgba(255,255,255,0.08);}
+.tb-embed-modal-body{padding:18px;display:flex;flex-direction:column;gap:8px;}
+.tb-embed-modal-body label{
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--graphite);
+  text-transform:uppercase;letter-spacing:0.05em;margin-top:8px;
+}
+.tb-embed-modal-body label:first-child{margin-top:0;}
+.tb-embed-modal-body textarea{
+  font-family:'JetBrains Mono',monospace;font-size:11.5px;min-height:90px;
+  background:var(--paper);color:var(--ink);resize:vertical;
+}
+
+/* EMBED MODE (?embed=1) — stripped-down layout meant for someone else's <iframe> */
+.tb-embed-mode header,
+.tb-embed-mode .nav-backdrop,
+.tb-embed-mode .crumb,
+.tb-embed-mode .hero,
+.tb-embed-mode .tb-embed-row,
+.tb-embed-mode .article,
+.tb-embed-mode .more-tools,
+.tb-embed-mode footer,
+.tb-embed-mode #cookieConsent,
+.tb-embed-mode #installBanner,
+.tb-embed-mode .tb-chat-toggle,
+.tb-embed-mode .tb-chat-panel{display:none !important;}
+.tb-embed-mode .wrap{padding:0 14px;max-width:100%;}
+.tb-embed-mode .tool{padding-top:14px;}
+.tb-embed-credit{
+  display:block;text-align:center;font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:0.05em;color:var(--graphite);
+  text-decoration:none;padding:10px 0 16px;
+}
+.tb-embed-credit:hover{color:var(--teal-dark);text-decoration:underline;}

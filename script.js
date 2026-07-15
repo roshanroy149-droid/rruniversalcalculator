@@ -1,5 +1,13 @@
+// ---- Embed-mode flag (?embed=1) — read once, checked by other IIFEs below ----
+// A page loaded this way is meant to be shown inside someone else's <iframe>,
+// so ads, the cookie gate, and the feedback chatbot all skip themselves here —
+// serving AdSense into a third-party embed without an arrangement risks
+// violating AdSense policy, and a cookie/chat popup makes no sense in a widget.
+window.__TB_EMBED__ = new URLSearchParams(window.location.search).get('embed') === '1';
+
 // ---- Cookie consent gate (Google AdSense advertising cookies) ----
 (function(){
+  if (window.__TB_EMBED__) return;
   var CONSENT_KEY = 'tb_ad_consent'; // 'accepted' | 'rejected'
   var ADSENSE_CLIENT = 'ca-pub-7800403656727097';
 
@@ -4709,6 +4717,7 @@ function amortizationToCSV(years, cur){
 
 // ---- Feedback chatbot widget (injected on every page) ----
 (function(){
+  if (window.__TB_EMBED__) return;
   // --- Fill these in after creating a free EmailJS account (emailjs.com):
   // 1. Add an Email Service connected to helpdesktallybench@gmail.com.
   // 2. Create an Email Template with a fixed "To email" of helpdesktallybench@gmail.com
@@ -5004,4 +5013,102 @@ function amortizationToCSV(years, cur){
   }
   updateOffset();
   new MutationObserver(updateOffset).observe(document.body, { childList:true, subtree:true, attributes:true, attributeFilter:['style','class'] });
+})();
+
+// ---- Embed widget: "Embed this calculator" (normal view) + stripped embed view (?embed=1) ----
+(function(){
+  const path = window.location.pathname.split('/').pop() || 'index.html';
+  const toolId = path.replace(/\.html$/, '');
+  const canonicalUrl = 'https://tallybench.com/' + path;
+
+  if (window.__TB_EMBED__) {
+    // ---- Running inside someone else's <iframe>: strip the site chrome ----
+    document.body.classList.add('tb-embed-mode');
+
+    const robotsMeta = document.createElement('meta');
+    robotsMeta.name = 'robots';
+    robotsMeta.content = 'noindex';
+    document.head.appendChild(robotsMeta);
+
+    const creditBar = document.createElement('a');
+    creditBar.className = 'tb-embed-credit';
+    creditBar.href = canonicalUrl;
+    creditBar.target = '_top';
+    creditBar.rel = 'noopener';
+    creditBar.textContent = 'Powered by TallyBench';
+    document.body.appendChild(creditBar);
+
+    function reportHeight(){
+      if (window.parent === window) return;
+      window.parent.postMessage({ tbEmbedId: toolId, tbEmbedHeight: document.documentElement.scrollHeight }, '*');
+    }
+    window.addEventListener('load', reportHeight);
+    if (window.ResizeObserver) {
+      new ResizeObserver(reportHeight).observe(document.body);
+    } else {
+      window.addEventListener('resize', reportHeight);
+    }
+    return;
+  }
+
+  // ---- Normal page view: offer an "Embed this calculator" button ----
+  const hero = document.querySelector('.hero');
+  const firstTool = document.querySelector('.tool .card');
+  if (!hero || !firstTool) return; // only on actual calculator pages, not index/about/privacy
+
+  const crumbEl = document.querySelector('.crumb');
+  const toolName = crumbEl ? crumbEl.textContent.split('/').pop().trim() : document.title;
+  const embedUrl = canonicalUrl + '?embed=1';
+  const iframeId = 'tb-embed-' + toolId;
+
+  const iframeSnippet =
+    '<iframe id="' + iframeId + '" src="' + embedUrl + '" width="100%" height="640" ' +
+    'style="border:0;max-width:640px;" loading="lazy" title="' + toolName + ' — TallyBench"></iframe>\n' +
+    '<script>window.addEventListener("message",function(e){if(e.data&&e.data.tbEmbedId==="' + toolId + '"){' +
+    'var f=document.getElementById("' + iframeId + '");if(f)f.style.height=e.data.tbEmbedHeight+"px";}});<' + '/script>';
+
+  const creditSnippet = 'Calculator by <a href="' + canonicalUrl + '" rel="noopener">TallyBench</a>';
+
+  const row = document.createElement('div');
+  row.className = 'tb-embed-row';
+  row.innerHTML = '<button type="button" class="ghost" id="tbEmbedOpen">&lt;/&gt; Embed this calculator</button>';
+  hero.insertAdjacentElement('afterend', row);
+
+  const backdrop = document.createElement('div');
+  backdrop.className = 'tb-embed-backdrop';
+  backdrop.hidden = true;
+  backdrop.innerHTML =
+    '<div class="tb-embed-modal">' +
+      '<div class="tb-embed-modal-head"><strong>Embed <span id="tbEmbedToolName"></span></strong>' +
+        '<button type="button" class="tb-embed-close" aria-label="Close">&#10005;</button></div>' +
+      '<div class="tb-embed-modal-body">' +
+        '<label>1. Paste this where you want the calculator to appear</label>' +
+        '<textarea readonly id="tbEmbedIframeCode"></textarea>' +
+        '<button type="button" class="ghost tb-embed-copy" data-target="tbEmbedIframeCode">Copy code</button>' +
+        '<label>2. Paste this directly below it — required, this is what credits TallyBench</label>' +
+        '<textarea readonly id="tbEmbedCreditCode"></textarea>' +
+        '<button type="button" class="ghost tb-embed-copy" data-target="tbEmbedCreditCode">Copy credit link</button>' +
+        '<p class="tb-chat-hint">The widget reports its own height automatically as visitors use it — no need to guess a size.</p>' +
+      '</div>' +
+    '</div>';
+  document.body.appendChild(backdrop);
+
+  document.getElementById('tbEmbedToolName').textContent = toolName;
+  document.getElementById('tbEmbedIframeCode').value = iframeSnippet;
+  document.getElementById('tbEmbedCreditCode').value = creditSnippet;
+
+  document.getElementById('tbEmbedOpen').addEventListener('click', ()=>{ backdrop.hidden = false; });
+  backdrop.querySelector('.tb-embed-close').addEventListener('click', ()=>{ backdrop.hidden = true; });
+  backdrop.addEventListener('click', (e)=>{ if(e.target === backdrop) backdrop.hidden = true; });
+  backdrop.querySelectorAll('.tb-embed-copy').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const ta = document.getElementById(btn.dataset.target);
+      ta.select();
+      navigator.clipboard.writeText(ta.value).then(()=>{
+        const original = btn.textContent;
+        btn.textContent = 'Copied!';
+        setTimeout(()=>{ btn.textContent = original; }, 1500);
+      }).catch(()=>{ /* selection above still lets the user copy manually */ });
+    });
+  });
 })();
