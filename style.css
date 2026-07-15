@@ -688,3 +688,88 @@ footer p{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--graph
   #cookieConsent .btn-row{width:100%;}
   #cookieConsent .btn-row button{flex:1 1 0;}
 }
+
+/* FEEDBACK CHATBOT WIDGET */
+.tb-chat-toggle{
+  position:fixed;right:24px;bottom:24px;z-index:90;
+  width:56px;height:56px;border-radius:50%;
+  background:var(--teal);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;line-height:1;padding:0;
+  box-shadow:var(--shadow-lg);
+  transition:bottom 0.2s ease, transform 0.15s ease;
+}
+.tb-chat-toggle:hover{transform:scale(1.06);}
+.tb-chat-toggle.tb-lifted{bottom:88px;}
+.tb-chat-panel{
+  position:fixed;right:24px;bottom:92px;z-index:95;
+  width:min(360px, calc(100vw - 32px));
+  max-height:min(520px, calc(100vh - 120px));
+  background:var(--card);border-radius:var(--radius);
+  box-shadow:var(--shadow-lg);
+  display:flex;flex-direction:column;overflow:hidden;
+  transition:bottom 0.2s ease;
+}
+.tb-chat-panel.tb-lifted{bottom:156px;}
+.tb-chat-panel[hidden]{display:none;}
+.tb-chat-head{
+  background:linear-gradient(165deg, #211E19, var(--ink));
+  color:var(--text-on-dark);
+  padding:14px 16px;display:flex;align-items:center;justify-content:space-between;
+  flex-shrink:0;
+}
+.tb-chat-head strong{font-family:'Space Grotesk',sans-serif;font-size:15px;}
+.tb-chat-head span{display:block;font-size:11px;color:rgba(242,236,221,0.6);margin-top:1px;}
+.tb-chat-close{
+  background:transparent;box-shadow:none;color:rgba(242,236,221,0.7);
+  padding:4px 8px;font-size:14px;
+}
+.tb-chat-close:hover{color:#fff;background:rgba(255,255,255,0.08);}
+.tb-chat-log{
+  flex:1 1 auto;min-height:0;overflow-y:auto;
+  padding:14px 16px;display:flex;flex-direction:column;gap:10px;
+  background:var(--paper);
+}
+.tb-msg{
+  max-width:82%;padding:9px 12px;border-radius:12px;
+  font-size:13.5px;line-height:1.5;white-space:pre-wrap;
+}
+.tb-msg a{color:inherit;text-decoration:underline;}
+.tb-msg-bot{
+  align-self:flex-start;background:#fff;color:var(--ink);
+  border:1px solid var(--paper-line);border-bottom-left-radius:3px;
+}
+.tb-msg-user{
+  align-self:flex-end;background:var(--teal);color:#fff;
+  border-bottom-right-radius:3px;
+}
+.tb-quick-replies{
+  display:flex;flex-wrap:wrap;gap:8px;padding:0 16px 12px;flex-shrink:0;background:var(--paper);
+}
+.tb-quick-replies button{
+  background:#fff;color:var(--teal-dark);border:1px solid var(--teal);
+  box-shadow:none;font-size:11px;padding:7px 11px;
+}
+.tb-quick-replies button:hover{background:rgba(47,110,104,0.08);}
+.tb-chat-form{
+  flex-shrink:0;border-top:1px solid var(--paper-line);
+  padding:12px 16px;display:flex;flex-direction:column;gap:8px;background:#fff;
+}
+.tb-chat-form[hidden]{display:none;}
+.tb-chat-form textarea{min-height:64px;font-size:13.5px;}
+.tb-chat-form input[type="email"]{font-size:13.5px;}
+.tb-chat-form .btn-row{margin-top:0;}
+.tb-chat-form .btn-row button{flex:1 1 auto;}
+.tb-chat-hint{font-size:10.5px;color:var(--graphite);margin:0;}
+.tb-chat-honeypot{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;}
+@media(max-width:480px){
+  .tb-chat-panel{right:16px;bottom:88px;width:calc(100vw - 32px);}
+  .tb-chat-toggle{right:16px;bottom:16px;}
+  .tb-chat-toggle.tb-lifted{bottom:80px;}
+  .tb-chat-panel.tb-lifted{bottom:144px;}
+}
+/* Hide while the mobile nav drawer is open — both sit in the same corner
+   and the drawer's stacking context (inside <header>) can't out-rank a
+   body-level element just by having a bigger z-index of its own. */
+body.nav-open .tb-chat-toggle,
+body.nav-open .tb-chat-panel{display:none;}

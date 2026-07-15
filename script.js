@@ -4706,3 +4706,302 @@ function amortizationToCSV(years, cur){
     });
   }
 })();
+
+// ---- Feedback chatbot widget (injected on every page) ----
+(function(){
+  // --- Fill these in after creating a free EmailJS account (emailjs.com):
+  // 1. Add an Email Service connected to helpdesktallybench@gmail.com.
+  // 2. Create an Email Template with a fixed "To email" of helpdesktallybench@gmail.com
+  //    and template variables: {{category}} {{message}} {{contact_email}} {{page_url}} {{user_agent}} {{sent_at}}
+  // 3. Paste your Public Key, Service ID, and Template ID below.
+  const EMAILJS_PUBLIC_KEY = 'Ag-smkHrLW_YQrNJF';
+  const EMAILJS_SERVICE_ID = 'service_32kwcs6';
+  const EMAILJS_TEMPLATE_ID = 'template_wn7kbdk';
+  const TEAM_EMAIL = 'helpdesktallybench@gmail.com';
+  const isConfigured = () =>
+    EMAILJS_PUBLIC_KEY.indexOf('YOUR_') !== 0 &&
+    EMAILJS_SERVICE_ID.indexOf('YOUR_') !== 0 &&
+    EMAILJS_TEMPLATE_ID.indexOf('YOUR_') !== 0;
+
+  const FAQS = [
+    { kw:['free','cost','price','pay','subscription'], a:"Every calculator on TallyBench is free, with no sign-up." },
+    { kw:['data','privacy','store','stored','saved','tracking'], a:'Your calculator inputs never leave your browser — nothing is stored on our servers. See the <a href="privacy-policy.html">Privacy Policy</a> for how ad cookies work.' },
+    { kw:['advice','professional','doctor','lawyer','financial advisor'], a:"These tools are for quick estimates and general math, not professional financial, tax, medical, or legal advice — please check anything important with a qualified professional." },
+    { kw:['accurate','accuracy','correct','formula','trust'], a:"We aim for accurate, well-sourced formulas across every calculator, but always double check anything with real financial or health stakes. Spotted something that looks off? Tell me below and I'll pass it to the team." },
+    { kw:['country','region','currency','india','us','uk','europe'], a:"Several calculators support multiple countries or currencies (tax, GST/VAT, retirement, and more) — look for a country or currency dropdown on the tool itself." },
+    { kw:['app','download','install','mobile'], a:'TallyBench works great in your mobile browser — use "Add to Home Screen" for an app-like icon, no app store needed.' },
+    { kw:['contact','email','reach','support'], a:'You can always reach the team directly at <a href="mailto:'+TEAM_EMAIL+'">'+TEAM_EMAIL+'</a>, or just tell me here and I\'ll send it for you.' }
+  ];
+
+  function matchFaq(text){
+    const t = text.toLowerCase();
+    let best = null, bestScore = 0;
+    FAQS.forEach(f=>{
+      let score = 0;
+      f.kw.forEach(k=>{ if(t.indexOf(k) !== -1) score++; });
+      if(score > bestScore){ bestScore = score; best = f; }
+    });
+    return bestScore > 0 ? best : null;
+  }
+
+  // ---- Rate limiting (protects the free EmailJS quota from abuse) ----
+  const LIMIT_KEY = 'tb_feedback_limit';
+  const MAX_PER_DAY = 5;
+  const MIN_GAP_MS = 20000;
+  function canSend(){
+    let state;
+    try { state = JSON.parse(localStorage.getItem(LIMIT_KEY)) || {}; } catch(e){ state = {}; }
+    const today = new Date().toISOString().slice(0,10);
+    if(state.day !== today){ state = { day: today, count: 0, last: 0 }; }
+    if(state.count >= MAX_PER_DAY) return { ok:false, reason:'daily' };
+    if(Date.now() - (state.last||0) < MIN_GAP_MS) return { ok:false, reason:'fast' };
+    return { ok:true, state };
+  }
+  function recordSend(state){
+    state.count = (state.count||0) + 1;
+    state.last = Date.now();
+    localStorage.setItem(LIMIT_KEY, JSON.stringify(state));
+  }
+
+  // ---- EmailJS lazy loader ----
+  let emailjsReady = null;
+  function loadEmailJS(){
+    if(emailjsReady) return emailjsReady;
+    emailjsReady = new Promise((resolve, reject)=>{
+      if(window.emailjs){ resolve(window.emailjs); return; }
+      const s = document.createElement('script');
+      s.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js';
+      s.onload = ()=>{
+        try{
+          window.emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+          resolve(window.emailjs);
+        } catch(e){ reject(e); }
+      };
+      s.onerror = ()=> reject(new Error('EmailJS failed to load'));
+      document.head.appendChild(s);
+    });
+    return emailjsReady;
+  }
+
+  // ---- Widget DOM ----
+  const toggle = document.createElement('button');
+  toggle.type = 'button';
+  toggle.className = 'tb-chat-toggle';
+  toggle.setAttribute('aria-label', 'Feedback and help');
+  toggle.textContent = '💬';
+
+  const panel = document.createElement('div');
+  panel.className = 'tb-chat-panel';
+  panel.hidden = true;
+  panel.innerHTML =
+    '<div class="tb-chat-head">' +
+      '<div><strong>TallyBench Help</strong><span>Usually replies by email</span></div>' +
+      '<button type="button" class="tb-chat-close" aria-label="Close">&#10005;</button>' +
+    '</div>' +
+    '<div class="tb-chat-log" id="tbChatLog"></div>' +
+    '<div class="tb-quick-replies" id="tbQuickReplies"></div>' +
+    '<div class="tb-chat-form" id="tbChatForm" hidden></div>';
+
+  document.body.appendChild(toggle);
+  document.body.appendChild(panel);
+
+  const logEl = panel.querySelector('#tbChatLog');
+  const quickEl = panel.querySelector('#tbQuickReplies');
+  const formEl = panel.querySelector('#tbChatForm');
+  const closeBtn = panel.querySelector('.tb-chat-close');
+
+  function addMsg(html, sender){
+    const div = document.createElement('div');
+    div.className = 'tb-msg ' + (sender === 'user' ? 'tb-msg-user' : 'tb-msg-bot');
+    div.innerHTML = html;
+    logEl.appendChild(div);
+    logEl.scrollTop = logEl.scrollHeight;
+  }
+
+  function showQuickReplies(options){
+    quickEl.innerHTML = '';
+    formEl.hidden = true;
+    options.forEach(opt=>{
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.textContent = opt.label;
+      btn.addEventListener('click', opt.onClick);
+      quickEl.appendChild(btn);
+    });
+  }
+
+  function clearQuickReplies(){ quickEl.innerHTML = ''; }
+
+  function showTextForm(opts){
+    clearQuickReplies();
+    formEl.hidden = false;
+    formEl.innerHTML =
+      '<textarea placeholder="' + opts.placeholder + '"></textarea>' +
+      '<input type="text" class="tb-chat-honeypot" tabindex="-1" autocomplete="off">' +
+      '<div class="btn-row"><button type="button" class="tb-submit">' + (opts.submitLabel||'Send') + '</button></div>';
+    const textarea = formEl.querySelector('textarea');
+    const honeypot = formEl.querySelector('.tb-chat-honeypot');
+    const submit = () => {
+      const val = textarea.value.trim();
+      if(!val) return;
+      if(honeypot.value){ return; } // bot filled the hidden field — silently drop
+      opts.onSubmit(val);
+    };
+    formEl.querySelector('.tb-submit').addEventListener('click', submit);
+    textarea.addEventListener('keydown', (e)=>{
+      if(e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); submit(); }
+    });
+    textarea.focus();
+  }
+
+  function showEmailForm(onSubmit){
+    clearQuickReplies();
+    formEl.hidden = false;
+    formEl.innerHTML =
+      '<input type="email" placeholder="you@example.com (optional)">' +
+      '<p class="tb-chat-hint">Leave blank to send anonymously — we\'ll only use this to reply.</p>' +
+      '<div class="btn-row"><button type="button" class="tb-submit">Send feedback</button><button type="button" class="ghost tb-skip">Skip</button></div>';
+    const input = formEl.querySelector('input');
+    formEl.querySelector('.tb-submit').addEventListener('click', ()=> onSubmit(input.value.trim()));
+    formEl.querySelector('.tb-skip').addEventListener('click', ()=> onSubmit(''));
+    input.focus();
+  }
+
+  function categoryPlaceholder(category){
+    if(category === 'bug') return 'Which calculator, and what happened?';
+    if(category === 'suggestion') return 'What calculator or feature would help?';
+    return 'Type your message…';
+  }
+
+  function categoryPrompt(category){
+    if(category === 'bug') return "Sorry about that — tell me which calculator and what went wrong.";
+    if(category === 'suggestion') return "I like it already. What should we build?";
+    if(category === 'question') return "Got it, I'll pass this question straight to the team.";
+    return "Go ahead — tell me what's on your mind.";
+  }
+
+  function startFeedback(category, prefillMessage){
+    if(prefillMessage){
+      askForEmail(category, prefillMessage);
+      return;
+    }
+    addMsg(categoryPrompt(category), 'bot');
+    showTextForm({
+      placeholder: categoryPlaceholder(category),
+      onSubmit: (text)=>{ addMsg(text, 'user'); askForEmail(category, text); }
+    });
+  }
+
+  function askForEmail(category, message){
+    addMsg("Want us to be able to reply? Leave your email, or skip.", 'bot');
+    showEmailForm((email)=> sendFeedback(category, message, email));
+  }
+
+  function sendFeedback(category, message, email){
+    formEl.hidden = true;
+    clearQuickReplies();
+
+    const gate = canSend();
+    if(!gate.ok){
+      const reason = gate.reason === 'daily'
+        ? "You've hit today's feedback limit on this device."
+        : "That was quick — give it a few seconds and try again.";
+      addMsg(reason + ' In the meantime, email us directly at <a href="mailto:'+TEAM_EMAIL+'">'+TEAM_EMAIL+'</a>.', 'bot');
+      showQuickReplies([{ label: 'Close', onClick: closePanel }]);
+      return;
+    }
+
+    if(!isConfigured()){
+      const subject = encodeURIComponent('TallyBench feedback: ' + category);
+      const body = encodeURIComponent(message + (email ? ('\n\nReply to: ' + email) : ''));
+      addMsg('Thanks! The team inbox isn\'t fully wired up yet — please send this directly: <a href="mailto:'+TEAM_EMAIL+'?subject='+subject+'&body='+body+'">email us your message</a>.', 'bot');
+      showQuickReplies([{ label: 'Close', onClick: closePanel }]);
+      return;
+    }
+
+    addMsg('Sending…', 'bot');
+    loadEmailJS().then(emailjs=>{
+      return emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+        category: category,
+        message: message,
+        contact_email: email || '(not provided)',
+        page_url: window.location.href,
+        user_agent: navigator.userAgent,
+        sent_at: new Date().toLocaleString()
+      });
+    }).then(()=>{
+      recordSend(gate.state);
+      addMsg("Thanks — that's on its way to our team. 🎉", 'bot');
+      showQuickReplies([
+        { label: 'Send another', onClick: startOver },
+        { label: 'Close', onClick: closePanel }
+      ]);
+    }).catch(()=>{
+      addMsg('That didn\'t go through. Please email us directly at <a href="mailto:'+TEAM_EMAIL+'">'+TEAM_EMAIL+'</a> — sorry for the hassle.', 'bot');
+      showQuickReplies([{ label: 'Close', onClick: closePanel }]);
+    });
+  }
+
+  function startQuestion(){
+    clearQuickReplies();
+    showTextForm({
+      placeholder: 'Type your question…',
+      onSubmit: handleQuestion
+    });
+  }
+
+  function handleQuestion(text){
+    addMsg(text, 'user');
+    const match = matchFaq(text);
+    if(match){
+      addMsg(match.a, 'bot');
+      showQuickReplies([
+        { label: 'That answers it', onClick: ()=>{ addMsg('Glad I could help! 🎉', 'bot'); showQuickReplies([{ label:'Ask something else', onClick:startQuestion }, { label:'Close', onClick:closePanel }]); } },
+        { label: 'Send to the team instead', onClick: ()=> startFeedback('question', text) }
+      ]);
+    } else {
+      addMsg("I don't have a canned answer for that — want me to send it to the team instead?", 'bot');
+      showQuickReplies([
+        { label: 'Yes, send it', onClick: ()=> startFeedback('question', text) },
+        { label: 'Try again', onClick: startQuestion }
+      ]);
+    }
+  }
+
+  function startOver(greeting){
+    logEl.innerHTML = '';
+    addMsg(greeting || "Hi again! 👋 What can I do for you?", 'bot');
+    showQuickReplies([
+      { label: '🐛 Report a bug', onClick: ()=> startFeedback('bug') },
+      { label: '💡 Suggest a calculator', onClick: ()=> startFeedback('suggestion') },
+      { label: '❓ Ask a question', onClick: startQuestion },
+      { label: '💬 General feedback', onClick: ()=> startFeedback('general') }
+    ]);
+  }
+
+  function closePanel(){ panel.hidden = true; }
+
+  let opened = false;
+  toggle.addEventListener('click', ()=>{
+    panel.hidden = !panel.hidden;
+    if(!panel.hidden && !opened){
+      opened = true;
+      startOver("Hi! 👋 I'm the TallyBench helper. What can I do for you?");
+    }
+  });
+  closeBtn.addEventListener('click', closePanel);
+
+  // ---- Keep the widget clear of the cookie/install banners at the bottom ----
+  function isVisible(el){
+    if(!el) return false;
+    const cs = getComputedStyle(el);
+    return cs.display !== 'none' && cs.visibility !== 'hidden';
+  }
+  function updateOffset(){
+    const lifted = isVisible(document.getElementById('cookieConsent')) || isVisible(document.getElementById('installBanner'));
+    toggle.classList.toggle('tb-lifted', lifted);
+    panel.classList.toggle('tb-lifted', lifted);
+  }
+  updateOffset();
+  new MutationObserver(updateOffset).observe(document.body, { childList:true, subtree:true, attributes:true, attributeFilter:['style','class'] });
+})();
