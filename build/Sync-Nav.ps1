@@ -49,12 +49,21 @@ function New-MoreToolsBlock($indent, $selfId) {
     $lines = New-Object System.Collections.Generic.List[string]
     $lines.Add("$indent<nav class=`"more-tools`" aria-label=`"More calculators`">")
     $lines.Add("$indent  <h2>More calculators</h2>")
-    $lines.Add("$indent  <ul>")
-    foreach ($tool in $data.tools) {
-        if ($tool.id -eq $selfId) { continue }
-        $lines.Add("$indent    <li><a href=`"$($tool.file)`">$($tool.title)</a></li>")
+    $lines.Add("$indent  <div class=`"more-tools-groups`">")
+    foreach ($cat in $data.categories) {
+        $toolsInCat = @($data.tools | Where-Object { $_.category -eq $cat.id -and $_.id -ne $selfId })
+        if ($toolsInCat.Count -eq 0) { continue }
+        $label = (Get-Culture).TextInfo.ToTitleCase($cat.label.ToLower())
+        $lines.Add("$indent    <div class=`"more-tools-group`">")
+        $lines.Add("$indent      <h3>$label</h3>")
+        $lines.Add("$indent      <ul>")
+        foreach ($tool in $toolsInCat) {
+            $lines.Add("$indent        <li><a href=`"$($tool.file)`">$($tool.title)</a></li>")
+        }
+        $lines.Add("$indent      </ul>")
+        $lines.Add("$indent    </div>")
     }
-    $lines.Add("$indent  </ul>")
+    $lines.Add("$indent  </div>")
     $lines.Add("$indent</nav>")
     return ($lines -join $nl)
 }
