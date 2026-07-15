@@ -172,13 +172,25 @@ body.nav-open .nav-toggle span:nth-child(1){transform:translateY(7px) rotate(45d
 body.nav-open .nav-toggle span:nth-child(2){opacity:0;}
 body.nav-open .nav-toggle span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
 
+/* z-index must stay below header's own (50) — .nav-drawer lives inside
+   <header>, which is position:sticky with z-index:50 and so establishes its
+   own stacking context. A fixed-position element nested inside it can't
+   escape that context just by having a bigger z-index of its own; the whole
+   header (drawer included) is compared against this backdrop as one unit at
+   header's z-index. A backdrop z-index higher than 50 paints over the
+   entire header — drawer included — silently swallowing every tap on it. */
 .nav-backdrop{
   display:none;
   position:fixed;inset:0;
   background:rgba(20,18,15,0.55);
-  z-index:150;
+  z-index:40;
 }
 body.nav-open .nav-backdrop{display:block;}
+
+/* Drawer-only close button — hidden by default since on desktop the nav
+   isn't a drawer at all, it's the normal inline ruler. Only the mobile
+   media query below turns it back on. */
+.nav-drawer-head{display:none;}
 
 /* Below the mobile breakpoint, the two-tier ruler nav (which works fine as a
    horizontal strip on desktop) stops trying to fit categories + 40 tools
