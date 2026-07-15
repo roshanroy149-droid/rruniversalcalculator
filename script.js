@@ -5112,3 +5112,802 @@ function amortizationToCSV(years, cur){
     });
   });
 })();
+
+// ---- Amortization Schedule Calculator ----
+(function () {
+  var amAmt = document.getElementById('amLoanAmt');
+  var amRate = document.getElementById('amRate');
+  var amYears = document.getElementById('amYears');
+  var amSeg = document.getElementById('amViewSeg');
+  if (!amAmt || !amRate || !amYears) return; // not on this page
+
+  var amMonthly = document.getElementById('amMonthly');
+  var amPrincipalOut = document.getElementById('amPrincipal');
+  var amInterestOut = document.getElementById('amInterest');
+  var amTotalOut = document.getElementById('amTotal');
+  var amThead = document.getElementById('amThead');
+  var amTbody = document.getElementById('amTbody');
+
+  var currentView = 'yearly';
+
+  function fmt(n) {
+    return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  function buildSchedule(P, rate, years) {
+    var i = rate / 100 / 12;
+    var n = Math.round(years * 12);
+    var M = (i === 0) ? (P / n) : (P * i / (1 - Math.pow(1 + i, -n)));
+    var balance = P;
+    var rows = [];
+    var totalInterest = 0;
+    for (var m = 1; m <= n; m++) {
+      var interest = balance * i;
+      var principal = M - interest;
+      balance -= principal;
+      if (m === n) balance = 0; // clamp final-month floating point residue
+      totalInterest += interest;
+      rows.push({ month: m, payment: M, principal: principal, interest: interest, balance: balance });
+    }
+    return { M: M, n: n, rows: rows, totalInterest: totalInterest };
+  }
+
+  function aggregateYearly(rows) {
+    var years = [];
+    var yearNum = 0;
+    for (var idx = 0; idx < rows.length; idx++) {
+      if (idx % 12 === 0) {
+        yearNum++;
+        years.push({ year: yearNum, principal: 0, interest: 0, balance: 0 });
+      }
+      var y = years[years.length - 1];
+      y.principal += rows[idx].principal;
+      y.interest += rows[idx].interest;
+      y.balance = rows[idx].balance;
+    }
+    return years;
+  }
+
+  function renderTable(schedule) {
+    if (currentView === 'yearly') {
+      amThead.innerHTML = '<tr><th>Year</th><th>Principal Paid</th><th>Interest Paid</th><th>Ending Balance</th></tr>';
+      var years = aggregateYearly(schedule.rows);
+      var html = '';
+      for (var y = 0; y < years.length; y++) {
+        var row = years[y];
+        html += '<tr><td>' + row.year + '</td><td>' + fmt(row.principal) + '</td><td>' + fmt(row.interest) + '</td><td>' + fmt(row.balance) + '</td></tr>';
+      }
+      amTbody.innerHTML = html;
+    } else {
+      amThead.innerHTML = '<tr><th>Month</th><th>Payment</th><th>Principal</th><th>Interest</th><th>Ending Balance</th></tr>';
+      var html2 = '';
+      for (var r = 0; r < schedule.rows.length; r++) {
+        var row2 = schedule.rows[r];
+        html2 += '<tr><td>' + row2.month + '</td><td>' + fmt(row2.payment) + '</td><td>' + fmt(row2.principal) + '</td><td>' + fmt(row2.interest) + '</td><td>' + fmt(row2.balance) + '</td></tr>';
+      }
+      amTbody.innerHTML = html2;
+    }
+  }
+
+  function calc() {
+    var P = parseFloat(amAmt.value) || 0;
+    var rate = parseFloat(amRate.value) || 0;
+    var years = parseFloat(amYears.value) || 0;
+    if (P <= 0 || years <= 0) {
+      amMonthly.textContent = '$0';
+      amPrincipalOut.textContent = '$0';
+      amInterestOut.textContent = '$0';
+      amTotalOut.textContent = '$0';
+      amThead.innerHTML = '';
+      amTbody.innerHTML = '';
+      return;
+    }
+    var schedule = buildSchedule(P, rate, years);
+    amMonthly.textContent = fmt(schedule.M);
+    amPrincipalOut.textContent = fmt(P);
+    amInterestOut.textContent = fmt(schedule.totalInterest);
+    amTotalOut.textContent = fmt(P + schedule.totalInterest);
+    renderTable(schedule);
+  }
+
+  [amAmt, amRate, amYears].forEach(function (el) {
+    el.addEventListener('input', calc);
+  });
+
+  if (amSeg) {
+    var segButtons = amSeg.querySelectorAll('button');
+    segButtons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        segButtons.forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        currentView = btn.getAttribute('data-view');
+        calc();
+      });
+    });
+  }
+
+  calc();
+})();
+
+// ---- 401(k) Calculator ----
+(function () {
+  var kAge = document.getElementById('kAge');
+  var kRetAge = document.getElementById('kRetAge');
+  var kBalance = document.getElementById('kBalance');
+  var kSalary = document.getElementById('kSalary');
+  var kContribPct = document.getElementById('kContribPct');
+  var kMatchRate = document.getElementById('kMatchRate');
+  var kMatchLimit = document.getElementById('kMatchLimit');
+  var kGrowth = document.getElementById('kGrowth');
+  var kReturn = document.getElementById('kReturn');
+  if (!kAge || !kRetAge || !kBalance || !kSalary) return; // not on this page
+
+  var kFinalBalance = document.getElementById('kFinalBalance');
+  var kTotalEmployee = document.getElementById('kTotalEmployee');
+  var kTotalEmployer = document.getElementById('kTotalEmployer');
+  var kTotalGrowth = document.getElementById('kTotalGrowth');
+
+  function fmt(n) {
+    return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  function calc() {
+    var age = parseFloat(kAge.value) || 0;
+    var retAge = parseFloat(kRetAge.value) || 0;
+    var balance = parseFloat(kBalance.value) || 0;
+    var salary = parseFloat(kSalary.value) || 0;
+    var yourPct = parseFloat(kContribPct.value) || 0;
+    var matchRate = parseFloat(kMatchRate.value) || 0;
+    var matchLimitPct = parseFloat(kMatchLimit.value) || 0;
+    var growthRate = parseFloat(kGrowth.value) || 0;
+    var returnRate = parseFloat(kReturn.value) || 0;
+
+    if (retAge <= age) {
+      kFinalBalance.textContent = fmt(balance);
+      kTotalEmployee.textContent = '$0';
+      kTotalEmployer.textContent = '$0';
+      kTotalGrowth.textContent = '$0';
+      return;
+    }
+
+    var totalEmployee = 0;
+    var totalEmployer = 0;
+
+    for (var a = age; a < retAge; a++) {
+      var employeeContrib = salary * yourPct / 100;
+      var matchedPct = Math.min(yourPct, matchLimitPct);
+      var employerContrib = salary * matchedPct / 100 * matchRate / 100;
+      balance = (balance + employeeContrib + employerContrib) * (1 + returnRate / 100);
+      totalEmployee += employeeContrib;
+      totalEmployer += employerContrib;
+      salary *= (1 + growthRate / 100);
+    }
+
+    var totalGrowth = balance - totalEmployee - totalEmployer;
+
+    kFinalBalance.textContent = fmt(balance);
+    kTotalEmployee.textContent = fmt(totalEmployee);
+    kTotalEmployer.textContent = fmt(totalEmployer);
+    kTotalGrowth.textContent = fmt(totalGrowth);
+  }
+
+  [kAge, kRetAge, kBalance, kSalary, kContribPct, kMatchRate, kMatchLimit, kGrowth, kReturn].forEach(function (el) {
+    el.addEventListener('input', calc);
+  });
+
+  calc();
+})();
+
+// ---- IRA & Roth IRA Calculator ----
+(function(){
+  if(!document.getElementById('iraAge')) return;
+
+  function money(n){
+    return (n<0?'-':'')+'$'+Math.round(Math.abs(n)).toLocaleString();
+  }
+
+  function calc(){
+    const age = parseFloat(document.getElementById('iraAge').value)||0;
+    const retAge = parseFloat(document.getElementById('iraRetAge').value)||0;
+    const startBalance = parseFloat(document.getElementById('iraBalance').value)||0;
+    const contrib = parseFloat(document.getElementById('iraContrib').value)||0;
+    const ret = parseFloat(document.getElementById('iraReturn').value)||0;
+    const curTax = parseFloat(document.getElementById('iraCurTax').value)||0;
+    const retTax = parseFloat(document.getElementById('iraRetTax').value)||0;
+
+    const years = Math.max(0, Math.round(retAge - age));
+
+    let balance = startBalance;
+    for(let i=0; i<years; i++){
+      balance = (balance + contrib) * (1 + ret/100);
+    }
+
+    const totalContributions = contrib * years;
+
+    const tradAfterTax = balance * (1 - retTax/100);
+    const tradTaxPaid = balance - tradAfterTax;
+
+    const rothTaxPaidToday = totalContributions * curTax/100;
+    const rothAfterTax = balance;
+
+    document.getElementById('iraTradBalance').textContent = money(balance);
+    document.getElementById('iraTradTax').textContent = money(tradTaxPaid);
+    document.getElementById('iraTradAfterTax').textContent = money(tradAfterTax);
+
+    document.getElementById('iraRothBalance').textContent = money(balance);
+    document.getElementById('iraRothTax').textContent = money(rothTaxPaidToday);
+    document.getElementById('iraRothAfterTax').textContent = money(rothAfterTax);
+
+    const yearsEl = document.getElementById('iraYears');
+    if(yearsEl) yearsEl.textContent = years;
+    const totalContribEl = document.getElementById('iraTotalContrib');
+    if(totalContribEl) totalContribEl.textContent = money(totalContributions);
+  }
+
+  ['iraAge','iraRetAge','iraBalance','iraContrib','iraReturn','iraCurTax','iraRetTax'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+  calc();
+})();
+
+// ---- House Affordability Calculator ----
+(function(){
+  if(!document.getElementById('affIncome')) return;
+
+  function money(n){
+    return (n<0?'-':'')+'$'+Math.round(Math.abs(n)).toLocaleString();
+  }
+
+  function setWarning(msg){
+    const el = document.getElementById('affWarning');
+    if(!el) return;
+    if(msg){ el.textContent = msg; el.classList.add('show'); }
+    else { el.textContent = ''; el.classList.remove('show'); }
+  }
+
+  function calc(){
+    const income = parseFloat(document.getElementById('affIncome').value)||0;
+    const debts = parseFloat(document.getElementById('affDebts').value)||0;
+    const down = parseFloat(document.getElementById('affDown').value)||0;
+    const rate = parseFloat(document.getElementById('affRate').value)||0;
+    const term = parseFloat(document.getElementById('affTerm').value)||30;
+    const dti = parseFloat(document.getElementById('affDTI').value)||0;
+    const taxRate = parseFloat(document.getElementById('affTaxRate').value)||0;
+    const insRate = parseFloat(document.getElementById('affInsRate').value)||0;
+    const hoa = parseFloat(document.getElementById('affHoa').value)||0;
+
+    const i = rate/100/12;
+    const n = term*12;
+    const k = i===0 ? 1/n : i/(1-Math.pow(1+i,-n));
+    const m = (taxRate + insRate)/1200;
+
+    const maxMonthlyDebtPayment = (income/12) * (dti/100) - debts;
+    const D = down;
+    const numerator = maxMonthlyDebtPayment - hoa + D*k;
+
+    let maxPrice = 0, maxLoan = 0, monthlyPayment = 0, downPct = 0;
+
+    if(numerator <= 0 || (k+m) <= 0){
+      setWarning('Your existing debts already exceed the allowed debt-to-income ratio at this income level, so the calculated maximum home price is $0. Try lowering existing debts, raising the allowed DTI ratio, or increasing income.');
+    } else {
+      maxPrice = numerator / (k+m);
+      maxLoan = Math.max(maxPrice - D, 0);
+      const pi = maxLoan*k;
+      const taxIns = maxPrice*m;
+      monthlyPayment = pi + taxIns + hoa;
+      downPct = maxPrice>0 ? (D/maxPrice)*100 : 0;
+      setWarning(null);
+    }
+
+    document.getElementById('affMaxPrice').textContent = money(maxPrice);
+    document.getElementById('affMaxLoan').textContent = money(maxLoan);
+    document.getElementById('affMonthly').textContent = money(monthlyPayment);
+    document.getElementById('affDownPct').textContent = downPct.toFixed(1)+'%';
+  }
+
+  ['affIncome','affDebts','affDown','affRate','affTerm','affDTI','affTaxRate','affInsRate','affHoa'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+  calc();
+})();
+
+// ---- Down Payment Calculator ----
+(function(){
+  const priceEl = document.getElementById('dpPrice');
+  if(!priceEl) return;
+  const modeSeg = document.getElementById('dpModeSeg');
+  const downEl = document.getElementById('dpDownInput');
+  const downLabel = document.getElementById('dpDownLabel');
+  const pmiRateEl = document.getElementById('dpPmiRate');
+  const pmiWrap = document.getElementById('dpPmiRateWrap');
+  let mode = 'percent';
+
+  function setWarning(msg){
+    const el = document.getElementById('dpWarning');
+    if(!el) return;
+    if(msg){ el.textContent = msg; el.classList.add('show'); }
+    else { el.textContent = ''; el.classList.remove('show'); }
+  }
+
+  function calc(){
+    const price = parseFloat(priceEl.value)||0;
+    const inputVal = parseFloat(downEl.value)||0;
+    let downAmt, downPct;
+
+    if(mode === 'percent'){
+      downPct = inputVal;
+      downAmt = price * downPct/100;
+    } else {
+      downAmt = inputVal;
+      downPct = price>0 ? (downAmt/price*100) : 0;
+    }
+
+    if(price <= 0){
+      setWarning('Home price must be greater than zero.');
+    } else if(downAmt < 0){
+      setWarning('Down payment can\'t be negative.');
+    } else if(downAmt >= price){
+      setWarning('Down payment can\'t be greater than or equal to the home price — there would be nothing left to borrow.');
+    } else {
+      setWarning(null);
+    }
+
+    const loanAmt = Math.max(price - downAmt, 0);
+    const pmiRequired = downPct < 20;
+    if(pmiWrap) pmiWrap.style.display = pmiRequired ? '' : 'none';
+    const pmiRate = parseFloat(pmiRateEl.value)||0;
+    const monthlyPmi = pmiRequired ? (loanAmt*pmiRate/100)/12 : 0;
+
+    document.getElementById('dpDownAmt').textContent = '$'+downAmt.toLocaleString(undefined,{maximumFractionDigits:0});
+    document.getElementById('dpDownPct').textContent = downPct.toFixed(2)+'%';
+    document.getElementById('dpLoanAmt').textContent = '$'+loanAmt.toLocaleString(undefined,{maximumFractionDigits:0});
+    document.getElementById('dpPmiRequired').textContent = pmiRequired ? 'Yes' : 'No';
+    document.getElementById('dpMonthlyPmi').textContent = pmiRequired
+      ? '$'+monthlyPmi.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})+'/mo'
+      : '$0 — 20%+ down avoids PMI';
+  }
+
+  function setMode(newMode){
+    mode = newMode;
+    if(mode === 'percent'){
+      downLabel.textContent = 'Down payment (%)';
+      downEl.step = '0.1';
+      downEl.value = 10;
+    } else {
+      downLabel.textContent = 'Down payment ($)';
+      downEl.step = '100';
+      downEl.value = 40000;
+    }
+    calc();
+  }
+
+  if(modeSeg){
+    modeSeg.addEventListener('click', (e)=>{
+      const btn = e.target.closest('button');
+      if(!btn) return;
+      modeSeg.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      setMode(btn.dataset.mode);
+    });
+  }
+
+  [priceEl, downEl, pmiRateEl].forEach(el=>{
+    if(!el) return;
+    el.addEventListener('input', calc);
+  });
+  calc();
+})();
+
+// ---- Debt-to-Income Ratio Calculator ----
+(function(){
+  const incomeEl = document.getElementById('dtiIncome');
+  if(!incomeEl) return;
+  const rentEl = document.getElementById('dtiRent');
+  const carEl = document.getElementById('dtiCar');
+  const studentEl = document.getElementById('dtiStudent');
+  const cardEl = document.getElementById('dtiCard');
+  const otherEl = document.getElementById('dtiOther');
+
+  function band(dti){
+    if(dti <= 36) return 'Healthy — well within typical lending guidelines';
+    if(dti <= 43) return 'Manageable — near the upper limit many mortgage lenders allow';
+    if(dti <= 49) return 'High — you may have trouble qualifying for new credit';
+    return 'Very high — lenders will likely decline new credit applications';
+  }
+
+  function calc(){
+    const income = parseFloat(incomeEl.value)||0;
+    const debtEls = [rentEl, carEl, studentEl, cardEl, otherEl];
+    const totalDebt = debtEls.reduce((sum, el)=> sum + (parseFloat(el.value)||0), 0);
+    const dti = income>0 ? (totalDebt/income*100) : 0;
+
+    document.getElementById('dtiTotalDebt').textContent = '$'+totalDebt.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+    document.getElementById('dtiIncomeOut').textContent = '$'+income.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+    document.getElementById('dtiRatio').textContent = dti.toFixed(2)+'%';
+    document.getElementById('dtiAssessment').textContent = income>0 ? band(dti) : '—';
+  }
+
+  [incomeEl, rentEl, carEl, studentEl, cardEl, otherEl].forEach(el=>{
+    if(!el) return;
+    el.addEventListener('input', calc);
+  });
+  calc();
+})();
+
+// ---- Simple Interest Calculator ----
+(function(){
+  const principalEl = document.getElementById('siPrincipal');
+  if(!principalEl) return;
+  const rateEl = document.getElementById('siRate');
+  const timeEl = document.getElementById('siTime');
+
+  function calc(){
+    const principal = parseFloat(principalEl.value)||0;
+    const rate = parseFloat(rateEl.value)||0;
+    const time = parseFloat(timeEl.value)||0;
+    const interest = principal*rate/100*time;
+    const total = principal+interest;
+
+    document.getElementById('siPrincipalOut').textContent = '$'+principal.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+    document.getElementById('siInterest').textContent = '$'+interest.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+    document.getElementById('siTotal').textContent = '$'+total.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+  }
+
+  [principalEl, rateEl, timeEl].forEach(el=>{
+    if(!el) return;
+    el.addEventListener('input', calc);
+  });
+  calc();
+})();
+
+// ---- ROI Calculator ----
+(function(){
+  if(!document.getElementById('roiInitial')) return;
+
+  function fmtMoney(v){
+    const sign = v<0 ? '-' : '';
+    return sign+'$'+Math.abs(v).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+  }
+
+  function calc(){
+    const initial = parseFloat(document.getElementById('roiInitial').value)||0;
+    const finalValue = parseFloat(document.getElementById('roiFinal').value)||0;
+    const costs = parseFloat(document.getElementById('roiCosts').value)||0;
+    const years = parseFloat(document.getElementById('roiYears').value)||0;
+    const warnEl = document.getElementById('roiWarning');
+
+    const gain = finalValue - initial - costs;
+    const roiPercent = initial>0 ? (gain/initial*100) : null;
+    const annualized = (years>0 && initial>0 && finalValue>0)
+      ? (Math.pow(finalValue/initial, 1/years)-1)*100
+      : null;
+
+    if(warnEl){
+      if(initial<=0){
+        warnEl.textContent = 'Enter an initial investment greater than zero to compute ROI.';
+        warnEl.classList.add('show');
+      } else {
+        warnEl.textContent = '';
+        warnEl.classList.remove('show');
+      }
+    }
+
+    document.getElementById('roiGain').textContent = fmtMoney(gain);
+    document.getElementById('roiPercent').textContent = roiPercent===null ? '—' : roiPercent.toFixed(2)+'%';
+    document.getElementById('roiAnnualized').textContent = annualized===null ? '—' : annualized.toFixed(2)+'%';
+  }
+
+  ['roiInitial','roiFinal','roiCosts','roiYears'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+  calc();
+})();
+
+// ---- Credit Card Payoff Calculator ----
+(function(){
+  if(!document.getElementById('ccpModeSeg')) return;
+  const modeSeg = document.getElementById('ccpModeSeg');
+  const fixedFields = document.getElementById('ccpFixedFields');
+  const targetFields = document.getElementById('ccpTargetFields');
+  const fixedReadout = document.getElementById('ccpFixedReadout');
+  const targetReadout = document.getElementById('ccpTargetReadout');
+  let mode = 'fixed';
+
+  function fmtMoney(v){
+    return '$'+v.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+  }
+
+  function calcFixed(){
+    const balance0 = parseFloat(document.getElementById('ccpBalanceA').value)||0;
+    const apr = parseFloat(document.getElementById('ccpAprA').value)||0;
+    const payment = parseFloat(document.getElementById('ccpPayment').value)||0;
+    const warnEl = document.getElementById('ccpWarningA');
+    const i = apr/100/12;
+    let balance = balance0, months = 0, totalInterest = 0, tooLow = false;
+
+    for(let k=0;k<600;k++){
+      if(balance<=0) break;
+      const interestThisMonth = balance*i;
+      if(payment<=interestThisMonth){ tooLow = true; break; }
+      balance = balance + interestThisMonth - payment;
+      months++;
+      totalInterest += interestThisMonth;
+      if(balance<=0){ balance = 0; break; }
+    }
+
+    if(tooLow || balance0<=0){
+      if(warnEl){
+        warnEl.textContent = balance0<=0
+          ? 'Enter a balance greater than zero.'
+          : 'This payment is too low — the balance will never shrink at this rate. Increase your payment.';
+        warnEl.classList.add('show');
+      }
+      document.getElementById('ccpMonths').textContent = '—';
+      document.getElementById('ccpTotalInterestA').textContent = '—';
+      document.getElementById('ccpTotalPaidA').textContent = '—';
+      return;
+    }
+    if(warnEl){ warnEl.textContent=''; warnEl.classList.remove('show'); }
+    document.getElementById('ccpMonths').textContent = months;
+    document.getElementById('ccpTotalInterestA').textContent = fmtMoney(totalInterest);
+    document.getElementById('ccpTotalPaidA').textContent = fmtMoney(balance0+totalInterest);
+  }
+
+  function calcTarget(){
+    const balance = parseFloat(document.getElementById('ccpBalanceB').value)||0;
+    const apr = parseFloat(document.getElementById('ccpAprB').value)||0;
+    const n = parseFloat(document.getElementById('ccpTargetMonths').value)||0;
+    const i = apr/100/12;
+
+    if(n<=0 || balance<=0){
+      document.getElementById('ccpRequiredPayment').textContent = '—';
+      document.getElementById('ccpTotalInterestB').textContent = '—';
+      document.getElementById('ccpTotalPaidB').textContent = '—';
+      return;
+    }
+    const requiredPayment = i===0 ? (balance/n) : (balance*i/(1-Math.pow(1+i,-n)));
+    const totalPaid = requiredPayment*n;
+    const totalInterest = totalPaid - balance;
+    document.getElementById('ccpRequiredPayment').textContent = fmtMoney(requiredPayment);
+    document.getElementById('ccpTotalInterestB').textContent = fmtMoney(totalInterest);
+    document.getElementById('ccpTotalPaidB').textContent = fmtMoney(totalPaid);
+  }
+
+  modeSeg.addEventListener('click', (e)=>{
+    const btn = e.target.closest('button');
+    if(!btn) return;
+    mode = btn.dataset.mode;
+    modeSeg.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    fixedFields.style.display = mode==='fixed' ? 'block' : 'none';
+    targetFields.style.display = mode==='target' ? 'block' : 'none';
+    fixedReadout.style.display = mode==='fixed' ? 'block' : 'none';
+    targetReadout.style.display = mode==='target' ? 'block' : 'none';
+  });
+
+  ['ccpBalanceA','ccpAprA','ccpPayment'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener('input', calcFixed);
+    el.addEventListener('change', calcFixed);
+  });
+  ['ccpBalanceB','ccpAprB','ccpTargetMonths'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener('input', calcTarget);
+    el.addEventListener('change', calcTarget);
+  });
+
+  calcFixed();
+  calcTarget();
+})();
+
+// ---- Body Fat Calculator (US Navy method) ----
+(function(){
+  if(!document.getElementById('bfSexSeg')) return;
+  const sexSeg = document.getElementById('bfSexSeg');
+  const unitSel = document.getElementById('bfUnit');
+  const metricWrap = document.getElementById('bfMetricWrap');
+  const imperialWrap = document.getElementById('bfImperialWrap');
+  const hipWrapCm = document.getElementById('bfHipWrapCm');
+  const hipWrapIn = document.getElementById('bfHipWrapIn');
+  let sex = 'male';
+
+  function getInches(){
+    if(unitSel.value==='in'){
+      return {
+        h: parseFloat(document.getElementById('bfHeightIn').value)||0,
+        n: parseFloat(document.getElementById('bfNeckIn').value)||0,
+        w: parseFloat(document.getElementById('bfWaistIn').value)||0,
+        hip: parseFloat(document.getElementById('bfHipIn').value)||0
+      };
+    }
+    return {
+      h: (parseFloat(document.getElementById('bfHeightCm').value)||0)/2.54,
+      n: (parseFloat(document.getElementById('bfNeckCm').value)||0)/2.54,
+      w: (parseFloat(document.getElementById('bfWaistCm').value)||0)/2.54,
+      hip: (parseFloat(document.getElementById('bfHipCm').value)||0)/2.54
+    };
+  }
+
+  function calc(){
+    const vals = getInches();
+    const h = vals.h, n = vals.n, w = vals.w, hip = vals.hip;
+    const warnEl = document.getElementById('bfWarning');
+    const pctEl = document.getElementById('bfPercent');
+    const catEl = document.getElementById('bfCategory');
+    let pct = null;
+
+    if(sex==='male'){
+      if(h>0 && (w-n)>0) pct = 86.010*Math.log10(w-n) - 70.041*Math.log10(h) + 36.76;
+    } else {
+      if(h>0 && (w+hip-n)>0) pct = 163.205*Math.log10(w+hip-n) - 97.684*Math.log10(h) - 78.387;
+    }
+
+    if(pct===null || !isFinite(pct) || isNaN(pct) || pct<0){
+      if(warnEl){
+        warnEl.textContent = 'Check your measurements — waist should be larger than neck (plus hip for women) to get a valid result.';
+        warnEl.classList.add('show');
+      }
+      pctEl.textContent = '—';
+      catEl.textContent = '—';
+      return;
+    }
+    if(warnEl){ warnEl.textContent=''; warnEl.classList.remove('show'); }
+    pct = Math.min(Math.max(pct,0),70);
+    pctEl.textContent = pct.toFixed(1)+'%';
+
+    const ranges = sex==='male'
+      ? [[6,'Essential Fat'],[14,'Athletes'],[18,'Fitness'],[25,'Average'],[Infinity,'Obese']]
+      : [[14,'Essential Fat'],[21,'Athletes'],[25,'Fitness'],[32,'Average'],[Infinity,'Obese']];
+    catEl.textContent = ranges.find(pair=>pct<pair[0])[1];
+  }
+
+  sexSeg.addEventListener('click', (e)=>{
+    const btn = e.target.closest('button');
+    if(!btn) return;
+    sex = btn.dataset.sex;
+    sexSeg.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const show = sex==='female' ? 'flex' : 'none';
+    if(hipWrapCm) hipWrapCm.style.display = show;
+    if(hipWrapIn) hipWrapIn.style.display = show;
+    calc();
+  });
+
+  unitSel.addEventListener('change', ()=>{
+    const isIn = unitSel.value==='in';
+    metricWrap.style.display = isIn ? 'none' : 'block';
+    imperialWrap.style.display = isIn ? 'block' : 'none';
+    calc();
+  });
+
+  ['bfHeightCm','bfNeckCm','bfWaistCm','bfHipCm','bfHeightIn','bfNeckIn','bfWaistIn','bfHipIn'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+
+  calc();
+})();
+
+// ---- Pace Calculator ----
+(function(){
+  if(!document.getElementById('paceModeSeg')) return;
+  const modeSeg = document.getElementById('paceModeSeg');
+  const unitSel = document.getElementById('paceUnit');
+  const fieldsPace = document.getElementById('pcFieldsPace');
+  const fieldsTime = document.getElementById('pcFieldsTime');
+  const fieldsDistance = document.getElementById('pcFieldsDistance');
+  const resultLabel = document.getElementById('pcResultLabel');
+  const resultValue = document.getElementById('pcResultValue');
+  const warnEl = document.getElementById('pcWarning');
+  let mode = 'pace';
+  let paceSecPerUnit = 0;
+
+  function num(id){ return parseFloat(document.getElementById(id).value)||0; }
+  function toSeconds(h,m,s){ return h*3600+m*60+s; }
+  function fmtTime(totalSec){
+    if(!isFinite(totalSec) || totalSec<0) totalSec = 0;
+    totalSec = Math.round(totalSec);
+    const h = Math.floor(totalSec/3600);
+    const m = Math.floor((totalSec%3600)/60);
+    const s = totalSec%60;
+    const mm = String(m).padStart(2,'0');
+    const ss = String(s).padStart(2,'0');
+    return h>0 ? (h+':'+mm+':'+ss) : (m+':'+ss);
+  }
+  function setWarning(msg){
+    if(!warnEl) return;
+    if(msg){ warnEl.textContent = msg; warnEl.classList.add('show'); }
+    else { warnEl.textContent=''; warnEl.classList.remove('show'); }
+  }
+
+  function updateRacePredictions(unit){
+    const races = {pcPred5k:5, pcPred10k:10, pcPredHalf:21.0975, pcPredFull:42.195};
+    if(!(paceSecPerUnit>0)){
+      Object.keys(races).forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent='—'; });
+      return;
+    }
+    const paceSecPerKm = unit==='mi' ? (paceSecPerUnit/1.60934) : paceSecPerUnit;
+    Object.keys(races).forEach(id=>{
+      const el = document.getElementById(id);
+      if(!el) return;
+      el.textContent = fmtTime(paceSecPerKm*races[id]);
+    });
+  }
+
+  function calc(){
+    const unit = unitSel.value;
+    if(mode==='pace'){
+      const distance = num('pcDistance1');
+      const timeSec = toSeconds(num('pcH1'), num('pcM1'), num('pcS1'));
+      if(distance>0){
+        paceSecPerUnit = timeSec/distance;
+        setWarning('');
+        resultLabel.textContent = 'Pace';
+        resultValue.textContent = fmtTime(paceSecPerUnit)+' /'+unit;
+      } else {
+        paceSecPerUnit = 0;
+        setWarning('Enter a distance greater than zero.');
+        resultValue.textContent = '—';
+      }
+    } else if(mode==='time'){
+      const distance = num('pcDistance2');
+      paceSecPerUnit = toSeconds(0, num('pcPaceM2'), num('pcPaceS2'));
+      if(distance>0){
+        setWarning('');
+        resultLabel.textContent = 'Finish Time';
+        resultValue.textContent = fmtTime(paceSecPerUnit*distance);
+      } else {
+        setWarning('Enter a distance greater than zero.');
+        resultValue.textContent = '—';
+      }
+    } else {
+      const timeSec = toSeconds(num('pcH3'), num('pcM3'), num('pcS3'));
+      paceSecPerUnit = toSeconds(0, num('pcPaceM3'), num('pcPaceS3'));
+      if(paceSecPerUnit>0){
+        setWarning('');
+        resultLabel.textContent = 'Distance';
+        resultValue.textContent = (timeSec/paceSecPerUnit).toFixed(2)+' '+unit;
+      } else {
+        setWarning('Enter a pace greater than zero.');
+        resultValue.textContent = '—';
+      }
+    }
+    updateRacePredictions(unit);
+  }
+
+  modeSeg.addEventListener('click', (e)=>{
+    const btn = e.target.closest('button');
+    if(!btn) return;
+    mode = btn.dataset.mode;
+    modeSeg.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    fieldsPace.style.display = mode==='pace' ? 'block' : 'none';
+    fieldsTime.style.display = mode==='time' ? 'block' : 'none';
+    fieldsDistance.style.display = mode==='distance' ? 'block' : 'none';
+    calc();
+  });
+
+  unitSel.addEventListener('change', calc);
+
+  ['pcDistance1','pcH1','pcM1','pcS1','pcDistance2','pcPaceM2','pcPaceS2','pcH3','pcM3','pcS3','pcPaceM3','pcPaceS3'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+
+  calc();
+})();

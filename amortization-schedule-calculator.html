@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PPF Calculator — Public Provident Fund Maturity (India) | TallyBench</title>
-<meta name="description" content="Free PPF calculator. Project your Public Provident Fund maturity over 15+ years at the current 7.1% rate, with tax-free compounding.">
-<link rel="canonical" href="https://tallybench.com/ppf-calculator.html">
+<title>Amortization Schedule Calculator — Yearly &amp; Monthly Loan Breakdown | TallyBench</title>
+<meta name="description" content="Free amortization schedule calculator. Enter loan amount, rate, and term to see your monthly payment, a yearly or monthly breakdown, and total interest.">
+<link rel="canonical" href="https://tallybench.com/amortization-schedule-calculator.html">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.svg">
@@ -15,15 +15,78 @@
 <meta name="apple-mobile-web-app-title" content="TallyBench">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TallyBench">
-<meta property="og:title" content="PPF Calculator — Public Provident Fund Maturity (India)">
-<meta property="og:description" content="Free PPF calculator. Project your Public Provident Fund maturity over 15+ years at the current 7.1% rate, with tax-free compounding.">
-<meta property="og:url" content="https://tallybench.com/ppf-calculator.html">
+<meta property="og:title" content="Amortization Schedule Calculator — Yearly &amp; Monthly Loan Breakdown">
+<meta property="og:description" content="Enter loan amount, rate, and term to see your monthly payment, a yearly or monthly breakdown, and total interest.">
+<meta property="og:url" content="https://tallybench.com/amortization-schedule-calculator.html">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="PPF Calculator — Public Provident Fund Maturity (India)">
-<meta name="twitter:description" content="Free PPF calculator. Project your Public Provident Fund maturity over 15+ years at the current 7.1% rate, with tax-free compounding.">
+<meta name="twitter:title" content="Amortization Schedule Calculator — Yearly &amp; Monthly Loan Breakdown">
+<meta name="twitter:description" content="Enter loan amount, rate, and term to see your monthly payment, a yearly or monthly breakdown, and total interest.">
 <link rel="stylesheet" href="fonts/fonts.css">
 <link rel="stylesheet" href="style.css">
 
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is an amortization schedule?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "An amortization schedule is a table showing how each payment on a fixed-rate loan splits between principal and interest over time, and how the remaining balance falls until it reaches zero at the end of the term."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does more of my payment go to interest early on?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Interest is charged each period on the balance you still owe, and early in the loan that balance is at its highest, so interest takes the biggest bite. As the balance shrinks, the same level payment sends a growing share to principal."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is the monthly payment calculated?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The monthly rate is the annual rate divided by 12, and the payment is solved so that it pays off the loan exactly across the full term: payment = P * i / (1 - (1 + i)^-n), where P is principal, i is the monthly rate, and n is the number of months."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What happens if I make extra payments?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Extra payments go straight to principal, which shortens the loan term and cuts total interest since interest is only charged on the remaining balance. This calculator does not model extra payments directly — use the Debt Payoff Calculator to see the effect of prepayment strategies."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does this account for taxes and insurance?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No — this is principal and interest only. For a home loan that bundles in property tax, homeowners insurance, and PMI, use the Mortgage Calculator for a full PITI breakdown."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Amortization Schedule Calculator — TallyBench",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any (runs in browser)",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "url": "https://tallybench.com/amortization-schedule-calculator.html"
+}
+</script>
 </head>
 <body data-page-cat="finance">
 
@@ -118,52 +181,64 @@
 <div class="nav-backdrop" id="navBackdrop"></div>
 
 <div class="wrap">
-  <div class="crumb"><a href="index.html">TallyBench</a> / PPF Calculator</div>
+  <div class="crumb"><a href="index.html">TallyBench</a> / Amortization Schedule Calculator</div>
 
   <section class="hero">
     <div class="hero-icon-row cat-finance">
-      <div class="hero-icon"><svg><use href="icons.svg#icon-investment"/></svg></div>
-      <div class="eyebrow">// PPF CALCULATOR</div>
+      <div class="hero-icon"><svg><use href="icons.svg#icon-loan"/></svg></div>
+      <div class="eyebrow">// AMORTIZATION SCHEDULE CALCULATOR</div>
     </div>
-    <h1>Fifteen years of tax-free compounding.</h1>
-    <p>Enter your annual PPF contribution to see the maturity value — interest is tax-free and contributions qualify for 80C.</p>
+    <h1>See exactly how each payment splits between principal and interest.</h1>
+    <p>Enter your loan amount, annual rate, and term to get the monthly payment plus a full yearly or monthly amortization schedule.</p>
   </section>
 
-  <section class="tool" id="ppf">
+  <section class="tool" id="amortization">
     <div class="disclaimer">
-      <strong>Estimate only.</strong> PPF's interest rate is set quarterly by the Indian government and can change during your 15-year term. Confirm the current rate before relying on this for long-term planning.
+      <strong>Estimate only — not a loan offer or amortization schedule from any specific lender.</strong> Actual terms, fees, and payment dates depend on your lender.
     </div>
     <div class="card">
       <div>
-        <div class="field"><label>Annual investment (₹, max 1,50,000)</label><input type="number" id="ppfAmt" value="150000" step="500" max="150000"></div>
-        <div class="field"><label>Interest rate (% — current: 7.1)</label><input type="number" id="ppfRate" value="7.1" step="0.1"></div>
-        <div class="field"><label>Duration (years, min 15)</label><input type="number" id="ppfYears" value="15" min="15" max="50"></div>
+        <div class="field"><label>Loan amount ($)</label><input type="number" id="amLoanAmt" value="300000" step="1000"></div>
+        <div class="field"><label>Annual interest rate (%)</label><input type="number" id="amRate" value="6.5" step="0.01"></div>
+        <div class="field"><label>Loan term (years)</label><input type="number" id="amYears" value="30" step="1"></div>
+        <div class="field"><label>View</label>
+          <div class="seg" id="amViewSeg">
+            <button type="button" class="active" data-view="yearly">Yearly</button>
+            <button type="button" data-view="monthly">Monthly</button>
+          </div>
+        </div>
       </div>
       <div class="readout">
-        <div class="r-row"><span class="r-label">Total invested</span><span class="r-value" id="ppfInvested">0</span></div>
-        <div class="r-row"><span class="r-label">Interest earned</span><span class="r-value" id="ppfInterest">0</span></div>
-        <div class="r-row"><span class="r-label">Maturity value</span><span class="r-value" id="ppfMaturity">0</span></div>
+        <div class="r-row"><span class="r-label">Monthly payment</span><span class="r-value" id="amMonthly">$0</span></div>
+        <div class="r-row"><span class="r-label">Total principal</span><span class="r-value" id="amPrincipal">$0</span></div>
+        <div class="r-row"><span class="r-label">Total interest</span><span class="r-value" id="amInterest">$0</span></div>
+        <div class="r-row"><span class="r-label">Total cost</span><span class="r-value" id="amTotal">$0</span></div>
       </div>
     </div>
   </section>
 
+  <section style="padding:0 0 32px;">
+    <div class="tool-head"><span class="tool-num">//</span><div><h2>Full amortization schedule</h2><p class="tool-sub">Toggle Yearly / Monthly above to change the breakdown below.</p></div></div>
+    <div style="overflow-x:auto;">
+      <table class="data-table">
+        <thead id="amThead"></thead>
+        <tbody id="amTbody"></tbody>
+      </table>
+    </div>
+  </section>
 
   <section class="article">
-    <h3>How is PPF interest calculated?</h3>
-    <p>PPF compounds annually at a government-set rate (currently 7.1%, revised quarterly by the Ministry of Finance based on prevailing government bond yields). This calculator assumes the full year's contribution is made at the start of each year — depositing before the 5th of April each year maximizes interest, since PPF interest is calculated on the minimum balance between the 5th and month-end.</p>
-    <h3>Why is PPF called EEE?</h3>
-    <p>Exempt-Exempt-Exempt: the contribution qualifies for Section 80C deduction (old regime), the interest earned is tax-free, and the maturity amount is tax-free — a combination almost no other Indian instrument offers, which is what makes PPF's effective post-tax return hard to beat for its risk level, since it's backed by the Government of India with essentially zero credit risk.</p>
-    <h3>Can I withdraw before 15 years?</h3>
-    <p>Partial withdrawals are allowed from year 7, and loans against the balance from year 3 — but full withdrawal requires completing the 15-year term. After 15 years, the account can be extended in 5-year blocks, with or without fresh contributions, making PPF effectively usable as a very long-horizon retirement vehicle well beyond the initial 15 years if desired.</p>
-    <h3>What's the minimum and maximum contribution?</h3>
-    <p>Minimum ₹500 per year to keep the account active, maximum ₹1,50,000 per financial year — contributions above the cap earn no interest and no tax benefit, so there's no advantage to depositing more than the ceiling in a single account.</p>
-    <h3>What's the equivalent of PPF outside India?</h3>
-    <p>No other country has an exact match — PPF's specific combination of a government-guaranteed fixed rate, full tax exemption on contribution, growth, and withdrawal, and a long mandatory lock-in is fairly unique to India. The closest conceptual relatives are tax-advantaged retirement accounts elsewhere, though each differs in important ways: the US <strong>401(k)/Traditional IRA</strong> defers tax on contributions and growth but taxes withdrawals in retirement (not EEE, more like EET), while a <strong>Roth IRA</strong> is closer in spirit — post-tax contributions, tax-free growth and withdrawal — though without PPF's government-guaranteed fixed rate, since Roth IRA funds are typically invested in market securities. The UK's <strong>ISA</strong> (Individual Savings Account) offers tax-free growth and withdrawal similarly to PPF, but again typically holds market-linked investments (a Cash ISA is the closer match rate-wise) rather than a fixed government rate, and has no long mandatory lock-in. None of these fully replicate PPF's specific guarantee-plus-full-tax-exemption combination, which is a reasonable part of why PPF remains a cornerstone of conservative Indian retirement planning specifically.</p>
-    <h3>How does PPF compare to EPF (Employee Provident Fund)?</h3>
-    <p>Both are government-backed, tax-advantaged long-term savings vehicles with similar EEE tax treatment, but EPF is tied to formal employment (with mandatory employer + employee contributions as a percentage of salary) and generally offers a slightly higher rate than PPF in most years, while PPF is open to anyone, including the self-employed, non-salaried individuals, and even EPF subscribers wanting to save beyond their EPF contribution. Many salaried Indians hold both simultaneously.</p>
-    <h3>Should I contribute to PPF every year, or can I skip years?</h3>
-    <p>You can skip years and still keep the account active as long as the ₹500 annual minimum is met (a small reactivation penalty applies if you miss it entirely), but skipping years obviously means missing that year's compounding — since PPF's advantage compounds over 15+ years, consistent annual contributions, ideally maximized and made early in the financial year, produce meaningfully more than sporadic ones even with the same total amount contributed over time.</p>
-    <p><strong>Worked example:</strong> ₹1,50,000 invested at the start of each year for 15 years at 7.1% grows to roughly ₹40.7 lakh — ₹22.5 lakh of contributions plus about ₹18.2 lakh of entirely tax-free interest, an outcome very few other instruments in any country can match for a risk-free, government-backed product.</p>
+    <h3>What is an amortization schedule?</h3>
+    <p>An amortization schedule is a table that shows how every payment on a fixed-rate loan splits between principal and interest, period by period, and how the remaining balance falls until it hits zero on the final payment. It's the same information behind the payoff numbers on the <a href="loan-calculator.html">Loan Calculator</a> and <a href="mortgage-calculator.html">Mortgage Calculator</a>, just laid out row by row instead of as a single total.</p>
+    <h3>Why does more of my payment go to interest early on?</h3>
+    <p>Interest is charged each period only on the balance you still owe, and early in the loan that balance is at its largest, so interest claims the biggest share of a level payment. As the balance shrinks month after month, the same fixed payment sends a growing portion to principal — which is why the "principal paid" column below starts small and accelerates toward the end of the term.</p>
+    <h3>How is the monthly payment calculated?</h3>
+    <p>The annual rate is converted to a monthly rate (i = annual rate ÷ 12 ÷ 100), and the payment is solved so it pays the loan off exactly across the full term: <strong>payment = P × i ÷ (1 − (1 + i)<sup>−n</sup>)</strong>, where P is the loan amount and n is the number of months. This is the standard formula behind nearly every fixed-rate personal loan, auto loan, and mortgage.</p>
+    <h3>What happens if I make extra payments?</h3>
+    <p>Any extra amount goes straight to principal, and because interest only accrues on the remaining balance, that removes not just the extra amount itself but all the future interest it would have generated — shortening the term and cutting total interest paid. This calculator shows the standard schedule only and doesn't model extra payments directly; for that, use the <a href="debt-payoff-calculator.html">Debt Payoff Calculator</a>, which is built specifically around prepayment strategies.</p>
+    <h3>Does this account for taxes and insurance?</h3>
+    <p>No — the numbers here are principal and interest only. If you're financing a home and want property tax, homeowners insurance, and PMI included, use the <a href="mortgage-calculator.html">Mortgage Calculator</a> for a full PITI (principal, interest, taxes, insurance) breakdown instead.</p>
+    <p><strong>Worked example:</strong> a $300,000 loan at 6.5% annual interest over 30 years has a monthly payment of $1,896.20. Over the full 360 payments, total interest comes to $382,633.47, bringing the total cost of the loan to $682,633.47 — more than double the amount borrowed, which is exactly why the term and rate matter as much as the loan amount itself.</p>
   </section>
 
   <!-- TB:MORETOOLS:START -->
@@ -192,13 +267,13 @@
           <li><a href="tip-calculator.html">Tip Calculator</a></li>
           <li><a href="fd-calculator.html">FD Calculator</a></li>
           <li><a href="rd-calculator.html">RD Calculator</a></li>
+          <li><a href="ppf-calculator.html">PPF Calculator</a></li>
           <li><a href="hra-calculator.html">HRA Calculator</a></li>
           <li><a href="break-even-calculator.html">Break-Even &amp; Profit Margin Calculator</a></li>
           <li><a href="debt-payoff-calculator.html">Debt Payoff Calculator</a></li>
           <li><a href="salary-calculator.html">Salary Calculator</a></li>
           <li><a href="sales-tax-calculator.html">Sales Tax Calculator</a></li>
           <li><a href="cd-calculator.html">CD Calculator</a></li>
-          <li><a href="amortization-schedule-calculator.html">Amortization Schedule Calculator</a></li>
           <li><a href="401k-calculator.html">401(k) Calculator</a></li>
           <li><a href="ira-calculator.html">IRA &amp; Roth IRA Calculator</a></li>
           <li><a href="house-affordability-calculator.html">House Affordability Calculator</a></li>
@@ -254,8 +329,8 @@
   <!-- TB:MORETOOLS:END -->
 
   <footer>
-    <p>TALLYBENCH · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
-  </footer>
+<p>TALLYBENCH · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
+</footer>
 </div>
 
 <script src="script.js"></script>

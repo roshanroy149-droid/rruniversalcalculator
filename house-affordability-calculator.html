@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PPF Calculator — Public Provident Fund Maturity (India) | TallyBench</title>
-<meta name="description" content="Free PPF calculator. Project your Public Provident Fund maturity over 15+ years at the current 7.1% rate, with tax-free compounding.">
-<link rel="canonical" href="https://tallybench.com/ppf-calculator.html">
+<title>House Affordability Calculator — Max Home Price by Income &amp; DTI | TallyBench</title>
+<meta name="description" content="Free house affordability calculator. Enter income, debts, and down payment to see the maximum home price you can afford based on your target DTI ratio.">
+<link rel="canonical" href="https://tallybench.com/house-affordability-calculator.html">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.svg">
@@ -15,15 +15,78 @@
 <meta name="apple-mobile-web-app-title" content="TallyBench">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TallyBench">
-<meta property="og:title" content="PPF Calculator — Public Provident Fund Maturity (India)">
-<meta property="og:description" content="Free PPF calculator. Project your Public Provident Fund maturity over 15+ years at the current 7.1% rate, with tax-free compounding.">
-<meta property="og:url" content="https://tallybench.com/ppf-calculator.html">
+<meta property="og:title" content="House Affordability Calculator — Max Home Price by Income &amp; DTI">
+<meta property="og:description" content="Enter income, debts, and down payment to see the maximum home price you can afford based on your target DTI ratio.">
+<meta property="og:url" content="https://tallybench.com/house-affordability-calculator.html">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="PPF Calculator — Public Provident Fund Maturity (India)">
-<meta name="twitter:description" content="Free PPF calculator. Project your Public Provident Fund maturity over 15+ years at the current 7.1% rate, with tax-free compounding.">
+<meta name="twitter:title" content="House Affordability Calculator — Max Home Price by Income &amp; DTI">
+<meta name="twitter:description" content="Enter income, debts, and down payment to see the maximum home price you can afford based on your target DTI ratio.">
 <link rel="stylesheet" href="fonts/fonts.css">
 <link rel="stylesheet" href="style.css">
 
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How is maximum affordability calculated?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "This tool takes your income and target debt-to-income ratio to find the maximum total monthly debt payment you're allowed, subtracts your existing debts, and solves directly for the home price whose principal, interest, tax, insurance, and HOA payment exactly fills the remaining room — rather than guessing a price and checking whether it fits."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What DTI ratio do lenders actually use?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Many conventional lenders cap back-end DTI (all debts combined, including the new mortgage) somewhere around 36% to 43%, while FHA loans can allow higher ratios in some cases. 36% is a conservative, commonly used default, but your actual limit depends on the lender, loan type, and your credit profile."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does this include property tax and insurance?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes — property tax, home insurance, and HOA fees are folded directly into the affordability ceiling, not added afterward. This is the key difference from a plain mortgage calculator, which computes a monthly payment from a home price you already chose; this tool works backwards from your income to find the price in the first place."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What about PMI if my down payment is under 20%?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "PMI isn't included in this calculation, so if your down payment will be under 20% of the home price, your real affordable price is somewhat lower than shown here since PMI adds another monthly cost inside the same DTI limit. See the Down Payment Calculator, a companion tool, for a PMI estimate."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Should I max out what I can afford?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not necessarily. A lender's approved maximum is the most you qualify for, not necessarily what's comfortable — it doesn't leave room for savings, retirement contributions, repairs, or an emergency fund. Many buyers deliberately target a home price below the calculated ceiling for exactly this reason."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "House Affordability Calculator — TallyBench",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any (runs in browser)",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "url": "https://tallybench.com/house-affordability-calculator.html"
+}
+</script>
 </head>
 <body data-page-cat="finance">
 
@@ -118,52 +181,63 @@
 <div class="nav-backdrop" id="navBackdrop"></div>
 
 <div class="wrap">
-  <div class="crumb"><a href="index.html">TallyBench</a> / PPF Calculator</div>
+  <div class="crumb"><a href="index.html">TallyBench</a> / House Affordability Calculator</div>
 
   <section class="hero">
     <div class="hero-icon-row cat-finance">
-      <div class="hero-icon"><svg><use href="icons.svg#icon-investment"/></svg></div>
-      <div class="eyebrow">// PPF CALCULATOR</div>
+      <div class="hero-icon"><svg><use href="icons.svg#icon-mortgage"/></svg></div>
+      <div class="eyebrow">// HOUSE AFFORDABILITY CALCULATOR</div>
     </div>
-    <h1>Fifteen years of tax-free compounding.</h1>
-    <p>Enter your annual PPF contribution to see the maturity value — interest is tax-free and contributions qualify for 80C.</p>
+    <h1>How much house can you actually afford?</h1>
+    <p>Enter your income, existing debts, and down payment — this works backwards from your target debt-to-income ratio to find the maximum home price, not the other way around.</p>
   </section>
 
-  <section class="tool" id="ppf">
+  <section class="tool" id="afford">
     <div class="disclaimer">
-      <strong>Estimate only.</strong> PPF's interest rate is set quarterly by the Indian government and can change during your 15-year term. Confirm the current rate before relying on this for long-term planning.
+      <strong>Estimate only — not a mortgage pre-approval.</strong> Actual affordability depends on your lender's specific DTI limits, credit profile, and full underwriting.
     </div>
     <div class="card">
       <div>
-        <div class="field"><label>Annual investment (₹, max 1,50,000)</label><input type="number" id="ppfAmt" value="150000" step="500" max="150000"></div>
-        <div class="field"><label>Interest rate (% — current: 7.1)</label><input type="number" id="ppfRate" value="7.1" step="0.1"></div>
-        <div class="field"><label>Duration (years, min 15)</label><input type="number" id="ppfYears" value="15" min="15" max="50"></div>
+        <div class="row2">
+          <div class="field"><label>Annual gross income ($)</label><input type="number" id="affIncome" value="90000" step="1000" min="0"></div>
+          <div class="field"><label>Monthly existing debt payments ($)</label><input type="number" id="affDebts" value="400" step="50" min="0"></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label>Down payment available ($)</label><input type="number" id="affDown" value="40000" step="1000" min="0"></div>
+          <div class="field"><label>Annual interest rate (%)</label><input type="number" id="affRate" value="6.5" step="0.01" min="0"></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label>Loan term (years)</label><input type="number" id="affTerm" value="30" min="1" max="40"></div>
+          <div class="field"><label>Max debt-to-income ratio allowed (%)</label><input type="number" id="affDTI" value="36" step="1" min="1" max="100"></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label>Property tax rate (%/yr of home value)</label><input type="number" id="affTaxRate" value="1.2" step="0.1" min="0"></div>
+          <div class="field"><label>Home insurance rate (%/yr of home value)</label><input type="number" id="affInsRate" value="0.5" step="0.1" min="0"></div>
+        </div>
+        <div class="field"><label>Monthly HOA fee ($)</label><input type="number" id="affHoa" value="0" step="10" min="0"></div>
       </div>
       <div class="readout">
-        <div class="r-row"><span class="r-label">Total invested</span><span class="r-value" id="ppfInvested">0</span></div>
-        <div class="r-row"><span class="r-label">Interest earned</span><span class="r-value" id="ppfInterest">0</span></div>
-        <div class="r-row"><span class="r-label">Maturity value</span><span class="r-value" id="ppfMaturity">0</span></div>
+        <div class="r-row"><span class="r-label">Max home price</span><span class="r-value" id="affMaxPrice">$0</span></div>
+        <div class="r-row"><span class="r-label">Max loan amount</span><span class="r-value" id="affMaxLoan">$0</span></div>
+        <div class="r-row"><span class="r-label">Estimated monthly payment</span><span class="r-value" id="affMonthly">$0</span></div>
+        <div class="r-row"><span class="r-label">Down payment as % of price</span><span class="r-value" id="affDownPct" style="font-size:20px;">0%</span></div>
       </div>
+      <div class="field-warning" id="affWarning"></div>
     </div>
   </section>
 
-
   <section class="article">
-    <h3>How is PPF interest calculated?</h3>
-    <p>PPF compounds annually at a government-set rate (currently 7.1%, revised quarterly by the Ministry of Finance based on prevailing government bond yields). This calculator assumes the full year's contribution is made at the start of each year — depositing before the 5th of April each year maximizes interest, since PPF interest is calculated on the minimum balance between the 5th and month-end.</p>
-    <h3>Why is PPF called EEE?</h3>
-    <p>Exempt-Exempt-Exempt: the contribution qualifies for Section 80C deduction (old regime), the interest earned is tax-free, and the maturity amount is tax-free — a combination almost no other Indian instrument offers, which is what makes PPF's effective post-tax return hard to beat for its risk level, since it's backed by the Government of India with essentially zero credit risk.</p>
-    <h3>Can I withdraw before 15 years?</h3>
-    <p>Partial withdrawals are allowed from year 7, and loans against the balance from year 3 — but full withdrawal requires completing the 15-year term. After 15 years, the account can be extended in 5-year blocks, with or without fresh contributions, making PPF effectively usable as a very long-horizon retirement vehicle well beyond the initial 15 years if desired.</p>
-    <h3>What's the minimum and maximum contribution?</h3>
-    <p>Minimum ₹500 per year to keep the account active, maximum ₹1,50,000 per financial year — contributions above the cap earn no interest and no tax benefit, so there's no advantage to depositing more than the ceiling in a single account.</p>
-    <h3>What's the equivalent of PPF outside India?</h3>
-    <p>No other country has an exact match — PPF's specific combination of a government-guaranteed fixed rate, full tax exemption on contribution, growth, and withdrawal, and a long mandatory lock-in is fairly unique to India. The closest conceptual relatives are tax-advantaged retirement accounts elsewhere, though each differs in important ways: the US <strong>401(k)/Traditional IRA</strong> defers tax on contributions and growth but taxes withdrawals in retirement (not EEE, more like EET), while a <strong>Roth IRA</strong> is closer in spirit — post-tax contributions, tax-free growth and withdrawal — though without PPF's government-guaranteed fixed rate, since Roth IRA funds are typically invested in market securities. The UK's <strong>ISA</strong> (Individual Savings Account) offers tax-free growth and withdrawal similarly to PPF, but again typically holds market-linked investments (a Cash ISA is the closer match rate-wise) rather than a fixed government rate, and has no long mandatory lock-in. None of these fully replicate PPF's specific guarantee-plus-full-tax-exemption combination, which is a reasonable part of why PPF remains a cornerstone of conservative Indian retirement planning specifically.</p>
-    <h3>How does PPF compare to EPF (Employee Provident Fund)?</h3>
-    <p>Both are government-backed, tax-advantaged long-term savings vehicles with similar EEE tax treatment, but EPF is tied to formal employment (with mandatory employer + employee contributions as a percentage of salary) and generally offers a slightly higher rate than PPF in most years, while PPF is open to anyone, including the self-employed, non-salaried individuals, and even EPF subscribers wanting to save beyond their EPF contribution. Many salaried Indians hold both simultaneously.</p>
-    <h3>Should I contribute to PPF every year, or can I skip years?</h3>
-    <p>You can skip years and still keep the account active as long as the ₹500 annual minimum is met (a small reactivation penalty applies if you miss it entirely), but skipping years obviously means missing that year's compounding — since PPF's advantage compounds over 15+ years, consistent annual contributions, ideally maximized and made early in the financial year, produce meaningfully more than sporadic ones even with the same total amount contributed over time.</p>
-    <p><strong>Worked example:</strong> ₹1,50,000 invested at the start of each year for 15 years at 7.1% grows to roughly ₹40.7 lakh — ₹22.5 lakh of contributions plus about ₹18.2 lakh of entirely tax-free interest, an outcome very few other instruments in any country can match for a risk-free, government-backed product.</p>
+    <h3>How is maximum affordability calculated?</h3>
+    <p>This tool starts from your annual income and target debt-to-income (DTI) ratio to find the maximum total monthly debt payment a lender would allow, then subtracts your existing monthly debts (car loans, student loans, credit cards, and similar) to see how much room is left for a house payment. It then solves algebraically for the one home price whose principal &amp; interest, property tax, insurance, and HOA add up to exactly fill that remaining room — a direct closed-form calculation rather than guessing a price, computing its payment, and adjusting up or down until it fits.</p>
+    <h3>What DTI ratio do lenders actually use?</h3>
+    <p>Many conventional mortgage lenders cap "back-end" DTI — all monthly debts combined, including the new mortgage payment — somewhere in the 36% to 43% range, and FHA-backed loans can sometimes go higher depending on compensating factors like credit score and cash reserves. 36% is a conservative, commonly cited default and is what this calculator starts with, but your real limit depends on the lender, loan program, and your overall credit profile.</p>
+    <h3>Does this include property tax and insurance?</h3>
+    <p>Yes — property tax, home insurance, and any HOA fee are folded directly into the affordability ceiling itself, not layered on afterward. That's the key difference from the plain <a href="mortgage-calculator.html">Mortgage Calculator</a>, which starts from a home price you've already chosen and computes what the monthly payment would be. This tool runs the opposite direction: it starts from your income and works backwards to the home price your budget can actually support.</p>
+    <h3>What about PMI if my down payment is under 20%?</h3>
+    <p>PMI isn't included in this calculation. If your down payment will land under 20% of the home price, expect your real affordable price to be somewhat lower than what's shown here, since PMI is an additional monthly cost competing for the same DTI room as principal, interest, tax, and insurance. See the <a href="down-payment-calculator.html">Down Payment Calculator</a>, a companion tool, for a dedicated PMI estimate based on your down payment size.</p>
+    <h3>Should I max out what I can afford?</h3>
+    <p>Not necessarily. A lender's approved maximum reflects what you qualify for on paper, not what's comfortable month to month — it doesn't reserve anything for savings, retirement contributions, home repairs, or an emergency fund. Many buyers deliberately target a price meaningfully below the calculated ceiling, and it's worth also checking the dedicated <a href="debt-to-income-calculator.html">Debt-to-Income Calculator</a> to see exactly where a given home price would put your overall DTI before committing.</p>
+    <p><strong>Worked example:</strong> with $90,000 annual income, $400/month in existing debts, a $40,000 down payment, 6.5% interest over 30 years, a 36% max DTI, 1.2% property tax, 0.5% insurance, and no HOA, the maximum monthly debt payment allowed is $2,300 ($90,000 ÷ 12 × 36% = $2,700, minus $400 of existing debts). Solving directly for home price gives a maximum of about <strong>$329,936</strong>, with a maximum loan amount of about <strong>$289,936</strong> — the $40,000 down payment covers about 12.1% of that price. The estimated monthly payment (principal, interest, tax, and insurance) comes out to the full $2,300 by construction, since that's exactly the number the formula solved for.</p>
   </section>
 
   <!-- TB:MORETOOLS:START -->
@@ -192,6 +266,7 @@
           <li><a href="tip-calculator.html">Tip Calculator</a></li>
           <li><a href="fd-calculator.html">FD Calculator</a></li>
           <li><a href="rd-calculator.html">RD Calculator</a></li>
+          <li><a href="ppf-calculator.html">PPF Calculator</a></li>
           <li><a href="hra-calculator.html">HRA Calculator</a></li>
           <li><a href="break-even-calculator.html">Break-Even &amp; Profit Margin Calculator</a></li>
           <li><a href="debt-payoff-calculator.html">Debt Payoff Calculator</a></li>
@@ -201,7 +276,6 @@
           <li><a href="amortization-schedule-calculator.html">Amortization Schedule Calculator</a></li>
           <li><a href="401k-calculator.html">401(k) Calculator</a></li>
           <li><a href="ira-calculator.html">IRA &amp; Roth IRA Calculator</a></li>
-          <li><a href="house-affordability-calculator.html">House Affordability Calculator</a></li>
           <li><a href="down-payment-calculator.html">Down Payment Calculator</a></li>
           <li><a href="debt-to-income-calculator.html">Debt-to-Income Ratio Calculator</a></li>
           <li><a href="simple-interest-calculator.html">Simple Interest Calculator</a></li>
@@ -254,8 +328,8 @@
   <!-- TB:MORETOOLS:END -->
 
   <footer>
-    <p>TALLYBENCH · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
-  </footer>
+<p>TALLYBENCH · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
+</footer>
 </div>
 
 <script src="script.js"></script>

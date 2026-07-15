@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PPF Calculator — Public Provident Fund Maturity (India) | TallyBench</title>
-<meta name="description" content="Free PPF calculator. Project your Public Provident Fund maturity over 15+ years at the current 7.1% rate, with tax-free compounding.">
-<link rel="canonical" href="https://tallybench.com/ppf-calculator.html">
+<title>Simple Interest Calculator — I = P × r × t | TallyBench</title>
+<meta name="description" content="Free simple interest calculator. Enter principal, annual rate, and time in years to instantly see interest earned and total amount using I = P × r × t.">
+<link rel="canonical" href="https://tallybench.com/simple-interest-calculator.html">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.svg">
@@ -15,15 +15,70 @@
 <meta name="apple-mobile-web-app-title" content="TallyBench">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TallyBench">
-<meta property="og:title" content="PPF Calculator — Public Provident Fund Maturity (India)">
-<meta property="og:description" content="Free PPF calculator. Project your Public Provident Fund maturity over 15+ years at the current 7.1% rate, with tax-free compounding.">
-<meta property="og:url" content="https://tallybench.com/ppf-calculator.html">
+<meta property="og:title" content="Simple Interest Calculator — I = P × r × t">
+<meta property="og:description" content="Enter principal, annual rate, and time in years to instantly see interest earned and total amount using I = P × r × t.">
+<meta property="og:url" content="https://tallybench.com/simple-interest-calculator.html">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="PPF Calculator — Public Provident Fund Maturity (India)">
-<meta name="twitter:description" content="Free PPF calculator. Project your Public Provident Fund maturity over 15+ years at the current 7.1% rate, with tax-free compounding.">
+<meta name="twitter:title" content="Simple Interest Calculator — I = P × r × t">
+<meta name="twitter:description" content="Enter principal, annual rate, and time in years to instantly see interest earned and total amount using I = P × r × t.">
 <link rel="stylesheet" href="fonts/fonts.css">
 <link rel="stylesheet" href="style.css">
 
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is simple interest?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Simple interest is interest calculated only on the original principal amount. Unlike compound interest, it does not earn interest on previously-earned interest, so it grows in a straight line rather than accelerating over time."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Simple interest vs. compound interest — what's the difference?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Simple interest only accrues on the original principal, while compound interest also accrues on interest already earned, so it grows faster over time. Simple interest is common for short-term loans, some bonds, and certain legal or contractual contexts. For the compounding version, see the Compound Interest Calculator."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What's the formula?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "I = P × r × t, where I is the interest earned, P is the principal, r is the annual interest rate (as a decimal), and t is the time in years. Total amount owed or earned is Principal + Interest."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Where is simple interest actually used?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Some auto loans, short-term personal loans, and certain promissory notes use simple interest. Most savings accounts, CDs, and mortgages compound instead, meaning simple interest is more the exception than the rule for everyday consumer banking products."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Simple Interest Calculator — TallyBench",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any (runs in browser)",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "url": "https://tallybench.com/simple-interest-calculator.html"
+}
+</script>
 </head>
 <body data-page-cat="finance">
 
@@ -118,52 +173,45 @@
 <div class="nav-backdrop" id="navBackdrop"></div>
 
 <div class="wrap">
-  <div class="crumb"><a href="index.html">TallyBench</a> / PPF Calculator</div>
+  <div class="crumb"><a href="index.html">TallyBench</a> / Simple Interest Calculator</div>
 
   <section class="hero">
     <div class="hero-icon-row cat-finance">
       <div class="hero-icon"><svg><use href="icons.svg#icon-investment"/></svg></div>
-      <div class="eyebrow">// PPF CALCULATOR</div>
+      <div class="eyebrow">// SIMPLE INTEREST CALCULATOR</div>
     </div>
-    <h1>Fifteen years of tax-free compounding.</h1>
-    <p>Enter your annual PPF contribution to see the maturity value — interest is tax-free and contributions qualify for 80C.</p>
+    <h1>How much simple interest will you earn or owe?</h1>
+    <p>Enter the principal, annual rate, and time period — simple interest only accrues on the original principal, using I = P × r × t.</p>
   </section>
 
-  <section class="tool" id="ppf">
+  <section class="tool" id="si">
     <div class="disclaimer">
-      <strong>Estimate only.</strong> PPF's interest rate is set quarterly by the Indian government and can change during your 15-year term. Confirm the current rate before relying on this for long-term planning.
+      <strong>Estimate only.</strong> Check your specific loan or investment agreement for the actual interest method used.
     </div>
     <div class="card">
       <div>
-        <div class="field"><label>Annual investment (₹, max 1,50,000)</label><input type="number" id="ppfAmt" value="150000" step="500" max="150000"></div>
-        <div class="field"><label>Interest rate (% — current: 7.1)</label><input type="number" id="ppfRate" value="7.1" step="0.1"></div>
-        <div class="field"><label>Duration (years, min 15)</label><input type="number" id="ppfYears" value="15" min="15" max="50"></div>
+        <div class="field"><label>Principal ($)</label><input type="number" id="siPrincipal" value="5000" step="100"></div>
+        <div class="field"><label>Annual interest rate (%)</label><input type="number" id="siRate" value="5" step="0.01"></div>
+        <div class="field"><label>Time period (years)</label><input type="number" id="siTime" value="3" step="0.1"></div>
       </div>
       <div class="readout">
-        <div class="r-row"><span class="r-label">Total invested</span><span class="r-value" id="ppfInvested">0</span></div>
-        <div class="r-row"><span class="r-label">Interest earned</span><span class="r-value" id="ppfInterest">0</span></div>
-        <div class="r-row"><span class="r-label">Maturity value</span><span class="r-value" id="ppfMaturity">0</span></div>
+        <div class="r-row"><span class="r-label">Principal</span><span class="r-value" id="siPrincipalOut">$0</span></div>
+        <div class="r-row"><span class="r-label">Interest earned</span><span class="r-value" id="siInterest">$0</span></div>
+        <div class="r-row"><span class="r-label">Total amount</span><span class="r-value" id="siTotal">$0</span></div>
       </div>
     </div>
   </section>
 
-
   <section class="article">
-    <h3>How is PPF interest calculated?</h3>
-    <p>PPF compounds annually at a government-set rate (currently 7.1%, revised quarterly by the Ministry of Finance based on prevailing government bond yields). This calculator assumes the full year's contribution is made at the start of each year — depositing before the 5th of April each year maximizes interest, since PPF interest is calculated on the minimum balance between the 5th and month-end.</p>
-    <h3>Why is PPF called EEE?</h3>
-    <p>Exempt-Exempt-Exempt: the contribution qualifies for Section 80C deduction (old regime), the interest earned is tax-free, and the maturity amount is tax-free — a combination almost no other Indian instrument offers, which is what makes PPF's effective post-tax return hard to beat for its risk level, since it's backed by the Government of India with essentially zero credit risk.</p>
-    <h3>Can I withdraw before 15 years?</h3>
-    <p>Partial withdrawals are allowed from year 7, and loans against the balance from year 3 — but full withdrawal requires completing the 15-year term. After 15 years, the account can be extended in 5-year blocks, with or without fresh contributions, making PPF effectively usable as a very long-horizon retirement vehicle well beyond the initial 15 years if desired.</p>
-    <h3>What's the minimum and maximum contribution?</h3>
-    <p>Minimum ₹500 per year to keep the account active, maximum ₹1,50,000 per financial year — contributions above the cap earn no interest and no tax benefit, so there's no advantage to depositing more than the ceiling in a single account.</p>
-    <h3>What's the equivalent of PPF outside India?</h3>
-    <p>No other country has an exact match — PPF's specific combination of a government-guaranteed fixed rate, full tax exemption on contribution, growth, and withdrawal, and a long mandatory lock-in is fairly unique to India. The closest conceptual relatives are tax-advantaged retirement accounts elsewhere, though each differs in important ways: the US <strong>401(k)/Traditional IRA</strong> defers tax on contributions and growth but taxes withdrawals in retirement (not EEE, more like EET), while a <strong>Roth IRA</strong> is closer in spirit — post-tax contributions, tax-free growth and withdrawal — though without PPF's government-guaranteed fixed rate, since Roth IRA funds are typically invested in market securities. The UK's <strong>ISA</strong> (Individual Savings Account) offers tax-free growth and withdrawal similarly to PPF, but again typically holds market-linked investments (a Cash ISA is the closer match rate-wise) rather than a fixed government rate, and has no long mandatory lock-in. None of these fully replicate PPF's specific guarantee-plus-full-tax-exemption combination, which is a reasonable part of why PPF remains a cornerstone of conservative Indian retirement planning specifically.</p>
-    <h3>How does PPF compare to EPF (Employee Provident Fund)?</h3>
-    <p>Both are government-backed, tax-advantaged long-term savings vehicles with similar EEE tax treatment, but EPF is tied to formal employment (with mandatory employer + employee contributions as a percentage of salary) and generally offers a slightly higher rate than PPF in most years, while PPF is open to anyone, including the self-employed, non-salaried individuals, and even EPF subscribers wanting to save beyond their EPF contribution. Many salaried Indians hold both simultaneously.</p>
-    <h3>Should I contribute to PPF every year, or can I skip years?</h3>
-    <p>You can skip years and still keep the account active as long as the ₹500 annual minimum is met (a small reactivation penalty applies if you miss it entirely), but skipping years obviously means missing that year's compounding — since PPF's advantage compounds over 15+ years, consistent annual contributions, ideally maximized and made early in the financial year, produce meaningfully more than sporadic ones even with the same total amount contributed over time.</p>
-    <p><strong>Worked example:</strong> ₹1,50,000 invested at the start of each year for 15 years at 7.1% grows to roughly ₹40.7 lakh — ₹22.5 lakh of contributions plus about ₹18.2 lakh of entirely tax-free interest, an outcome very few other instruments in any country can match for a risk-free, government-backed product.</p>
+    <h3>What is simple interest?</h3>
+    <p>Simple interest is interest calculated only on the original principal amount, for the entire time period. Unlike compound interest, which also earns interest on previously-earned interest, simple interest grows in a straight line rather than accelerating — so it's easier to calculate by hand, and generally results in less total interest over long periods than an equivalent compound rate.</p>
+    <h3>Simple interest vs. compound interest — what's the difference?</h3>
+    <p>Simple interest only accrues on the original principal. Compound interest also accrues on interest that's already been earned, so the balance grows faster the longer it compounds. Simple interest is common for short-term loans, some bonds, and certain legal or contractual contexts where a straightforward, predictable interest calculation is preferred. For the compounding version of this math, see the <a href="compound-interest-calculator.html">Compound Interest Calculator</a>.</p>
+    <h3>What's the formula?</h3>
+    <p>The formula is <strong>I = P × r × t</strong>, where I is the interest earned, P is the principal, r is the annual interest rate expressed as a decimal, and t is the time in years. The total amount is simply Principal + Interest, since simple interest never gets added back into the base that earns further interest.</p>
+    <h3>Where is simple interest actually used?</h3>
+    <p>Some auto loans, short-term personal loans, and certain promissory notes use simple interest. Most everyday consumer banking products — savings accounts, CDs, and mortgages — compound instead, so simple interest is more the exception than the rule; always check the specific terms of your loan or investment to know which method applies.</p>
+    <p><strong>Worked example:</strong> $5,000 at 5% for 3 years: interest = 5,000 × 0.05 × 3 = $750, for a total amount of $5,750.</p>
   </section>
 
   <!-- TB:MORETOOLS:START -->
@@ -192,6 +240,7 @@
           <li><a href="tip-calculator.html">Tip Calculator</a></li>
           <li><a href="fd-calculator.html">FD Calculator</a></li>
           <li><a href="rd-calculator.html">RD Calculator</a></li>
+          <li><a href="ppf-calculator.html">PPF Calculator</a></li>
           <li><a href="hra-calculator.html">HRA Calculator</a></li>
           <li><a href="break-even-calculator.html">Break-Even &amp; Profit Margin Calculator</a></li>
           <li><a href="debt-payoff-calculator.html">Debt Payoff Calculator</a></li>
@@ -204,7 +253,6 @@
           <li><a href="house-affordability-calculator.html">House Affordability Calculator</a></li>
           <li><a href="down-payment-calculator.html">Down Payment Calculator</a></li>
           <li><a href="debt-to-income-calculator.html">Debt-to-Income Ratio Calculator</a></li>
-          <li><a href="simple-interest-calculator.html">Simple Interest Calculator</a></li>
           <li><a href="roi-calculator.html">ROI Calculator</a></li>
           <li><a href="credit-card-payoff-calculator.html">Credit Card Payoff Calculator</a></li>
         </ul>
@@ -254,8 +302,8 @@
   <!-- TB:MORETOOLS:END -->
 
   <footer>
-    <p>TALLYBENCH · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
-  </footer>
+<p>TALLYBENCH · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
+</footer>
 </div>
 
 <script src="script.js"></script>

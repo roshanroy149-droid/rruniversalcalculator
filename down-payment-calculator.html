@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PPF Calculator — Public Provident Fund Maturity (India) | TallyBench</title>
-<meta name="description" content="Free PPF calculator. Project your Public Provident Fund maturity over 15+ years at the current 7.1% rate, with tax-free compounding.">
-<link rel="canonical" href="https://tallybench.com/ppf-calculator.html">
+<title>Down Payment Calculator — Loan Amount, PMI &amp; Percent (US) | TallyBench</title>
+<meta name="description" content="Free down payment calculator. Enter your home price and down payment percent or amount to see loan amount, PMI requirement, and estimated monthly PMI cost.">
+<link rel="canonical" href="https://tallybench.com/down-payment-calculator.html">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.svg">
@@ -15,15 +15,70 @@
 <meta name="apple-mobile-web-app-title" content="TallyBench">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TallyBench">
-<meta property="og:title" content="PPF Calculator — Public Provident Fund Maturity (India)">
-<meta property="og:description" content="Free PPF calculator. Project your Public Provident Fund maturity over 15+ years at the current 7.1% rate, with tax-free compounding.">
-<meta property="og:url" content="https://tallybench.com/ppf-calculator.html">
+<meta property="og:title" content="Down Payment Calculator — Loan Amount, PMI &amp; Percent (US)">
+<meta property="og:description" content="Enter your home price and down payment percent or amount to see loan amount, PMI requirement, and estimated monthly PMI cost.">
+<meta property="og:url" content="https://tallybench.com/down-payment-calculator.html">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="PPF Calculator — Public Provident Fund Maturity (India)">
-<meta name="twitter:description" content="Free PPF calculator. Project your Public Provident Fund maturity over 15+ years at the current 7.1% rate, with tax-free compounding.">
+<meta name="twitter:title" content="Down Payment Calculator — Loan Amount, PMI &amp; Percent (US)">
+<meta name="twitter:description" content="Enter your home price and down payment percent or amount to see loan amount, PMI requirement, and estimated monthly PMI cost.">
 <link rel="stylesheet" href="fonts/fonts.css">
 <link rel="stylesheet" href="style.css">
 
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How much down payment do I need?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It depends on the loan type. Conventional loans can go as low as 3-5% down, but putting down 20% lets you avoid private mortgage insurance (PMI) entirely. FHA loans allow as little as 3.5% down but require mortgage insurance built into the loan regardless of your down payment size."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is PMI and when does it go away?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Private Mortgage Insurance (PMI) protects the lender if you default, not you — it's an added monthly cost when your down payment is below 20%. On conventional loans, PMI can typically be removed once you reach roughly 20-22% equity in the home, either automatically or by request."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is a bigger down payment always better?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not necessarily. A bigger down payment lowers your monthly payment and can eliminate PMI, but it also ties up cash that could otherwise be invested, kept as an emergency fund, or used for moving and renovation costs. The right amount depends on your other financial priorities."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does this relate to how much house I can afford?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "This tool tells you the loan amount and PMI impact for a home price and down payment you choose. To work backward from your income and monthly budget to a realistic home price, use the House Affordability Calculator."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Down Payment Calculator — TallyBench",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any (runs in browser)",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "url": "https://tallybench.com/down-payment-calculator.html"
+}
+</script>
 </head>
 <body data-page-cat="finance">
 
@@ -118,52 +173,54 @@
 <div class="nav-backdrop" id="navBackdrop"></div>
 
 <div class="wrap">
-  <div class="crumb"><a href="index.html">TallyBench</a> / PPF Calculator</div>
+  <div class="crumb"><a href="index.html">TallyBench</a> / Down Payment Calculator</div>
 
   <section class="hero">
     <div class="hero-icon-row cat-finance">
-      <div class="hero-icon"><svg><use href="icons.svg#icon-investment"/></svg></div>
-      <div class="eyebrow">// PPF CALCULATOR</div>
+      <div class="hero-icon"><svg><use href="icons.svg#icon-mortgage"/></svg></div>
+      <div class="eyebrow">// DOWN PAYMENT CALCULATOR</div>
     </div>
-    <h1>Fifteen years of tax-free compounding.</h1>
-    <p>Enter your annual PPF contribution to see the maturity value — interest is tax-free and contributions qualify for 80C.</p>
+    <h1>How much do you need for a down payment?</h1>
+    <p>Enter your home price and a down payment percent or dollar amount to see your loan amount and whether PMI applies.</p>
   </section>
 
-  <section class="tool" id="ppf">
+  <section class="tool" id="dp">
     <div class="disclaimer">
-      <strong>Estimate only.</strong> PPF's interest rate is set quarterly by the Indian government and can change during your 15-year term. Confirm the current rate before relying on this for long-term planning.
+      <strong>Estimate only.</strong> PMI rates vary by lender, credit score, and loan type — this uses a typical illustrative rate, not a quote.
     </div>
     <div class="card">
       <div>
-        <div class="field"><label>Annual investment (₹, max 1,50,000)</label><input type="number" id="ppfAmt" value="150000" step="500" max="150000"></div>
-        <div class="field"><label>Interest rate (% — current: 7.1)</label><input type="number" id="ppfRate" value="7.1" step="0.1"></div>
-        <div class="field"><label>Duration (years, min 15)</label><input type="number" id="ppfYears" value="15" min="15" max="50"></div>
+        <div class="field"><label>Home price ($)</label><input type="number" id="dpPrice" value="400000" step="1000"></div>
+        <div class="field"><label>Down payment mode</label>
+          <div class="seg" id="dpModeSeg">
+            <button type="button" class="active" data-mode="percent">Percent</button>
+            <button type="button" data-mode="amount">Amount</button>
+          </div>
+        </div>
+        <div class="field"><label id="dpDownLabel">Down payment (%)</label><input type="number" id="dpDownInput" value="10" step="0.1"></div>
+        <div class="field" id="dpPmiRateWrap"><label>Estimated PMI rate (annual %)</label><input type="number" id="dpPmiRate" value="0.75" step="0.01"></div>
       </div>
       <div class="readout">
-        <div class="r-row"><span class="r-label">Total invested</span><span class="r-value" id="ppfInvested">0</span></div>
-        <div class="r-row"><span class="r-label">Interest earned</span><span class="r-value" id="ppfInterest">0</span></div>
-        <div class="r-row"><span class="r-label">Maturity value</span><span class="r-value" id="ppfMaturity">0</span></div>
+        <div class="r-row"><span class="r-label">Down payment amount</span><span class="r-value" id="dpDownAmt">$0</span></div>
+        <div class="r-row"><span class="r-label">Down payment %</span><span class="r-value" id="dpDownPct">0%</span></div>
+        <div class="r-row"><span class="r-label">Loan amount</span><span class="r-value" id="dpLoanAmt">$0</span></div>
+        <div class="r-row"><span class="r-label">PMI required</span><span class="r-value" id="dpPmiRequired">—</span></div>
+        <div class="r-row"><span class="r-label">Estimated monthly PMI</span><span class="r-value" id="dpMonthlyPmi">$0</span></div>
       </div>
+      <div class="field-warning" id="dpWarning"></div>
     </div>
   </section>
 
-
   <section class="article">
-    <h3>How is PPF interest calculated?</h3>
-    <p>PPF compounds annually at a government-set rate (currently 7.1%, revised quarterly by the Ministry of Finance based on prevailing government bond yields). This calculator assumes the full year's contribution is made at the start of each year — depositing before the 5th of April each year maximizes interest, since PPF interest is calculated on the minimum balance between the 5th and month-end.</p>
-    <h3>Why is PPF called EEE?</h3>
-    <p>Exempt-Exempt-Exempt: the contribution qualifies for Section 80C deduction (old regime), the interest earned is tax-free, and the maturity amount is tax-free — a combination almost no other Indian instrument offers, which is what makes PPF's effective post-tax return hard to beat for its risk level, since it's backed by the Government of India with essentially zero credit risk.</p>
-    <h3>Can I withdraw before 15 years?</h3>
-    <p>Partial withdrawals are allowed from year 7, and loans against the balance from year 3 — but full withdrawal requires completing the 15-year term. After 15 years, the account can be extended in 5-year blocks, with or without fresh contributions, making PPF effectively usable as a very long-horizon retirement vehicle well beyond the initial 15 years if desired.</p>
-    <h3>What's the minimum and maximum contribution?</h3>
-    <p>Minimum ₹500 per year to keep the account active, maximum ₹1,50,000 per financial year — contributions above the cap earn no interest and no tax benefit, so there's no advantage to depositing more than the ceiling in a single account.</p>
-    <h3>What's the equivalent of PPF outside India?</h3>
-    <p>No other country has an exact match — PPF's specific combination of a government-guaranteed fixed rate, full tax exemption on contribution, growth, and withdrawal, and a long mandatory lock-in is fairly unique to India. The closest conceptual relatives are tax-advantaged retirement accounts elsewhere, though each differs in important ways: the US <strong>401(k)/Traditional IRA</strong> defers tax on contributions and growth but taxes withdrawals in retirement (not EEE, more like EET), while a <strong>Roth IRA</strong> is closer in spirit — post-tax contributions, tax-free growth and withdrawal — though without PPF's government-guaranteed fixed rate, since Roth IRA funds are typically invested in market securities. The UK's <strong>ISA</strong> (Individual Savings Account) offers tax-free growth and withdrawal similarly to PPF, but again typically holds market-linked investments (a Cash ISA is the closer match rate-wise) rather than a fixed government rate, and has no long mandatory lock-in. None of these fully replicate PPF's specific guarantee-plus-full-tax-exemption combination, which is a reasonable part of why PPF remains a cornerstone of conservative Indian retirement planning specifically.</p>
-    <h3>How does PPF compare to EPF (Employee Provident Fund)?</h3>
-    <p>Both are government-backed, tax-advantaged long-term savings vehicles with similar EEE tax treatment, but EPF is tied to formal employment (with mandatory employer + employee contributions as a percentage of salary) and generally offers a slightly higher rate than PPF in most years, while PPF is open to anyone, including the self-employed, non-salaried individuals, and even EPF subscribers wanting to save beyond their EPF contribution. Many salaried Indians hold both simultaneously.</p>
-    <h3>Should I contribute to PPF every year, or can I skip years?</h3>
-    <p>You can skip years and still keep the account active as long as the ₹500 annual minimum is met (a small reactivation penalty applies if you miss it entirely), but skipping years obviously means missing that year's compounding — since PPF's advantage compounds over 15+ years, consistent annual contributions, ideally maximized and made early in the financial year, produce meaningfully more than sporadic ones even with the same total amount contributed over time.</p>
-    <p><strong>Worked example:</strong> ₹1,50,000 invested at the start of each year for 15 years at 7.1% grows to roughly ₹40.7 lakh — ₹22.5 lakh of contributions plus about ₹18.2 lakh of entirely tax-free interest, an outcome very few other instruments in any country can match for a risk-free, government-backed product.</p>
+    <h3>How much down payment do I need?</h3>
+    <p>It depends on the loan type. Conventional loans can go as low as 3-5% down, but putting down 20% lets you avoid private mortgage insurance (PMI) entirely. FHA loans allow as little as 3.5% down, but they require mortgage insurance built into the loan regardless of how much you put down.</p>
+    <h3>What is PMI and when does it go away?</h3>
+    <p>Private Mortgage Insurance (PMI) protects the lender if you default on the loan — it does not protect you. It's an added monthly cost that kicks in whenever your down payment is below 20% of the home price. On conventional loans, PMI can typically be removed once you reach roughly 20-22% equity in the home, either automatically under federal law or by requesting cancellation from your servicer once you qualify.</p>
+    <h3>Is a bigger down payment always better?</h3>
+    <p>Not necessarily — it's a trade-off. A bigger down payment lowers your monthly payment and can eliminate PMI, but it also ties up cash that could otherwise be invested, kept as an emergency fund, or used for moving costs, repairs, and furnishing the new home. Whether a larger down payment is worth it depends on what else that money could be doing for you.</p>
+    <h3>How does this relate to how much house I can afford?</h3>
+    <p>This tool answers a narrower question: given a home price and a down payment you choose, what's the resulting loan amount and PMI impact? If you're instead trying to work backward from your income and monthly budget to figure out a realistic home price in the first place, use the <a href="house-affordability-calculator.html">House Affordability Calculator</a>.</p>
+    <p><strong>Worked example:</strong> a $400,000 home with 10% down means a $40,000 down payment and a $360,000 loan amount. Since 10% is below the 20% PMI threshold, at an illustrative 0.75% annual PMI rate the estimated monthly PMI is 360,000 × 0.0075 ÷ 12 = $225/month.</p>
   </section>
 
   <!-- TB:MORETOOLS:START -->
@@ -192,6 +249,7 @@
           <li><a href="tip-calculator.html">Tip Calculator</a></li>
           <li><a href="fd-calculator.html">FD Calculator</a></li>
           <li><a href="rd-calculator.html">RD Calculator</a></li>
+          <li><a href="ppf-calculator.html">PPF Calculator</a></li>
           <li><a href="hra-calculator.html">HRA Calculator</a></li>
           <li><a href="break-even-calculator.html">Break-Even &amp; Profit Margin Calculator</a></li>
           <li><a href="debt-payoff-calculator.html">Debt Payoff Calculator</a></li>
@@ -202,7 +260,6 @@
           <li><a href="401k-calculator.html">401(k) Calculator</a></li>
           <li><a href="ira-calculator.html">IRA &amp; Roth IRA Calculator</a></li>
           <li><a href="house-affordability-calculator.html">House Affordability Calculator</a></li>
-          <li><a href="down-payment-calculator.html">Down Payment Calculator</a></li>
           <li><a href="debt-to-income-calculator.html">Debt-to-Income Ratio Calculator</a></li>
           <li><a href="simple-interest-calculator.html">Simple Interest Calculator</a></li>
           <li><a href="roi-calculator.html">ROI Calculator</a></li>
@@ -254,8 +311,8 @@
   <!-- TB:MORETOOLS:END -->
 
   <footer>
-    <p>TALLYBENCH · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
-  </footer>
+<p>TALLYBENCH · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
+</footer>
 </div>
 
 <script src="script.js"></script>

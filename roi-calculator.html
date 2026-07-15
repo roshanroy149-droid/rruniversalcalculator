@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PPF Calculator — Public Provident Fund Maturity (India) | TallyBench</title>
-<meta name="description" content="Free PPF calculator. Project your Public Provident Fund maturity over 15+ years at the current 7.1% rate, with tax-free compounding.">
-<link rel="canonical" href="https://tallybench.com/ppf-calculator.html">
+<title>ROI Calculator — Return on Investment &amp; Annualized Return | TallyBench</title>
+<meta name="description" content="Free ROI calculator for any investment. Enter initial cost, final value, and holding period to get net gain, ROI percent, and annualized CAGR return.">
+<link rel="canonical" href="https://tallybench.com/roi-calculator.html">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.svg">
@@ -15,15 +15,70 @@
 <meta name="apple-mobile-web-app-title" content="TallyBench">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TallyBench">
-<meta property="og:title" content="PPF Calculator — Public Provident Fund Maturity (India)">
-<meta property="og:description" content="Free PPF calculator. Project your Public Provident Fund maturity over 15+ years at the current 7.1% rate, with tax-free compounding.">
-<meta property="og:url" content="https://tallybench.com/ppf-calculator.html">
+<meta property="og:title" content="ROI Calculator — Return on Investment &amp; Annualized Return">
+<meta property="og:description" content="Free ROI calculator for any investment. Enter initial cost, final value, and holding period to get net gain, ROI percent, and annualized CAGR return.">
+<meta property="og:url" content="https://tallybench.com/roi-calculator.html">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="PPF Calculator — Public Provident Fund Maturity (India)">
-<meta name="twitter:description" content="Free PPF calculator. Project your Public Provident Fund maturity over 15+ years at the current 7.1% rate, with tax-free compounding.">
+<meta name="twitter:title" content="ROI Calculator — Return on Investment &amp; Annualized Return">
+<meta name="twitter:description" content="Free ROI calculator for any investment. Enter initial cost, final value, and holding period to get net gain, ROI percent, and annualized CAGR return.">
 <link rel="stylesheet" href="fonts/fonts.css">
 <link rel="stylesheet" href="style.css">
 
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is ROI?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "ROI (Return on Investment) measures how much you gained or lost relative to what you put in: (final value − initial cost − additional costs) ÷ initial cost, expressed as a percentage. A $10,000 investment that becomes $15,000 has a 50% ROI."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What's the difference between ROI and annualized return?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "ROI is the total return over the whole holding period, however long that was. Annualized return (CAGR) normalizes that total return to a per-year rate, so you can fairly compare investments held for different lengths of time — a 50% ROI over 1 year is a much stronger result than the same 50% ROI over 10 years."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is a higher ROI always better?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not on its own. Raw ROI ignores risk, time value of money, and how long your money was tied up — a 50% ROI over 10 years is a very different result from 50% over 1 year, which is exactly why annualized return matters for comparing opportunities."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does this account for taxes or fees?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Only if you enter them in the \"Additional costs\" field — otherwise no. Add any fees, commissions, or taxes paid there so they're subtracted from your gain before ROI and annualized return are calculated."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "ROI Calculator — TallyBench",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any (runs in browser)",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "url": "https://tallybench.com/roi-calculator.html"
+}
+</script>
 </head>
 <body data-page-cat="finance">
 
@@ -118,52 +173,47 @@
 <div class="nav-backdrop" id="navBackdrop"></div>
 
 <div class="wrap">
-  <div class="crumb"><a href="index.html">TallyBench</a> / PPF Calculator</div>
+  <div class="crumb"><a href="index.html">TallyBench</a> / ROI Calculator</div>
 
   <section class="hero">
     <div class="hero-icon-row cat-finance">
       <div class="hero-icon"><svg><use href="icons.svg#icon-investment"/></svg></div>
-      <div class="eyebrow">// PPF CALCULATOR</div>
+      <div class="eyebrow">// ROI CALCULATOR</div>
     </div>
-    <h1>Fifteen years of tax-free compounding.</h1>
-    <p>Enter your annual PPF contribution to see the maturity value — interest is tax-free and contributions qualify for 80C.</p>
+    <h1>What return did your investment actually earn?</h1>
+    <p>Enter your initial cost, the final value, any extra costs, and how long you held it — get net gain, ROI, and an annualized return you can compare across investments.</p>
   </section>
 
-  <section class="tool" id="ppf">
+  <section class="tool" id="roi">
     <div class="disclaimer">
-      <strong>Estimate only.</strong> PPF's interest rate is set quarterly by the Indian government and can change during your 15-year term. Confirm the current rate before relying on this for long-term planning.
+      <strong>Estimate only — not investment advice.</strong> Ignores risk, taxes, and fees unless entered manually.
     </div>
     <div class="card">
       <div>
-        <div class="field"><label>Annual investment (₹, max 1,50,000)</label><input type="number" id="ppfAmt" value="150000" step="500" max="150000"></div>
-        <div class="field"><label>Interest rate (% — current: 7.1)</label><input type="number" id="ppfRate" value="7.1" step="0.1"></div>
-        <div class="field"><label>Duration (years, min 15)</label><input type="number" id="ppfYears" value="15" min="15" max="50"></div>
+        <div class="field"><label>Initial investment / cost ($)</label><input type="number" id="roiInitial" value="10000" step="100"></div>
+        <div class="field"><label>Final value / amount received ($)</label><input type="number" id="roiFinal" value="15000" step="100"></div>
+        <div class="field"><label>Additional costs incurred ($ — fees, taxes, etc.)</label><input type="number" id="roiCosts" value="0" step="10" min="0"></div>
+        <div class="field"><label>Investment holding period (years)</label><input type="number" id="roiYears" value="3" step="0.1" min="0"></div>
+        <div class="field-warning" id="roiWarning"></div>
       </div>
       <div class="readout">
-        <div class="r-row"><span class="r-label">Total invested</span><span class="r-value" id="ppfInvested">0</span></div>
-        <div class="r-row"><span class="r-label">Interest earned</span><span class="r-value" id="ppfInterest">0</span></div>
-        <div class="r-row"><span class="r-label">Maturity value</span><span class="r-value" id="ppfMaturity">0</span></div>
+        <div class="r-row"><span class="r-label">Net Gain/Loss</span><span class="r-value" id="roiGain">$0.00</span></div>
+        <div class="r-row"><span class="r-label">ROI</span><span class="r-value" id="roiPercent">0%</span></div>
+        <div class="r-row"><span class="r-label">Annualized Return (CAGR)</span><span class="r-value" id="roiAnnualized">—</span></div>
       </div>
     </div>
   </section>
 
-
   <section class="article">
-    <h3>How is PPF interest calculated?</h3>
-    <p>PPF compounds annually at a government-set rate (currently 7.1%, revised quarterly by the Ministry of Finance based on prevailing government bond yields). This calculator assumes the full year's contribution is made at the start of each year — depositing before the 5th of April each year maximizes interest, since PPF interest is calculated on the minimum balance between the 5th and month-end.</p>
-    <h3>Why is PPF called EEE?</h3>
-    <p>Exempt-Exempt-Exempt: the contribution qualifies for Section 80C deduction (old regime), the interest earned is tax-free, and the maturity amount is tax-free — a combination almost no other Indian instrument offers, which is what makes PPF's effective post-tax return hard to beat for its risk level, since it's backed by the Government of India with essentially zero credit risk.</p>
-    <h3>Can I withdraw before 15 years?</h3>
-    <p>Partial withdrawals are allowed from year 7, and loans against the balance from year 3 — but full withdrawal requires completing the 15-year term. After 15 years, the account can be extended in 5-year blocks, with or without fresh contributions, making PPF effectively usable as a very long-horizon retirement vehicle well beyond the initial 15 years if desired.</p>
-    <h3>What's the minimum and maximum contribution?</h3>
-    <p>Minimum ₹500 per year to keep the account active, maximum ₹1,50,000 per financial year — contributions above the cap earn no interest and no tax benefit, so there's no advantage to depositing more than the ceiling in a single account.</p>
-    <h3>What's the equivalent of PPF outside India?</h3>
-    <p>No other country has an exact match — PPF's specific combination of a government-guaranteed fixed rate, full tax exemption on contribution, growth, and withdrawal, and a long mandatory lock-in is fairly unique to India. The closest conceptual relatives are tax-advantaged retirement accounts elsewhere, though each differs in important ways: the US <strong>401(k)/Traditional IRA</strong> defers tax on contributions and growth but taxes withdrawals in retirement (not EEE, more like EET), while a <strong>Roth IRA</strong> is closer in spirit — post-tax contributions, tax-free growth and withdrawal — though without PPF's government-guaranteed fixed rate, since Roth IRA funds are typically invested in market securities. The UK's <strong>ISA</strong> (Individual Savings Account) offers tax-free growth and withdrawal similarly to PPF, but again typically holds market-linked investments (a Cash ISA is the closer match rate-wise) rather than a fixed government rate, and has no long mandatory lock-in. None of these fully replicate PPF's specific guarantee-plus-full-tax-exemption combination, which is a reasonable part of why PPF remains a cornerstone of conservative Indian retirement planning specifically.</p>
-    <h3>How does PPF compare to EPF (Employee Provident Fund)?</h3>
-    <p>Both are government-backed, tax-advantaged long-term savings vehicles with similar EEE tax treatment, but EPF is tied to formal employment (with mandatory employer + employee contributions as a percentage of salary) and generally offers a slightly higher rate than PPF in most years, while PPF is open to anyone, including the self-employed, non-salaried individuals, and even EPF subscribers wanting to save beyond their EPF contribution. Many salaried Indians hold both simultaneously.</p>
-    <h3>Should I contribute to PPF every year, or can I skip years?</h3>
-    <p>You can skip years and still keep the account active as long as the ₹500 annual minimum is met (a small reactivation penalty applies if you miss it entirely), but skipping years obviously means missing that year's compounding — since PPF's advantage compounds over 15+ years, consistent annual contributions, ideally maximized and made early in the financial year, produce meaningfully more than sporadic ones even with the same total amount contributed over time.</p>
-    <p><strong>Worked example:</strong> ₹1,50,000 invested at the start of each year for 15 years at 7.1% grows to roughly ₹40.7 lakh — ₹22.5 lakh of contributions plus about ₹18.2 lakh of entirely tax-free interest, an outcome very few other instruments in any country can match for a risk-free, government-backed product.</p>
+    <h3>What is ROI?</h3>
+    <p>ROI (Return on Investment) measures how much you gained or lost relative to what you put in: <strong>ROI = (final value − initial cost − additional costs) ÷ initial cost × 100</strong>. It's the simplest way to express "how much did I make on this" as a single percentage, independent of the currency or dollar amount involved, which is what makes it useful for comparing very different investments side by side.</p>
+    <h3>What's the difference between ROI and annualized return?</h3>
+    <p>ROI is the total return over the whole period you held the investment, however long that was. Annualized return (CAGR — Compound Annual Growth Rate) normalizes that total return to a per-year rate, so you can fairly compare investments held for different lengths of time. A 50% ROI earned in a single year is a dramatically stronger result than the same 50% ROI spread across a decade, and annualized return is what makes that difference visible at a glance.</p>
+    <h3>Is a higher ROI always better?</h3>
+    <p>Not by itself. Raw ROI ignores risk and the time value of money — a 50% ROI over 10 years is a very different outcome from 50% over 1 year, which is exactly why annualized return matters more than headline ROI when comparing opportunities. Two investments can post the same ROI while one required far more risk or patience than the other to get there.</p>
+    <h3>Does this account for taxes or fees?</h3>
+    <p>Only if you enter them in the "Additional costs" field above — otherwise the calculator assumes your initial cost and final value are already net figures. Add any commissions, closing costs, capital gains tax, or other fees there so they're subtracted from your gain before ROI and annualized return are calculated.</p>
+    <p><strong>Worked example:</strong> a $10,000 investment that grows to $15,000 over 3 years with no additional costs has a net gain of $5,000 and an ROI of 50%. Annualized, that's (15,000 ÷ 10,000)^(1/3) − 1 ≈ 14.47% per year — useful context for comparing against, say, a <a href="compound-interest-calculator.html">compound interest</a> account advertising a fixed annual rate. For a deeper look at how contributions and compounding play out over time, see the <a href="investment-calculator.html">Investment Calculator</a>.</p>
   </section>
 
   <!-- TB:MORETOOLS:START -->
@@ -192,6 +242,7 @@
           <li><a href="tip-calculator.html">Tip Calculator</a></li>
           <li><a href="fd-calculator.html">FD Calculator</a></li>
           <li><a href="rd-calculator.html">RD Calculator</a></li>
+          <li><a href="ppf-calculator.html">PPF Calculator</a></li>
           <li><a href="hra-calculator.html">HRA Calculator</a></li>
           <li><a href="break-even-calculator.html">Break-Even &amp; Profit Margin Calculator</a></li>
           <li><a href="debt-payoff-calculator.html">Debt Payoff Calculator</a></li>
@@ -205,7 +256,6 @@
           <li><a href="down-payment-calculator.html">Down Payment Calculator</a></li>
           <li><a href="debt-to-income-calculator.html">Debt-to-Income Ratio Calculator</a></li>
           <li><a href="simple-interest-calculator.html">Simple Interest Calculator</a></li>
-          <li><a href="roi-calculator.html">ROI Calculator</a></li>
           <li><a href="credit-card-payoff-calculator.html">Credit Card Payoff Calculator</a></li>
         </ul>
       </div>
@@ -254,8 +304,8 @@
   <!-- TB:MORETOOLS:END -->
 
   <footer>
-    <p>TALLYBENCH · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
-  </footer>
+<p>TALLYBENCH · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
+</footer>
 </div>
 
 <script src="script.js"></script>

@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PPF Calculator — Public Provident Fund Maturity (India) | TallyBench</title>
-<meta name="description" content="Free PPF calculator. Project your Public Provident Fund maturity over 15+ years at the current 7.1% rate, with tax-free compounding.">
-<link rel="canonical" href="https://tallybench.com/ppf-calculator.html">
+<title>IRA &amp; Roth IRA Calculator — Traditional vs Roth Comparison | TallyBench</title>
+<meta name="description" content="Free IRA calculator comparing Traditional vs Roth IRA growth to retirement. See projected balance, taxes paid, and after-tax value for both side by side.">
+<link rel="canonical" href="https://tallybench.com/ira-calculator.html">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.svg">
@@ -15,15 +15,78 @@
 <meta name="apple-mobile-web-app-title" content="TallyBench">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TallyBench">
-<meta property="og:title" content="PPF Calculator — Public Provident Fund Maturity (India)">
-<meta property="og:description" content="Free PPF calculator. Project your Public Provident Fund maturity over 15+ years at the current 7.1% rate, with tax-free compounding.">
-<meta property="og:url" content="https://tallybench.com/ppf-calculator.html">
+<meta property="og:title" content="IRA &amp; Roth IRA Calculator — Traditional vs Roth Comparison">
+<meta property="og:description" content="Compare Traditional vs Roth IRA growth to retirement. See projected balance, taxes paid, and after-tax value for both side by side.">
+<meta property="og:url" content="https://tallybench.com/ira-calculator.html">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="PPF Calculator — Public Provident Fund Maturity (India)">
-<meta name="twitter:description" content="Free PPF calculator. Project your Public Provident Fund maturity over 15+ years at the current 7.1% rate, with tax-free compounding.">
+<meta name="twitter:title" content="IRA &amp; Roth IRA Calculator — Traditional vs Roth Comparison">
+<meta name="twitter:description" content="Compare Traditional vs Roth IRA growth to retirement. See projected balance, taxes paid, and after-tax value for both side by side.">
 <link rel="stylesheet" href="fonts/fonts.css">
 <link rel="stylesheet" href="style.css">
 
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What's the difference between a Traditional and Roth IRA?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A Traditional IRA is funded with pre-tax dollars, grows tax-deferred, and is taxed as ordinary income when you withdraw in retirement. A Roth IRA is funded with after-tax dollars, so you get no deduction today, but qualified withdrawals in retirement — including all the growth — are completely tax-free."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which is better for me?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "As a rule of thumb, a Roth IRA tends to win if you expect to be in a higher tax bracket in retirement than you are today, since you lock in today's (lower) tax rate on contributions. A Traditional IRA tends to win if you expect a lower tax bracket in retirement. This calculator runs both scenarios on your numbers so the trade-off is concrete rather than a rule of thumb."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What are the IRA contribution limits?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The IRS sets an annual contribution limit for IRAs (with a higher catch-up limit once you turn 50), and these limits change from year to year and are sometimes adjusted for inflation. This calculator doesn't hardcode a specific dollar limit since it would go stale — check irs.gov for the current year's limit before deciding how much to contribute."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I contribute to both a Traditional and Roth IRA?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, you can split contributions between both account types in the same year, but the combined total across all your IRAs still can't exceed the single annual IRA contribution limit set by the IRS. Roth contributions also phase out at higher incomes, which doesn't apply to Traditional IRA contributions themselves (though the deduction can phase out if you or a spouse have a workplace plan)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is this different from a 401(k)?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "An IRA is opened individually through a brokerage, independent of your employer, so there's no employer match and contribution limits are generally lower than a 401(k)'s. A 401(k) is employer-sponsored, often comes with a matching contribution (effectively free money), and is worth maxing out to the match first. See the 401(k) Calculator, a companion tool, to model that employer-sponsored side separately."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "IRA & Roth IRA Calculator — TallyBench",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any (runs in browser)",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "url": "https://tallybench.com/ira-calculator.html"
+}
+</script>
 </head>
 <body data-page-cat="finance">
 
@@ -118,52 +181,67 @@
 <div class="nav-backdrop" id="navBackdrop"></div>
 
 <div class="wrap">
-  <div class="crumb"><a href="index.html">TallyBench</a> / PPF Calculator</div>
+  <div class="crumb"><a href="index.html">TallyBench</a> / IRA &amp; Roth IRA Calculator</div>
 
   <section class="hero">
     <div class="hero-icon-row cat-finance">
       <div class="hero-icon"><svg><use href="icons.svg#icon-investment"/></svg></div>
-      <div class="eyebrow">// PPF CALCULATOR</div>
+      <div class="eyebrow">// IRA &amp; ROTH IRA CALCULATOR</div>
     </div>
-    <h1>Fifteen years of tax-free compounding.</h1>
-    <p>Enter your annual PPF contribution to see the maturity value — interest is tax-free and contributions qualify for 80C.</p>
+    <h1>Traditional or Roth — which IRA actually leaves you more?</h1>
+    <p>Enter your age, contributions, and expected returns to project both account types side by side, including the tax trade-off each one makes.</p>
   </section>
 
-  <section class="tool" id="ppf">
+  <section class="tool" id="ira">
     <div class="disclaimer">
-      <strong>Estimate only.</strong> PPF's interest rate is set quarterly by the Indian government and can change during your 15-year term. Confirm the current rate before relying on this for long-term planning.
+      <strong>Estimate only — not tax or investment advice.</strong> Assumes level annual contributions and a constant return rate; actual returns vary and IRS contribution limits/rules change over time.
     </div>
     <div class="card">
       <div>
-        <div class="field"><label>Annual investment (₹, max 1,50,000)</label><input type="number" id="ppfAmt" value="150000" step="500" max="150000"></div>
-        <div class="field"><label>Interest rate (% — current: 7.1)</label><input type="number" id="ppfRate" value="7.1" step="0.1"></div>
-        <div class="field"><label>Duration (years, min 15)</label><input type="number" id="ppfYears" value="15" min="15" max="50"></div>
+        <div class="row2">
+          <div class="field"><label>Current age</label><input type="number" id="iraAge" value="30" min="0" max="120"></div>
+          <div class="field"><label>Retirement age</label><input type="number" id="iraRetAge" value="65" min="0" max="120"></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label>Current IRA balance ($)</label><input type="number" id="iraBalance" value="10000" step="500" min="0"></div>
+          <div class="field"><label>Annual contribution ($)</label><input type="number" id="iraContrib" value="7000" step="100" min="0"></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label>Expected annual return (%)</label><input type="number" id="iraReturn" value="7" step="0.1"></div>
+          <div class="field"><label>Your current marginal tax rate (%)</label><input type="number" id="iraCurTax" value="22" step="0.5" min="0" max="100"></div>
+        </div>
+        <div class="field"><label>Your expected tax rate in retirement (%)</label><input type="number" id="iraRetTax" value="15" step="0.5" min="0" max="100"></div>
       </div>
-      <div class="readout">
-        <div class="r-row"><span class="r-label">Total invested</span><span class="r-value" id="ppfInvested">0</span></div>
-        <div class="r-row"><span class="r-label">Interest earned</span><span class="r-value" id="ppfInterest">0</span></div>
-        <div class="r-row"><span class="r-label">Maturity value</span><span class="r-value" id="ppfMaturity">0</span></div>
+      <div>
+        <div class="section-label">Traditional IRA</div>
+        <div class="readout">
+          <div class="r-row"><span class="r-label">Balance at retirement</span><span class="r-value" id="iraTradBalance">$0</span></div>
+          <div class="r-row"><span class="r-label">Tax paid at withdrawal</span><span class="r-value" id="iraTradTax">$0</span></div>
+          <div class="r-row"><span class="r-label">After-tax value</span><span class="r-value" id="iraTradAfterTax">$0</span></div>
+        </div>
+        <div class="section-label" style="margin-top:16px;">Roth IRA</div>
+        <div class="readout">
+          <div class="r-row"><span class="r-label">Balance at retirement</span><span class="r-value" id="iraRothBalance">$0</span></div>
+          <div class="r-row"><span class="r-label">Tax paid on contributions today</span><span class="r-value" id="iraRothTax">$0</span></div>
+          <div class="r-row"><span class="r-label">After-tax value</span><span class="r-value" id="iraRothAfterTax">$0</span></div>
+        </div>
+        <p style="font-size:12px;color:var(--graphite);margin:14px 0 0;">Over <strong id="iraYears">35</strong> years, total contributions made: <strong id="iraTotalContrib">$0</strong></p>
       </div>
     </div>
   </section>
 
-
   <section class="article">
-    <h3>How is PPF interest calculated?</h3>
-    <p>PPF compounds annually at a government-set rate (currently 7.1%, revised quarterly by the Ministry of Finance based on prevailing government bond yields). This calculator assumes the full year's contribution is made at the start of each year — depositing before the 5th of April each year maximizes interest, since PPF interest is calculated on the minimum balance between the 5th and month-end.</p>
-    <h3>Why is PPF called EEE?</h3>
-    <p>Exempt-Exempt-Exempt: the contribution qualifies for Section 80C deduction (old regime), the interest earned is tax-free, and the maturity amount is tax-free — a combination almost no other Indian instrument offers, which is what makes PPF's effective post-tax return hard to beat for its risk level, since it's backed by the Government of India with essentially zero credit risk.</p>
-    <h3>Can I withdraw before 15 years?</h3>
-    <p>Partial withdrawals are allowed from year 7, and loans against the balance from year 3 — but full withdrawal requires completing the 15-year term. After 15 years, the account can be extended in 5-year blocks, with or without fresh contributions, making PPF effectively usable as a very long-horizon retirement vehicle well beyond the initial 15 years if desired.</p>
-    <h3>What's the minimum and maximum contribution?</h3>
-    <p>Minimum ₹500 per year to keep the account active, maximum ₹1,50,000 per financial year — contributions above the cap earn no interest and no tax benefit, so there's no advantage to depositing more than the ceiling in a single account.</p>
-    <h3>What's the equivalent of PPF outside India?</h3>
-    <p>No other country has an exact match — PPF's specific combination of a government-guaranteed fixed rate, full tax exemption on contribution, growth, and withdrawal, and a long mandatory lock-in is fairly unique to India. The closest conceptual relatives are tax-advantaged retirement accounts elsewhere, though each differs in important ways: the US <strong>401(k)/Traditional IRA</strong> defers tax on contributions and growth but taxes withdrawals in retirement (not EEE, more like EET), while a <strong>Roth IRA</strong> is closer in spirit — post-tax contributions, tax-free growth and withdrawal — though without PPF's government-guaranteed fixed rate, since Roth IRA funds are typically invested in market securities. The UK's <strong>ISA</strong> (Individual Savings Account) offers tax-free growth and withdrawal similarly to PPF, but again typically holds market-linked investments (a Cash ISA is the closer match rate-wise) rather than a fixed government rate, and has no long mandatory lock-in. None of these fully replicate PPF's specific guarantee-plus-full-tax-exemption combination, which is a reasonable part of why PPF remains a cornerstone of conservative Indian retirement planning specifically.</p>
-    <h3>How does PPF compare to EPF (Employee Provident Fund)?</h3>
-    <p>Both are government-backed, tax-advantaged long-term savings vehicles with similar EEE tax treatment, but EPF is tied to formal employment (with mandatory employer + employee contributions as a percentage of salary) and generally offers a slightly higher rate than PPF in most years, while PPF is open to anyone, including the self-employed, non-salaried individuals, and even EPF subscribers wanting to save beyond their EPF contribution. Many salaried Indians hold both simultaneously.</p>
-    <h3>Should I contribute to PPF every year, or can I skip years?</h3>
-    <p>You can skip years and still keep the account active as long as the ₹500 annual minimum is met (a small reactivation penalty applies if you miss it entirely), but skipping years obviously means missing that year's compounding — since PPF's advantage compounds over 15+ years, consistent annual contributions, ideally maximized and made early in the financial year, produce meaningfully more than sporadic ones even with the same total amount contributed over time.</p>
-    <p><strong>Worked example:</strong> ₹1,50,000 invested at the start of each year for 15 years at 7.1% grows to roughly ₹40.7 lakh — ₹22.5 lakh of contributions plus about ₹18.2 lakh of entirely tax-free interest, an outcome very few other instruments in any country can match for a risk-free, government-backed product.</p>
+    <h3>What's the difference between a Traditional and Roth IRA?</h3>
+    <p>A Traditional IRA is funded with pre-tax dollars — you may get a tax deduction the year you contribute — and grows tax-deferred until retirement, at which point withdrawals are taxed as ordinary income. A Roth IRA flips that: you contribute after-tax dollars today, get no deduction, but qualified withdrawals in retirement — including every dollar of growth — come out completely tax-free. Both share the same core mechanics otherwise: money invested grows tax-free while it sits inside the account, and both have the same combined annual contribution limit.</p>
+    <h3>Which is better for me?</h3>
+    <p>The rule of thumb: a Roth IRA tends to come out ahead if you expect to be in a <em>higher</em> tax bracket in retirement than you are right now, because you're locking in today's lower rate on every dollar contributed. A Traditional IRA tends to come out ahead if you expect a <em>lower</em> bracket in retirement, since you defer tax now and pay it later at a cheaper rate. The two readouts above make this trade-off concrete with your actual numbers rather than leaving it as an abstract rule — compare the "after-tax value" row for each account directly.</p>
+    <h3>What are the IRA contribution limits?</h3>
+    <p>The IRS sets an annual dollar limit on how much you can contribute across all your IRAs combined, plus a higher "catch-up" limit once you turn 50. These limits are periodically adjusted and change from year to year, so this calculator deliberately doesn't hardcode a specific number that would go stale — check <a href="https://www.irs.gov" target="_blank" rel="noopener">irs.gov</a> for the current year's limit before deciding how much to contribute.</p>
+    <h3>Can I contribute to both a Traditional and Roth IRA?</h3>
+    <p>Yes — you can split contributions across both a Traditional and a Roth IRA in the same year, but the combined total across every IRA you own still can't exceed the single annual IRA limit set by the IRS. Roth contributions also phase out entirely above certain income levels, which doesn't limit Traditional IRA contributions themselves (though the tax deduction can phase out if you or a spouse are covered by a workplace retirement plan).</p>
+    <h3>How is this different from a 401(k)?</h3>
+    <p>An IRA is opened on your own through a brokerage, entirely independent of any employer, which means there's no employer match and the annual contribution limit is generally lower than a 401(k)'s. A 401(k) is employer-sponsored and often comes with a matching contribution — effectively free money that's usually worth capturing before maxing out an IRA. See the <a href="401k-calculator.html">401(k) Calculator</a>, a companion tool, to model that employer-sponsored side of retirement saving on its own.</p>
+    <p><strong>Worked example:</strong> starting at age 30 with a $10,000 balance, contributing $7,000/year until retirement at 65 (35 years) at a 7% annual return, the balance grows to about <strong>$1,142,160</strong>. Total contributions over those 35 years: $245,000. As a Traditional IRA taxed at 15% on withdrawal, that leaves an after-tax value of about <strong>$970,836</strong> (roughly $171,324 paid in tax at withdrawal). As a Roth IRA, the same $245,000 of contributions would have cost about $53,900 in tax today at a 22% marginal rate, but the full $1,142,160 balance comes out tax-free in retirement. In this example the Roth's after-tax value comes out higher — not because 22% beats 15%, but because that 22% is applied only to the $245,000 of contributions, while the Traditional IRA's 15% withdrawal tax is applied to the entire $1,142,160 grown balance, a much larger base. This is exactly the trade-off worth checking with your own numbers: a lower expected retirement tax rate helps the Traditional side, but it's taxing a bigger pile of money, so it doesn't automatically win.</p>
   </section>
 
   <!-- TB:MORETOOLS:START -->
@@ -192,6 +270,7 @@
           <li><a href="tip-calculator.html">Tip Calculator</a></li>
           <li><a href="fd-calculator.html">FD Calculator</a></li>
           <li><a href="rd-calculator.html">RD Calculator</a></li>
+          <li><a href="ppf-calculator.html">PPF Calculator</a></li>
           <li><a href="hra-calculator.html">HRA Calculator</a></li>
           <li><a href="break-even-calculator.html">Break-Even &amp; Profit Margin Calculator</a></li>
           <li><a href="debt-payoff-calculator.html">Debt Payoff Calculator</a></li>
@@ -200,7 +279,6 @@
           <li><a href="cd-calculator.html">CD Calculator</a></li>
           <li><a href="amortization-schedule-calculator.html">Amortization Schedule Calculator</a></li>
           <li><a href="401k-calculator.html">401(k) Calculator</a></li>
-          <li><a href="ira-calculator.html">IRA &amp; Roth IRA Calculator</a></li>
           <li><a href="house-affordability-calculator.html">House Affordability Calculator</a></li>
           <li><a href="down-payment-calculator.html">Down Payment Calculator</a></li>
           <li><a href="debt-to-income-calculator.html">Debt-to-Income Ratio Calculator</a></li>
@@ -254,8 +332,8 @@
   <!-- TB:MORETOOLS:END -->
 
   <footer>
-    <p>TALLYBENCH · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
-  </footer>
+<p>TALLYBENCH · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
+</footer>
 </div>
 
 <script src="script.js"></script>

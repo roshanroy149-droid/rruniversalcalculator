@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PPF Calculator — Public Provident Fund Maturity (India) | TallyBench</title>
-<meta name="description" content="Free PPF calculator. Project your Public Provident Fund maturity over 15+ years at the current 7.1% rate, with tax-free compounding.">
-<link rel="canonical" href="https://tallybench.com/ppf-calculator.html">
+<title>Credit Card Payoff Calculator — Months &amp; Interest | TallyBench</title>
+<meta name="description" content="Free credit card payoff calculator. See how many months to pay off your balance by fixed payment, or find the payment needed for a target payoff date.">
+<link rel="canonical" href="https://tallybench.com/credit-card-payoff-calculator.html">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.svg">
@@ -15,15 +15,70 @@
 <meta name="apple-mobile-web-app-title" content="TallyBench">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TallyBench">
-<meta property="og:title" content="PPF Calculator — Public Provident Fund Maturity (India)">
-<meta property="og:description" content="Free PPF calculator. Project your Public Provident Fund maturity over 15+ years at the current 7.1% rate, with tax-free compounding.">
-<meta property="og:url" content="https://tallybench.com/ppf-calculator.html">
+<meta property="og:title" content="Credit Card Payoff Calculator — Months &amp; Interest">
+<meta property="og:description" content="Free credit card payoff calculator. See how many months to pay off your balance by fixed payment, or find the payment needed for a target payoff date.">
+<meta property="og:url" content="https://tallybench.com/credit-card-payoff-calculator.html">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="PPF Calculator — Public Provident Fund Maturity (India)">
-<meta name="twitter:description" content="Free PPF calculator. Project your Public Provident Fund maturity over 15+ years at the current 7.1% rate, with tax-free compounding.">
+<meta name="twitter:title" content="Credit Card Payoff Calculator — Months &amp; Interest">
+<meta name="twitter:description" content="Free credit card payoff calculator. See how many months to pay off your balance by fixed payment, or find the payment needed for a target payoff date.">
 <link rel="stylesheet" href="fonts/fonts.css">
 <link rel="stylesheet" href="style.css">
 
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How is credit card interest calculated?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Most card issuers actually compound interest daily on your average daily balance. This tool uses a standard monthly-compounding approximation (APR ÷ 12 applied once per month) for simplicity, which lands very close to the real number for illustrative purposes."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does my balance barely move some months?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "This is the minimum-payment trap: if your payment only barely exceeds the interest charged that month, almost nothing goes toward the actual principal, so the balance shrinks extremely slowly even though you're paying every month."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Should I pay more than the minimum?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes — strongly recommended. Paying above the minimum sends more of each payment to principal instead of interest, cutting both your payoff time and total interest paid substantially. See the Debt Payoff Calculator for a full multi-card snowball or avalanche strategy."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What if I have multiple cards?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "This tool models one card at a time. For comparing payoff strategies across multiple debts at once — snowball versus avalanche — use the Debt Payoff Calculator instead."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Credit Card Payoff Calculator — TallyBench",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any (runs in browser)",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "url": "https://tallybench.com/credit-card-payoff-calculator.html"
+}
+</script>
 </head>
 <body data-page-cat="finance">
 
@@ -118,52 +173,68 @@
 <div class="nav-backdrop" id="navBackdrop"></div>
 
 <div class="wrap">
-  <div class="crumb"><a href="index.html">TallyBench</a> / PPF Calculator</div>
+  <div class="crumb"><a href="index.html">TallyBench</a> / Credit Card Payoff Calculator</div>
 
   <section class="hero">
     <div class="hero-icon-row cat-finance">
-      <div class="hero-icon"><svg><use href="icons.svg#icon-investment"/></svg></div>
-      <div class="eyebrow">// PPF CALCULATOR</div>
+      <div class="hero-icon"><svg><use href="icons.svg#icon-loan"/></svg></div>
+      <div class="eyebrow">// CREDIT CARD PAYOFF CALCULATOR</div>
     </div>
-    <h1>Fifteen years of tax-free compounding.</h1>
-    <p>Enter your annual PPF contribution to see the maturity value — interest is tax-free and contributions qualify for 80C.</p>
+    <h1>How long will it take to pay off your card?</h1>
+    <p>Solve by a fixed monthly payment to see months and total interest, or work backward from a target payoff date to find the payment you need.</p>
   </section>
 
-  <section class="tool" id="ppf">
+  <section class="tool" id="ccp">
     <div class="disclaimer">
-      <strong>Estimate only.</strong> PPF's interest rate is set quarterly by the Indian government and can change during your 15-year term. Confirm the current rate before relying on this for long-term planning.
+      <strong>Estimate only</strong> — real card issuers use daily compounding and may apply payments differently. Check your card's actual terms.
     </div>
     <div class="card">
       <div>
-        <div class="field"><label>Annual investment (₹, max 1,50,000)</label><input type="number" id="ppfAmt" value="150000" step="500" max="150000"></div>
-        <div class="field"><label>Interest rate (% — current: 7.1)</label><input type="number" id="ppfRate" value="7.1" step="0.1"></div>
-        <div class="field"><label>Duration (years, min 15)</label><input type="number" id="ppfYears" value="15" min="15" max="50"></div>
+        <div class="field"><label>Calculation mode</label>
+          <div class="seg" id="ccpModeSeg">
+            <button type="button" class="active" data-mode="fixed">By Fixed Payment</button>
+            <button type="button" data-mode="target">By Target Date</button>
+          </div>
+        </div>
+
+        <div id="ccpFixedFields">
+          <div class="field"><label>Current balance ($)</label><input type="number" id="ccpBalanceA" value="5000" step="100" min="0"></div>
+          <div class="field"><label>APR (%)</label><input type="number" id="ccpAprA" value="22" step="0.01" min="0"></div>
+          <div class="field"><label>Fixed monthly payment ($)</label><input type="number" id="ccpPayment" value="200" step="10" min="0"></div>
+          <div class="field-warning" id="ccpWarningA"></div>
+        </div>
+
+        <div id="ccpTargetFields" style="display:none;">
+          <div class="field"><label>Current balance ($)</label><input type="number" id="ccpBalanceB" value="5000" step="100" min="0"></div>
+          <div class="field"><label>APR (%)</label><input type="number" id="ccpAprB" value="22" step="0.01" min="0"></div>
+          <div class="field"><label>Months to pay off (target)</label><input type="number" id="ccpTargetMonths" value="24" step="1" min="1"></div>
+        </div>
       </div>
       <div class="readout">
-        <div class="r-row"><span class="r-label">Total invested</span><span class="r-value" id="ppfInvested">0</span></div>
-        <div class="r-row"><span class="r-label">Interest earned</span><span class="r-value" id="ppfInterest">0</span></div>
-        <div class="r-row"><span class="r-label">Maturity value</span><span class="r-value" id="ppfMaturity">0</span></div>
+        <div id="ccpFixedReadout">
+          <div class="r-row"><span class="r-label">Months to Pay Off</span><span class="r-value" id="ccpMonths">0</span></div>
+          <div class="r-row"><span class="r-label">Total Interest Paid</span><span class="r-value" id="ccpTotalInterestA">$0.00</span></div>
+          <div class="r-row"><span class="r-label">Total Paid</span><span class="r-value" id="ccpTotalPaidA">$0.00</span></div>
+        </div>
+        <div id="ccpTargetReadout" style="display:none;">
+          <div class="r-row"><span class="r-label">Required Monthly Payment</span><span class="r-value" id="ccpRequiredPayment">$0.00</span></div>
+          <div class="r-row"><span class="r-label">Total Interest Paid</span><span class="r-value" id="ccpTotalInterestB">$0.00</span></div>
+          <div class="r-row"><span class="r-label">Total Paid</span><span class="r-value" id="ccpTotalPaidB">$0.00</span></div>
+        </div>
       </div>
     </div>
   </section>
 
-
   <section class="article">
-    <h3>How is PPF interest calculated?</h3>
-    <p>PPF compounds annually at a government-set rate (currently 7.1%, revised quarterly by the Ministry of Finance based on prevailing government bond yields). This calculator assumes the full year's contribution is made at the start of each year — depositing before the 5th of April each year maximizes interest, since PPF interest is calculated on the minimum balance between the 5th and month-end.</p>
-    <h3>Why is PPF called EEE?</h3>
-    <p>Exempt-Exempt-Exempt: the contribution qualifies for Section 80C deduction (old regime), the interest earned is tax-free, and the maturity amount is tax-free — a combination almost no other Indian instrument offers, which is what makes PPF's effective post-tax return hard to beat for its risk level, since it's backed by the Government of India with essentially zero credit risk.</p>
-    <h3>Can I withdraw before 15 years?</h3>
-    <p>Partial withdrawals are allowed from year 7, and loans against the balance from year 3 — but full withdrawal requires completing the 15-year term. After 15 years, the account can be extended in 5-year blocks, with or without fresh contributions, making PPF effectively usable as a very long-horizon retirement vehicle well beyond the initial 15 years if desired.</p>
-    <h3>What's the minimum and maximum contribution?</h3>
-    <p>Minimum ₹500 per year to keep the account active, maximum ₹1,50,000 per financial year — contributions above the cap earn no interest and no tax benefit, so there's no advantage to depositing more than the ceiling in a single account.</p>
-    <h3>What's the equivalent of PPF outside India?</h3>
-    <p>No other country has an exact match — PPF's specific combination of a government-guaranteed fixed rate, full tax exemption on contribution, growth, and withdrawal, and a long mandatory lock-in is fairly unique to India. The closest conceptual relatives are tax-advantaged retirement accounts elsewhere, though each differs in important ways: the US <strong>401(k)/Traditional IRA</strong> defers tax on contributions and growth but taxes withdrawals in retirement (not EEE, more like EET), while a <strong>Roth IRA</strong> is closer in spirit — post-tax contributions, tax-free growth and withdrawal — though without PPF's government-guaranteed fixed rate, since Roth IRA funds are typically invested in market securities. The UK's <strong>ISA</strong> (Individual Savings Account) offers tax-free growth and withdrawal similarly to PPF, but again typically holds market-linked investments (a Cash ISA is the closer match rate-wise) rather than a fixed government rate, and has no long mandatory lock-in. None of these fully replicate PPF's specific guarantee-plus-full-tax-exemption combination, which is a reasonable part of why PPF remains a cornerstone of conservative Indian retirement planning specifically.</p>
-    <h3>How does PPF compare to EPF (Employee Provident Fund)?</h3>
-    <p>Both are government-backed, tax-advantaged long-term savings vehicles with similar EEE tax treatment, but EPF is tied to formal employment (with mandatory employer + employee contributions as a percentage of salary) and generally offers a slightly higher rate than PPF in most years, while PPF is open to anyone, including the self-employed, non-salaried individuals, and even EPF subscribers wanting to save beyond their EPF contribution. Many salaried Indians hold both simultaneously.</p>
-    <h3>Should I contribute to PPF every year, or can I skip years?</h3>
-    <p>You can skip years and still keep the account active as long as the ₹500 annual minimum is met (a small reactivation penalty applies if you miss it entirely), but skipping years obviously means missing that year's compounding — since PPF's advantage compounds over 15+ years, consistent annual contributions, ideally maximized and made early in the financial year, produce meaningfully more than sporadic ones even with the same total amount contributed over time.</p>
-    <p><strong>Worked example:</strong> ₹1,50,000 invested at the start of each year for 15 years at 7.1% grows to roughly ₹40.7 lakh — ₹22.5 lakh of contributions plus about ₹18.2 lakh of entirely tax-free interest, an outcome very few other instruments in any country can match for a risk-free, government-backed product.</p>
+    <h3>How is credit card interest calculated?</h3>
+    <p>Most card issuers actually compound interest daily against your average daily balance, then post it to your statement once a month. This tool uses a standard monthly-compounding approximation instead — APR ÷ 12 applied once per month to the current balance — which is very close to the real figure and much simpler to reason about for planning purposes.</p>
+    <h3>Why does my balance barely move some months?</h3>
+    <p>This is the classic minimum-payment trap: if your payment only barely exceeds the interest charged that month, almost none of it goes toward the actual principal, so the balance shrinks extremely slowly even though you're paying on time every month. The "By Fixed Payment" mode above will flag this directly and tell you to increase your payment if it's too low to ever pay the balance down at all.</p>
+    <h3>Should I pay more than the minimum?</h3>
+    <p>Yes — strongly recommended. Every dollar above the interest charged that month goes straight to principal, which compounds in your favor: a smaller balance means less interest the following month too, so increasing your payment shortens the payoff time by more than proportionally. For a full multi-card strategy that decides which balance to attack first, see the <a href="debt-payoff-calculator.html">Debt Payoff Calculator</a>.</p>
+    <h3>What if I have multiple cards?</h3>
+    <p>This tool is built for one card at a time. If you're juggling several balances and want to compare snowball (smallest balance first) versus avalanche (highest rate first) strategies across all of them together, the <a href="debt-payoff-calculator.html">Debt Payoff Calculator</a> is the right tool for that comparison.</p>
+    <p><strong>Worked example:</strong> a $5,000 balance at 22% APR with a $200 fixed monthly payment starts with a first-month interest charge of 5,000 × (0.22 ÷ 12) ≈ $91.67, bringing the balance to roughly $4,891.67 after that first payment. Running that same $200 payment forward month by month takes 34 months (just under 3 years) to clear the balance completely, with $1,749.88 paid in total interest — over a third of the original $5,000 — for a total of $6,749.88 paid out. Bumping the payment up even a little cuts both numbers meaningfully, since more of each payment reaches principal sooner.</p>
   </section>
 
   <!-- TB:MORETOOLS:START -->
@@ -192,6 +263,7 @@
           <li><a href="tip-calculator.html">Tip Calculator</a></li>
           <li><a href="fd-calculator.html">FD Calculator</a></li>
           <li><a href="rd-calculator.html">RD Calculator</a></li>
+          <li><a href="ppf-calculator.html">PPF Calculator</a></li>
           <li><a href="hra-calculator.html">HRA Calculator</a></li>
           <li><a href="break-even-calculator.html">Break-Even &amp; Profit Margin Calculator</a></li>
           <li><a href="debt-payoff-calculator.html">Debt Payoff Calculator</a></li>
@@ -206,7 +278,6 @@
           <li><a href="debt-to-income-calculator.html">Debt-to-Income Ratio Calculator</a></li>
           <li><a href="simple-interest-calculator.html">Simple Interest Calculator</a></li>
           <li><a href="roi-calculator.html">ROI Calculator</a></li>
-          <li><a href="credit-card-payoff-calculator.html">Credit Card Payoff Calculator</a></li>
         </ul>
       </div>
       <div class="more-tools-group">
@@ -254,8 +325,8 @@
   <!-- TB:MORETOOLS:END -->
 
   <footer>
-    <p>TALLYBENCH · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
-  </footer>
+<p>TALLYBENCH · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
+</footer>
 </div>
 
 <script src="script.js"></script>
