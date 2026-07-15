@@ -56,9 +56,26 @@
     if(t.getAttribute('href') === path) t.classList.add('active');
   });
 
+  // In the mobile drawer, categories are stacked vertically, so a tool list
+  // that always renders after the *last* category (below EVERYDAY) reads as
+  // disconnected from whichever category was actually tapped — tapping
+  // FINANCE near the top but seeing its tools appear at the very bottom.
+  // On mobile only, physically relocate the shared subRuler node to sit
+  // right after the tapped category button, so it expands as a true
+  // accordion in place. Desktop's horizontal ruler doesn't have this
+  // problem (categories run left-to-right, "below" is unambiguous there),
+  // so this is skipped entirely above the mobile breakpoint.
+  const subRulerHomeParent = subRuler.parentElement;
+  const subRulerHomeNext = subRuler.nextElementSibling;
+  const isMobileDrawer = () => window.matchMedia('(max-width:640px)').matches;
+
   function openCategory(cat, scroll){
     catTabs.forEach(tab=>tab.classList.toggle('cat-open', tab.dataset.cat === cat));
     subTicks.forEach(tick=>tick.classList.toggle('cat-visible', tick.dataset.cat === cat));
+    if(isMobileDrawer()){
+      const tab = Array.from(catTabs).find(t=>t.dataset.cat === cat);
+      if(tab) tab.insertAdjacentElement('afterend', subRuler);
+    }
     subRuler.classList.add('open');
     if(scroll) subRuler.scrollLeft = 0;
   }
@@ -66,6 +83,7 @@
   function closeAll(){
     catTabs.forEach(tab=>tab.classList.remove('cat-open'));
     subRuler.classList.remove('open');
+    subRulerHomeParent.insertBefore(subRuler, subRulerHomeNext);
   }
 
   // Mark the current page's sub-tick as active (works once its category is shown)

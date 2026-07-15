@@ -250,7 +250,13 @@ body.nav-open .nav-backdrop{display:block;}
     overflow-y:visible;
     border-top:1px solid rgba(242,236,221,0.06);
   }
-  .sub-tick{padding-left:34px;font-size:11.5px;}
+  /* Scoped to .sub-ruler (not just the bare .sub-tick class) so this ties in
+     specificity with ".cat-ruler .tick" above rather than losing to it —
+     once a category is open, subRuler gets relocated to be a DOM descendant
+     of .cat-ruler (see script.js), which would otherwise let the more
+     general rule override this indent/font-size on tie-breaking by
+     specificity alone. Being last in the file wins the tie. */
+  .sub-ruler .sub-tick{padding-left:34px;font-size:11.5px;}
 }
 
 /* HERO */
