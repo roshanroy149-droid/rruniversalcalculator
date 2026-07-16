@@ -141,6 +141,45 @@ window.__TB_EMBED__ = new URLSearchParams(window.location.search).get('embed') =
   }
   if(navClose) navClose.addEventListener('click', closeDrawer);
   if(navBackdrop) navBackdrop.addEventListener('click', closeDrawer);
+
+  // Edge-swipe to open the drawer (mobile only). The drawer itself slides
+  // in from the right, so a swipe starting near the right edge and moving
+  // left is the natural gesture for it. On iOS/WebKit that same edge is
+  // reserved for the native "swipe forward" gesture, so the trigger zone
+  // there starts further in from the physical edge to reduce how often the
+  // two gestures compete for the same touch.
+  if(navToggle){
+    const isIOS = /iPhone|iPod|iPad/.test(navigator.userAgent) ||
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    const edgeZone = isIOS ? 40 : 20;
+    const openThreshold = 60;
+    let touchStartX = null, touchStartY = null, tracking = false;
+
+    document.addEventListener('touchstart', (e)=>{
+      if(document.body.classList.contains('nav-open')) return;
+      if(getComputedStyle(navToggle).display === 'none') return; // desktop — hamburger hidden
+      const t = e.touches[0];
+      if(t.clientX < window.innerWidth - edgeZone) return;
+      touchStartX = t.clientX;
+      touchStartY = t.clientY;
+      tracking = true;
+    }, {passive:true});
+
+    document.addEventListener('touchmove', (e)=>{
+      if(!tracking) return;
+      const t = e.touches[0];
+      const dx = t.clientX - touchStartX;
+      const dy = t.clientY - touchStartY;
+      if(Math.abs(dy) > Math.abs(dx)){ tracking = false; return; } // vertical scroll, not our gesture
+      if(dx <= -openThreshold){
+        openDrawer();
+        tracking = false;
+      }
+    }, {passive:true});
+
+    document.addEventListener('touchend', ()=>{ tracking = false; });
+    document.addEventListener('touchcancel', ()=>{ tracking = false; });
+  }
 })();
 
 // ---- Tip ----
