@@ -9228,3 +9228,83 @@ function tbMoney(n){
 
   calc();
 })();
+
+// ---- Homepage calculator search ----
+(function(){
+  var input = document.getElementById('tbSearchInput');
+  if(!input) return;
+  var resultsEl = document.getElementById('tbSearchResults');
+  var data = window.TB_SEARCH_DATA || [];
+  var activeIndex = -1;
+
+  function updateActive(items){
+    items.forEach(function(el, i){ el.classList.toggle('active', i === activeIndex); });
+    if(activeIndex >= 0 && items[activeIndex]) items[activeIndex].scrollIntoView({block:'nearest'});
+  }
+
+  function render(matches){
+    activeIndex = -1;
+    if(matches.length === 0){
+      resultsEl.innerHTML = '<div class="tb-search-empty">No calculators match that search.</div>';
+      resultsEl.hidden = false;
+      input.setAttribute('aria-expanded','true');
+      return;
+    }
+    resultsEl.innerHTML = matches.map(function(m){
+      return '<a class="tb-search-result" href="'+m.f+'">'
+        + '<span class="tb-search-result-title">'+m.t+'</span>'
+        + '<span class="tb-search-result-blurb">'+m.b+'</span>'
+        + '</a>';
+    }).join('');
+    resultsEl.hidden = false;
+    input.setAttribute('aria-expanded','true');
+  }
+
+  function close(){
+    resultsEl.hidden = true;
+    resultsEl.innerHTML = '';
+    activeIndex = -1;
+    input.setAttribute('aria-expanded','false');
+  }
+
+  function search(query){
+    query = query.trim().toLowerCase();
+    if(query === ''){ close(); return; }
+    var matches = data.filter(function(item){
+      return item.t.toLowerCase().indexOf(query) !== -1
+          || item.b.toLowerCase().indexOf(query) !== -1
+          || item.c.toLowerCase().indexOf(query) !== -1;
+    }).slice(0, 8);
+    render(matches);
+  }
+
+  input.addEventListener('input', function(){ search(input.value); });
+  input.addEventListener('focus', function(){ if(input.value.trim() !== '') search(input.value); });
+
+  input.addEventListener('keydown', function(e){
+    var items = resultsEl.querySelectorAll('.tb-search-result');
+    if(e.key === 'ArrowDown'){
+      if(items.length === 0) return;
+      e.preventDefault();
+      activeIndex = Math.min(activeIndex+1, items.length-1);
+      updateActive(items);
+    } else if(e.key === 'ArrowUp'){
+      if(items.length === 0) return;
+      e.preventDefault();
+      activeIndex = Math.max(activeIndex-1, 0);
+      updateActive(items);
+    } else if(e.key === 'Enter'){
+      if(activeIndex >= 0 && items[activeIndex]){
+        e.preventDefault();
+        window.location.href = items[activeIndex].getAttribute('href');
+      }
+    } else if(e.key === 'Escape'){
+      close();
+      input.blur();
+    }
+  });
+
+  document.addEventListener('click', function(e){
+    if(!e.target.closest('.tb-search')) close();
+  });
+})();

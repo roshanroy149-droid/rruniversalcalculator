@@ -1,6 +1,7 @@
 # Regenerates the shared header nav, "more calculators" block, header tool
-# count, and (on index.html only) the homepage's category tool grids — all
-# from build/tools.json, the single source of truth for the tool list.
+# count, and (on index.html only) the homepage's category tool grids and
+# search data — all from build/tools.json, the single source of truth for
+# the tool list.
 #
 # Usage:  powershell -File build/Sync-Nav.ps1
 #
@@ -9,6 +10,7 @@
 #   <!-- TB:MORETOOLS:START --> ... <!-- TB:MORETOOLS:END -->
 #   <!-- TB:COUNT:START --> ... <!-- TB:COUNT:END -->
 #   <!-- TB:HOMEGRID:START --> ... <!-- TB:HOMEGRID:END --> (index.html only)
+#   <!-- TB:SEARCHDATA:START --> ... <!-- TB:SEARCHDATA:END --> (index.html only)
 # On first run (no markers present yet) the script wraps the existing
 # hand-written blocks with markers. On every run it regenerates the content
 # between the markers from tools.json, so adding/renaming/reordering a tool
@@ -103,6 +105,14 @@ function New-HomeGridBlock($indent) {
     return ($lines -join $nl)
 }
 
+function New-SearchDataBlock($indent) {
+    $items = @($data.tools | ForEach-Object {
+        [PSCustomObject]@{ t = $_.title; f = $_.file; c = $_.category; b = $_.blurb }
+    })
+    $json = ConvertTo-Json -InputObject $items -Compress -Depth 3
+    return "$indent<script>window.TB_SEARCH_DATA = $json;</script>"
+}
+
 function Sync-Marker($content, $markerName, $generator) {
     $startTag = "<!-- TB:${markerName}:START -->"
     $endTag = "<!-- TB:${markerName}:END -->"
@@ -164,6 +174,9 @@ foreach ($f in $htmlFiles) {
 
     $homeGridResult = Sync-Marker $content 'HOMEGRID' { param($indent) New-HomeGridBlock $indent }
     if ($null -ne $homeGridResult) { $content = $homeGridResult }
+
+    $searchDataResult = Sync-Marker $content 'SEARCHDATA' { param($indent) New-SearchDataBlock $indent }
+    if ($null -ne $searchDataResult) { $content = $searchDataResult }
 
     if ($content -ne $original) {
         [System.IO.File]::WriteAllText($f.FullName, $content, $utf8NoBom)
