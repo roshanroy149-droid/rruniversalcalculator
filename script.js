@@ -5911,3 +5911,3320 @@ function amortizationToCSV(years, cur){
 
   calc();
 })();
+
+
+// =====================================================================
+// WAVE 1 — 50 new finance/health calculators
+// =====================================================================
+
+// ---- Batch W1-F1: Mortgage / Real Estate cluster ----
+(function(){
+// ===================================================================
+// TallyBench — scratch JS for 9 new finance calculators (batch W1-F1)
+// Append each IIFE below into script.js in the appropriate place.
+// ===================================================================
+
+function tbMoney(n){
+  if(!isFinite(n)) n = 0;
+  return '$'+n.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+
+function tbPmt(principal, annualRatePct, years){
+  const i = annualRatePct/100/12, n = years*12;
+  if(n<=0) return 0;
+  if(i===0) return principal/n;
+  return principal*i/(1-Math.pow(1+i,-n));
+}
+
+// ---- Mortgage payoff calculator ----
+(function(){
+  if(!document.getElementById('mpoBalance')) return;
+  function calc(){
+    const balance = parseFloat(document.getElementById('mpoBalance').value)||0;
+    const years = parseFloat(document.getElementById('mpoTerm').value)||0;
+    const rate = parseFloat(document.getElementById('mpoRate').value)||0;
+    const extra = parseFloat(document.getElementById('mpoExtra').value)||0;
+    const oneTime = parseFloat(document.getElementById('mpoOneTime').value)||0;
+
+    const i = rate/100/12;
+    const n = Math.round(years*12);
+    const M = tbPmt(balance, rate, years);
+    const baselineInterest = Math.max(M*n - balance, 0);
+
+    let bal = balance, months = 0, totalInterest = 0;
+    while(bal > 0.01 && months < 1200){
+      months++;
+      const interest = bal*i;
+      let payment = M + extra + (months===1 ? oneTime : 0);
+      let principal = payment - interest;
+      if(principal > bal){ principal = bal; }
+      bal -= principal;
+      totalInterest += interest;
+    }
+
+    const newYears = months/12;
+    const timeSavedMonths = Math.max(n - months, 0);
+    const interestSaved = Math.max(baselineInterest - totalInterest, 0);
+
+    document.getElementById('mpoNewPayoff').textContent = months>0 ? (Math.floor(months/12)+'y '+(months%12)+'m') : '0y 0m';
+    document.getElementById('mpoTimeSaved').textContent = timeSavedMonths>0 ? (Math.floor(timeSavedMonths/12)+'y '+(timeSavedMonths%12)+'m') : '0y 0m';
+    document.getElementById('mpoInterestSaved').textContent = tbMoney(interestSaved);
+    document.getElementById('mpoNewTotalInterest').textContent = tbMoney(totalInterest);
+  }
+  ['mpoBalance','mpoTerm','mpoRate','mpoExtra','mpoOneTime'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+  calc();
+})();
+
+// ---- Rent affordability calculator ----
+(function(){
+  if(!document.getElementById('raIncome')) return;
+  function calc(){
+    const income = parseFloat(document.getElementById('raIncome').value)||0;
+    const debts = parseFloat(document.getElementById('raDebts').value)||0;
+
+    const r25 = income*0.25;
+    const r30 = income*0.30;
+    const r35 = income*0.35;
+    const combined = r30+debts;
+    const combinedPct = income>0 ? (combined/income*100) : 0;
+
+    document.getElementById('raRent25').textContent = tbMoney(r25);
+    document.getElementById('raRent30').textContent = tbMoney(r30);
+    document.getElementById('raRent35').textContent = tbMoney(r35);
+    document.getElementById('raCombined').textContent = tbMoney(combined)+' ('+combinedPct.toFixed(1)+'% of income)';
+
+    const warnEl = document.getElementById('raWarning');
+    if(combinedPct > 40){
+      warnEl.textContent = 'At the 30% rent level, rent + existing debts come to '+combinedPct.toFixed(1)+'% of your gross income — above the common 40% combined-debt ceiling lenders and landlords watch for. Consider the 25% rent scenario instead.';
+      warnEl.classList.add('show');
+    } else {
+      warnEl.textContent = '';
+      warnEl.classList.remove('show');
+    }
+  }
+  ['raIncome','raDebts'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+  calc();
+})();
+
+// ---- Real estate investment calculator ----
+(function(){
+  if(!document.getElementById('reiPrice')) return;
+  function calc(){
+    const price = parseFloat(document.getElementById('reiPrice').value)||0;
+    const downPct = parseFloat(document.getElementById('reiDown').value)||0;
+    const closing = parseFloat(document.getElementById('reiClosing').value)||0;
+    const rent = parseFloat(document.getElementById('reiRent').value)||0;
+    const taxM = parseFloat(document.getElementById('reiTax').value)||0;
+    const insM = parseFloat(document.getElementById('reiIns').value)||0;
+    const hoaM = parseFloat(document.getElementById('reiHoa').value)||0;
+    const maintPct = parseFloat(document.getElementById('reiMaint').value)||0;
+    const vacPct = parseFloat(document.getElementById('reiVac').value)||0;
+    const rate = parseFloat(document.getElementById('reiRate').value)||0;
+    const term = parseFloat(document.getElementById('reiTerm').value)||0;
+
+    const annualRent = rent*12;
+    const annualOpEx = (taxM+insM+hoaM)*12 + (maintPct/100)*annualRent + (vacPct/100)*annualRent;
+    const NOI = annualRent - annualOpEx;
+    const capRate = price>0 ? (NOI/price*100) : 0;
+
+    const loanAmt = price*(1-downPct/100);
+    const M = tbPmt(loanAmt, rate, term);
+    const annualDebtService = M*12;
+    const annualCashFlow = NOI - annualDebtService;
+    const monthlyCashFlow = annualCashFlow/12;
+
+    const downDollar = price*downPct/100;
+    const cashInvested = downDollar+closing;
+    const CoC = cashInvested>0 ? (annualCashFlow/cashInvested*100) : 0;
+
+    document.getElementById('reiNOI').textContent = tbMoney(NOI);
+    document.getElementById('reiCapRate').textContent = capRate.toFixed(2)+'%';
+    document.getElementById('reiCashFlow').textContent = tbMoney(monthlyCashFlow);
+    document.getElementById('reiCoC').textContent = CoC.toFixed(2)+'%';
+  }
+  ['reiPrice','reiDown','reiClosing','reiRent','reiTax','reiIns','reiHoa','reiMaint','reiVac','reiRate','reiTerm'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+  calc();
+})();
+
+// ---- Rental property calculator ----
+(function(){
+  if(!document.getElementById('rpRent')) return;
+  function calc(){
+    const rent = parseFloat(document.getElementById('rpRent').value)||0;
+    const vacPct = parseFloat(document.getElementById('rpVac').value)||0;
+    const mgmtPct = parseFloat(document.getElementById('rpMgmt').value)||0;
+    const maintPct = parseFloat(document.getElementById('rpMaint').value)||0;
+    const taxM = parseFloat(document.getElementById('rpTax').value)||0;
+    const insM = parseFloat(document.getElementById('rpIns').value)||0;
+    const hoaM = parseFloat(document.getElementById('rpHoa').value)||0;
+    const mortgagePmt = parseFloat(document.getElementById('rpMortgage').value)||0;
+
+    const EGI = rent*(1-vacPct/100);
+    const totalExpenses = (mgmtPct/100)*EGI + (maintPct/100)*EGI + taxM+insM+hoaM;
+    const monthlyCF = EGI - totalExpenses - mortgagePmt;
+    const annualCF = monthlyCF*12;
+
+    document.getElementById('rpEGI').textContent = tbMoney(EGI);
+    document.getElementById('rpExpenses').textContent = tbMoney(totalExpenses);
+    document.getElementById('rpMonthlyCF').textContent = tbMoney(monthlyCF);
+    document.getElementById('rpAnnualCF').textContent = tbMoney(annualCF);
+  }
+  ['rpRent','rpVac','rpMgmt','rpMaint','rpTax','rpIns','rpHoa','rpMortgage'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+  calc();
+})();
+
+// ---- APR calculator ----
+(function(){
+  if(!document.getElementById('aprLoanAmt')) return;
+  function calc(){
+    const loanAmount = parseFloat(document.getElementById('aprLoanAmt').value)||0;
+    const statedRate = parseFloat(document.getElementById('aprStatedRate').value)||0;
+    const years = parseFloat(document.getElementById('aprTerm').value)||0;
+    const fees = parseFloat(document.getElementById('aprFees').value)||0;
+
+    const n = Math.round(years*12);
+    const statedPayment = tbPmt(loanAmount, statedRate, years);
+
+    const netAmount = Math.max(loanAmount - fees, 0.01);
+    let lo = 0, hi = 1;
+    for(let iter=0; iter<100; iter++){
+      const mid = (lo+hi)/2;
+      const p = n>0 ? (mid===0 ? netAmount/n : netAmount*mid/(1-Math.pow(1+mid,-n))) : 0;
+      if(p > statedPayment) hi = mid; else lo = mid;
+    }
+    const x = (lo+hi)/2;
+    const apr = x*12*100;
+
+    document.getElementById('aprStatedOut').textContent = statedRate.toFixed(3)+'%';
+    document.getElementById('aprMonthlyPayment').textContent = tbMoney(statedPayment);
+    document.getElementById('aprTrueApr').textContent = apr.toFixed(3)+'%';
+    document.getElementById('aprSpread').textContent = (apr-statedRate).toFixed(3)+' pts';
+  }
+  ['aprLoanAmt','aprStatedRate','aprTerm','aprFees'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+  calc();
+})();
+
+// ---- FHA loan calculator ----
+(function(){
+  if(!document.getElementById('fhaPrice')) return;
+  function calc(){
+    const homePrice = parseFloat(document.getElementById('fhaPrice').value)||0;
+    let downPct = parseFloat(document.getElementById('fhaDown').value)||0;
+    if(downPct < 3.5) downPct = 3.5;
+    const rate = parseFloat(document.getElementById('fhaRate').value)||0;
+    const term = parseFloat(document.getElementById('fhaTerm').value)||30;
+    const upfrontMIPpct = parseFloat(document.getElementById('fhaUpfrontMip').value)||0;
+    const annualMIPpct = parseFloat(document.getElementById('fhaAnnualMip').value)||0;
+
+    const baseLoan = homePrice*(1-downPct/100);
+    const upfrontMIP = baseLoan*upfrontMIPpct/100;
+    const totalLoan = baseLoan+upfrontMIP;
+    const PI = tbPmt(totalLoan, rate, term);
+    const monthlyMIP = totalLoan*annualMIPpct/100/12;
+    const totalMonthly = PI+monthlyMIP;
+
+    document.getElementById('fhaBaseLoan').textContent = tbMoney(baseLoan);
+    document.getElementById('fhaUpfrontMipOut').textContent = tbMoney(upfrontMIP);
+    document.getElementById('fhaTotalLoan').textContent = tbMoney(totalLoan);
+    document.getElementById('fhaPI').textContent = tbMoney(PI);
+    document.getElementById('fhaMonthlyMip').textContent = tbMoney(monthlyMIP);
+    document.getElementById('fhaTotalMonthly').textContent = tbMoney(totalMonthly);
+  }
+  ['fhaPrice','fhaDown','fhaRate','fhaTerm','fhaUpfrontMip','fhaAnnualMip'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+  calc();
+})();
+
+// ---- VA mortgage calculator ----
+(function(){
+  if(!document.getElementById('vaPrice')) return;
+  function calc(){
+    const homePrice = parseFloat(document.getElementById('vaPrice').value)||0;
+    const downPct = parseFloat(document.getElementById('vaDown').value)||0;
+    const rate = parseFloat(document.getElementById('vaRate').value)||0;
+    const term = parseFloat(document.getElementById('vaTerm').value)||30;
+    const fundingFeePct = parseFloat(document.getElementById('vaFundingFee').value)||0;
+
+    const baseLoan = homePrice*(1-downPct/100);
+    const fundingFee = baseLoan*fundingFeePct/100;
+    const totalLoan = baseLoan+fundingFee;
+    const PI = tbPmt(totalLoan, rate, term);
+
+    document.getElementById('vaBaseLoan').textContent = tbMoney(baseLoan);
+    document.getElementById('vaFundingFeeOut').textContent = tbMoney(fundingFee);
+    document.getElementById('vaTotalLoan').textContent = tbMoney(totalLoan);
+    document.getElementById('vaPI').textContent = tbMoney(PI);
+  }
+  ['vaPrice','vaDown','vaRate','vaTerm','vaFundingFee'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+  calc();
+})();
+
+// ---- Home equity loan calculator ----
+(function(){
+  if(!document.getElementById('helHomeValue')) return;
+  function calc(){
+    const homeValue = parseFloat(document.getElementById('helHomeValue').value)||0;
+    const existingBal = parseFloat(document.getElementById('helExistingBal').value)||0;
+    const maxCLTV = parseFloat(document.getElementById('helMaxCltv').value)||0;
+    const desiredLoan = parseFloat(document.getElementById('helDesiredLoan').value)||0;
+    const rate = parseFloat(document.getElementById('helRate').value)||0;
+    const term = parseFloat(document.getElementById('helTerm').value)||0;
+
+    const maxEquity = Math.max(homeValue*maxCLTV/100 - existingBal, 0);
+    const M = tbPmt(desiredLoan, rate, term);
+    const totalPaid = M*term*12;
+    const totalInterest = Math.max(totalPaid - desiredLoan, 0);
+
+    document.getElementById('helMaxEquity').textContent = tbMoney(maxEquity);
+    document.getElementById('helRequested').textContent = tbMoney(desiredLoan);
+    document.getElementById('helMonthly').textContent = tbMoney(M);
+    document.getElementById('helTotalInterest').textContent = tbMoney(totalInterest);
+
+    const warnEl = document.getElementById('helWarning');
+    if(desiredLoan > maxEquity){
+      warnEl.textContent = 'Your requested loan amount of '+tbMoney(desiredLoan)+' exceeds the estimated max available equity of '+tbMoney(maxEquity)+' at a '+maxCLTV+'% combined loan-to-value limit. Lenders are unlikely to approve the full amount requested.';
+      warnEl.classList.add('show');
+    } else {
+      warnEl.textContent = '';
+      warnEl.classList.remove('show');
+    }
+  }
+  ['helHomeValue','helExistingBal','helMaxCltv','helDesiredLoan','helRate','helTerm'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+  calc();
+})();
+
+// ---- HELOC calculator ----
+(function(){
+  if(!document.getElementById('helocHomeValue')) return;
+  function calc(){
+    const homeValue = parseFloat(document.getElementById('helocHomeValue').value)||0;
+    const existingBal = parseFloat(document.getElementById('helocExistingBal').value)||0;
+    const maxCLTV = parseFloat(document.getElementById('helocMaxCltv').value)||0;
+    const drawAmount = parseFloat(document.getElementById('helocDrawAmt').value)||0;
+    const rate = parseFloat(document.getElementById('helocRate').value)||0;
+    const drawYears = parseFloat(document.getElementById('helocDrawYears').value)||0;
+    const repayYears = parseFloat(document.getElementById('helocRepayYears').value)||0;
+
+    const availableCredit = Math.max(homeValue*maxCLTV/100 - existingBal, 0);
+    const ioPayment = drawAmount*rate/100/12;
+    const amortPayment = tbPmt(drawAmount, rate, repayYears);
+    const totalInterestDraw = ioPayment*drawYears*12;
+
+    document.getElementById('helocAvailable').textContent = tbMoney(availableCredit);
+    document.getElementById('helocIoPayment').textContent = tbMoney(ioPayment);
+    document.getElementById('helocAmortPayment').textContent = tbMoney(amortPayment);
+    document.getElementById('helocTotalInterestDraw').textContent = tbMoney(totalInterestDraw);
+  }
+  ['helocHomeValue','helocExistingBal','helocMaxCltv','helocDrawAmt','helocRate','helocDrawYears','helocRepayYears'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+  calc();
+})();
+})();
+
+// ---- Batch W1-F2: Auto / TVM cluster ----
+// =====================================================================
+// Scratch JS for 8 new TallyBench finance calculators (batch w1-f2).
+// Each block is a standalone IIFE guarded by an element-existence check,
+// matching the exact style used throughout the main script.js file.
+// These blocks are meant to be merged into script.js centrally — do not
+// wire them up any other way.
+// =====================================================================
+
+// ---- Auto Lease Calculator ----
+(function(){
+  if(!document.getElementById('alzPrice')) return;
+
+  function fmtMoney(n){ return '$'+n.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}); }
+
+  function calc(){
+    const price = parseFloat(document.getElementById('alzPrice').value)||0;
+    const residualPct = parseFloat(document.getElementById('alzResidualPct').value)||0;
+    const mf = parseFloat(document.getElementById('alzMoneyFactor').value)||0;
+    const term = parseFloat(document.getElementById('alzTerm').value)||0;
+    const down = parseFloat(document.getElementById('alzDown').value)||0;
+    const taxRate = parseFloat(document.getElementById('alzTax').value)||0;
+    const warnEl = document.getElementById('alzWarning');
+
+    if(term<=0 || price<=0){
+      if(warnEl){ warnEl.textContent = 'Enter a vehicle price and a lease term greater than zero.'; warnEl.classList.add('show'); }
+      ['alzDepFee','alzFinFee','alzBase','alzWithTax'].forEach(id=>{ document.getElementById(id).textContent='—'; });
+      document.getElementById('alzAprEquiv').textContent = '';
+      return;
+    }
+    if(warnEl){ warnEl.textContent=''; warnEl.classList.remove('show'); }
+
+    const adjCapCost = price - down;
+    const residualValue = price * residualPct/100;
+    const depFee = (adjCapCost - residualValue) / term;
+    const finFee = (adjCapCost + residualValue) * mf;
+    const base = depFee + finFee;
+    const withTax = base * (1 + taxRate/100);
+    const aprEquiv = mf*2400;
+
+    document.getElementById('alzDepFee').textContent = fmtMoney(depFee);
+    document.getElementById('alzFinFee').textContent = fmtMoney(finFee);
+    document.getElementById('alzBase').textContent = fmtMoney(base);
+    document.getElementById('alzWithTax').textContent = fmtMoney(withTax);
+    document.getElementById('alzAprEquiv').textContent = 'Money factor ≈ '+aprEquiv.toFixed(2)+'% APR-equivalent';
+  }
+
+  ['alzPrice','alzResidualPct','alzMoneyFactor','alzTerm','alzDown','alzTax'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+  calc();
+})();
+
+
+// ---- Finance Calculator (general TVM solver: N, I/Y, PV, PMT, FV) ----
+(function(){
+  if(!document.getElementById('tvmSolveSeg')) return;
+  const seg = document.getElementById('tvmSolveSeg');
+  const fields = {
+    n:   { id:'tvmN',   label:'N — Number of Periods',    fmt:v=>v.toFixed(4).replace(/\.?0+$/,'') },
+    iy:  { id:'tvmIY',  label:'I/Y — Rate per Period (%)', fmt:v=>v.toFixed(4)+'%' },
+    pv:  { id:'tvmPV',  label:'PV — Present Value',        fmt:v=>'$'+v.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}) },
+    pmt: { id:'tvmPMT', label:'PMT — Payment per Period',  fmt:v=>'$'+v.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}) },
+    fv:  { id:'tvmFV',  label:'FV — Future Value',         fmt:v=>'$'+v.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}) }
+  };
+  let solveFor = 'fv';
+
+  function fvOf(PV,PMT,i,N){
+    if(i===0) return PV + PMT*N;
+    const x = Math.pow(1+i, N);
+    return PV*x + PMT*(x-1)/i;
+  }
+  function solvePV(FV,PMT,i,N){
+    if(i===0) return FV - PMT*N;
+    const x = Math.pow(1+i, N);
+    return (FV - PMT*(x-1)/i) / x;
+  }
+  function solvePMT(FV,PV,i,N){
+    if(i===0) return N===0 ? NaN : (FV-PV)/N;
+    const x = Math.pow(1+i, N);
+    if(x===1) return NaN;
+    return (FV - PV*x) / ((x-1)/i);
+  }
+  function solveN(FV,PV,PMT,i){
+    if(i===0) return PMT===0 ? NaN : (FV-PV)/PMT;
+    const denom = PV + PMT/i;
+    if(denom===0) return NaN;
+    const ratio = (FV + PMT/i) / denom;
+    if(ratio<=0) return NaN;
+    return Math.log(ratio) / Math.log(1+i);
+  }
+  function solveRate(FV,PV,PMT,N){
+    function f(iVal){ return fvOf(PV,PMT,iVal,N) - FV; }
+    let lo=-0.99, hi=10;
+    let flo=f(lo), fhi=f(hi);
+    if((flo>0 && fhi>0) || (flo<0 && fhi<0)) return NaN;
+    for(let k=0;k<100;k++){
+      const mid=(lo+hi)/2;
+      const fm=f(mid);
+      if((fm>0)===(flo>0)){ lo=mid; flo=fm; } else { hi=mid; }
+    }
+    return (lo+hi)/2;
+  }
+
+  function calc(){
+    const warnEl = document.getElementById('tvmWarning');
+    const N   = parseFloat(document.getElementById('tvmN').value)||0;
+    const IY  = parseFloat(document.getElementById('tvmIY').value)||0;
+    const PV  = parseFloat(document.getElementById('tvmPV').value)||0;
+    const PMT = parseFloat(document.getElementById('tvmPMT').value)||0;
+    const FV  = parseFloat(document.getElementById('tvmFV').value)||0;
+    const i = IY/100;
+
+    let result = NaN;
+    if(solveFor==='fv')      result = fvOf(PV,PMT,i,N);
+    else if(solveFor==='pv') result = solvePV(FV,PMT,i,N);
+    else if(solveFor==='pmt')result = solvePMT(FV,PV,i,N);
+    else if(solveFor==='n')  result = solveN(FV,PV,PMT,i);
+    else if(solveFor==='iy') result = solveRate(FV,PV,PMT,N)*100;
+
+    const f = fields[solveFor];
+    const outEl = document.getElementById(f.id);
+    const resultLabel = document.getElementById('tvmResultLabel');
+    const resultValue = document.getElementById('tvmResultValue');
+    const resultSub = document.getElementById('tvmResultSub');
+    resultLabel.textContent = f.label;
+
+    if(!isFinite(result) || isNaN(result)){
+      if(warnEl){ warnEl.textContent = 'No valid solution for these inputs — check the sign and size of your values.'; warnEl.classList.add('show'); }
+      resultValue.textContent = '—';
+      if(outEl) outEl.value = '';
+      if(resultSub) resultSub.textContent = '';
+      return;
+    }
+    if(warnEl){ warnEl.textContent=''; warnEl.classList.remove('show'); }
+    resultValue.textContent = f.fmt(result);
+    if(outEl) outEl.value = (solveFor==='n') ? Math.round(result*1000)/1000 : Math.round(result*100)/100;
+    if(resultSub) resultSub.textContent = 'Solved from the other four TVM inputs.';
+  }
+
+  seg.addEventListener('click', (e)=>{
+    const btn = e.target.closest('button');
+    if(!btn) return;
+    solveFor = btn.dataset.solve;
+    seg.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    Object.keys(fields).forEach(key=>{
+      const el = document.getElementById(fields[key].id);
+      if(el) el.disabled = (key===solveFor);
+    });
+    calc();
+  });
+
+  Object.keys(fields).forEach(key=>{
+    const el = document.getElementById(fields[key].id);
+    if(!el) return;
+    el.disabled = (key===solveFor);
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+  calc();
+})();
+
+
+// ---- Interest Rate Calculator ----
+(function(){
+  if(!document.getElementById('ircPrincipal')) return;
+
+  function calc(){
+    const principal = parseFloat(document.getElementById('ircPrincipal').value)||0;
+    const payment = parseFloat(document.getElementById('ircPayment').value)||0;
+    const term = parseFloat(document.getElementById('ircTerm').value)||0;
+    const warnEl = document.getElementById('ircWarning');
+
+    if(principal<=0 || term<=0 || payment<=0){
+      if(warnEl){ warnEl.textContent = 'Enter a principal, payment, and term greater than zero.'; warnEl.classList.add('show'); }
+      document.getElementById('ircAnnualRate').textContent = '—';
+      document.getElementById('ircMonthlyRate').textContent = '—';
+      document.getElementById('ircTotalInterest').textContent = '—';
+      return;
+    }
+    if(payment*term <= principal){
+      if(warnEl){ warnEl.textContent = 'This payment is too low to cover the loan even at 0% interest — increase the payment, term, or lower the principal.'; warnEl.classList.add('show'); }
+      document.getElementById('ircAnnualRate').textContent = '—';
+      document.getElementById('ircMonthlyRate').textContent = '—';
+      document.getElementById('ircTotalInterest').textContent = '$'+Math.max(payment*term-principal,0).toFixed(2);
+      return;
+    }
+    if(warnEl){ warnEl.textContent=''; warnEl.classList.remove('show'); }
+
+    function pay(iRate, n){
+      if(iRate===0) return principal/n;
+      return principal*iRate / (1-Math.pow(1+iRate,-n));
+    }
+    let lo=0, hi=0.5; // 0% to 600% annual, monthly rate range
+    for(let k=0;k<100;k++){
+      const mid=(lo+hi)/2;
+      const p = pay(mid, term);
+      if(p<payment) lo=mid; else hi=mid;
+    }
+    const iRate = (lo+hi)/2;
+    const annualPct = iRate*12*100;
+    const totalInterest = payment*term - principal;
+
+    document.getElementById('ircAnnualRate').textContent = annualPct.toFixed(2)+'%';
+    document.getElementById('ircMonthlyRate').textContent = (iRate*100).toFixed(4)+'%';
+    document.getElementById('ircTotalInterest').textContent = '$'+totalInterest.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+  }
+
+  ['ircPrincipal','ircPayment','ircTerm'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+  calc();
+})();
+
+
+// ---- Bond Calculator ----
+(function(){
+  if(!document.getElementById('bndFace')) return;
+
+  function fmtMoney(n){ return '$'+n.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}); }
+
+  function calc(){
+    const face = parseFloat(document.getElementById('bndFace').value)||0;
+    const couponRate = parseFloat(document.getElementById('bndCoupon').value)||0;
+    const years = parseFloat(document.getElementById('bndYears').value)||0;
+    const freq = parseFloat(document.getElementById('bndFreq').value)||1;
+    const marketRate = parseFloat(document.getElementById('bndMarket').value)||0;
+
+    const n = Math.round(years*freq);
+    const couponPmt = face*couponRate/100/freq;
+    const periodRate = marketRate/100/freq;
+
+    let price = 0;
+    if(n>0){
+      for(let t=1;t<=n;t++){
+        price += couponPmt / Math.pow(1+periodRate, t);
+      }
+      price += face / Math.pow(1+periodRate, n);
+    } else {
+      price = face;
+    }
+
+    const totalCouponIncome = couponPmt*n;
+    const currentYield = price>0 ? (face*couponRate/100)/price*100 : 0;
+
+    let status;
+    if(Math.abs(price-face) < 0.005) status = 'Trading at Par';
+    else if(price>face) status = 'Trading at a Premium';
+    else status = 'Trading at a Discount';
+
+    document.getElementById('bndPrice').textContent = fmtMoney(price);
+    document.getElementById('bndStatus').textContent = status;
+    document.getElementById('bndTotalCoupon').textContent = fmtMoney(totalCouponIncome);
+    document.getElementById('bndCurrentYield').textContent = currentYield.toFixed(2)+'%';
+  }
+
+  ['bndFace','bndCoupon','bndYears','bndFreq','bndMarket'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+  calc();
+})();
+
+
+// ---- Mutual Fund Calculator ----
+(function(){
+  if(!document.getElementById('mfcInitial')) return;
+
+  function fmtMoney(n){ return '$'+n.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}); }
+
+  function fvAt(annualPct, initial, monthly, months){
+    const r = annualPct/100/12;
+    if(r===0) return initial + monthly*months;
+    return initial*Math.pow(1+r, months) + monthly*((Math.pow(1+r, months)-1)/r);
+  }
+
+  function calc(){
+    const initial = parseFloat(document.getElementById('mfcInitial').value)||0;
+    const monthly = parseFloat(document.getElementById('mfcMonthly').value)||0;
+    const years = parseFloat(document.getElementById('mfcYears').value)||0;
+    const grossReturn = parseFloat(document.getElementById('mfcReturn').value)||0;
+    const expenseRatio = parseFloat(document.getElementById('mfcExpense').value)||0;
+
+    const months = Math.round(years*12);
+    const netReturn = grossReturn - expenseRatio;
+
+    const fvNet = fvAt(netReturn, initial, monthly, months);
+    const fvGross = fvAt(grossReturn, initial, monthly, months);
+    const totalContributed = initial + monthly*months;
+    const estGrowth = fvNet - totalContributed;
+    const estFees = Math.max(fvGross - fvNet, 0);
+
+    document.getElementById('mfcFinal').textContent = fmtMoney(fvNet);
+    document.getElementById('mfcContributed').textContent = fmtMoney(totalContributed);
+    document.getElementById('mfcGrowth').textContent = fmtMoney(estGrowth);
+    document.getElementById('mfcFees').textContent = fmtMoney(estFees);
+  }
+
+  ['mfcInitial','mfcMonthly','mfcYears','mfcReturn','mfcExpense'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+  calc();
+})();
+
+
+// ---- Average Return Calculator ----
+(function(){
+  if(!document.getElementById('avrY1')) return;
+  const ids = ['avrY1','avrY2','avrY3','avrY4','avrY5'];
+
+  function calc(){
+    const returns = ids.map(id => parseFloat(document.getElementById(id).value)||0);
+    const arithmetic = returns.reduce((a,b)=>a+b,0) / returns.length;
+    const product = returns.reduce((acc,r)=>acc*(1+r/100), 1);
+    const geo = (Math.pow(product, 1/returns.length) - 1) * 100;
+
+    document.getElementById('avrArith').textContent = arithmetic.toFixed(2)+'%';
+    document.getElementById('avrGeo').textContent = geo.toFixed(2)+'%';
+  }
+
+  ids.forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+  calc();
+})();
+
+
+// ---- IRR Calculator ----
+(function(){
+  if(!document.getElementById('irrInitial')) return;
+  const cfIds = ['irrY1','irrY2','irrY3','irrY4','irrY5'];
+
+  function npv(rate, initial, cfs){
+    let s = -initial;
+    cfs.forEach((cf, idx)=>{ s += cf / Math.pow(1+rate, idx+1); });
+    return s;
+  }
+
+  function solveIRR(initial, cfs){
+    let lo=-0.99, hi=10;
+    let flo = npv(lo, initial, cfs);
+    let fhi = npv(hi, initial, cfs);
+    if((flo>0 && fhi>0) || (flo<0 && fhi<0)) return null;
+    for(let k=0;k<100;k++){
+      const mid=(lo+hi)/2;
+      const fm = npv(mid, initial, cfs);
+      if((fm>0)===(flo>0)){ lo=mid; flo=fm; } else { hi=mid; }
+    }
+    return (lo+hi)/2;
+  }
+
+  function calc(){
+    const initial = parseFloat(document.getElementById('irrInitial').value)||0;
+    const cfs = cfIds.map(id => parseFloat(document.getElementById(id).value)||0);
+    const warnEl = document.getElementById('irrWarning');
+    const totalReturned = cfs.reduce((a,b)=>a+b,0);
+    const netProfit = totalReturned - initial;
+
+    const irr = solveIRR(initial, cfs);
+
+    document.getElementById('irrTotalReturned').textContent = '$'+totalReturned.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+    document.getElementById('irrNetProfit').textContent = (netProfit<0?'-':'')+'$'+Math.abs(netProfit).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+
+    if(initial<=0 || irr===null || !isFinite(irr)){
+      document.getElementById('irrRate').textContent = '—';
+      if(warnEl){
+        warnEl.textContent = initial<=0
+          ? 'Enter an initial investment greater than zero.'
+          : 'No IRR found in the searched range — the cash flows may never offset the initial investment, or may all share the same sign.';
+        warnEl.classList.add('show');
+      }
+      return;
+    }
+    if(warnEl){ warnEl.textContent=''; warnEl.classList.remove('show'); }
+    document.getElementById('irrRate').textContent = (irr*100).toFixed(2)+'%';
+  }
+
+  ['irrInitial'].concat(cfIds).forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+  calc();
+})();
+
+
+// ---- Payback Period Calculator ----
+(function(){
+  if(!document.getElementById('pbpInitial')) return;
+  const cfIds = ['pbpY1','pbpY2','pbpY3','pbpY4','pbpY5'];
+
+  function fmtMoney(n){
+    const sign = n<0 ? '-' : '';
+    return sign+'$'+Math.abs(n).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+  }
+
+  function calc(){
+    const initial = parseFloat(document.getElementById('pbpInitial').value)||0;
+    const cfs = cfIds.map(id => parseFloat(document.getElementById(id).value)||0);
+    const tbody = document.getElementById('pbpTbody');
+
+    let cum = 0;
+    let paybackYears = null;
+    let rows = '';
+    for(let yr=0; yr<cfs.length; yr++){
+      const prevCum = cum;
+      cum += cfs[yr];
+      rows += '<tr><td>'+(yr+1)+'</td><td>'+fmtMoney(cfs[yr])+'</td><td>'+fmtMoney(cum)+'</td></tr>';
+      if(paybackYears===null && cum>=initial && initial>0){
+        const remaining = initial - prevCum;
+        const frac = cfs[yr]>0 ? remaining/cfs[yr] : 0;
+        paybackYears = yr + frac;
+      }
+    }
+    tbody.innerHTML = rows;
+
+    const resultEl = document.getElementById('pbpPeriod');
+    if(initial<=0){
+      resultEl.textContent = 'Enter an investment amount';
+    } else if(paybackYears===null){
+      resultEl.textContent = '> 5 years — not recovered within the entries provided';
+    } else {
+      resultEl.textContent = paybackYears.toFixed(2)+' years';
+    }
+  }
+
+  ['pbpInitial'].concat(cfIds).forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+  calc();
+})();
+
+// ---- Batch W1-F3: Investment / Retirement cluster ----
+(function(){
+// ============================================================
+// TallyBench — new tool JS (batch: present value, future value,
+// savings, pension, social security, annuity, annuity payout,
+// rmd, marriage tax). Written as standalone IIFEs matching the
+// existing script.js pattern. NOT yet merged into script.js —
+// hand off for central merge per project rules.
+// ============================================================
+
+function tbMoney(n){
+  return (n<0?'-':'')+'$'+Math.round(Math.abs(n)).toLocaleString();
+}
+
+// ---- Present Value Calculator ----
+(function(){
+  if(!document.getElementById('pvFV')) return;
+
+  const fvEl = document.getElementById('pvFV');
+  const pmtEl = document.getElementById('pvPMT');
+  const rateEl = document.getElementById('pvRate');
+  const yearsEl = document.getElementById('pvYears');
+  const seg = document.getElementById('pvModeSeg');
+  const fvField = document.getElementById('pvFVField');
+  const pmtField = document.getElementById('pvPMTField');
+  const noteEl = document.getElementById('pvNote');
+
+  function mode(){
+    const btn = seg.querySelector('button.active');
+    return btn ? btn.dataset.mode : 'lump';
+  }
+
+  function calc(){
+    const rate = (parseFloat(rateEl.value)||0)/100;
+    const years = parseFloat(yearsEl.value)||0;
+    const m = mode();
+    let pv = 0;
+
+    if(m === 'lump'){
+      const fv = parseFloat(fvEl.value)||0;
+      pv = rate === 0 ? fv : fv/Math.pow(1+rate, years);
+      noteEl.textContent = 'Discounted from a single future lump sum';
+    } else {
+      const pmt = parseFloat(pmtEl.value)||0;
+      pv = rate === 0 ? pmt*years : pmt*(1-Math.pow(1+rate,-years))/rate;
+      noteEl.textContent = 'Discounted from a stream of regular annual payments';
+    }
+
+    document.getElementById('pvPV').textContent = tbMoney(pv);
+  }
+
+  seg.addEventListener('click', (e)=>{
+    const btn = e.target.closest('button');
+    if(!btn) return;
+    seg.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    if(btn.dataset.mode === 'lump'){
+      fvField.style.display = '';
+      pmtField.style.display = 'none';
+    } else {
+      fvField.style.display = 'none';
+      pmtField.style.display = '';
+    }
+    calc();
+  });
+
+  [fvEl, pmtEl, rateEl, yearsEl].forEach(el=>{
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+
+  calc();
+})();
+
+// ---- Future Value Calculator ----
+(function(){
+  if(!document.getElementById('fvPV')) return;
+
+  const pvEl = document.getElementById('fvPV');
+  const pmtEl = document.getElementById('fvPMT');
+  const rateEl = document.getElementById('fvRate');
+  const yearsEl = document.getElementById('fvYears');
+
+  function calc(){
+    const pv = parseFloat(pvEl.value)||0;
+    const pmt = parseFloat(pmtEl.value)||0;
+    const rate = parseFloat(rateEl.value)||0;
+    const years = Math.max(parseFloat(yearsEl.value)||0, 0);
+    const i = rate/100/12;
+    const n = years*12;
+
+    let fv;
+    if(i === 0){
+      fv = pv + pmt*n;
+    } else {
+      fv = pv*Math.pow(1+i, n) + pmt*((Math.pow(1+i, n)-1)/i);
+    }
+    const totalContrib = pv + pmt*n;
+    const growth = fv - totalContrib;
+
+    document.getElementById('fvFV').textContent = tbMoney(fv);
+    document.getElementById('fvContrib').textContent = tbMoney(totalContrib);
+    document.getElementById('fvGrowth').textContent = tbMoney(growth);
+  }
+
+  [pvEl, pmtEl, rateEl, yearsEl].forEach(el=>{
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+
+  calc();
+})();
+
+// ---- Savings Calculator ----
+(function(){
+  if(!document.getElementById('svInitial')) return;
+
+  const initialEl = document.getElementById('svInitial');
+  const monthlyEl = document.getElementById('svMonthly');
+  const rateEl = document.getElementById('svRate');
+  const yearsEl = document.getElementById('svYears');
+  const freqEl = document.getElementById('svFreq');
+
+  function calc(){
+    const initial = parseFloat(initialEl.value)||0;
+    const monthly = parseFloat(monthlyEl.value)||0;
+    const annualRate = parseFloat(rateEl.value)||0;
+    const years = Math.max(Math.round(parseFloat(yearsEl.value)||0), 0);
+    const freq = parseFloat(freqEl.value)||12;
+
+    const periodicRate = Math.pow(1 + (annualRate/100)/freq, freq/12) - 1;
+
+    let balance = initial;
+    let totalDeposited = initial;
+    const months = years*12;
+    for(let m=0; m<months; m++){
+      balance = balance*(1+periodicRate) + monthly;
+      totalDeposited += monthly;
+    }
+    const interest = balance - totalDeposited;
+
+    document.getElementById('svBalance').textContent = tbMoney(balance);
+    document.getElementById('svDeposited').textContent = tbMoney(totalDeposited);
+    document.getElementById('svInterest').textContent = tbMoney(interest);
+  }
+
+  [initialEl, monthlyEl, rateEl, yearsEl].forEach(el=>{
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+  freqEl.addEventListener('change', calc);
+
+  calc();
+})();
+
+// ---- Pension Calculator ----
+(function(){
+  if(!document.getElementById('pnYears')) return;
+
+  const yearsEl = document.getElementById('pnYears');
+  const salaryEl = document.getElementById('pnSalary');
+  const accrualEl = document.getElementById('pnAccrual');
+
+  function calc(){
+    const years = Math.max(parseFloat(yearsEl.value)||0, 0);
+    const salary = Math.max(parseFloat(salaryEl.value)||0, 0);
+    const accrual = Math.max(parseFloat(accrualEl.value)||0, 0);
+
+    const annual = salary * (accrual/100) * years;
+    const monthly = annual/12;
+    const pct = salary > 0 ? (annual/salary)*100 : 0;
+
+    document.getElementById('pnAnnual').textContent = tbMoney(annual);
+    document.getElementById('pnMonthly').textContent = tbMoney(monthly);
+    document.getElementById('pnPct').textContent = pct.toFixed(1)+'%';
+  }
+
+  [yearsEl, salaryEl, accrualEl].forEach(el=>{
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+
+  calc();
+})();
+
+// ---- Social Security Calculator ----
+(function(){
+  if(!document.getElementById('ssFRABenefit')) return;
+
+  const benefitEl = document.getElementById('ssFRABenefit');
+  const fraAgeEl = document.getElementById('ssFRAAge');
+  const claimAgeEl = document.getElementById('ssClaimAge');
+
+  function calc(){
+    const benefit = Math.max(parseFloat(benefitEl.value)||0, 0);
+    const fraAge = parseFloat(fraAgeEl.value)||67;
+    const claimAge = parseFloat(claimAgeEl.value)||67;
+
+    let multiplier;
+    if(claimAge < fraAge){
+      const monthsEarly = (fraAge - claimAge)*12;
+      const firstPart = Math.min(monthsEarly, 36);
+      const remaining = Math.max(monthsEarly-36, 0);
+      const reduction = firstPart*(5/9) + remaining*(5/12);
+      multiplier = 100 - reduction;
+    } else if(claimAge > fraAge){
+      const monthsLate = (claimAge - fraAge)*12;
+      multiplier = 100 + monthsLate*(2/3);
+    } else {
+      multiplier = 100;
+    }
+
+    const adjusted = benefit * multiplier/100;
+    const annual = adjusted*12;
+
+    document.getElementById('ssAdjusted').textContent = tbMoney(adjusted);
+    document.getElementById('ssPct').textContent = multiplier.toFixed(1)+'%';
+    document.getElementById('ssAnnual').textContent = tbMoney(annual);
+  }
+
+  [benefitEl, fraAgeEl, claimAgeEl].forEach(el=>{
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+
+  calc();
+})();
+
+// ---- Annuity Calculator (accumulation phase) ----
+(function(){
+  if(!document.getElementById('anInitial')) return;
+
+  const initialEl = document.getElementById('anInitial');
+  const contribEl = document.getElementById('anContribution');
+  const rateEl = document.getElementById('anRate');
+  const yearsEl = document.getElementById('anYears');
+
+  function calc(){
+    const initial = Math.max(parseFloat(initialEl.value)||0, 0);
+    const contribution = Math.max(parseFloat(contribEl.value)||0, 0);
+    const rate = parseFloat(rateEl.value)||0;
+    const years = Math.max(parseFloat(yearsEl.value)||0, 0);
+    const i = rate/100/12;
+    const n = years*12;
+
+    let fv;
+    if(i === 0){
+      fv = initial + contribution*n;
+    } else {
+      fv = initial*Math.pow(1+i, n) + contribution*((Math.pow(1+i, n)-1)/i);
+    }
+    const totalContrib = initial + contribution*n;
+    const growth = fv - totalContrib;
+
+    document.getElementById('anFV').textContent = tbMoney(fv);
+    document.getElementById('anContrib').textContent = tbMoney(totalContrib);
+    document.getElementById('anGrowth').textContent = tbMoney(growth);
+  }
+
+  [initialEl, contribEl, rateEl, yearsEl].forEach(el=>{
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+
+  calc();
+})();
+
+// ---- Annuity Payout Calculator ----
+(function(){
+  if(!document.getElementById('apBalance')) return;
+
+  const balanceEl = document.getElementById('apBalance');
+  const rateEl = document.getElementById('apRate');
+  const yearsEl = document.getElementById('apYears');
+
+  function calc(){
+    const balance = Math.max(parseFloat(balanceEl.value)||0, 0);
+    const rate = parseFloat(rateEl.value)||0;
+    const years = Math.max(parseFloat(yearsEl.value)||0, 0.0001);
+    const i = rate/100/12;
+    const n = years*12;
+
+    let monthly;
+    if(i === 0){
+      monthly = n > 0 ? balance/n : 0;
+    } else {
+      monthly = balance * i / (1 - Math.pow(1+i, -n));
+    }
+    const annual = monthly*12;
+    const total = monthly*n;
+
+    document.getElementById('apMonthly').textContent = tbMoney(monthly);
+    document.getElementById('apAnnual').textContent = tbMoney(annual);
+    document.getElementById('apTotal').textContent = tbMoney(total);
+  }
+
+  [balanceEl, rateEl, yearsEl].forEach(el=>{
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+
+  calc();
+})();
+
+// ---- RMD Calculator ----
+(function(){
+  if(!document.getElementById('rmBalance')) return;
+
+  const balanceEl = document.getElementById('rmBalance');
+  const ageEl = document.getElementById('rmAge');
+
+  const UNIFORM_LIFETIME_TABLE = {
+    72:27.4, 73:26.5, 74:25.5, 75:24.6, 76:23.7, 77:22.9, 78:22.0, 79:21.1,
+    80:20.2, 81:19.4, 82:18.5, 83:17.7, 84:16.8, 85:16.0, 86:15.2, 87:14.4,
+    88:13.7, 89:12.9, 90:12.2, 91:11.5, 92:10.8, 93:10.1, 94:9.5, 95:8.9,
+    96:8.4, 97:7.8, 98:7.3, 99:6.8, 100:6.4
+  };
+
+  function setWarning(msg){
+    const el = document.getElementById('rmWarning');
+    if(!el) return;
+    if(msg){ el.textContent = msg; el.classList.add('show'); }
+    else { el.textContent = ''; el.classList.remove('show'); }
+  }
+
+  function divisorForAge(age){
+    const a = Math.max(Math.round(age), 72);
+    if(a >= 100) return UNIFORM_LIFETIME_TABLE[100];
+    return UNIFORM_LIFETIME_TABLE[a] !== undefined ? UNIFORM_LIFETIME_TABLE[a] : UNIFORM_LIFETIME_TABLE[100];
+  }
+
+  function calc(){
+    const balance = Math.max(parseFloat(balanceEl.value)||0, 0);
+    const age = parseFloat(ageEl.value)||0;
+
+    if(age < 72){
+      setWarning('RMDs generally aren\'t required yet at this age. The current RMD starting age is 73 (per SECURE Act 2.0) and has changed before — confirm with a tax advisor or irs.gov.');
+      document.getElementById('rmAmount').textContent = tbMoney(0);
+      document.getElementById('rmDivisor').textContent = '—';
+      return;
+    }
+
+    setWarning('');
+    const divisor = divisorForAge(age);
+    const rmd = divisor > 0 ? balance/divisor : 0;
+
+    document.getElementById('rmAmount').textContent = tbMoney(rmd);
+    document.getElementById('rmDivisor').textContent = divisor.toFixed(1);
+  }
+
+  [balanceEl, ageEl].forEach(el=>{
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+
+  calc();
+})();
+
+// ---- Marriage Tax Calculator ----
+(function(){
+  if(!document.getElementById('mtIncomeA')) return;
+
+  const incomeAEl = document.getElementById('mtIncomeA');
+  const incomeBEl = document.getElementById('mtIncomeB');
+
+  const SINGLE_BRACKETS_2024 = [
+    [0, 11600, 0.10],
+    [11600, 47150, 0.12],
+    [47150, 100525, 0.22],
+    [100525, 191950, 0.24],
+    [191950, 243725, 0.32],
+    [243725, 609350, 0.35],
+    [609350, null, 0.37]
+  ];
+
+  const MFJ_BRACKETS_2024 = [
+    [0, 23200, 0.10],
+    [23200, 94300, 0.12],
+    [94300, 201050, 0.22],
+    [201050, 383900, 0.24],
+    [383900, 487450, 0.32],
+    [487450, 731200, 0.35],
+    [731200, null, 0.37]
+  ];
+
+  function taxFor(income, brackets){
+    let tax = 0;
+    for(let i=0; i<brackets.length; i++){
+      const lower = brackets[i][0];
+      const upper = brackets[i][1];
+      const rate = brackets[i][2];
+      if(income > lower){
+        const taxableInBracket = Math.min(income, upper === null ? income : upper) - lower;
+        tax += taxableInBracket * rate;
+      }
+    }
+    return tax;
+  }
+
+  function calc(){
+    const incomeA = Math.max(parseFloat(incomeAEl.value)||0, 0);
+    const incomeB = Math.max(parseFloat(incomeBEl.value)||0, 0);
+
+    const combinedSingle = taxFor(incomeA, SINGLE_BRACKETS_2024) + taxFor(incomeB, SINGLE_BRACKETS_2024);
+    const taxMFJ = taxFor(incomeA+incomeB, MFJ_BRACKETS_2024);
+    const diff = taxMFJ - combinedSingle;
+
+    document.getElementById('mtSingle').textContent = tbMoney(combinedSingle);
+    document.getElementById('mtMFJ').textContent = tbMoney(taxMFJ);
+    document.getElementById('mtDiff').textContent = tbMoney(Math.abs(diff));
+
+    const diffLabel = document.getElementById('mtDiffLabel');
+    if(diffLabel){
+      diffLabel.textContent = diff > 0 ? 'Marriage penalty' : (diff < 0 ? 'Marriage bonus' : 'Marriage penalty / bonus');
+    }
+  }
+
+  [incomeAEl, incomeBEl].forEach(el=>{
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+
+  calc();
+})();
+})();
+
+// ---- Batch W1-F4: Tax / Business cluster ----
+// TallyBench — new tool logic (batch: estate-tax, inflation, debt-consolidation,
+// student-loan-repayment, student-loan, college-cost, depreciation, margin,
+// business-loan). Each block is a self-guarding IIFE — safe to concatenate
+// into script.js later. Do not attach to script.js directly per task rules;
+// this file is scratch output only.
+
+// ---- Estate Tax Calculator ----
+(function () {
+  if (!document.getElementById('etGross')) return;
+
+  var etGross = document.getElementById('etGross');
+  var etExemption = document.getElementById('etExemption');
+  var etRate = document.getElementById('etRate');
+  var etTaxable = document.getElementById('etTaxable');
+  var etTax = document.getElementById('etTax');
+  var etNet = document.getElementById('etNet');
+
+  function fmt(n) {
+    return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  function calc() {
+    var gross = parseFloat(etGross.value) || 0;
+    var exemption = parseFloat(etExemption.value) || 0;
+    var rate = parseFloat(etRate.value) || 0;
+    var taxable = Math.max(0, gross - exemption);
+    var tax = taxable * rate / 100;
+    var net = gross - tax;
+    etTaxable.textContent = fmt(taxable);
+    etTax.textContent = fmt(tax);
+    etNet.textContent = fmt(net);
+  }
+
+  [etGross, etExemption, etRate].forEach(function (el) {
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+
+  calc();
+})();
+
+// ---- Inflation Calculator ----
+(function () {
+  if (!document.getElementById('inflAmt')) return;
+
+  var inflAmt = document.getElementById('inflAmt');
+  var inflStartYear = document.getElementById('inflStartYear');
+  var inflEndYear = document.getElementById('inflEndYear');
+  var inflRate = document.getElementById('inflRate');
+  var inflModeSeg = document.getElementById('inflModeSeg');
+  var inflAdjusted = document.getElementById('inflAdjusted');
+  var inflCum = document.getElementById('inflCum');
+
+  var mode = 'future';
+
+  function fmt(n) {
+    return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  function calc() {
+    var amount = parseFloat(inflAmt.value) || 0;
+    var startYear = parseFloat(inflStartYear.value) || 0;
+    var endYear = parseFloat(inflEndYear.value) || 0;
+    var rate = parseFloat(inflRate.value) || 0;
+    var factor = 1 + rate / 100;
+    var adjusted;
+    if (mode === 'future') {
+      adjusted = amount * Math.pow(factor, endYear - startYear);
+    } else {
+      adjusted = factor === 0 ? amount : amount / Math.pow(factor, startYear - endYear);
+    }
+    var cumPct = amount === 0 ? 0 : (adjusted / amount - 1) * 100;
+    inflAdjusted.textContent = fmt(adjusted);
+    inflCum.textContent = cumPct.toFixed(2) + '%';
+  }
+
+  [inflAmt, inflStartYear, inflEndYear, inflRate].forEach(function (el) {
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+
+  if (inflModeSeg) {
+    var segButtons = inflModeSeg.querySelectorAll('button');
+    segButtons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        segButtons.forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        mode = btn.getAttribute('data-mode');
+        calc();
+      });
+    });
+  }
+
+  calc();
+})();
+
+// ---- Debt Consolidation Calculator ----
+(function () {
+  if (!document.getElementById('dcDebt1')) return;
+
+  var dcDebt1 = document.getElementById('dcDebt1');
+  var dcDebt2 = document.getElementById('dcDebt2');
+  var dcDebt3 = document.getElementById('dcDebt3');
+  var dcDebt4 = document.getElementById('dcDebt4');
+  var dcCurrentPayment = document.getElementById('dcCurrentPayment');
+  var dcNewRate = document.getElementById('dcNewRate');
+  var dcNewTerm = document.getElementById('dcNewTerm');
+  var dcTotalBalance = document.getElementById('dcTotalBalance');
+  var dcNewPayment = document.getElementById('dcNewPayment');
+  var dcChange = document.getElementById('dcChange');
+  var dcNewInterest = document.getElementById('dcNewInterest');
+
+  function fmt(n) {
+    var sign = n < 0 ? '-' : '';
+    return sign + '$' + Math.abs(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  function pmt(P, annualRatePct, months) {
+    var i = annualRatePct / 100 / 12;
+    if (months <= 0) return 0;
+    if (i === 0) return P / months;
+    return P * i / (1 - Math.pow(1 + i, -months));
+  }
+
+  function calc() {
+    var d1 = parseFloat(dcDebt1.value) || 0;
+    var d2 = parseFloat(dcDebt2.value) || 0;
+    var d3 = parseFloat(dcDebt3.value) || 0;
+    var d4 = parseFloat(dcDebt4.value) || 0;
+    var currentPayment = parseFloat(dcCurrentPayment.value) || 0;
+    var rate = parseFloat(dcNewRate.value) || 0;
+    var termYears = parseFloat(dcNewTerm.value) || 0;
+    var total = d1 + d2 + d3 + d4;
+    var months = termYears * 12;
+    var newPayment = pmt(total, rate, months);
+    var change = currentPayment - newPayment;
+    var newInterest = newPayment * months - total;
+
+    dcTotalBalance.textContent = fmt(total);
+    dcNewPayment.textContent = fmt(newPayment);
+    dcChange.textContent = fmt(change);
+    dcNewInterest.textContent = fmt(newInterest);
+  }
+
+  [dcDebt1, dcDebt2, dcDebt3, dcDebt4, dcCurrentPayment, dcNewRate, dcNewTerm].forEach(function (el) {
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+
+  calc();
+})();
+
+// ---- Student Loan Repayment Calculator ----
+(function () {
+  if (!document.getElementById('slrBalance')) return;
+
+  var slrBalance = document.getElementById('slrBalance');
+  var slrRate = document.getElementById('slrRate');
+  var slrAGI = document.getElementById('slrAGI');
+  var slrFamily = document.getElementById('slrFamily');
+  var slrStandard = document.getElementById('slrStandard');
+  var slrIDR = document.getElementById('slrIDR');
+  var slrDiscretionary = document.getElementById('slrDiscretionary');
+  var slrSavings = document.getElementById('slrSavings');
+
+  function fmt(n) {
+    var sign = n < 0 ? '-' : '';
+    return sign + '$' + Math.abs(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  function pmt(P, annualRatePct, months) {
+    var i = annualRatePct / 100 / 12;
+    if (months <= 0) return 0;
+    if (i === 0) return P / months;
+    return P * i / (1 - Math.pow(1 + i, -months));
+  }
+
+  function calc() {
+    var balance = parseFloat(slrBalance.value) || 0;
+    var rate = parseFloat(slrRate.value) || 0;
+    var agi = parseFloat(slrAGI.value) || 0;
+    var familySize = parseFloat(slrFamily.value) || 1;
+
+    var standardPayment = pmt(balance, rate, 120);
+    var povertyGuideline = 15060 + (familySize - 1) * 5380;
+    var discretionary = Math.max(0, agi - povertyGuideline * 2.25);
+    var idrPayment = discretionary * 0.10 / 12;
+    var savings = standardPayment - idrPayment;
+
+    slrStandard.textContent = fmt(standardPayment);
+    slrIDR.textContent = fmt(idrPayment);
+    slrDiscretionary.textContent = fmt(discretionary);
+    slrSavings.textContent = savings > 0 ? fmt(savings) : fmt(0);
+  }
+
+  [slrBalance, slrRate, slrAGI, slrFamily].forEach(function (el) {
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+
+  calc();
+})();
+
+// ---- Student Loan Calculator ----
+(function () {
+  if (!document.getElementById('slBalance')) return;
+
+  var slBalance = document.getElementById('slBalance');
+  var slRate = document.getElementById('slRate');
+  var slTerm = document.getElementById('slTerm');
+  var slPayment = document.getElementById('slPayment');
+  var slInterest = document.getElementById('slInterest');
+  var slTotal = document.getElementById('slTotal');
+
+  function fmt(n) {
+    return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  function calc() {
+    var balance = parseFloat(slBalance.value) || 0;
+    var rate = parseFloat(slRate.value) || 0;
+    var years = parseFloat(slTerm.value) || 0;
+    var n = years * 12;
+    var i = rate / 100 / 12;
+    var payment = 0;
+    if (n > 0) {
+      payment = i === 0 ? balance / n : balance * i / (1 - Math.pow(1 + i, -n));
+    }
+    var totalPaid = payment * n;
+    var totalInterest = totalPaid - balance;
+
+    slPayment.textContent = fmt(payment);
+    slInterest.textContent = fmt(totalInterest);
+    slTotal.textContent = fmt(totalPaid);
+  }
+
+  [slBalance, slRate, slTerm].forEach(function (el) {
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+
+  calc();
+})();
+
+// ---- College Cost Calculator ----
+(function () {
+  if (!document.getElementById('ccCurrentCost')) return;
+
+  var ccCurrentCost = document.getElementById('ccCurrentCost');
+  var ccYearsUntil = document.getElementById('ccYearsUntil');
+  var ccYearsOfSchool = document.getElementById('ccYearsOfSchool');
+  var ccInflation = document.getElementById('ccInflation');
+  var ccFirstYear = document.getElementById('ccFirstYear');
+  var ccTotal = document.getElementById('ccTotal');
+  var ccAverage = document.getElementById('ccAverage');
+
+  function fmt(n) {
+    return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  function calc() {
+    var currentCost = parseFloat(ccCurrentCost.value) || 0;
+    var yearsUntil = parseFloat(ccYearsUntil.value) || 0;
+    var yearsOfSchool = Math.max(1, parseFloat(ccYearsOfSchool.value) || 1);
+    var inflRate = parseFloat(ccInflation.value) || 0;
+    var factor = 1 + inflRate / 100;
+
+    var enrollCost = currentCost * Math.pow(factor, yearsUntil);
+    var total = 0;
+    for (var y = 0; y < yearsOfSchool; y++) {
+      total += enrollCost * Math.pow(factor, y);
+    }
+    var average = total / yearsOfSchool;
+
+    ccFirstYear.textContent = fmt(enrollCost);
+    ccTotal.textContent = fmt(total);
+    ccAverage.textContent = fmt(average);
+  }
+
+  [ccCurrentCost, ccYearsUntil, ccYearsOfSchool, ccInflation].forEach(function (el) {
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+
+  calc();
+})();
+
+// ---- Depreciation Calculator ----
+(function () {
+  if (!document.getElementById('depCost')) return;
+
+  var depCost = document.getElementById('depCost');
+  var depSalvage = document.getElementById('depSalvage');
+  var depLife = document.getElementById('depLife');
+  var depMethodSeg = document.getElementById('depMethodSeg');
+  var depTotal = document.getElementById('depTotal');
+  var depAnnual = document.getElementById('depAnnual');
+  var depAnnualRow = document.getElementById('depAnnualRow');
+  var depTbody = document.getElementById('depTbody');
+
+  var method = 'straight';
+
+  function fmt(n) {
+    return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  function calc() {
+    var cost = parseFloat(depCost.value) || 0;
+    var salvage = parseFloat(depSalvage.value) || 0;
+    var life = Math.max(1, Math.round(parseFloat(depLife.value) || 1));
+    var totalDep = Math.max(0, cost - salvage);
+
+    depTotal.textContent = fmt(totalDep);
+
+    var rows = [];
+    if (method === 'straight') {
+      depAnnualRow.style.display = '';
+      var annual = totalDep / life;
+      depAnnual.textContent = fmt(annual);
+      var book = cost;
+      for (var y = 1; y <= life; y++) {
+        book -= annual;
+        if (y === life) book = salvage;
+        rows.push({ year: y, dep: annual, book: book });
+      }
+    } else {
+      depAnnualRow.style.display = 'none';
+      var rate = 2 / life;
+      var bookDDB = cost;
+      for (var y2 = 1; y2 <= life; y2++) {
+        var dep = bookDDB * rate;
+        if (bookDDB - dep < salvage) dep = bookDDB - salvage;
+        bookDDB -= dep;
+        rows.push({ year: y2, dep: dep, book: bookDDB });
+      }
+    }
+
+    var html = '';
+    rows.forEach(function (r) {
+      html += '<tr><td>' + r.year + '</td><td>' + fmt(r.dep) + '</td><td>' + fmt(r.book) + '</td></tr>';
+    });
+    depTbody.innerHTML = html;
+  }
+
+  [depCost, depSalvage, depLife].forEach(function (el) {
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+
+  if (depMethodSeg) {
+    var segButtons = depMethodSeg.querySelectorAll('button');
+    segButtons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        segButtons.forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        method = btn.getAttribute('data-method');
+        calc();
+      });
+    });
+  }
+
+  calc();
+})();
+
+// ---- Margin Calculator ----
+(function () {
+  if (!document.getElementById('mgCost')) return;
+
+  var mgModeSeg = document.getElementById('mgModeSeg');
+  var mgCost = document.getElementById('mgCost');
+  var mgPrice = document.getElementById('mgPrice');
+  var mgMarginInput = document.getElementById('mgMarginInput');
+  var mgPriceField = document.getElementById('mgPriceField');
+  var mgMarginField = document.getElementById('mgMarginField');
+  var mgCostOut = document.getElementById('mgCostOut');
+  var mgPriceOut = document.getElementById('mgPriceOut');
+  var mgProfit = document.getElementById('mgProfit');
+  var mgMarginOut = document.getElementById('mgMarginOut');
+  var mgMarkupOut = document.getElementById('mgMarkupOut');
+
+  var mode = 'costprice';
+
+  function fmt(n) {
+    return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  function calc() {
+    var cost = parseFloat(mgCost.value) || 0;
+    var price;
+
+    if (mode === 'costprice') {
+      price = parseFloat(mgPrice.value) || 0;
+    } else {
+      var desiredMargin = parseFloat(mgMarginInput.value) || 0;
+      var denom = 1 - desiredMargin / 100;
+      price = denom <= 0 ? 0 : cost / denom;
+    }
+
+    var profit = price - cost;
+    var marginPct = price === 0 ? 0 : (profit / price) * 100;
+    var markupPct = cost === 0 ? 0 : (profit / cost) * 100;
+
+    mgCostOut.textContent = fmt(cost);
+    mgPriceOut.textContent = fmt(price);
+    mgProfit.textContent = fmt(profit);
+    mgMarginOut.textContent = marginPct.toFixed(2) + '%';
+    mgMarkupOut.textContent = markupPct.toFixed(2) + '%';
+  }
+
+  [mgCost, mgPrice, mgMarginInput].forEach(function (el) {
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+
+  if (mgModeSeg) {
+    var segButtons = mgModeSeg.querySelectorAll('button');
+    segButtons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        segButtons.forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        mode = btn.getAttribute('data-mode');
+        if (mode === 'costprice') {
+          mgPriceField.style.display = '';
+          mgMarginField.style.display = 'none';
+        } else {
+          mgPriceField.style.display = 'none';
+          mgMarginField.style.display = '';
+        }
+        calc();
+      });
+    });
+  }
+
+  calc();
+})();
+
+// ---- Business Loan Calculator ----
+(function () {
+  if (!document.getElementById('blAmount')) return;
+
+  var blAmount = document.getElementById('blAmount');
+  var blRate = document.getElementById('blRate');
+  var blTerm = document.getElementById('blTerm');
+  var blTermLabel = document.getElementById('blTermLabel');
+  var blTermUnitSeg = document.getElementById('blTermUnitSeg');
+  var blFeePct = document.getElementById('blFeePct');
+  var blFeeModeSeg = document.getElementById('blFeeModeSeg');
+  var blPayment = document.getElementById('blPayment');
+  var blInterest = document.getElementById('blInterest');
+  var blTotalCost = document.getElementById('blTotalCost');
+  var blUpfrontCash = document.getElementById('blUpfrontCash');
+
+  var termUnit = 'years';
+  var feeMode = 'financed';
+
+  function fmt(n) {
+    return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  function pmt(P, annualRatePct, months) {
+    var i = annualRatePct / 100 / 12;
+    if (months <= 0) return 0;
+    if (i === 0) return P / months;
+    return P * i / (1 - Math.pow(1 + i, -months));
+  }
+
+  function calc() {
+    var amount = parseFloat(blAmount.value) || 0;
+    var rate = parseFloat(blRate.value) || 0;
+    var termVal = parseFloat(blTerm.value) || 0;
+    var feePct = parseFloat(blFeePct.value) || 0;
+    var months = termUnit === 'years' ? termVal * 12 : termVal;
+
+    var upfrontCash = 0;
+    var totalCost, totalInterest, payment;
+
+    if (feeMode === 'financed') {
+      var totalLoan = amount * (1 + feePct / 100);
+      payment = pmt(totalLoan, rate, months);
+      totalCost = payment * months;
+      totalInterest = totalCost - totalLoan;
+    } else {
+      payment = pmt(amount, rate, months);
+      var totalLoanOnly = payment * months;
+      totalInterest = totalLoanOnly - amount;
+      upfrontCash = amount * feePct / 100;
+      totalCost = totalLoanOnly + upfrontCash;
+    }
+
+    blPayment.textContent = fmt(payment);
+    blInterest.textContent = fmt(totalInterest);
+    blTotalCost.textContent = fmt(totalCost);
+    blUpfrontCash.textContent = fmt(upfrontCash);
+  }
+
+  [blAmount, blRate, blTerm, blFeePct].forEach(function (el) {
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+
+  if (blTermUnitSeg) {
+    var unitButtons = blTermUnitSeg.querySelectorAll('button');
+    unitButtons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        unitButtons.forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        termUnit = btn.getAttribute('data-unit');
+        if (blTermLabel) blTermLabel.textContent = termUnit === 'years' ? 'Term (years)' : 'Term (months)';
+        calc();
+      });
+    });
+  }
+
+  if (blFeeModeSeg) {
+    var modeButtons = blFeeModeSeg.querySelectorAll('button');
+    modeButtons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        modeButtons.forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        feeMode = btn.getAttribute('data-mode');
+        calc();
+      });
+    });
+  }
+
+  calc();
+})();
+
+// ---- Batch W1-F5: Remaining finance + Health cluster 1 ----
+(function(){
+// =====================================================================
+// TallyBench — new tool JS logic (batch: 14 calculators)
+// NOTE: This is a SCRATCH file only. Do not wire it into script.js here —
+// script.js is centrally owned. Each IIFE below is self-guarded with
+// `if(!document.getElementById(...)) return;` so it is safe to append
+// into script.js later without affecting any existing page.
+// =====================================================================
+
+function tbMoney(n){
+  if(!isFinite(n)) return '0';
+  return n.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+}
+
+// ---- 1. Personal Loan Calculator ----
+(function(){
+  if(!document.getElementById('plAmount')) return;
+  const amountEl = document.getElementById('plAmount');
+  const rateEl = document.getElementById('plRate');
+  const termEl = document.getElementById('plTerm');
+
+  function calc(){
+    const amount = parseFloat(amountEl.value)||0;
+    const rate = parseFloat(rateEl.value)||0;
+    const n = parseInt(termEl.value,10)||0;
+    const i = rate/100/12;
+    let payment = 0;
+    if(n>0){
+      payment = i>0 ? amount*i/(1-Math.pow(1+i,-n)) : amount/n;
+    }
+    const totalPaid = payment*n;
+    const totalInterest = totalPaid-amount;
+    document.getElementById('plPayment').textContent = '$'+tbMoney(payment);
+    document.getElementById('plInterest').textContent = '$'+tbMoney(totalInterest);
+    document.getElementById('plTotal').textContent = '$'+tbMoney(totalPaid);
+  }
+  [amountEl, rateEl, termEl].forEach(el=>{
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+  calc();
+})();
+
+// ---- 2. Boat Loan Calculator ----
+(function(){
+  if(!document.getElementById('blPrice')) return;
+  const priceEl = document.getElementById('blPrice');
+  const downEl = document.getElementById('blDown');
+  const rateEl = document.getElementById('blRate');
+  const termEl = document.getElementById('blTermYears');
+
+  function calc(){
+    const price = parseFloat(priceEl.value)||0;
+    const down = parseFloat(downEl.value)||0;
+    const rate = parseFloat(rateEl.value)||0;
+    const termYears = parseFloat(termEl.value)||0;
+    const loanAmount = Math.max(price-down,0);
+    const n = Math.round(termYears*12);
+    const i = rate/100/12;
+    let payment = 0;
+    if(n>0){
+      payment = i>0 ? loanAmount*i/(1-Math.pow(1+i,-n)) : loanAmount/n;
+    }
+    const totalPaid = payment*n;
+    const totalInterest = totalPaid-loanAmount;
+    document.getElementById('blLoanAmount').textContent = '$'+tbMoney(loanAmount);
+    document.getElementById('blPayment').textContent = '$'+tbMoney(payment);
+    document.getElementById('blInterest').textContent = '$'+tbMoney(totalInterest);
+  }
+  [priceEl, downEl, rateEl, termEl].forEach(el=>{
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+  calc();
+})();
+
+// ---- 3. Lease Calculator (general, non-auto) ----
+(function(){
+  if(!document.getElementById('lcAssetValue')) return;
+  const assetEl = document.getElementById('lcAssetValue');
+  const termEl = document.getElementById('lcTerm');
+  const residualEl = document.getElementById('lcResidual');
+  const rateEl = document.getElementById('lcRate');
+
+  function calc(){
+    const assetValue = parseFloat(assetEl.value)||0;
+    const term = parseFloat(termEl.value)||0;
+    const residual = parseFloat(residualEl.value)||0;
+    const rate = parseFloat(rateEl.value)||0;
+    const depreciation = term>0 ? (assetValue-residual)/term : 0;
+    const financeCharge = (assetValue+residual)*(rate/100/12)/2;
+    const payment = depreciation+financeCharge;
+    const totalPayments = payment*term;
+    const effectiveCostVsBuying = assetValue-residual;
+    document.getElementById('lcPayment').textContent = '$'+tbMoney(payment);
+    document.getElementById('lcTotalPayments').textContent = '$'+tbMoney(totalPayments);
+    document.getElementById('lcEffectiveCost').textContent = '$'+tbMoney(effectiveCostVsBuying);
+  }
+  [assetEl, termEl, residualEl, rateEl].forEach(el=>{
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+  calc();
+})();
+
+// ---- 4. Budget Calculator (50/30/20) ----
+(function(){
+  if(!document.getElementById('bgIncome')) return;
+  const incomeEl = document.getElementById('bgIncome');
+  const catIds = ['bgHousing','bgTransportation','bgFood','bgUtilities','bgInsurance','bgDebt','bgEntertainment','bgSavings','bgOther'];
+  const catLabels = {
+    bgHousing:'Housing', bgTransportation:'Transportation', bgFood:'Food',
+    bgUtilities:'Utilities', bgInsurance:'Insurance', bgDebt:'Debt Payments',
+    bgEntertainment:'Entertainment', bgSavings:'Savings', bgOther:'Other'
+  };
+  const needsIds = ['bgHousing','bgTransportation','bgUtilities','bgInsurance','bgDebt'];
+  const wantsIds = ['bgFood','bgEntertainment','bgOther'];
+
+  function calc(){
+    const income = parseFloat(incomeEl.value)||0;
+    const vals = {};
+    let total = 0;
+    catIds.forEach(id=>{
+      const v = parseFloat(document.getElementById(id).value)||0;
+      vals[id]=v;
+      total += v;
+    });
+    const surplus = income-total;
+    document.getElementById('bgTotalExpenses').textContent = '$'+tbMoney(total);
+    const surplusEl = document.getElementById('bgSurplus');
+    surplusEl.textContent = (surplus<0?'-$':'$')+tbMoney(Math.abs(surplus));
+
+    const breakdownEl = document.getElementById('bgBreakdown');
+    if(breakdownEl){
+      breakdownEl.innerHTML = catIds.map(id=>{
+        const pct = income>0 ? (vals[id]/income*100) : 0;
+        return '<tr><td>'+catLabels[id]+'</td><td>$'+tbMoney(vals[id])+'</td><td>'+pct.toFixed(1)+'%</td></tr>';
+      }).join('');
+    }
+
+    const needs = needsIds.reduce((s,id)=>s+vals[id],0);
+    const wants = wantsIds.reduce((s,id)=>s+vals[id],0);
+    const savings = vals.bgSavings;
+    const needsPct = income>0 ? needs/income*100 : 0;
+    const wantsPct = income>0 ? wants/income*100 : 0;
+    const savingsPct = income>0 ? savings/income*100 : 0;
+    const set = (id,val)=>{ const el=document.getElementById(id); if(el) el.textContent=val; };
+    set('bgNeedsPct', needsPct.toFixed(1)+'% (target 50%)');
+    set('bgWantsPct', wantsPct.toFixed(1)+'% (target 30%)');
+    set('bgSavingsPct', savingsPct.toFixed(1)+'% (target 20%)');
+  }
+  [incomeEl, ...catIds.map(id=>document.getElementById(id))].forEach(el=>{
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+  calc();
+})();
+
+// ---- 5. Commission Calculator ----
+(function(){
+  if(!document.getElementById('cmSale')) return;
+  const saleEl = document.getElementById('cmSale');
+  const rateEl = document.getElementById('cmRate');
+  const tieredSeg = document.getElementById('cmTieredSeg');
+  const tieredFields = document.getElementById('cmTieredFields');
+  const thresholdEl = document.getElementById('cmThreshold');
+  const rate2El = document.getElementById('cmRate2');
+  let tiered = false;
+
+  function calc(){
+    const sale = parseFloat(saleEl.value)||0;
+    const rate1 = parseFloat(rateEl.value)||0;
+    let commission;
+    if(tiered){
+      const threshold = parseFloat(thresholdEl.value)||0;
+      const rate2 = parseFloat(rate2El.value)||0;
+      commission = Math.min(sale,threshold)*rate1/100 + Math.max(0,sale-threshold)*rate2/100;
+    } else {
+      commission = sale*rate1/100;
+    }
+    document.getElementById('cmCommission').textContent = '$'+tbMoney(commission);
+  }
+  if(tieredSeg){
+    tieredSeg.addEventListener('click',(e)=>{
+      const btn = e.target.closest('button');
+      if(!btn) return;
+      tiered = btn.dataset.tiered === 'on';
+      tieredSeg.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      if(tieredFields) tieredFields.style.display = tiered ? 'block' : 'none';
+      calc();
+    });
+  }
+  [saleEl, rateEl, thresholdEl, rate2El].forEach(el=>{
+    if(!el) return;
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+  calc();
+})();
+
+// ---- 6. Army Body Fat Calculator ----
+(function(){
+  if(!document.getElementById('abfSexSeg')) return;
+  const sexSeg = document.getElementById('abfSexSeg');
+  const unitSel = document.getElementById('abfUnit');
+  const ageEl = document.getElementById('abfAge');
+  const heightEl = document.getElementById('abfHeight');
+  const neckEl = document.getElementById('abfNeck');
+  const waistEl = document.getElementById('abfWaist');
+  const hipWrap = document.getElementById('abfHipWrap');
+  const hipEl = document.getElementById('abfHip');
+  const warnEl = document.getElementById('abfWarning');
+  let sex = 'male';
+
+  function toInches(v){
+    return unitSel.value === 'cm' ? v/2.54 : v;
+  }
+
+  function armyMax(sex, age){
+    if(sex==='male'){
+      if(age<=20) return 20;
+      if(age<=27) return 22;
+      if(age<=39) return 24;
+      return 26;
+    } else {
+      if(age<=20) return 30;
+      if(age<=27) return 32;
+      if(age<=39) return 34;
+      return 36;
+    }
+  }
+
+  function calc(){
+    const age = parseInt(ageEl.value,10)||0;
+    const height = toInches(parseFloat(heightEl.value)||0);
+    const neck = toInches(parseFloat(neckEl.value)||0);
+    const waist = toInches(parseFloat(waistEl.value)||0);
+    const hip = toInches(parseFloat(hipEl.value)||0);
+    let pct = null;
+    if(sex==='male'){
+      if(height>0 && (waist-neck)>0) pct = 86.010*Math.log10(waist-neck) - 70.041*Math.log10(height) + 36.76;
+    } else {
+      if(height>0 && (waist+hip-neck)>0) pct = 163.205*Math.log10(waist+hip-neck) - 97.684*Math.log10(height) - 78.387;
+    }
+    const bfEl = document.getElementById('abfBfPct');
+    const maxEl = document.getElementById('abfMax');
+    const resultEl = document.getElementById('abfResult');
+    if(pct===null || !isFinite(pct) || isNaN(pct) || pct<0){
+      if(warnEl){ warnEl.textContent='Check your measurements — waist should be larger than neck (plus hip for women) to get a valid result.'; warnEl.classList.add('show'); }
+      bfEl.textContent='—'; maxEl.textContent='—'; resultEl.textContent='—';
+      return;
+    }
+    if(warnEl){ warnEl.textContent=''; warnEl.classList.remove('show'); }
+    pct = Math.min(Math.max(pct,0),70);
+    const max = armyMax(sex, age);
+    bfEl.textContent = pct.toFixed(1)+'%';
+    maxEl.textContent = max+'%';
+    resultEl.textContent = pct<=max ? 'PASS' : 'FAIL';
+    resultEl.style.color = pct<=max ? 'var(--teal-dark)' : 'var(--orange-dark)';
+  }
+
+  sexSeg.addEventListener('click',(e)=>{
+    const btn = e.target.closest('button');
+    if(!btn) return;
+    sex = btn.dataset.sex;
+    sexSeg.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    if(hipWrap) hipWrap.style.display = sex==='female' ? 'flex' : 'none';
+    calc();
+  });
+  unitSel.addEventListener('change', calc);
+  [ageEl, heightEl, neckEl, waistEl, hipEl].forEach(el=>{
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+  calc();
+})();
+
+// ---- 7. Lean Body Mass Calculator (Boer formula) ----
+(function(){
+  if(!document.getElementById('lbmSexSeg')) return;
+  const sexSeg = document.getElementById('lbmSexSeg');
+  const unitSel = document.getElementById('lbmUnit');
+  const metricWrap = document.getElementById('lbmMetricWrap');
+  const imperialWrap = document.getElementById('lbmImperialWrap');
+  let sex = 'male';
+
+  function getMetric(){
+    const isImperial = unitSel.value === 'in-lb';
+    if(isImperial){
+      const heightIn = parseFloat(document.getElementById('lbmHeightIn').value)||0;
+      const weightLb = parseFloat(document.getElementById('lbmWeightLb').value)||0;
+      return {heightCm: heightIn*2.54, weightKg: weightLb/2.20462, isImperial};
+    }
+    const heightCm = parseFloat(document.getElementById('lbmHeightCm').value)||0;
+    const weightKg = parseFloat(document.getElementById('lbmWeightKg').value)||0;
+    return {heightCm, weightKg, isImperial};
+  }
+
+  function calc(){
+    const {heightCm, weightKg, isImperial} = getMetric();
+    let lbmKg;
+    if(sex==='male'){
+      lbmKg = 0.407*weightKg + 0.267*heightCm - 19.2;
+    } else {
+      lbmKg = 0.252*weightKg + 0.473*heightCm - 48.3;
+    }
+    lbmKg = Math.max(lbmKg,0);
+    const fatMassKg = Math.max(weightKg-lbmKg,0);
+    const bfPct = weightKg>0 ? fatMassKg/weightKg*100 : 0;
+    const unit = isImperial ? 'lb' : 'kg';
+    const conv = isImperial ? 2.20462 : 1;
+    document.getElementById('lbmResult').textContent = (lbmKg*conv).toFixed(1)+' '+unit;
+    document.getElementById('lbmFatMass').textContent = (fatMassKg*conv).toFixed(1)+' '+unit;
+    document.getElementById('lbmBfPct').textContent = bfPct.toFixed(1)+'%';
+  }
+
+  sexSeg.addEventListener('click',(e)=>{
+    const btn = e.target.closest('button');
+    if(!btn) return;
+    sex = btn.dataset.sex;
+    sexSeg.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    calc();
+  });
+  unitSel.addEventListener('change', ()=>{
+    const isImperial = unitSel.value === 'in-lb';
+    metricWrap.style.display = isImperial ? 'none' : 'grid';
+    imperialWrap.style.display = isImperial ? 'grid' : 'none';
+    calc();
+  });
+  ['lbmHeightCm','lbmWeightKg','lbmHeightIn','lbmWeightLb'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+  calc();
+})();
+
+// ---- 8. Healthy Weight Range Calculator ----
+(function(){
+  if(!document.getElementById('hwUnit')) return;
+  const unitSel = document.getElementById('hwUnit');
+  const cmWrap = document.getElementById('hwCmWrap');
+  const ftWrap = document.getElementById('hwFtWrap');
+  const heightCmEl = document.getElementById('hwHeightCm');
+  const ftEl = document.getElementById('hwFt');
+  const inEl = document.getElementById('hwIn');
+
+  function getHeightMeters(){
+    if(unitSel.value === 'ft'){
+      const ft = parseFloat(ftEl.value)||0;
+      const inches = parseFloat(inEl.value)||0;
+      return ((ft*12)+inches)*0.0254;
+    }
+    return (parseFloat(heightCmEl.value)||0)/100;
+  }
+
+  function calc(){
+    const h = getHeightMeters();
+    const minKg = 18.5*h*h;
+    const maxKg = 24.9*h*h;
+    const isFt = unitSel.value === 'ft';
+    const resultEl = document.getElementById('hwResult');
+    if(h<=0){ resultEl.textContent='—'; return; }
+    if(isFt){
+      resultEl.textContent = (minKg*2.20462).toFixed(1)+' – '+(maxKg*2.20462).toFixed(1)+' lb';
+    } else {
+      resultEl.textContent = minKg.toFixed(1)+' – '+maxKg.toFixed(1)+' kg';
+    }
+  }
+
+  unitSel.addEventListener('change', ()=>{
+    const isFt = unitSel.value === 'ft';
+    cmWrap.style.display = isFt ? 'none' : 'flex';
+    ftWrap.style.display = isFt ? 'grid' : 'none';
+    calc();
+  });
+  [heightCmEl, ftEl, inEl].forEach(el=>{
+    if(!el) return;
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+  calc();
+})();
+
+// ---- 9. Calories Burned Calculator (MET-based) ----
+(function(){
+  if(!document.getElementById('cbActivity')) return;
+  const activityEl = document.getElementById('cbActivity');
+  const weightEl = document.getElementById('cbWeight');
+  const weightUnitEl = document.getElementById('cbWeightUnit');
+  const durationEl = document.getElementById('cbDuration');
+
+  function calc(){
+    const met = parseFloat(activityEl.value)||0;
+    const weightRaw = parseFloat(weightEl.value)||0;
+    const weightKg = weightUnitEl.value==='lb' ? weightRaw/2.20462 : weightRaw;
+    const durationMin = parseFloat(durationEl.value)||0;
+    const calories = met*weightKg*(durationMin/60);
+    document.getElementById('cbResult').textContent = Math.round(calories).toLocaleString('en-US')+' kcal';
+  }
+  [activityEl, weightEl, weightUnitEl, durationEl].forEach(el=>{
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+  calc();
+})();
+
+// ---- 10. One Rep Max Calculator (Epley formula) ----
+(function(){
+  if(!document.getElementById('ormWeight')) return;
+  const weightEl = document.getElementById('ormWeight');
+  const repsEl = document.getElementById('ormReps');
+
+  function calc(){
+    const weight = parseFloat(weightEl.value)||0;
+    let reps = parseInt(repsEl.value,10)||0;
+    reps = Math.min(Math.max(reps,1),15);
+    const oneRM = weight*(1+reps/30);
+    document.getElementById('ormResult').textContent = oneRM.toFixed(1);
+    const tableEl = document.getElementById('ormTable');
+    if(tableEl){
+      tableEl.innerHTML = [3,5,8,10].map(r=>{
+        const w = oneRM/(1+r/30);
+        return '<tr><td>'+r+'</td><td>'+w.toFixed(1)+'</td></tr>';
+      }).join('');
+    }
+  }
+  [weightEl, repsEl].forEach(el=>{
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+  calc();
+})();
+
+// ---- 11. Target Heart Rate Calculator (Karvonen formula) ----
+(function(){
+  if(!document.getElementById('thrAge')) return;
+  const ageEl = document.getElementById('thrAge');
+  const restingEl = document.getElementById('thrResting');
+
+  function calc(){
+    const age = parseFloat(ageEl.value)||0;
+    const resting = parseFloat(restingEl.value)||0;
+    const maxHR = 220-age;
+    const hrr = maxHR-resting;
+    document.getElementById('thrMaxHR').textContent = Math.round(maxHR)+' bpm';
+    function zoneStr(lo,hi){
+      return Math.round(resting+lo*hrr)+' – '+Math.round(resting+hi*hrr)+' bpm';
+    }
+    document.getElementById('thrZoneLight').textContent = zoneStr(0.5,0.6);
+    document.getElementById('thrZoneFatBurn').textContent = zoneStr(0.6,0.7);
+    document.getElementById('thrZoneCardio').textContent = zoneStr(0.7,0.8);
+    document.getElementById('thrZonePeak').textContent = zoneStr(0.8,0.9);
+  }
+  [ageEl, restingEl].forEach(el=>{
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+  calc();
+})();
+
+// ---- 12. Pregnancy Week Calculator ----
+(function(){
+  if(!document.getElementById('pwMethodSeg')) return;
+  const methodSeg = document.getElementById('pwMethodSeg');
+  const dateLabel = document.getElementById('pwDateLabel');
+  const dateEl = document.getElementById('pwDate');
+  let method = 'lmp';
+
+  const sizeTable = [
+    [4,7,'poppy seed to blueberry'],
+    [8,13,'raspberry to peach'],
+    [14,20,'lemon to banana'],
+    [21,27,'carrot to eggplant'],
+    [28,34,'butternut squash to cantaloupe'],
+    [35,42,'honeydew to small pumpkin']
+  ];
+
+  function sizeForWeek(week){
+    const row = sizeTable.find(r=>week>=r[0] && week<=r[1]);
+    return row ? row[2] : 'too early to estimate';
+  }
+
+  function calc(){
+    const val = dateEl.value;
+    const weekEl = document.getElementById('pwWeek');
+    const trimEl = document.getElementById('pwTrimester');
+    const daysEl = document.getElementById('pwDaysLeft');
+    const sizeEl = document.getElementById('pwSize');
+    if(!val){
+      weekEl.textContent='—'; trimEl.textContent='—'; daysEl.textContent='—'; sizeEl.textContent='—';
+      return;
+    }
+    const inputDate = new Date(val+'T00:00:00');
+    let lmp;
+    if(method==='lmp'){
+      lmp = inputDate;
+    } else {
+      // known due date -> back-calculate LMP
+      lmp = new Date(inputDate.getTime() - 280*24*60*60*1000);
+    }
+    const today = new Date();
+    today.setHours(0,0,0,0);
+    const diffDays = Math.floor((today-lmp)/(24*60*60*1000));
+    const week = Math.max(Math.floor(diffDays/7),0);
+    const dueDate = new Date(lmp.getTime()+280*24*60*60*1000);
+    const daysUntilDue = Math.round((dueDate-today)/(24*60*60*1000));
+
+    let trimester = '1st trimester';
+    if(week>=14 && week<=27) trimester='2nd trimester';
+    else if(week>=28) trimester='3rd trimester';
+
+    weekEl.textContent = 'Week '+week;
+    trimEl.textContent = trimester;
+    daysEl.textContent = daysUntilDue>=0 ? daysUntilDue+' days' : 'Due date has passed';
+    sizeEl.textContent = sizeForWeek(week);
+  }
+
+  methodSeg.addEventListener('click',(e)=>{
+    const btn = e.target.closest('button');
+    if(!btn) return;
+    method = btn.dataset.method;
+    methodSeg.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    dateLabel.textContent = method==='lmp' ? 'First day of last period' : 'Due date';
+    calc();
+  });
+  dateEl.addEventListener('input', calc);
+  dateEl.addEventListener('change', calc);
+  calc();
+})();
+
+// ---- 13. Pregnancy Weight Gain Calculator ----
+(function(){
+  if(!document.getElementById('pwgHeight')) return;
+  const heightEl = document.getElementById('pwgHeight');
+  const weightEl = document.getElementById('pwgWeight');
+  const weekEl = document.getElementById('pwgWeek');
+
+  function bmiCategory(bmi){
+    if(bmi<18.5) return {name:'Underweight', low:28, high:40};
+    if(bmi<25) return {name:'Normal', low:25, high:35};
+    if(bmi<30) return {name:'Overweight', low:15, high:25};
+    return {name:'Obese', low:11, high:20};
+  }
+
+  function gainToDate(week, totalLow, totalHigh){
+    const w = Math.min(Math.max(week,0),40);
+    if(w<=13){
+      return {low: 2*(w/13), high: 2*(w/13)};
+    }
+    const remLow = totalLow-2, remHigh = totalHigh-2;
+    const weeksIn = w-13;
+    const weeksTotal = 40-13;
+    return {
+      low: 2+remLow*(weeksIn/weeksTotal),
+      high: 2+remHigh*(weeksIn/weeksTotal)
+    };
+  }
+
+  function calc(){
+    const heightCm = parseFloat(heightEl.value)||0;
+    const weightKg = parseFloat(weightEl.value)||0;
+    const week = parseFloat(weekEl.value)||0;
+    const hM = heightCm/100;
+    const bmi = hM>0 ? weightKg/(hM*hM) : 0;
+    const catEl = document.getElementById('pwgCategory');
+    const totalEl = document.getElementById('pwgTotalRange');
+    const toDateEl = document.getElementById('pwgToDateRange');
+    if(bmi<=0){
+      catEl.textContent='—'; totalEl.textContent='—'; toDateEl.textContent='—';
+      return;
+    }
+    const cat = bmiCategory(bmi);
+    catEl.textContent = cat.name+' (BMI '+bmi.toFixed(1)+')';
+    totalEl.textContent = cat.low+' – '+cat.high+' lbs';
+    const gain = gainToDate(week, cat.low, cat.high);
+    toDateEl.textContent = gain.low.toFixed(1)+' – '+gain.high.toFixed(1)+' lbs by week '+Math.round(week);
+  }
+  [heightEl, weightEl, weekEl].forEach(el=>{
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+  calc();
+})();
+
+// ---- 14. Conception Calculator ----
+(function(){
+  if(!document.getElementById('ccMethodSeg')) return;
+  const methodSeg = document.getElementById('ccMethodSeg');
+  const dateLabel = document.getElementById('ccDateLabel');
+  const dateEl = document.getElementById('ccDate');
+  let method = 'dueDate';
+
+  function calc(){
+    const val = dateEl.value;
+    const resultEl = document.getElementById('ccResult');
+    if(!val){ resultEl.textContent='—'; return; }
+    const inputDate = new Date(val+'T00:00:00');
+    let conception;
+    if(method==='dueDate'){
+      conception = new Date(inputDate.getTime() - 266*24*60*60*1000);
+    } else {
+      conception = new Date(inputDate.getTime() + 14*24*60*60*1000);
+    }
+    const opts = {year:'numeric', month:'long', day:'numeric'};
+    resultEl.textContent = conception.toLocaleDateString('en-US', opts);
+  }
+
+  methodSeg.addEventListener('click',(e)=>{
+    const btn = e.target.closest('button');
+    if(!btn) return;
+    method = btn.dataset.method;
+    methodSeg.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    dateLabel.textContent = method==='dueDate' ? 'Due date' : 'First day of last period';
+    calc();
+  });
+  dateEl.addEventListener('input', calc);
+  dateEl.addEventListener('change', calc);
+  calc();
+})();
+})();
+
+
+// =====================================================================
+// WAVE 2 (salvaged) — Algebra cluster (9) + Statistics cluster (6)
+// =====================================================================
+
+// ---- Batch W2-M1: Algebra cluster ----
+// ---- Percent Error Calculator ----
+(function(){
+  if(!document.getElementById('peExperimental')) return;
+  var expEl = document.getElementById('peExperimental');
+  var trueEl = document.getElementById('peTrue');
+  var warnEl = document.getElementById('peWarning');
+  function calc(){
+    var exp = parseFloat(expEl.value)||0;
+    var trueVal = parseFloat(trueEl.value)||0;
+    var absError = exp - trueVal;
+    if(trueVal === 0){
+      warnEl.textContent = 'True value cannot be zero — percent error is undefined when dividing by zero.';
+      warnEl.classList.add('show');
+      document.getElementById('peResult').textContent = '—';
+      document.getElementById('peAbsError').textContent = absError.toFixed(4);
+      return;
+    }
+    warnEl.textContent = ''; warnEl.classList.remove('show');
+    var pctError = Math.abs(absError/trueVal)*100;
+    document.getElementById('peResult').textContent = pctError.toFixed(3)+'%';
+    document.getElementById('peAbsError').textContent = (absError>=0?'+':'')+absError.toFixed(4);
+  }
+  [expEl, trueEl].forEach(function(el){ el.addEventListener('input', calc); el.addEventListener('change', calc); });
+  calc();
+})();
+
+// ---- Exponent Calculator ----
+(function(){
+  if(!document.getElementById('exBase')) return;
+  var baseEl = document.getElementById('exBase');
+  var expEl = document.getElementById('exExponent');
+  var warnEl = document.getElementById('exWarning');
+  function calc(){
+    var base = parseFloat(baseEl.value)||0;
+    var exp = parseFloat(expEl.value)||0;
+    var result = Math.pow(base, exp);
+    if(!isFinite(result) || isNaN(result)){
+      warnEl.textContent = 'This combination (negative base with a fractional exponent) does not produce a real number.';
+      warnEl.classList.add('show');
+      document.getElementById('exResult').textContent = '—';
+      return;
+    }
+    warnEl.textContent = ''; warnEl.classList.remove('show');
+    document.getElementById('exResult').textContent = (Math.abs(result) < 1e15 && Math.abs(result) > 1e-9 || result===0) ? +result.toPrecision(12) : result.toExponential(6);
+  }
+  [baseEl, expEl].forEach(function(el){ el.addEventListener('input', calc); el.addEventListener('change', calc); });
+  calc();
+})();
+
+// ---- Binary Calculator ----
+(function(){
+  if(!document.getElementById('bnA')) return;
+  var aEl = document.getElementById('bnA');
+  var bEl = document.getElementById('bnB');
+  var opEl = document.getElementById('bnOp');
+  var warnEl = document.getElementById('bnWarning');
+
+  function isValidBinary(s){ return /^[01]+$/.test(s); }
+  function toBin(n){
+    var sign = n<0 ? '-' : '';
+    return sign + Math.abs(n).toString(2);
+  }
+
+  function calc(){
+    var aStr = aEl.value.trim();
+    var bStr = bEl.value.trim();
+    if(!isValidBinary(aStr) || !isValidBinary(bStr)){
+      warnEl.textContent = 'Enter valid binary numbers (digits 0 and 1 only).';
+      warnEl.classList.add('show');
+      document.getElementById('bnResultBin').textContent = '—';
+      document.getElementById('bnResultDec').textContent = '—';
+      return;
+    }
+    warnEl.textContent = ''; warnEl.classList.remove('show');
+    var a = parseInt(aStr, 2);
+    var b = parseInt(bStr, 2);
+    var op = opEl.value;
+    var result;
+    if(op === 'add') result = a+b;
+    else if(op === 'sub') result = a-b;
+    else result = a*b;
+    document.getElementById('bnResultBin').textContent = toBin(result);
+    document.getElementById('bnResultDec').textContent = result;
+  }
+  [aEl, bEl, opEl].forEach(function(el){ el.addEventListener('input', calc); el.addEventListener('change', calc); });
+  calc();
+
+  // Binary <-> Decimal conversion section
+  var seg = document.getElementById('bnConvModeSeg');
+  var convInput = document.getElementById('bnConvInput');
+  var convInputLabel = document.getElementById('bnConvInputLabel');
+  var convOutLabel = document.getElementById('bnConvOutLabel');
+  var convResult = document.getElementById('bnConvResult');
+  var convWarn = document.getElementById('bnConvWarning');
+  var convMode = 'bin2dec';
+
+  function convCalc(){
+    var val = convInput.value.trim();
+    if(convMode === 'bin2dec'){
+      if(!isValidBinary(val)){
+        convWarn.textContent = 'Enter a valid binary number (0s and 1s only).';
+        convWarn.classList.add('show');
+        convResult.textContent = '—';
+        return;
+      }
+      convWarn.textContent=''; convWarn.classList.remove('show');
+      convResult.textContent = parseInt(val, 2);
+    } else {
+      var n = parseInt(val, 10);
+      if(isNaN(n)){
+        convWarn.textContent = 'Enter a valid decimal integer.';
+        convWarn.classList.add('show');
+        convResult.textContent = '—';
+        return;
+      }
+      convWarn.textContent=''; convWarn.classList.remove('show');
+      convResult.textContent = toBin(n);
+    }
+  }
+  if(seg){
+    seg.addEventListener('click', function(e){
+      var btn = e.target.closest('button');
+      if(!btn) return;
+      seg.querySelectorAll('button').forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      convMode = btn.dataset.mode;
+      if(convMode === 'bin2dec'){
+        convInputLabel.textContent = 'Binary value';
+        convOutLabel.textContent = 'Decimal value';
+        convInput.value = '1010';
+      } else {
+        convInputLabel.textContent = 'Decimal value';
+        convOutLabel.textContent = 'Binary value';
+        convInput.value = '10';
+      }
+      convCalc();
+    });
+  }
+  convInput.addEventListener('input', convCalc);
+  convInput.addEventListener('change', convCalc);
+  convCalc();
+})();
+
+// ---- Hex Calculator ----
+(function(){
+  if(!document.getElementById('hxA')) return;
+  var aEl = document.getElementById('hxA');
+  var bEl = document.getElementById('hxB');
+  var opEl = document.getElementById('hxOp');
+  var warnEl = document.getElementById('hxWarning');
+
+  function isValidHex(s){ return /^[0-9a-fA-F]+$/.test(s); }
+
+  function calc(){
+    var aStr = aEl.value.trim();
+    var bStr = bEl.value.trim();
+    if(!isValidHex(aStr) || !isValidHex(bStr)){
+      warnEl.textContent = 'Enter valid hexadecimal values (0-9, A-F only).';
+      warnEl.classList.add('show');
+      document.getElementById('hxResultHex').textContent = '—';
+      document.getElementById('hxResultDec').textContent = '—';
+      return;
+    }
+    warnEl.textContent = ''; warnEl.classList.remove('show');
+    var a = parseInt(aStr, 16);
+    var b = parseInt(bStr, 16);
+    var op = opEl.value;
+    var result;
+    if(op === 'add') result = a+b;
+    else if(op === 'sub') result = a-b;
+    else result = a*b;
+    var sign = result<0 ? '-' : '';
+    document.getElementById('hxResultHex').textContent = sign+Math.abs(result).toString(16).toUpperCase();
+    document.getElementById('hxResultDec').textContent = result;
+  }
+  [aEl, bEl, opEl].forEach(function(el){ el.addEventListener('input', calc); el.addEventListener('change', calc); });
+  calc();
+
+  var seg = document.getElementById('hxConvModeSeg');
+  var convInput = document.getElementById('hxConvInput');
+  var convInputLabel = document.getElementById('hxConvInputLabel');
+  var convOutLabel = document.getElementById('hxConvOutLabel');
+  var convResult = document.getElementById('hxConvResult');
+  var convWarn = document.getElementById('hxConvWarning');
+  var convMode = 'hex2dec';
+
+  function convCalc(){
+    var val = convInput.value.trim();
+    if(convMode === 'hex2dec'){
+      if(!isValidHex(val)){
+        convWarn.textContent = 'Enter a valid hex value (0-9, A-F only).';
+        convWarn.classList.add('show');
+        convResult.textContent = '—';
+        return;
+      }
+      convWarn.textContent=''; convWarn.classList.remove('show');
+      convResult.textContent = parseInt(val, 16);
+    } else {
+      var n = parseInt(val, 10);
+      if(isNaN(n)){
+        convWarn.textContent = 'Enter a valid decimal integer.';
+        convWarn.classList.add('show');
+        convResult.textContent = '—';
+        return;
+      }
+      convWarn.textContent=''; convWarn.classList.remove('show');
+      convResult.textContent = n.toString(16).toUpperCase();
+    }
+  }
+  if(seg){
+    seg.addEventListener('click', function(e){
+      var btn = e.target.closest('button');
+      if(!btn) return;
+      seg.querySelectorAll('button').forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      convMode = btn.dataset.mode;
+      if(convMode === 'hex2dec'){
+        convInputLabel.textContent = 'Hex value';
+        convOutLabel.textContent = 'Decimal value';
+        convInput.value = 'FF';
+      } else {
+        convInputLabel.textContent = 'Decimal value';
+        convOutLabel.textContent = 'Hex value';
+        convInput.value = '255';
+      }
+      convCalc();
+    });
+  }
+  convInput.addEventListener('input', convCalc);
+  convInput.addEventListener('change', convCalc);
+  convCalc();
+})();
+
+// ---- Half-Life Calculator ----
+(function(){
+  if(!document.getElementById('hlModeSeg')) return;
+  var seg = document.getElementById('hlModeSeg');
+  var initialEl = document.getElementById('hlInitial');
+  var halfLifeEl = document.getElementById('hlHalfLife');
+  var remainingEl = document.getElementById('hlRemaining');
+  var elapsedEl = document.getElementById('hlElapsed');
+  var halfLifeField = document.getElementById('hlHalfLifeField');
+  var remainingField = document.getElementById('hlRemainingField');
+  var elapsedField = document.getElementById('hlElapsedField');
+  var resultLabel = document.getElementById('hlResultLabel');
+  var resultEl = document.getElementById('hlResult');
+  var warnEl = document.getElementById('hlWarning');
+  var mode = 'remaining';
+
+  function calc(){
+    var initial = parseFloat(initialEl.value)||0;
+    warnEl.textContent=''; warnEl.classList.remove('show');
+    if(mode === 'remaining'){
+      var halfLife = parseFloat(halfLifeEl.value)||0;
+      var elapsed = parseFloat(elapsedEl.value)||0;
+      if(halfLife<=0){
+        warnEl.textContent='Half-life must be greater than zero.'; warnEl.classList.add('show');
+        resultEl.textContent='—'; return;
+      }
+      var remaining = initial*Math.pow(0.5, elapsed/halfLife);
+      resultEl.textContent = remaining.toFixed(4);
+    } else if(mode === 'halflife'){
+      var remaining2 = parseFloat(remainingEl.value)||0;
+      var elapsed2 = parseFloat(elapsedEl.value)||0;
+      if(remaining2<=0 || initial<=0 || remaining2>=initial){
+        warnEl.textContent='Remaining amount must be greater than zero and less than the initial amount.'; warnEl.classList.add('show');
+        resultEl.textContent='—'; return;
+      }
+      var hl = elapsed2*Math.log(0.5)/Math.log(remaining2/initial);
+      resultEl.textContent = hl.toFixed(4);
+    } else {
+      var remaining3 = parseFloat(remainingEl.value)||0;
+      var halfLife3 = parseFloat(halfLifeEl.value)||0;
+      if(remaining3<=0 || initial<=0 || remaining3>=initial || halfLife3<=0){
+        warnEl.textContent='Remaining amount must be greater than zero and less than the initial amount, and half-life must be positive.'; warnEl.classList.add('show');
+        resultEl.textContent='—'; return;
+      }
+      var t = halfLife3*Math.log(remaining3/initial)/Math.log(0.5);
+      resultEl.textContent = t.toFixed(4);
+    }
+  }
+
+  seg.addEventListener('click', function(e){
+    var btn = e.target.closest('button');
+    if(!btn) return;
+    seg.querySelectorAll('button').forEach(function(b){ b.classList.remove('active'); });
+    btn.classList.add('active');
+    mode = btn.dataset.mode;
+    if(mode === 'remaining'){
+      halfLifeField.style.display=''; remainingField.style.display='none'; elapsedField.style.display='';
+      resultLabel.textContent = 'Remaining Amount';
+    } else if(mode === 'halflife'){
+      halfLifeField.style.display='none'; remainingField.style.display=''; elapsedField.style.display='';
+      resultLabel.textContent = 'Half-Life';
+    } else {
+      halfLifeField.style.display=''; remainingField.style.display=''; elapsedField.style.display='none';
+      resultLabel.textContent = 'Elapsed Time';
+    }
+    calc();
+  });
+
+  [initialEl, halfLifeEl, remainingEl, elapsedEl].forEach(function(el){
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+  calc();
+})();
+
+// ---- Quadratic Formula Calculator ----
+(function(){
+  if(!document.getElementById('qfA')) return;
+  var aEl = document.getElementById('qfA');
+  var bEl = document.getElementById('qfB');
+  var cEl = document.getElementById('qfC');
+  var warnEl = document.getElementById('qfWarning');
+  function calc(){
+    var a = parseFloat(aEl.value)||0;
+    var b = parseFloat(bEl.value)||0;
+    var c = parseFloat(cEl.value)||0;
+    if(a===0){
+      warnEl.textContent = 'Coefficient "a" cannot be zero — this would not be a quadratic equation.';
+      warnEl.classList.add('show');
+      document.getElementById('qfDiscriminant').textContent='—';
+      document.getElementById('qfRoot1').textContent='—';
+      document.getElementById('qfRoot2').textContent='—';
+      return;
+    }
+    warnEl.textContent=''; warnEl.classList.remove('show');
+    var disc = b*b - 4*a*c;
+    document.getElementById('qfDiscriminant').textContent = disc.toFixed(4);
+    if(disc > 0){
+      var r1 = (-b + Math.sqrt(disc))/(2*a);
+      var r2 = (-b - Math.sqrt(disc))/(2*a);
+      document.getElementById('qfRoot1').textContent = r1.toFixed(4);
+      document.getElementById('qfRoot2').textContent = r2.toFixed(4);
+    } else if(disc === 0){
+      var r = -b/(2*a);
+      document.getElementById('qfRoot1').textContent = r.toFixed(4)+' (repeated)';
+      document.getElementById('qfRoot2').textContent = r.toFixed(4)+' (repeated)';
+    } else {
+      var realPart = (-b/(2*a));
+      var imagPart = Math.sqrt(-disc)/(2*a);
+      document.getElementById('qfRoot1').textContent = realPart.toFixed(4)+' + '+Math.abs(imagPart).toFixed(4)+'i';
+      document.getElementById('qfRoot2').textContent = realPart.toFixed(4)+' - '+Math.abs(imagPart).toFixed(4)+'i';
+    }
+  }
+  [aEl, bEl, cEl].forEach(function(el){ el.addEventListener('input', calc); el.addEventListener('change', calc); });
+  calc();
+})();
+
+// ---- Log Calculator ----
+(function(){
+  if(!document.getElementById('lgValue')) return;
+  var valueEl = document.getElementById('lgValue');
+  var baseSelect = document.getElementById('lgBaseSelect');
+  var customBaseEl = document.getElementById('lgCustomBase');
+  var customBaseField = document.getElementById('lgCustomBaseField');
+  var warnEl = document.getElementById('lgWarning');
+
+  function calc(){
+    var x = parseFloat(valueEl.value)||0;
+    var baseSel = baseSelect.value;
+    var base;
+    if(baseSel === 'e') base = Math.E;
+    else if(baseSel === 'custom') base = parseFloat(customBaseEl.value)||0;
+    else base = parseFloat(baseSel);
+
+    if(x<=0 || base<=0 || base===1){
+      warnEl.textContent = 'Value must be greater than zero, and base must be greater than zero and not equal to 1.';
+      warnEl.classList.add('show');
+      document.getElementById('lgResult').textContent = '—';
+      return;
+    }
+    warnEl.textContent=''; warnEl.classList.remove('show');
+    var result = Math.log(x)/Math.log(base);
+    document.getElementById('lgResult').textContent = result.toFixed(6);
+  }
+
+  baseSelect.addEventListener('change', function(){
+    customBaseField.style.display = baseSelect.value === 'custom' ? '' : 'none';
+    calc();
+  });
+  [valueEl, customBaseEl].forEach(function(el){ el.addEventListener('input', calc); el.addEventListener('change', calc); });
+  calc();
+})();
+
+// ---- Ratio Calculator ----
+(function(){
+  if(!document.getElementById('rtModeSeg')) return;
+  var seg = document.getElementById('rtModeSeg');
+  var simplifyFields = document.getElementById('rtSimplifyFields');
+  var solveFields = document.getElementById('rtSolveFields');
+  var simplifyRow = document.getElementById('rtSimplifyRow');
+  var solveRow = document.getElementById('rtSolveRow');
+  var aEl = document.getElementById('rtA');
+  var bEl = document.getElementById('rtB');
+  var a2El = document.getElementById('rtA2');
+  var b2El = document.getElementById('rtB2');
+  var c2El = document.getElementById('rtC2');
+  var warnEl = document.getElementById('rtWarning');
+  var mode = 'simplify';
+
+  function gcd(a,b){ a=Math.abs(a); b=Math.abs(b); while(b){ var t=b; b=a%b; a=t; } return a; }
+
+  function calc(){
+    warnEl.textContent=''; warnEl.classList.remove('show');
+    if(mode === 'simplify'){
+      var a = parseFloat(aEl.value)||0;
+      var b = parseFloat(bEl.value)||0;
+      if(a===0 && b===0){
+        warnEl.textContent='Enter at least one non-zero value.'; warnEl.classList.add('show');
+        document.getElementById('rtSimplified').textContent='—';
+        return;
+      }
+      var g = gcd(a,b) || 1;
+      document.getElementById('rtSimplified').textContent = (a/g)+':'+(b/g);
+    } else {
+      var a2 = parseFloat(a2El.value)||0;
+      var b2 = parseFloat(b2El.value)||0;
+      var c2 = parseFloat(c2El.value)||0;
+      if(a2===0){
+        warnEl.textContent='"A" cannot be zero when solving for X.'; warnEl.classList.add('show');
+        document.getElementById('rtX').textContent='—';
+        return;
+      }
+      var x = (b2*c2)/a2;
+      document.getElementById('rtX').textContent = +x.toFixed(6);
+    }
+  }
+
+  seg.addEventListener('click', function(e){
+    var btn = e.target.closest('button');
+    if(!btn) return;
+    seg.querySelectorAll('button').forEach(function(b){ b.classList.remove('active'); });
+    btn.classList.add('active');
+    mode = btn.dataset.mode;
+    if(mode === 'simplify'){
+      simplifyFields.style.display=''; solveFields.style.display='none';
+      simplifyRow.style.display=''; solveRow.style.display='none';
+    } else {
+      simplifyFields.style.display='none'; solveFields.style.display='';
+      simplifyRow.style.display='none'; solveRow.style.display='';
+    }
+    calc();
+  });
+
+  [aEl, bEl, a2El, b2El, c2El].forEach(function(el){
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+  calc();
+})();
+
+// ---- Root Calculator ----
+(function(){
+  if(!document.getElementById('rnValue')) return;
+  var valueEl = document.getElementById('rnValue');
+  var indexEl = document.getElementById('rnIndex');
+  var warnEl = document.getElementById('rnWarning');
+  function calc(){
+    var x = parseFloat(valueEl.value)||0;
+    var n = Math.round(parseFloat(indexEl.value)||1);
+    if(n<=0){
+      warnEl.textContent='Root index must be a positive integer.'; warnEl.classList.add('show');
+      document.getElementById('rnResult').textContent='—';
+      return;
+    }
+    if(x<0){
+      if(n%2===0){
+        warnEl.textContent='An even root of a negative number is not a real number.'; warnEl.classList.add('show');
+        document.getElementById('rnResult').textContent='—';
+        return;
+      }
+      warnEl.textContent=''; warnEl.classList.remove('show');
+      var result = -(Math.pow(-x, 1/n));
+      document.getElementById('rnResult').textContent = result.toFixed(6);
+      return;
+    }
+    warnEl.textContent=''; warnEl.classList.remove('show');
+    var res = Math.pow(x, 1/n);
+    document.getElementById('rnResult').textContent = res.toFixed(6);
+  }
+  [valueEl, indexEl].forEach(function(el){ el.addEventListener('input', calc); el.addEventListener('change', calc); });
+  calc();
+})();
+
+// ---- Batch W2-M3: Statistics cluster ----
+// ---- Standard Deviation Calculator ----
+(function(){
+  if(!document.getElementById('sdInput')) return;
+
+  var sdInput = document.getElementById('sdInput');
+  var sdModeSeg = document.getElementById('sdModeSeg');
+  var sdMean = document.getElementById('sdMean');
+  var sdVariance = document.getElementById('sdVariance');
+  var sdStdDev = document.getElementById('sdStdDev');
+  var sdCount = document.getElementById('sdCount');
+  var sdWarning = document.getElementById('sdWarning');
+
+  var mode = 'population';
+
+  function parseNums(text){
+    return text.split(/[,\n]+/).map(function(s){ return parseFloat(s); }).filter(function(v){ return !isNaN(v); });
+  }
+
+  function calc(){
+    var nums = parseNums(sdInput.value);
+    var n = nums.length;
+    sdCount.textContent = n;
+
+    if(n === 0){
+      if(sdWarning){ sdWarning.textContent = 'Enter at least one number.'; sdWarning.classList.add('show'); }
+      sdMean.textContent = '—';
+      sdVariance.textContent = '—';
+      sdStdDev.textContent = '—';
+      return;
+    }
+    if(mode === 'sample' && n < 2){
+      if(sdWarning){ sdWarning.textContent = 'Sample standard deviation needs at least 2 values.'; sdWarning.classList.add('show'); }
+      sdMean.textContent = '—';
+      sdVariance.textContent = '—';
+      sdStdDev.textContent = '—';
+      return;
+    }
+    if(sdWarning){ sdWarning.classList.remove('show'); }
+
+    var sum = 0;
+    for(var i=0;i<n;i++){ sum += nums[i]; }
+    var mean = sum / n;
+
+    var sumSq = 0;
+    for(var j=0;j<n;j++){ sumSq += Math.pow(nums[j]-mean, 2); }
+
+    var variance = mode === 'sample' ? sumSq/(n-1) : sumSq/n;
+    var stdDev = Math.sqrt(variance);
+
+    sdMean.textContent = mean.toFixed(2);
+    sdVariance.textContent = variance.toFixed(2);
+    sdStdDev.textContent = stdDev.toFixed(2);
+  }
+
+  sdInput.addEventListener('input', calc);
+  sdInput.addEventListener('change', calc);
+
+  if(sdModeSeg){
+    var sdSegButtons = sdModeSeg.querySelectorAll('button');
+    sdSegButtons.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        sdSegButtons.forEach(function(b){ b.classList.remove('active'); });
+        btn.classList.add('active');
+        mode = btn.getAttribute('data-mode');
+        calc();
+      });
+    });
+  }
+
+  calc();
+})();
+
+
+// ---- Sample Size Calculator ----
+(function(){
+  if(!document.getElementById('ssConfidence')) return;
+
+  var ssConfidence = document.getElementById('ssConfidence');
+  var ssMargin = document.getElementById('ssMargin');
+  var ssProportion = document.getElementById('ssProportion');
+  var ssPopulation = document.getElementById('ssPopulation');
+  var ssResult = document.getElementById('ssResult');
+  var ssWarning = document.getElementById('ssWarning');
+
+  function calc(){
+    var z = parseFloat(ssConfidence.value) || 1.96;
+    var eRaw = parseFloat(ssMargin.value);
+    var pRaw = parseFloat(ssProportion.value);
+    var popRaw = parseFloat(ssPopulation.value);
+
+    if(isNaN(eRaw) || eRaw <= 0 || isNaN(pRaw) || pRaw < 0 || pRaw > 100){
+      if(ssWarning){ ssWarning.textContent = 'Enter a margin of error greater than 0 and a proportion between 0 and 100.'; ssWarning.classList.add('show'); }
+      ssResult.textContent = '—';
+      return;
+    }
+    if(ssWarning){ ssWarning.classList.remove('show'); }
+
+    var E = eRaw/100;
+    var p = pRaw/100;
+
+    var n = (z*z*p*(1-p)) / (E*E);
+
+    if(!isNaN(popRaw) && popRaw > 0){
+      n = n / (1 + (n-1)/popRaw);
+    }
+
+    ssResult.textContent = Math.ceil(n).toLocaleString('en-US');
+  }
+
+  [ssConfidence, ssMargin, ssProportion, ssPopulation].forEach(function(el){
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+
+  calc();
+})();
+
+
+// ---- Mean, Median & Mode Calculator ----
+(function(){
+  if(!document.getElementById('mmInput')) return;
+
+  var mmInput = document.getElementById('mmInput');
+  var mmMean = document.getElementById('mmMean');
+  var mmMedian = document.getElementById('mmMedian');
+  var mmMode = document.getElementById('mmMode');
+  var mmRange = document.getElementById('mmRange');
+  var mmCount = document.getElementById('mmCount');
+  var mmWarning = document.getElementById('mmWarning');
+
+  function parseNums(text){
+    return text.split(/[,\n]+/).map(function(s){ return parseFloat(s); }).filter(function(v){ return !isNaN(v); });
+  }
+
+  function calc(){
+    var nums = parseNums(mmInput.value);
+    var n = nums.length;
+    mmCount.textContent = n;
+
+    if(n === 0){
+      if(mmWarning){ mmWarning.textContent = 'Enter at least one number.'; mmWarning.classList.add('show'); }
+      mmMean.textContent = '—';
+      mmMedian.textContent = '—';
+      mmMode.textContent = '—';
+      mmRange.textContent = '—';
+      return;
+    }
+    if(mmWarning){ mmWarning.classList.remove('show'); }
+
+    var sum = 0;
+    for(var i=0;i<n;i++){ sum += nums[i]; }
+    var mean = sum/n;
+
+    var sorted = nums.slice().sort(function(a,b){ return a-b; });
+    var median;
+    var mid = Math.floor(n/2);
+    if(n % 2 === 0){
+      median = (sorted[mid-1] + sorted[mid]) / 2;
+    } else {
+      median = sorted[mid];
+    }
+
+    var freq = {};
+    for(var j=0;j<n;j++){
+      var key = String(nums[j]);
+      freq[key] = (freq[key]||0) + 1;
+    }
+    var maxFreq = 0;
+    for(var k in freq){ if(freq[k] > maxFreq) maxFreq = freq[k]; }
+
+    var modeVals = [];
+    for(var k2 in freq){ if(freq[k2] === maxFreq) modeVals.push(parseFloat(k2)); }
+    modeVals.sort(function(a,b){ return a-b; });
+
+    var modeText;
+    if(maxFreq === 1){
+      modeText = 'No mode';
+    } else {
+      modeText = modeVals.join(', ');
+    }
+
+    var range = sorted[n-1] - sorted[0];
+
+    mmMean.textContent = mean.toFixed(2);
+    mmMedian.textContent = median.toFixed(2);
+    mmMode.textContent = modeText;
+    mmRange.textContent = range.toFixed(2);
+  }
+
+  mmInput.addEventListener('input', calc);
+  mmInput.addEventListener('change', calc);
+
+  calc();
+})();
+
+
+// ---- Permutation & Combination Calculator ----
+(function(){
+  if(!document.getElementById('pcN')) return;
+
+  var pcN = document.getElementById('pcN');
+  var pcR = document.getElementById('pcR');
+  var pcModeSeg = document.getElementById('pcModeSeg');
+  var pcResult = document.getElementById('pcResult');
+  var pcWarning = document.getElementById('pcWarning');
+
+  var mode = 'permutation';
+
+  function calc(){
+    var n = parseFloat(pcN.value);
+    var r = parseFloat(pcR.value);
+
+    var valid = !isNaN(n) && !isNaN(r) && n >= 0 && r >= 0 && Number.isInteger(n) && Number.isInteger(r) && r <= n;
+
+    if(!valid){
+      if(pcWarning){ pcWarning.textContent = 'Enter whole numbers with 0 ≤ r ≤ n.'; pcWarning.classList.add('show'); }
+      pcResult.textContent = '—';
+      return;
+    }
+    if(pcWarning){ pcWarning.classList.remove('show'); }
+
+    var nPr = 1;
+    for(var i=0;i<r;i++){ nPr *= (n-i); }
+
+    var result;
+    if(mode === 'permutation'){
+      result = nPr;
+    } else {
+      var nCr = 1;
+      for(var j=0;j<r;j++){ nCr = nCr * (n-j) / (j+1); }
+      result = Math.round(nCr);
+    }
+
+    pcResult.textContent = result.toLocaleString('en-US');
+  }
+
+  [pcN, pcR].forEach(function(el){
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+
+  if(pcModeSeg){
+    var pcSegButtons = pcModeSeg.querySelectorAll('button');
+    pcSegButtons.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        pcSegButtons.forEach(function(b){ b.classList.remove('active'); });
+        btn.classList.add('active');
+        mode = btn.getAttribute('data-mode');
+        calc();
+      });
+    });
+  }
+
+  calc();
+})();
+
+
+// ---- Z-Score Calculator ----
+(function(){
+  if(!document.getElementById('zsMean')) return;
+
+  var zsModeSeg = document.getElementById('zsModeSeg');
+  var zsXField = document.getElementById('zsXField');
+  var zsX = document.getElementById('zsX');
+  var zsZField = document.getElementById('zsZField');
+  var zsZ = document.getElementById('zsZ');
+  var zsMean = document.getElementById('zsMean');
+  var zsStdDev = document.getElementById('zsStdDev');
+  var zsResultLabel = document.getElementById('zsResultLabel');
+  var zsResult = document.getElementById('zsResult');
+  var zsNote = document.getElementById('zsNote');
+  var zsWarning = document.getElementById('zsWarning');
+
+  var mode = 'findz';
+
+  function calc(){
+    var mean = parseFloat(zsMean.value);
+    var stdDev = parseFloat(zsStdDev.value);
+
+    if(isNaN(mean) || isNaN(stdDev) || stdDev <= 0){
+      if(zsWarning){ zsWarning.textContent = 'Enter a mean and a standard deviation greater than 0.'; zsWarning.classList.add('show'); }
+      zsResult.textContent = '—';
+      zsNote.textContent = '';
+      return;
+    }
+
+    if(mode === 'findz'){
+      var x = parseFloat(zsX.value);
+      if(isNaN(x)){
+        if(zsWarning){ zsWarning.textContent = 'Enter a value to standardize.'; zsWarning.classList.add('show'); }
+        zsResult.textContent = '—';
+        zsNote.textContent = '';
+        return;
+      }
+      if(zsWarning){ zsWarning.classList.remove('show'); }
+      var z = (x - mean) / stdDev;
+      zsResultLabel.textContent = 'Z-Score';
+      zsResult.textContent = z.toFixed(2);
+      var absZ = Math.abs(z);
+      var note = z === 0 ? 'Exactly average' : (z > 0 ? 'Above the mean' : 'Below the mean');
+      if(absZ > 3){ note += ' — extremely unusual (more than 3 standard deviations away).'; }
+      else if(absZ > 2){ note += ' — notably unusual (more than 2 standard deviations away).'; }
+      else { note += ', within 2 standard deviations of average.'; }
+      zsNote.textContent = note;
+    } else {
+      var zVal = parseFloat(zsZ.value);
+      if(isNaN(zVal)){
+        if(zsWarning){ zsWarning.textContent = 'Enter a z-score.'; zsWarning.classList.add('show'); }
+        zsResult.textContent = '—';
+        zsNote.textContent = '';
+        return;
+      }
+      if(zsWarning){ zsWarning.classList.remove('show'); }
+      var value = mean + zVal*stdDev;
+      zsResultLabel.textContent = 'Value (x)';
+      zsResult.textContent = value.toFixed(2);
+      zsNote.textContent = 'This is the raw value that sits ' + zVal.toFixed(2) + ' standard deviations from the mean.';
+    }
+  }
+
+  [zsX, zsZ, zsMean, zsStdDev].forEach(function(el){
+    if(!el) return;
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+
+  if(zsModeSeg){
+    var zsSegButtons = zsModeSeg.querySelectorAll('button');
+    zsSegButtons.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        zsSegButtons.forEach(function(b){ b.classList.remove('active'); });
+        btn.classList.add('active');
+        mode = btn.getAttribute('data-mode');
+        if(mode === 'findz'){
+          zsXField.style.display = '';
+          zsZField.style.display = 'none';
+        } else {
+          zsXField.style.display = 'none';
+          zsZField.style.display = '';
+        }
+        calc();
+      });
+    });
+  }
+
+  calc();
+})();
+
+
+// ---- Confidence Interval Calculator ----
+(function(){
+  if(!document.getElementById('ciN')) return;
+
+  var ciModeSeg = document.getElementById('ciModeSeg');
+  var ciMeanFields = document.getElementById('ciMeanFields');
+  var ciMean = document.getElementById('ciMean');
+  var ciStdDev = document.getElementById('ciStdDev');
+  var ciPropFields = document.getElementById('ciPropFields');
+  var ciProportion = document.getElementById('ciProportion');
+  var ciN = document.getElementById('ciN');
+  var ciConfidence = document.getElementById('ciConfidence');
+  var ciInterval = document.getElementById('ciInterval');
+  var ciMargin = document.getElementById('ciMargin');
+  var ciWarning = document.getElementById('ciWarning');
+
+  var mode = 'mean';
+
+  function calc(){
+    var z = parseFloat(ciConfidence.value) || 1.96;
+    var n = parseFloat(ciN.value);
+
+    if(isNaN(n) || n <= 0 || !Number.isInteger(n)){
+      if(ciWarning){ ciWarning.textContent = 'Enter a whole number sample size greater than 0.'; ciWarning.classList.add('show'); }
+      ciInterval.textContent = '—';
+      ciMargin.textContent = '—';
+      return;
+    }
+
+    if(mode === 'mean'){
+      var mean = parseFloat(ciMean.value);
+      var stdDev = parseFloat(ciStdDev.value);
+      if(isNaN(mean) || isNaN(stdDev) || stdDev < 0){
+        if(ciWarning){ ciWarning.textContent = 'Enter a sample mean and a standard deviation of 0 or more.'; ciWarning.classList.add('show'); }
+        ciInterval.textContent = '—';
+        ciMargin.textContent = '—';
+        return;
+      }
+      if(ciWarning){ ciWarning.classList.remove('show'); }
+      var margin = z * (stdDev / Math.sqrt(n));
+      ciInterval.textContent = (mean - margin).toFixed(2) + ' – ' + (mean + margin).toFixed(2);
+      ciMargin.textContent = '±' + margin.toFixed(2);
+    } else {
+      var pRaw = parseFloat(ciProportion.value);
+      if(isNaN(pRaw) || pRaw < 0 || pRaw > 100){
+        if(ciWarning){ ciWarning.textContent = 'Enter a sample proportion between 0 and 100.'; ciWarning.classList.add('show'); }
+        ciInterval.textContent = '—';
+        ciMargin.textContent = '—';
+        return;
+      }
+      if(ciWarning){ ciWarning.classList.remove('show'); }
+      var p = pRaw/100;
+      var marginP = z * Math.sqrt(p*(1-p)/n);
+      var lowerP = Math.max(0,(p - marginP)*100);
+      var upperP = Math.min(100,(p + marginP)*100);
+      ciInterval.textContent = lowerP.toFixed(2) + '% – ' + upperP.toFixed(2) + '%';
+      ciMargin.textContent = '±' + (marginP*100).toFixed(2) + '%';
+    }
+  }
+
+  [ciMean, ciStdDev, ciProportion, ciN, ciConfidence].forEach(function(el){
+    if(!el) return;
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+
+  if(ciModeSeg){
+    var ciSegButtons = ciModeSeg.querySelectorAll('button');
+    ciSegButtons.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        ciSegButtons.forEach(function(b){ b.classList.remove('active'); });
+        btn.classList.add('active');
+        mode = btn.getAttribute('data-mode');
+        if(mode === 'mean'){
+          ciMeanFields.style.display = '';
+          ciPropFields.style.display = 'none';
+        } else {
+          ciMeanFields.style.display = 'none';
+          ciPropFields.style.display = '';
+        }
+        calc();
+      });
+    });
+  }
+
+  calc();
+})();

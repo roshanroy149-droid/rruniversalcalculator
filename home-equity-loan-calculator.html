@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home Equity Loan Calculator — Payment &amp; Max Equity | TallyBench</title>
+<meta name="description" content="Free home equity loan calculator. Enter your home value, mortgage balance, and desired loan to see your available equity, monthly payment, and total interest.">
+<link rel="canonical" href="https://tallybench.com/home-equity-loan-calculator.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.svg">
+<meta name="theme-color" content="#1C1A17">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="TallyBench">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TallyBench">
+<meta property="og:title" content="Home Equity Loan Calculator — Payment &amp; Max Equity">
+<meta property="og:description" content="Enter your home value, mortgage balance, and desired loan to see your available equity, monthly payment, and total interest.">
+<meta property="og:url" content="https://tallybench.com/home-equity-loan-calculator.html">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Home Equity Loan Calculator — Payment &amp; Max Equity">
+<meta name="twitter:description" content="Enter your home value, mortgage balance, and desired loan to see your available equity, monthly payment, and total interest.">
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="style.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How much equity can I borrow against?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Lenders typically cap the combined loan-to-value (CLTV) of your first mortgage plus a new home equity loan at around 80-85% of your home's value, though this varies by lender. Your maximum available equity is your home's value times that CLTV limit, minus whatever you still owe on your existing mortgage."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Home equity loan vs. HELOC — what's the difference?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A home equity loan gives you a lump sum upfront at a fixed rate, repaid on a set amortization schedule — modeled here. A HELOC (Home Equity Line of Credit) instead gives you a revolving credit line you draw from as needed, usually at a variable rate, with interest-only payments during an initial draw period before switching to full repayment. See the HELOC Calculator, a companion tool, to model that structure."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is the interest tax-deductible?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Only if the loan funds are used to buy, build, or substantially improve the home securing the loan, under current US tax law — it isn't a blanket deduction for any use of the money, such as debt consolidation or a large purchase unrelated to the home. Consult a tax professional about your specific situation before assuming any deduction applies."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What happens if I can't repay it?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A home equity loan is secured by your home, meaning it uses the property as collateral just like your primary mortgage. If you default, the lender can foreclose, putting your home at risk — this is a materially different risk profile than unsecured debt like most credit cards or personal loans."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Home Equity Loan Calculator — TallyBench",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any (runs in browser)",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "url": "https://tallybench.com/home-equity-loan-calculator.html"
+}
+</script>
+</head>
+<body data-page-cat="finance">
+
+<header>
+  <div class="wrap">
+    <div class="headbar">
+      <a class="logo" href="index.html">TALLYBENCH<span>.</span></a>
+      <div class="tagline"><!-- TB:COUNT:START -->
+125 TOOLS · 0 SIGN-UP
+<!-- TB:COUNT:END --></div>
+<button class="nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <!-- TB:NAV:START -->
+  <div class="nav-drawer" id="navDrawer">
+    <div class="nav-drawer-head">
+      <span>Menu</span>
+      <button class="nav-close" id="navClose" type="button" aria-label="Close menu">&#10005;</button>
+    </div>
+    <nav class="ruler cat-ruler" aria-label="Category">
+      <a class="tick" href="index.html">HOME</a>
+      <button class="tick cat-tab" type="button" data-cat="finance">FINANCE</button>
+      <button class="tick cat-tab" type="button" data-cat="health">HEALTH</button>
+      <button class="tick cat-tab" type="button" data-cat="education">EDUCATION</button>
+      <button class="tick cat-tab" type="button" data-cat="everyday">EVERYDAY</button>
+    </nav>
+    <nav class="ruler sub-ruler" id="subRuler" aria-label="Tools">
+      <a class="tick sub-tick" data-cat="finance" href="currency-converter.html">CURRENCY</a>
+      <a class="tick sub-tick" data-cat="finance" href="loan-calculator.html">LOAN / EMI</a>
+      <a class="tick sub-tick" data-cat="finance" href="car-loan-calculator.html">CAR LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="mortgage-calculator.html">MORTGAGE</a>
+      <a class="tick sub-tick" data-cat="finance" href="refinance-calculator.html">REFINANCE</a>
+      <a class="tick sub-tick" data-cat="finance" href="rent-vs-buy-calculator.html">RENT VS BUY</a>
+      <a class="tick sub-tick" data-cat="finance" href="tax-calculator.html">TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="paycheck-calculator.html">PAYCHECK</a>
+      <a class="tick sub-tick" data-cat="finance" href="gst-vat-calculator.html">GST / VAT</a>
+      <a class="tick sub-tick" data-cat="finance" href="investment-calculator.html">INVESTMENT</a>
+      <a class="tick sub-tick" data-cat="finance" href="sip-calculator.html">SIP</a>
+      <a class="tick sub-tick" data-cat="finance" href="compound-interest-calculator.html">COMPOUND INT.</a>
+      <a class="tick sub-tick" data-cat="finance" href="savings-goal-calculator.html">SAVINGS GOAL</a>
+      <a class="tick sub-tick" data-cat="finance" href="retirement-calculator.html">RETIREMENT</a>
+      <a class="tick sub-tick" data-cat="finance" href="net-worth-calculator.html">NET WORTH</a>
+      <a class="tick sub-tick" data-cat="finance" href="discount-calculator.html">DISCOUNT</a>
+      <a class="tick sub-tick" data-cat="finance" href="tip-calculator.html">TIP</a>
+      <a class="tick sub-tick" data-cat="finance" href="fd-calculator.html">FD</a>
+      <a class="tick sub-tick" data-cat="finance" href="rd-calculator.html">RD</a>
+      <a class="tick sub-tick" data-cat="finance" href="ppf-calculator.html">PPF</a>
+      <a class="tick sub-tick" data-cat="finance" href="hra-calculator.html">HRA</a>
+      <a class="tick sub-tick" data-cat="finance" href="break-even-calculator.html">BREAK-EVEN</a>
+      <a class="tick sub-tick" data-cat="finance" href="debt-payoff-calculator.html">DEBT PAYOFF</a>
+      <a class="tick sub-tick" data-cat="finance" href="salary-calculator.html">SALARY</a>
+      <a class="tick sub-tick" data-cat="finance" href="sales-tax-calculator.html">SALES TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="cd-calculator.html">CD</a>
+      <a class="tick sub-tick" data-cat="finance" href="amortization-schedule-calculator.html">AMORTIZATION</a>
+      <a class="tick sub-tick" data-cat="finance" href="401k-calculator.html">401(K)</a>
+      <a class="tick sub-tick" data-cat="finance" href="ira-calculator.html">IRA / ROTH</a>
+      <a class="tick sub-tick" data-cat="finance" href="house-affordability-calculator.html">AFFORDABILITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="down-payment-calculator.html">DOWN PAYMENT</a>
+      <a class="tick sub-tick" data-cat="finance" href="debt-to-income-calculator.html">DTI RATIO</a>
+      <a class="tick sub-tick" data-cat="finance" href="simple-interest-calculator.html">SIMPLE INT.</a>
+      <a class="tick sub-tick" data-cat="finance" href="roi-calculator.html">ROI</a>
+      <a class="tick sub-tick" data-cat="finance" href="credit-card-payoff-calculator.html">CC PAYOFF</a>
+      <a class="tick sub-tick" data-cat="finance" href="mortgage-payoff-calculator.html">MTG PAYOFF</a>
+      <a class="tick sub-tick" data-cat="finance" href="rent-affordability-calculator.html">RENT AFFORD</a>
+      <a class="tick sub-tick" data-cat="finance" href="real-estate-investment-calculator.html">REAL ESTATE</a>
+      <a class="tick sub-tick" data-cat="finance" href="rental-property-calculator.html">RENTAL PROPERTY</a>
+      <a class="tick sub-tick" data-cat="finance" href="apr-calculator.html">APR</a>
+      <a class="tick sub-tick" data-cat="finance" href="fha-loan-calculator.html">FHA LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="va-mortgage-calculator.html">VA LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="home-equity-loan-calculator.html">HOME EQUITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="heloc-calculator.html">HELOC</a>
+      <a class="tick sub-tick" data-cat="finance" href="cash-back-or-low-interest-calculator.html">CASH BACK/APR</a>
+      <a class="tick sub-tick" data-cat="finance" href="auto-lease-calculator.html">AUTO LEASE</a>
+      <a class="tick sub-tick" data-cat="finance" href="finance-calculator.html">TVM SOLVER</a>
+      <a class="tick sub-tick" data-cat="finance" href="interest-rate-calculator.html">INT. RATE</a>
+      <a class="tick sub-tick" data-cat="finance" href="bond-calculator.html">BOND</a>
+      <a class="tick sub-tick" data-cat="finance" href="mutual-fund-calculator.html">MUTUAL FUND</a>
+      <a class="tick sub-tick" data-cat="finance" href="average-return-calculator.html">AVG RETURN</a>
+      <a class="tick sub-tick" data-cat="finance" href="irr-calculator.html">IRR</a>
+      <a class="tick sub-tick" data-cat="finance" href="payback-period-calculator.html">PAYBACK PERIOD</a>
+      <a class="tick sub-tick" data-cat="finance" href="present-value-calculator.html">PRESENT VALUE</a>
+      <a class="tick sub-tick" data-cat="finance" href="future-value-calculator.html">FUTURE VALUE</a>
+      <a class="tick sub-tick" data-cat="finance" href="savings-calculator.html">SAVINGS</a>
+      <a class="tick sub-tick" data-cat="finance" href="pension-calculator.html">PENSION</a>
+      <a class="tick sub-tick" data-cat="finance" href="social-security-calculator.html">SOCIAL SECURITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="annuity-calculator.html">ANNUITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="annuity-payout-calculator.html">ANNUITY PAYOUT</a>
+      <a class="tick sub-tick" data-cat="finance" href="rmd-calculator.html">RMD</a>
+      <a class="tick sub-tick" data-cat="finance" href="marriage-tax-calculator.html">MARRIAGE TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="estate-tax-calculator.html">ESTATE TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="inflation-calculator.html">INFLATION</a>
+      <a class="tick sub-tick" data-cat="finance" href="debt-consolidation-calculator.html">DEBT CONSOLIDATION</a>
+      <a class="tick sub-tick" data-cat="finance" href="student-loan-repayment-calculator.html">REPAYMENT PLAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="student-loan-calculator.html">STUDENT LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="college-cost-calculator.html">COLLEGE COST</a>
+      <a class="tick sub-tick" data-cat="finance" href="depreciation-calculator.html">DEPRECIATION</a>
+      <a class="tick sub-tick" data-cat="finance" href="margin-calculator.html">MARGIN</a>
+      <a class="tick sub-tick" data-cat="finance" href="business-loan-calculator.html">BUSINESS LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="personal-loan-calculator.html">PERSONAL LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="boat-loan-calculator.html">BOAT LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="lease-calculator.html">LEASE</a>
+      <a class="tick sub-tick" data-cat="finance" href="budget-calculator.html">BUDGET</a>
+      <a class="tick sub-tick" data-cat="finance" href="commission-calculator.html">COMMISSION</a>
+      <a class="tick sub-tick" data-cat="health" href="bmi-calculator.html">BMI</a>
+      <a class="tick sub-tick" data-cat="health" href="calorie-calculator.html">CALORIE</a>
+      <a class="tick sub-tick" data-cat="health" href="macro-calculator.html">MACROS</a>
+      <a class="tick sub-tick" data-cat="health" href="pregnancy-calculator.html">PREGNANCY</a>
+      <a class="tick sub-tick" data-cat="health" href="ovulation-calculator.html">OVULATION</a>
+      <a class="tick sub-tick" data-cat="health" href="ideal-weight-calculator.html">IDEAL WEIGHT</a>
+      <a class="tick sub-tick" data-cat="health" href="body-fat-calculator.html">BODY FAT</a>
+      <a class="tick sub-tick" data-cat="health" href="army-body-fat-calculator.html">ARMY BODY FAT</a>
+      <a class="tick sub-tick" data-cat="health" href="lean-body-mass-calculator.html">LEAN MASS</a>
+      <a class="tick sub-tick" data-cat="health" href="healthy-weight-calculator.html">HEALTHY WEIGHT</a>
+      <a class="tick sub-tick" data-cat="health" href="calories-burned-calculator.html">CAL BURNED</a>
+      <a class="tick sub-tick" data-cat="health" href="one-rep-max-calculator.html">1RM</a>
+      <a class="tick sub-tick" data-cat="health" href="target-heart-rate-calculator.html">HEART RATE</a>
+      <a class="tick sub-tick" data-cat="health" href="pregnancy-week-calculator.html">PREGNANCY WEEKS</a>
+      <a class="tick sub-tick" data-cat="health" href="pregnancy-weight-gain-calculator.html">PREG. WEIGHT GAIN</a>
+      <a class="tick sub-tick" data-cat="health" href="conception-calculator.html">CONCEPTION</a>
+      <a class="tick sub-tick" data-cat="education" href="gpa-calculator.html">GPA</a>
+      <a class="tick sub-tick" data-cat="education" href="grade-calculator.html">GRADE</a>
+      <a class="tick sub-tick" data-cat="education" href="scientific-calculator.html">SCIENTIFIC</a>
+      <a class="tick sub-tick" data-cat="education" href="fraction-calculator.html">FRACTION</a>
+      <a class="tick sub-tick" data-cat="education" href="statistics-calculator.html">STATISTICS</a>
+      <a class="tick sub-tick" data-cat="education" href="percent-error-calculator.html">% ERROR</a>
+      <a class="tick sub-tick" data-cat="education" href="exponent-calculator.html">EXPONENT</a>
+      <a class="tick sub-tick" data-cat="education" href="binary-calculator.html">BINARY</a>
+      <a class="tick sub-tick" data-cat="education" href="hex-calculator.html">HEX</a>
+      <a class="tick sub-tick" data-cat="education" href="half-life-calculator.html">HALF-LIFE</a>
+      <a class="tick sub-tick" data-cat="education" href="quadratic-formula-calculator.html">QUADRATIC</a>
+      <a class="tick sub-tick" data-cat="education" href="log-calculator.html">LOG</a>
+      <a class="tick sub-tick" data-cat="education" href="ratio-calculator.html">RATIO</a>
+      <a class="tick sub-tick" data-cat="education" href="root-calculator.html">ROOT</a>
+      <a class="tick sub-tick" data-cat="education" href="standard-deviation-calculator.html">STD DEVIATION</a>
+      <a class="tick sub-tick" data-cat="education" href="sample-size-calculator.html">SAMPLE SIZE</a>
+      <a class="tick sub-tick" data-cat="education" href="mean-median-mode-calculator.html">MEAN/MEDIAN/MODE</a>
+      <a class="tick sub-tick" data-cat="education" href="permutation-combination-calculator.html">PERM/COMBO</a>
+      <a class="tick sub-tick" data-cat="education" href="z-score-calculator.html">Z-SCORE</a>
+      <a class="tick sub-tick" data-cat="education" href="confidence-interval-calculator.html">CONFIDENCE INT.</a>
+      <a class="tick sub-tick" data-cat="everyday" href="percentage-calculator.html">PERCENT</a>
+      <a class="tick sub-tick" data-cat="everyday" href="age-calculator.html">AGE</a>
+      <a class="tick sub-tick" data-cat="everyday" href="days-calculator.html">DAYS</a>
+      <a class="tick sub-tick" data-cat="everyday" href="time-calculator.html">TIME</a>
+      <a class="tick sub-tick" data-cat="everyday" href="unit-converter.html">UNITS</a>
+      <a class="tick sub-tick" data-cat="everyday" href="week-number-calculator.html">WEEK #</a>
+      <a class="tick sub-tick" data-cat="everyday" href="cm-to-inches.html">CM→IN</a>
+      <a class="tick sub-tick" data-cat="everyday" href="kg-to-pounds.html">KG→LB</a>
+      <a class="tick sub-tick" data-cat="everyday" href="celsius-to-fahrenheit.html">°C→°F</a>
+      <a class="tick sub-tick" data-cat="everyday" href="password-generator.html">PASSWORD</a>
+      <a class="tick sub-tick" data-cat="everyday" href="random-number-generator.html">RANDOM #</a>
+      <a class="tick sub-tick" data-cat="everyday" href="word-counter.html">WORD COUNT</a>
+      <a class="tick sub-tick" data-cat="everyday" href="pace-calculator.html">PACE</a>
+    </nav>
+  </div>
+  <!-- TB:NAV:END -->
+</header>
+<div class="nav-backdrop" id="navBackdrop"></div>
+
+<div class="wrap">
+  <div class="crumb"><a href="index.html">TallyBench</a> / Home Equity Loan Calculator</div>
+
+  <section class="hero">
+    <div class="hero-icon-row cat-finance">
+      <div class="hero-icon"><svg><use href="icons.svg#icon-mortgage"/></svg></div>
+      <div class="eyebrow">// HOME EQUITY LOAN CALCULATOR</div>
+    </div>
+    <h1>How much can you borrow against your home, and what will it cost?</h1>
+    <p>Enter your home's value, existing mortgage balance, and the loan you want to see your maximum available equity, monthly payment, and total interest.</p>
+  </section>
+
+  <section class="tool" id="hel">
+    <div class="disclaimer">
+      <strong>Estimate only — not a loan offer or pre-approval.</strong> Actual available equity and approval depend on your lender's specific CLTV limits, your credit profile, and a current appraisal of your home.
+    </div>
+    <div class="card">
+      <div>
+        <div class="row2">
+          <div class="field"><label>Current home value ($)</label><input type="number" id="helHomeValue" value="400000" step="1000" min="0"></div>
+          <div class="field"><label>Existing mortgage balance ($)</label><input type="number" id="helExistingBal" value="250000" step="1000" min="0"></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label>Max combined loan-to-value allowed (%)</label><input type="number" id="helMaxCltv" value="80" step="1" min="1" max="100"></div>
+          <div class="field"><label>Desired loan amount ($)</label><input type="number" id="helDesiredLoan" value="50000" step="1000" min="0"></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label>Interest rate (annual %)</label><input type="number" id="helRate" value="8" step="0.01" min="0"></div>
+          <div class="field"><label>Loan term (years)</label><input type="number" id="helTerm" value="10" step="1" min="1"></div>
+        </div>
+      </div>
+      <div class="readout">
+        <div class="r-row"><span class="r-label">Max available equity</span><span class="r-value" id="helMaxEquity">$0.00</span></div>
+        <div class="r-row"><span class="r-label">Requested loan amount</span><span class="r-value" id="helRequested">$0.00</span></div>
+        <div class="r-row"><span class="r-label">Monthly payment</span><span class="r-value" id="helMonthly">$0.00</span></div>
+        <div class="r-row"><span class="r-label">Total interest</span><span class="r-value" id="helTotalInterest">$0.00</span></div>
+      </div>
+      <div class="field-warning" id="helWarning"></div>
+    </div>
+  </section>
+
+  <section class="article">
+    <h3>How much equity can I borrow against?</h3>
+    <p>Lenders typically cap the combined loan-to-value (CLTV) of your first mortgage plus a new home equity loan at around 80-85% of your home's value, though this varies by lender and your credit profile. Your maximum available equity is your home's value times that CLTV limit, minus whatever you still owe on your existing mortgage — this calculator computes that ceiling automatically and flags it if your desired loan amount goes over it.</p>
+    <h3>Home equity loan vs. HELOC — what's the difference?</h3>
+    <p>A home equity loan gives you a lump sum upfront at a fixed rate, repaid on a set amortization schedule, exactly as modeled above. A HELOC (Home Equity Line of Credit) instead gives you a revolving credit line you draw from as needed, usually at a variable rate, with interest-only payments during an initial draw period before switching to full repayment. See the <a href="heloc-calculator.html">HELOC Calculator</a>, a companion tool, to model that structure and compare the two side by side for your situation.</p>
+    <h3>Is the interest tax-deductible?</h3>
+    <p>Only if the loan funds are used to buy, build, or substantially improve the home securing the loan, under current US tax law — it isn't a blanket deduction for any use of the money, such as debt consolidation, education costs, or a large purchase unrelated to the home. Consult a tax professional about your specific situation before assuming any deduction applies to your loan.</p>
+    <h3>What happens if I can't repay it?</h3>
+    <p>A home equity loan is secured by your home, meaning it uses the property as collateral just like your primary mortgage. If you default, the lender can foreclose, putting your home at risk — a materially different and more serious risk profile than unsecured debt like most credit cards or personal loans. Borrow only what you're confident you can repay under the terms shown above.</p>
+    <p><strong>Worked example:</strong> a $400,000 home with a $250,000 existing mortgage balance and an 80% max CLTV gives a maximum available equity of $70,000 ($400,000 × 80% − $250,000). Requesting a $50,000 loan — under that $70,000 ceiling, so no warning appears — at 8% over 10 years gives a monthly payment of about $606.64, with total interest over the life of the loan of roughly $22,796.56.</p>
+  </section>
+
+  <p style="font-size:13px;color:var(--graphite);margin:0 0 24px;">Considering a revolving line instead of a lump sum? See the <a href="heloc-calculator.html">HELOC Calculator</a>. Want the amortization schedule on your primary mortgage? Try the <a href="mortgage-calculator.html">Mortgage Calculator</a>.</p>
+
+  <!-- TB:MORETOOLS:START -->
+  <nav class="more-tools" aria-label="More calculators">
+    <h2>More calculators</h2>
+    <div class="more-tools-groups">
+      <div class="more-tools-group">
+        <h3>Finance</h3>
+        <ul>
+          <li><a href="currency-converter.html">Currency Converter</a></li>
+          <li><a href="loan-calculator.html">Loan / EMI Calculator</a></li>
+          <li><a href="car-loan-calculator.html">Car Loan Calculator</a></li>
+          <li><a href="mortgage-calculator.html">Mortgage Calculator</a></li>
+          <li><a href="refinance-calculator.html">Refinance Calculator</a></li>
+          <li><a href="rent-vs-buy-calculator.html">Rent vs. Buy Calculator</a></li>
+          <li><a href="tax-calculator.html">Tax Calculator</a></li>
+          <li><a href="paycheck-calculator.html">Paycheck Calculator</a></li>
+          <li><a href="gst-vat-calculator.html">GST / VAT Calculator</a></li>
+          <li><a href="investment-calculator.html">Investment Calculator</a></li>
+          <li><a href="sip-calculator.html">SIP Calculator</a></li>
+          <li><a href="compound-interest-calculator.html">Compound Interest Calculator</a></li>
+          <li><a href="savings-goal-calculator.html">Savings Goal Calculator</a></li>
+          <li><a href="retirement-calculator.html">Retirement Calculator</a></li>
+          <li><a href="net-worth-calculator.html">Net Worth Calculator</a></li>
+          <li><a href="discount-calculator.html">Discount Calculator</a></li>
+          <li><a href="tip-calculator.html">Tip Calculator</a></li>
+          <li><a href="fd-calculator.html">FD Calculator</a></li>
+          <li><a href="rd-calculator.html">RD Calculator</a></li>
+          <li><a href="ppf-calculator.html">PPF Calculator</a></li>
+          <li><a href="hra-calculator.html">HRA Calculator</a></li>
+          <li><a href="break-even-calculator.html">Break-Even &amp; Profit Margin Calculator</a></li>
+          <li><a href="debt-payoff-calculator.html">Debt Payoff Calculator</a></li>
+          <li><a href="salary-calculator.html">Salary Calculator</a></li>
+          <li><a href="sales-tax-calculator.html">Sales Tax Calculator</a></li>
+          <li><a href="cd-calculator.html">CD Calculator</a></li>
+          <li><a href="amortization-schedule-calculator.html">Amortization Schedule Calculator</a></li>
+          <li><a href="401k-calculator.html">401(k) Calculator</a></li>
+          <li><a href="ira-calculator.html">IRA &amp; Roth IRA Calculator</a></li>
+          <li><a href="house-affordability-calculator.html">House Affordability Calculator</a></li>
+          <li><a href="down-payment-calculator.html">Down Payment Calculator</a></li>
+          <li><a href="debt-to-income-calculator.html">Debt-to-Income Ratio Calculator</a></li>
+          <li><a href="simple-interest-calculator.html">Simple Interest Calculator</a></li>
+          <li><a href="roi-calculator.html">ROI Calculator</a></li>
+          <li><a href="credit-card-payoff-calculator.html">Credit Card Payoff Calculator</a></li>
+          <li><a href="mortgage-payoff-calculator.html">Mortgage Payoff Calculator</a></li>
+          <li><a href="rent-affordability-calculator.html">Rent Affordability Calculator</a></li>
+          <li><a href="real-estate-investment-calculator.html">Real Estate Investment Calculator</a></li>
+          <li><a href="rental-property-calculator.html">Rental Property Calculator</a></li>
+          <li><a href="apr-calculator.html">APR Calculator</a></li>
+          <li><a href="fha-loan-calculator.html">FHA Loan Calculator</a></li>
+          <li><a href="va-mortgage-calculator.html">VA Mortgage Calculator</a></li>
+          <li><a href="heloc-calculator.html">HELOC Calculator</a></li>
+          <li><a href="cash-back-or-low-interest-calculator.html">Cash Back or Low Interest Calculator</a></li>
+          <li><a href="auto-lease-calculator.html">Auto Lease Calculator</a></li>
+          <li><a href="finance-calculator.html">Finance Calculator (Time Value of Money)</a></li>
+          <li><a href="interest-rate-calculator.html">Interest Rate Calculator</a></li>
+          <li><a href="bond-calculator.html">Bond Calculator</a></li>
+          <li><a href="mutual-fund-calculator.html">Mutual Fund Calculator</a></li>
+          <li><a href="average-return-calculator.html">Average Return Calculator</a></li>
+          <li><a href="irr-calculator.html">IRR Calculator</a></li>
+          <li><a href="payback-period-calculator.html">Payback Period Calculator</a></li>
+          <li><a href="present-value-calculator.html">Present Value Calculator</a></li>
+          <li><a href="future-value-calculator.html">Future Value Calculator</a></li>
+          <li><a href="savings-calculator.html">Savings Calculator</a></li>
+          <li><a href="pension-calculator.html">Pension Calculator</a></li>
+          <li><a href="social-security-calculator.html">Social Security Calculator</a></li>
+          <li><a href="annuity-calculator.html">Annuity Calculator</a></li>
+          <li><a href="annuity-payout-calculator.html">Annuity Payout Calculator</a></li>
+          <li><a href="rmd-calculator.html">RMD Calculator</a></li>
+          <li><a href="marriage-tax-calculator.html">Marriage Tax Calculator</a></li>
+          <li><a href="estate-tax-calculator.html">Estate Tax Calculator</a></li>
+          <li><a href="inflation-calculator.html">Inflation Calculator</a></li>
+          <li><a href="debt-consolidation-calculator.html">Debt Consolidation Calculator</a></li>
+          <li><a href="student-loan-repayment-calculator.html">Student Loan Repayment Calculator</a></li>
+          <li><a href="student-loan-calculator.html">Student Loan Calculator</a></li>
+          <li><a href="college-cost-calculator.html">College Cost Calculator</a></li>
+          <li><a href="depreciation-calculator.html">Depreciation Calculator</a></li>
+          <li><a href="margin-calculator.html">Margin Calculator</a></li>
+          <li><a href="business-loan-calculator.html">Business Loan Calculator</a></li>
+          <li><a href="personal-loan-calculator.html">Personal Loan Calculator</a></li>
+          <li><a href="boat-loan-calculator.html">Boat Loan Calculator</a></li>
+          <li><a href="lease-calculator.html">Lease Calculator</a></li>
+          <li><a href="budget-calculator.html">Budget Calculator</a></li>
+          <li><a href="commission-calculator.html">Commission Calculator</a></li>
+        </ul>
+      </div>
+      <div class="more-tools-group">
+        <h3>Health</h3>
+        <ul>
+          <li><a href="bmi-calculator.html">BMI Calculator</a></li>
+          <li><a href="calorie-calculator.html">Calorie / BMR Calculator</a></li>
+          <li><a href="macro-calculator.html">Macro Calculator</a></li>
+          <li><a href="pregnancy-calculator.html">Pregnancy Due Date Calculator</a></li>
+          <li><a href="ovulation-calculator.html">Ovulation Calculator</a></li>
+          <li><a href="ideal-weight-calculator.html">Ideal Weight Calculator</a></li>
+          <li><a href="body-fat-calculator.html">Body Fat Calculator</a></li>
+          <li><a href="army-body-fat-calculator.html">Army Body Fat Calculator</a></li>
+          <li><a href="lean-body-mass-calculator.html">Lean Body Mass Calculator</a></li>
+          <li><a href="healthy-weight-calculator.html">Healthy Weight Calculator</a></li>
+          <li><a href="calories-burned-calculator.html">Calories Burned Calculator</a></li>
+          <li><a href="one-rep-max-calculator.html">One Rep Max Calculator</a></li>
+          <li><a href="target-heart-rate-calculator.html">Target Heart Rate Calculator</a></li>
+          <li><a href="pregnancy-week-calculator.html">Pregnancy Calculator</a></li>
+          <li><a href="pregnancy-weight-gain-calculator.html">Pregnancy Weight Gain Calculator</a></li>
+          <li><a href="conception-calculator.html">Conception Calculator</a></li>
+        </ul>
+      </div>
+      <div class="more-tools-group">
+        <h3>Education</h3>
+        <ul>
+          <li><a href="gpa-calculator.html">GPA Calculator</a></li>
+          <li><a href="grade-calculator.html">Grade Calculator</a></li>
+          <li><a href="scientific-calculator.html">Scientific Calculator</a></li>
+          <li><a href="fraction-calculator.html">Fraction Calculator</a></li>
+          <li><a href="statistics-calculator.html">Statistics Calculator</a></li>
+          <li><a href="percent-error-calculator.html">Percent Error Calculator</a></li>
+          <li><a href="exponent-calculator.html">Exponent Calculator</a></li>
+          <li><a href="binary-calculator.html">Binary Calculator</a></li>
+          <li><a href="hex-calculator.html">Hex Calculator</a></li>
+          <li><a href="half-life-calculator.html">Half-Life Calculator</a></li>
+          <li><a href="quadratic-formula-calculator.html">Quadratic Formula Calculator</a></li>
+          <li><a href="log-calculator.html">Log Calculator</a></li>
+          <li><a href="ratio-calculator.html">Ratio Calculator</a></li>
+          <li><a href="root-calculator.html">Root Calculator</a></li>
+          <li><a href="standard-deviation-calculator.html">Standard Deviation Calculator</a></li>
+          <li><a href="sample-size-calculator.html">Sample Size Calculator</a></li>
+          <li><a href="mean-median-mode-calculator.html">Mean, Median, Mode &amp; Range Calculator</a></li>
+          <li><a href="permutation-combination-calculator.html">Permutation and Combination Calculator</a></li>
+          <li><a href="z-score-calculator.html">Z-Score Calculator</a></li>
+          <li><a href="confidence-interval-calculator.html">Confidence Interval Calculator</a></li>
+        </ul>
+      </div>
+      <div class="more-tools-group">
+        <h3>Everyday</h3>
+        <ul>
+          <li><a href="percentage-calculator.html">Percentage Calculator</a></li>
+          <li><a href="age-calculator.html">Age Calculator</a></li>
+          <li><a href="days-calculator.html">Days Between Dates</a></li>
+          <li><a href="time-calculator.html">Time Calculator</a></li>
+          <li><a href="unit-converter.html">Unit Converter</a></li>
+          <li><a href="week-number-calculator.html">Week Number Calculator</a></li>
+          <li><a href="cm-to-inches.html">CM to Inches</a></li>
+          <li><a href="kg-to-pounds.html">KG to Pounds</a></li>
+          <li><a href="celsius-to-fahrenheit.html">Celsius to Fahrenheit</a></li>
+          <li><a href="password-generator.html">Password Generator</a></li>
+          <li><a href="random-number-generator.html">Random Number Generator</a></li>
+          <li><a href="word-counter.html">Word Counter</a></li>
+          <li><a href="pace-calculator.html">Pace Calculator</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- TB:MORETOOLS:END -->
+
+  <footer>
+<p>TALLYBENCH · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
+</footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
