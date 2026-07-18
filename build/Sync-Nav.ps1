@@ -1,13 +1,11 @@
-# Regenerates the shared header nav, "more calculators" block, header tool
-# count, and (on index.html only) the homepage's category tool grids and
-# search data — all from build/tools.json, the single source of truth for
-# the tool list.
+# Regenerates the shared header nav, header tool count, and (on index.html
+# only) the homepage's category tool grids and search data — all from
+# build/tools.json, the single source of truth for the tool list.
 #
 # Usage:  powershell -File build/Sync-Nav.ps1
 #
 # How it works: pages carry marker pairs:
 #   <!-- TB:NAV:START --> ... <!-- TB:NAV:END -->
-#   <!-- TB:MORETOOLS:START --> ... <!-- TB:MORETOOLS:END -->
 #   <!-- TB:COUNT:START --> ... <!-- TB:COUNT:END -->
 #   <!-- TB:HOMEGRID:START --> ... <!-- TB:HOMEGRID:END --> (index.html only)
 #   <!-- TB:SEARCHDATA:START --> ... <!-- TB:SEARCHDATA:END --> (index.html only)
@@ -44,29 +42,6 @@ function New-NavBlock($indent) {
     }
     $lines.Add("$indent  </nav>")
     $lines.Add("$indent</div>")
-    return ($lines -join $nl)
-}
-
-function New-MoreToolsBlock($indent, $selfId) {
-    $lines = New-Object System.Collections.Generic.List[string]
-    $lines.Add("$indent<nav class=`"more-tools`" aria-label=`"More calculators`">")
-    $lines.Add("$indent  <h2>More calculators</h2>")
-    $lines.Add("$indent  <div class=`"more-tools-groups`">")
-    foreach ($cat in $data.categories) {
-        $toolsInCat = @($data.tools | Where-Object { $_.category -eq $cat.id -and $_.id -ne $selfId })
-        if ($toolsInCat.Count -eq 0) { continue }
-        $label = (Get-Culture).TextInfo.ToTitleCase($cat.label.ToLower())
-        $lines.Add("$indent    <div class=`"more-tools-group`">")
-        $lines.Add("$indent      <h3>$label</h3>")
-        $lines.Add("$indent      <ul>")
-        foreach ($tool in $toolsInCat) {
-            $lines.Add("$indent        <li><a href=`"$($tool.file)`">$($tool.title)</a></li>")
-        }
-        $lines.Add("$indent      </ul>")
-        $lines.Add("$indent    </div>")
-    }
-    $lines.Add("$indent  </div>")
-    $lines.Add("$indent</nav>")
     return ($lines -join $nl)
 }
 
@@ -161,7 +136,6 @@ function Migrate-IfNeeded($content, $markerName, $legacyPattern) {
 }
 
 $navLegacyPattern = '[ \t]*<nav class="ruler cat-ruler">(?s).*?</nav>\s*<nav class="ruler sub-ruler" id="subRuler">(?s).*?</nav>'
-$moreToolsLegacyPattern = '[ \t]*<(?:nav|section) class="more-tools">(?s).*?</(?:nav|section)>'
 $countLegacyPattern = '\d+ TOOLS [^<]*SIGN-UP'
 
 $htmlFiles = Get-ChildItem -Path $root -Filter '*.html' -File
@@ -172,16 +146,10 @@ foreach ($f in $htmlFiles) {
     $content = $original
 
     $content = Migrate-IfNeeded $content 'NAV' $navLegacyPattern
-    $content = Migrate-IfNeeded $content 'MORETOOLS' $moreToolsLegacyPattern
     $content = Migrate-IfNeeded $content 'COUNT' $countLegacyPattern
-
-    $selfId = [System.IO.Path]::GetFileNameWithoutExtension($f.Name)
 
     $navResult = Sync-Marker $content 'NAV' { param($indent) New-NavBlock $indent }
     if ($null -ne $navResult) { $content = $navResult }
-
-    $moreToolsResult = Sync-Marker $content 'MORETOOLS' { param($indent) New-MoreToolsBlock $indent $selfId }
-    if ($null -ne $moreToolsResult) { $content = $moreToolsResult }
 
     $countResult = Sync-Marker $content 'COUNT' { param($indent) New-CountBlock $indent }
     if ($null -ne $countResult) { $content = $countResult }
