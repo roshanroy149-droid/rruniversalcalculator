@@ -333,6 +333,74 @@ body.nav-open .nav-backdrop{display:block;}
 .crumb a{color:var(--teal-light);text-decoration:none;}
 .crumb a:hover{text-decoration:underline;}
 
+/* ARTICLE HERO — full-bleed editorial banner for long-form guide/article
+   pages, reusing the same full-bleed dark-shell treatment as .home-hero but
+   with a category tag pill and a byline/date/read-time meta row instead of
+   a tool icon. Category color is set via a cat-finance/health/education/
+   everyday modifier class, matching the tool .hero:has() palette so a
+   finance article and a finance calculator feel like the same family. */
+.article-hero{
+  width:100vw;margin-left:calc(50% - 50vw);
+  padding:54px 0 46px;border-bottom:none;
+}
+.article-hero .wrap{max-width:760px;}
+.article-hero.cat-finance{background:linear-gradient(135deg, var(--orange-dark), #6E4C1B);}
+.article-hero.cat-health{background:linear-gradient(135deg, var(--teal-dark), #15302C);}
+.article-hero.cat-education{background:linear-gradient(135deg, var(--plum), #46283C);}
+.article-hero.cat-everyday{background:linear-gradient(135deg, var(--steel), var(--steel-dark));}
+.article-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;
+  letter-spacing:0.1em;color:#fff;text-transform:uppercase;
+  background:rgba(255,255,255,0.16);border:1px solid rgba(255,255,255,0.32);
+  padding:5px 12px;border-radius:20px;margin-bottom:18px;
+}
+.article-hero h1{
+  font-family:'Space Grotesk',sans-serif;color:#fff;
+  font-size:clamp(32px,5.6vw,50px);line-height:1.08;letter-spacing:-0.025em;
+  margin:0 0 14px;text-wrap:balance;
+}
+.article-dek{color:rgba(255,255,255,0.78);font-size:17px;line-height:1.6;max-width:640px;margin:0 0 22px;}
+.article-meta{
+  display:flex;flex-wrap:wrap;align-items:center;gap:8px;
+  font-family:'JetBrains Mono',monospace;font-size:12px;color:rgba(255,255,255,0.62);
+}
+@media(max-width:480px){.article-hero{padding:36px 0 30px;}}
+
+/* ARTICLE BODY — long-form guide content, wider measure and bigger section
+   headings than the FAQ-oriented .article block so a multi-section guide
+   reads well; the FAQ at the bottom of an article page still uses .article
+   for visual consistency with every calculator page's FAQ section. */
+.article-body{max-width:700px;color:rgba(242,236,221,0.82);line-height:1.75;font-size:16px;}
+.article-body h2{
+  font-family:'Space Grotesk',sans-serif;font-size:25px;letter-spacing:-0.015em;
+  color:var(--text-on-dark);margin:40px 0 14px;
+}
+.article-body h2:first-child{margin-top:0;}
+.article-body p{margin:0 0 16px;}
+.article-body ul,.article-body ol{margin:0 0 16px;padding-left:22px;}
+.article-body li{margin-bottom:8px;}
+.article-body a{color:var(--teal-light);}
+.article-body a:hover{color:#fff;}
+.article-body strong{color:var(--text-on-dark);}
+.article-body .callout{
+  background:rgba(242,236,221,0.06);border-left:3px solid var(--orange);
+  border-radius:0 var(--radius) var(--radius) 0;padding:16px 20px;margin:22px 0;
+  font-size:15px;color:rgba(242,236,221,0.85);
+}
+.article-body .callout p:last-child{margin-bottom:0;}
+.article-body .callout strong{color:#fff;}
+.article-cta-row{display:flex;flex-wrap:wrap;gap:12px;margin:28px 0 8px;}
+.article-cta-btn{
+  font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.05em;text-transform:uppercase;
+  text-decoration:none;display:inline-flex;align-items:center;gap:8px;
+  background:var(--orange);color:#fff;border-radius:var(--radius-sm);padding:11px 18px;
+  transition:transform .12s, box-shadow .12s, background .15s;
+}
+.article-cta-btn:hover{background:var(--orange-dark);}
+.article-cta-btn.ghost{background:transparent;color:var(--teal-light);border:1px solid var(--teal-light);}
+.article-cta-btn.ghost:hover{background:rgba(95,187,176,0.1);}
+
 /* AD SLOT */
 .ad-slot{
   margin:36px 0;
