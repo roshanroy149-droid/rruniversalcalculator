@@ -81,29 +81,34 @@ $catCssClass = @{ finance = 'cat-finance'; health = 'cat-health'; education = 'c
 
 function New-HomeGridBlock($indent) {
     $lines = New-Object System.Collections.Generic.List[string]
+    $innerIndent = "$indent  "
     foreach ($cat in $data.categories) {
         $toolsInCat = @($data.tools | Where-Object { $_.category -eq $cat.id })
         if ($toolsInCat.Count -eq 0) { continue }
+        $heroTools = $toolsInCat | Select-Object -First 5
         $label = (Get-Culture).TextInfo.ToTitleCase($cat.label.ToLower())
         $lines.Add("$indent<section class=`"zone zone-$($cat.id)`">")
-        $lines.Add("$indent<div class=`"zone-head`">")
-        $lines.Add("$indent<div class=`"zone-head-left`">")
-        $lines.Add("$indent<span class=`"zone-chip chip-$($cat.id)`">$($cat.label)</span>")
-        $lines.Add("$indent<h2>$label</h2>")
-        $lines.Add("$indent</div>")
-        $lines.Add("$indent<span class=`"zone-count`">$($toolsInCat.Count) tools</span>")
-        $lines.Add("$indent</div>")
-        $lines.Add("$indent<p class=`"zone-blurb`">$($cat.blurb)</p>")
-        $lines.Add("$indent<div class=`"tool-grid`">")
+        $lines.Add("$innerIndent<div class=`"wrap`">")
+        $lines.Add("$innerIndent<div class=`"zone-head`">")
+        $lines.Add("$innerIndent<div class=`"zone-head-left`">")
+        $lines.Add("$innerIndent<span class=`"zone-chip`">$($cat.label)</span>")
+        $lines.Add("$innerIndent<span class=`"zone-count`">$($toolsInCat.Count) tools</span>")
+        $lines.Add("$innerIndent</div>")
+        $lines.Add("$innerIndent<a class=`"zone-viewall`" href=`"#`" data-cat=`"$($cat.id)`">View all $($toolsInCat.Count) &#8594;</a>")
+        $lines.Add("$innerIndent</div>")
+        $lines.Add("$innerIndent<h2 class=`"zone-title`">$label</h2>")
+        $lines.Add("$innerIndent<p class=`"zone-blurb`">$($cat.blurb)</p>")
+        $lines.Add("$innerIndent<div class=`"tool-grid`">")
         $cssClass = $catCssClass[$cat.id]
-        foreach ($tool in $toolsInCat) {
-            $lines.Add("$indent<a class=`"tool-card-link $cssClass`" href=`"$($tool.file)`">")
-            $lines.Add("$indent<div class=`"tcl-top`"><div class=`"tcl-icon`"><svg><use href=`"icons.svg#$($tool.icon)`"/></svg></div></div>")
-            $lines.Add("$indent<h3>$($tool.title)</h3>")
-            $lines.Add("$indent<p>$($tool.blurb)</p>")
-            $lines.Add("$indent</a>")
+        foreach ($tool in $heroTools) {
+            $lines.Add("$innerIndent<a class=`"tool-card-link $cssClass`" href=`"$($tool.file)`">")
+            $lines.Add("$innerIndent<div class=`"tcl-top`"><div class=`"tcl-icon`"><svg><use href=`"icons.svg#$($tool.icon)`"/></svg></div></div>")
+            $lines.Add("$innerIndent<h3>$($tool.title)</h3>")
+            $lines.Add("$innerIndent<p>$($tool.blurb)</p>")
+            $lines.Add("$innerIndent</a>")
         }
-        $lines.Add("$indent</div>")
+        $lines.Add("$innerIndent</div>")
+        $lines.Add("$innerIndent</div>")
         $lines.Add("$indent</section>")
     }
     return ($lines -join $nl)

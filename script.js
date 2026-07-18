@@ -9372,3 +9372,20 @@ function tbMoney(n){
     subEl.textContent = ex.sub;
   }, 3200);
 })();
+
+
+// ---- Homepage zone "view all" links — reuse the header's own category-tab
+// filter instead of duplicating that logic here ----
+(function(){
+  var links = document.querySelectorAll('.zone-viewall');
+  if(!links.length) return;
+  links.forEach(function(link){
+    link.addEventListener('click', function(e){
+      e.preventDefault();
+      var tab = document.querySelector('.cat-tab[data-cat="' + link.dataset.cat + '"]');
+      if(tab && !tab.classList.contains('cat-open')) tab.click();
+      var header = document.querySelector('header');
+      if(header) header.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+})();
