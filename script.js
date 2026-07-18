@@ -85,6 +85,7 @@ window.__TB_EMBED__ = new URLSearchParams(window.location.search).get('embed') =
       if(tab) tab.insertAdjacentElement('afterend', subRuler);
     }
     subRuler.classList.add('open');
+    subRuler.dataset.openCat = cat;
     if(scroll) subRuler.scrollLeft = 0;
   }
 
@@ -9374,18 +9375,21 @@ function tbMoney(n){
 })();
 
 
-// ---- Homepage zone "view all" links — reuse the header's own category-tab
-// filter instead of duplicating that logic here ----
+// ---- Homepage zone "view all" — expands that section's own tool-grid in
+// place to show every tool in the category, rather than sending the visitor
+// up to the header nav ----
 (function(){
-  var links = document.querySelectorAll('.zone-viewall');
-  if(!links.length) return;
-  links.forEach(function(link){
-    link.addEventListener('click', function(e){
-      e.preventDefault();
-      var tab = document.querySelector('.cat-tab[data-cat="' + link.dataset.cat + '"]');
-      if(tab && !tab.classList.contains('cat-open')) tab.click();
-      var header = document.querySelector('header');
-      if(header) header.scrollIntoView({ behavior: 'smooth' });
+  var buttons = document.querySelectorAll('.zone-viewall');
+  if(!buttons.length) return;
+  buttons.forEach(function(btn){
+    var expandedLabel = 'Show fewer ↑';
+    var collapsedLabel = btn.textContent;
+    btn.addEventListener('click', function(){
+      var zone = btn.closest('.zone');
+      if(!zone) return;
+      var open = zone.classList.toggle('zone-open');
+      btn.textContent = open ? expandedLabel : collapsedLabel;
+      if(!open) zone.scrollIntoView({ block:'start', behavior:'smooth' });
     });
   });
 })();

@@ -11,6 +11,13 @@
   --teal-dark:#234F4A;
   --plum:#7C4A6B;
   --plum-dark:#5E3650;
+  /* Lightened tints of --teal/--plum/--steel, for use as text/underline
+     accents against the header's near-black background — the base tokens
+     read fine on white cards but are too dark to read clearly as small text
+     on dark charcoal, the way --orange already does natively. */
+  --teal-light:#5FBBB0;
+  --plum-light:#C98BB8;
+  --steel-light:#8FB0CC;
   --graphite:#6E6455;
   --card:#FFFFFF;
   --card-hi:#FFFFFF;
@@ -28,14 +35,19 @@
 *{box-sizing:border-box;}
 html{scroll-behavior:smooth;}
 html,body{overflow-x:hidden;max-width:100%;}
+/* Page shell is dark everywhere now — the cream "paper" backdrop only
+   remains as --paper/--paper-line for self-contained light components
+   (cards, inputs, the chat widget's transcript pane) that still want a
+   light surface regardless of what the page around them looks like. Nothing
+   that sits directly on the page background (this rule) should read as
+   cream anymore. */
 body{
   margin:0;
   background:
-    radial-gradient(1100px 480px at 8% -10%, rgba(192,138,52,0.06), transparent 60%),
-    radial-gradient(900px 420px at 100% 0%, rgba(47,110,104,0.06), transparent 55%),
-    linear-gradient(var(--paper-line) 1px, transparent 1px) 0 0/100% 28px,
-    var(--paper);
-  color:var(--ink);
+    radial-gradient(1100px 480px at 8% -10%, rgba(192,138,52,0.05), transparent 60%),
+    radial-gradient(900px 420px at 100% 0%, rgba(47,110,104,0.05), transparent 55%),
+    linear-gradient(180deg, var(--ink), #211E19);
+  color:var(--text-on-dark);
   font-family:'Inter',sans-serif;
   -webkit-font-smoothing:antialiased;
 }
@@ -46,7 +58,9 @@ a{color:inherit;}
   *{animation-duration:0.01ms !important;transition-duration:0.01ms !important;}
 }
 
-/* HEADER — dark charcoal band */
+/* HEADER — dark charcoal band, closed with a thin multi-color strip tying it
+   to the four category colors used everywhere else on the homepage (zones,
+   tab/sub-tick accents below) rather than reading as a plain flat bar. */
 header{
   position:sticky;top:0;z-index:50;
   background:
@@ -54,6 +68,10 @@ header{
     linear-gradient(165deg, #211E19, var(--ink));
   border-bottom:1px solid rgba(242,236,221,0.08);
   box-shadow:0 4px 18px rgba(0,0,0,0.25);
+}
+header::after{
+  content:'';display:block;height:3px;
+  background:linear-gradient(90deg, var(--orange), var(--teal-light), var(--plum-light), var(--steel-light));
 }
 .headbar{
   display:flex;align-items:center;justify-content:space-between;
@@ -116,22 +134,33 @@ header{
   box-shadow:0 0 10px rgba(192,138,52,0.6);
 }
 
-/* Category tabs (buttons, reset from default button styling) */
+/* Category tabs (buttons, reset from default button styling) — each category
+   gets its own hover/active accent (matching its zone color on the homepage
+   and its sub-tick color below) instead of every tab defaulting to orange. */
 .cat-tab{
   cursor:pointer;
   appearance:none;-webkit-appearance:none;
 }
-.cat-tab.cat-open{color:var(--orange);background:rgba(192,138,52,0.12);}
+.cat-tab.cat-open{background:rgba(242,236,221,0.08);}
 .cat-tab.cat-open::after{
   content:'';
   position:absolute;bottom:0;left:0;right:0;height:2px;
-  background:var(--orange);
 }
+.cat-tab[data-cat="finance"]:hover,.cat-tab[data-cat="finance"].cat-open{color:var(--orange);}
+.cat-tab[data-cat="finance"].cat-open::after{background:var(--orange);box-shadow:0 0 10px rgba(192,138,52,0.55);}
+.cat-tab[data-cat="health"]:hover,.cat-tab[data-cat="health"].cat-open{color:var(--teal-light);}
+.cat-tab[data-cat="health"].cat-open::after{background:var(--teal-light);box-shadow:0 0 10px rgba(95,187,176,0.5);}
+.cat-tab[data-cat="education"]:hover,.cat-tab[data-cat="education"].cat-open{color:var(--plum-light);}
+.cat-tab[data-cat="education"].cat-open::after{background:var(--plum-light);box-shadow:0 0 10px rgba(201,139,184,0.5);}
+.cat-tab[data-cat="everyday"]:hover,.cat-tab[data-cat="everyday"].cat-open{color:var(--steel-light);}
+.cat-tab[data-cat="everyday"].cat-open::after{background:var(--steel-light);box-shadow:0 0 10px rgba(143,176,204,0.5);}
 
 /* Sub-ruler: second-tier row, collapses closed by default. Wraps onto as
    many lines as needed instead of horizontally scrolling — a category like
    Finance has 20+ tools, far more than fit in one line, and a scrollable
-   strip hid most of them with no visible affordance to scroll. */
+   strip hid most of them with no visible affordance to scroll. Tints toward
+   whichever category is open (data-open-cat, set in script.js) instead of
+   staying flat charcoal regardless of category. */
 .sub-ruler{
   max-height:0;
   overflow-x:visible;
@@ -139,19 +168,29 @@ header{
   flex-wrap:wrap;
   background:#141210;
   border-top:0 solid rgba(242,236,221,0.08);
-  transition:max-height .22s ease;
+  transition:max-height .22s ease, background .2s ease;
 }
 .sub-ruler.open{
   max-height:220px;
   border-top-width:1px;
 }
+.sub-ruler[data-open-cat="finance"]{background:linear-gradient(180deg, rgba(192,138,52,0.12), #141210 65%);}
+.sub-ruler[data-open-cat="health"]{background:linear-gradient(180deg, rgba(47,110,104,0.16), #141210 65%);}
+.sub-ruler[data-open-cat="education"]{background:linear-gradient(180deg, rgba(124,74,107,0.16), #141210 65%);}
+.sub-ruler[data-open-cat="everyday"]{background:linear-gradient(180deg, rgba(61,90,115,0.16), #141210 65%);}
 .sub-tick{display:none;}
 .sub-tick.cat-visible{display:flex;}
-.sub-tick.active{color:var(--orange);}
+.sub-tick[data-cat="finance"]:hover,.sub-tick[data-cat="finance"].active{color:var(--orange);}
+.sub-tick[data-cat="finance"].active::after{background:var(--orange);}
+.sub-tick[data-cat="health"]:hover,.sub-tick[data-cat="health"].active{color:var(--teal-light);}
+.sub-tick[data-cat="health"].active::after{background:var(--teal-light);}
+.sub-tick[data-cat="education"]:hover,.sub-tick[data-cat="education"].active{color:var(--plum-light);}
+.sub-tick[data-cat="education"].active::after{background:var(--plum-light);}
+.sub-tick[data-cat="everyday"]:hover,.sub-tick[data-cat="everyday"].active{color:var(--steel-light);}
+.sub-tick[data-cat="everyday"].active::after{background:var(--steel-light);}
 .sub-tick.active::after{
   content:'';
   position:absolute;bottom:0;left:0;right:0;height:2px;
-  background:var(--orange);
 }
 
 /* Hamburger button — hidden on desktop; the ruler nav shows inline there as
@@ -259,10 +298,14 @@ body.nav-open .nav-backdrop{display:block;}
   .sub-ruler .sub-tick{padding-left:34px;font-size:11.5px;}
 }
 
-/* HERO */
-.hero{padding:60px 0 42px;border-bottom:1px solid var(--paper-line);}
+/* HERO — base fallback for any hero lacking both .home-hero and a
+   .hero-icon-row category class (in practice, every real hero on the site
+   now gets one of those two bold overrides); kept in the light-on-dark shell
+   palette so it never regresses to unreadable dark-on-dark if that ever
+   happens. */
+.hero{padding:60px 0 42px;border-bottom:1px solid rgba(242,236,221,0.1);}
 .hero .eyebrow{
-  font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--teal-dark);
+  font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--teal-light);
   text-transform:uppercase;letter-spacing:0.08em;margin-bottom:16px;
   display:inline-flex;align-items:center;gap:8px;
 }
@@ -276,30 +319,30 @@ body.nav-open .nav-backdrop{display:block;}
   letter-spacing:-0.025em;
   margin:0 0 18px;
   max-width:680px;
-  color:var(--ink);
+  color:var(--text-on-dark);
 }
 .hero p{
-  color:var(--graphite);font-size:16.5px;max-width:580px;line-height:1.65;margin:0;
+  color:rgba(242,236,221,0.68);font-size:16.5px;max-width:580px;line-height:1.65;margin:0;
 }
 
 /* BREADCRUMB */
 .crumb{
-  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--graphite);
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(242,236,221,0.5);
   padding:16px 0 0;letter-spacing:0.03em;
 }
-.crumb a{color:var(--teal-dark);text-decoration:none;}
+.crumb a{color:var(--teal-light);text-decoration:none;}
 .crumb a:hover{text-decoration:underline;}
 
 /* AD SLOT */
 .ad-slot{
   margin:36px 0;
-  border:1px dashed var(--paper-line);
-  background:repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(28,26,23,0.025) 10px, rgba(28,26,23,0.025) 20px);
+  border:1px dashed rgba(242,236,221,0.18);
+  background:repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(242,236,221,0.03) 10px, rgba(242,236,221,0.03) 20px);
   padding:14px;
   text-align:center;
   font-family:'JetBrains Mono',monospace;
   font-size:10px;
-  color:var(--graphite);
+  color:rgba(242,236,221,0.5);
   letter-spacing:0.06em;
   border-radius:var(--radius-sm);
 }
@@ -307,17 +350,26 @@ body.nav-open .nav-backdrop{display:block;}
 /* TOOL SECTIONS */
 .tool{
   padding:48px 0;
-  border-bottom:1px solid var(--paper-line);
+  border-bottom:1px solid rgba(242,236,221,0.1);
   scroll-margin-top:90px;
 }
-.tool-head{display:flex;align-items:baseline;gap:12px;margin-bottom:22px;}
+/* Section sub-headers ("// Compare two scenarios" etc. within a tool page).
+   The "//" marker is sized up and colored to match the page's own category
+   (via body:has(), same mechanism as the hero banner) so every section
+   marker on a page reads as one consistent identity instead of a plain,
+   easy-to-miss mono character sitting flush against a much larger heading. */
+.tool-head{display:flex;align-items:center;gap:14px;margin-bottom:24px;}
 .tool-num{
-  font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--orange);
+  font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;
+  color:var(--orange);line-height:1;
 }
+body:has(.hero-icon-row.cat-health) .tool-num{color:var(--teal-light);}
+body:has(.hero-icon-row.cat-education) .tool-num{color:var(--plum-light);}
+body:has(.hero-icon-row.cat-utility) .tool-num{color:var(--steel-light);}
 .tool h2{
   font-family:'Space Grotesk',sans-serif;font-size:24px;margin:0;letter-spacing:-0.01em;
 }
-.tool-sub{color:var(--graphite);font-size:14px;margin:2px 0 0;}
+.tool-sub{color:rgba(242,236,221,0.55);font-size:14px;margin:2px 0 0;}
 
 .card{
   position:relative;
@@ -417,7 +469,12 @@ button.ghost:active{transform:translateY(1px);}
 .btn-row{display:flex;gap:10px;margin-top:4px;flex-wrap:wrap;}
 
 footer{padding:40px 0 60px;text-align:center;}
-footer p{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--graphite);}
+footer p{font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(242,236,221,0.5);}
+/* Footer "About"/"Privacy Policy" links are hand-authored with an inline
+   style="color:var(--teal-dark)" on every page (125+ files) predating the
+   dark shell — !important overrides that legacy inline value in one place
+   instead of touching every page's markup for a one-color fix. */
+footer a{color:var(--teal-light) !important;}
 
 .checks{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:14px;}
 .checks label{
@@ -427,9 +484,14 @@ footer p{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--graph
 }
 .checks input[type=checkbox]{width:14px;height:14px;padding:0;box-shadow:none;}
 
-/* ARTICLE / EXPLAINER TEXT */
-.article{max-width:640px;color:var(--ink);line-height:1.7;font-size:15px;}
-.article h3{font-family:'Space Grotesk',sans-serif;font-size:16px;margin:22px 0 8px;color:var(--ink);}
+/* ARTICLE / EXPLAINER TEXT (FAQ blocks) — used on nearly every one of the 125
+   tool pages, sitting directly on the dark page shell, not just inside
+   #about's own richer dark band. Must be light-on-dark by default here, or
+   every page's FAQ section goes dark-text-on-dark-background and disappears. */
+.article{max-width:640px;color:rgba(242,236,221,0.78);line-height:1.7;font-size:15px;}
+.article h3{font-family:'Space Grotesk',sans-serif;font-size:17px;margin:26px 0 8px;color:var(--text-on-dark);}
+.article a{color:var(--teal-light);}
+.article a:hover{color:#fff;}
 
 /* HOMEPAGE TOOL DIRECTORY */
 /* Auto-fits as many ~240px-minimum columns as the row allows (typically 4
@@ -526,6 +588,32 @@ footer p{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--graph
 }
 .hero-icon svg{width:100%;height:100%;display:block;}
 .hero-icon-row .eyebrow{margin-bottom:0;}
+
+/* TOOL PAGE HERO — bold color-blocked banner matching the page's own
+   category, keyed off the existing .hero-icon-row cat-* class via :has() so
+   this needs zero HTML changes across the 125 tool pages. Kept inside the
+   normal content width (not full-bleed like the homepage) since these are
+   working calculator pages, not landing-page real estate — a colored accent
+   banner, not an immersive band. Uses the exact same gradients as the
+   homepage's zones so a Finance tool page and the Finance zone read as the
+   same color. */
+.hero:has(.hero-icon-row.cat-finance){background:linear-gradient(135deg, var(--orange-dark), #6E4C1B);}
+.hero:has(.hero-icon-row.cat-health){background:linear-gradient(135deg, var(--teal-dark), #15302C);}
+.hero:has(.hero-icon-row.cat-education){background:linear-gradient(135deg, var(--plum), #46283C);}
+.hero:has(.hero-icon-row.cat-utility){background:linear-gradient(135deg, var(--steel), var(--steel-dark));}
+.hero:has(.hero-icon-row[class*="cat-"]){
+  border-radius:var(--radius);
+  padding:30px 28px;
+  border-bottom:none;
+}
+.hero:has(.hero-icon-row[class*="cat-"]) .eyebrow{color:rgba(255,255,255,0.85);}
+.hero:has(.hero-icon-row[class*="cat-"]) .eyebrow::before{background:#fff;}
+.hero:has(.hero-icon-row[class*="cat-"]) h1{color:#fff;}
+.hero:has(.hero-icon-row[class*="cat-"]) p{color:rgba(255,255,255,0.72);}
+.hero:has(.hero-icon-row[class*="cat-"]) .hero-icon{background:rgba(255,255,255,0.18);color:#fff;box-shadow:none;}
+@media(max-width:480px){
+  .hero:has(.hero-icon-row[class*="cat-"]){padding:22px 18px;}
+}
 
 /* HOMEPAGE HERO — full-bleed dark band (flows seamlessly from the header's
    own dark charcoal) instead of the cream page background every other page
@@ -646,7 +734,7 @@ footer p{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--graph
 .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:var(--radius);box-shadow:var(--shadow-sm);}
 .bracket-table{width:100%;border-collapse:collapse;margin-top:14px;font-family:'JetBrains Mono',monospace;font-size:12px;background:var(--card-hi);min-width:420px;}
 .bracket-table th,.bracket-table td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--paper-line);}
-.bracket-table th{color:var(--graphite);font-weight:500;text-transform:uppercase;font-size:10px;letter-spacing:0.05em;background:var(--paper);}
+.bracket-table th{color:var(--graphite);font-weight:500;text-transform:uppercase;font-size:10px;letter-spacing:0.05em;background:rgba(28,26,23,0.04);}
 .bracket-table tbody tr:last-child td{border-bottom:none;}
 .bracket-table tbody tr:hover{background:rgba(192,138,52,0.05);}
 .field-warning{
@@ -662,9 +750,9 @@ footer p{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--graph
   border-radius:0 var(--radius) var(--radius) 0;box-shadow:var(--shadow-sm);
 }
 .section-label{
-  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--teal-dark);
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--teal-light);
   text-transform:uppercase;letter-spacing:0.06em;margin:0 0 12px;
-  padding-bottom:8px;border-bottom:1px solid var(--paper-line);
+  padding-bottom:8px;border-bottom:1px solid rgba(242,236,221,0.12);
 }
 .summary-strip{
   display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;
@@ -679,23 +767,23 @@ footer p{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--graph
 /* MORE TOOLS LIST — grouped by category into clean columns, not a loose
    wrap of variable-width pills (that produced ragged, cluttered-looking
    rows once there were 49 tools to list). */
-.more-tools{padding:40px 0;border-top:1px solid var(--paper-line);}
-.more-tools h2{font-family:'Space Grotesk',sans-serif;font-size:18px;margin:0 0 22px;color:var(--ink);}
+.more-tools{padding:40px 0;border-top:1px solid rgba(242,236,221,0.1);}
+.more-tools h2{font-family:'Space Grotesk',sans-serif;font-size:18px;margin:0 0 22px;color:var(--text-on-dark);}
 .more-tools-groups{
   display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));
   gap:28px 24px;
 }
 .more-tools-group h3{
   font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;
-  text-transform:uppercase;letter-spacing:0.06em;color:var(--graphite);
-  margin:0 0 12px;padding-bottom:8px;border-bottom:1px solid var(--paper-line);
+  text-transform:uppercase;letter-spacing:0.06em;color:rgba(242,236,221,0.5);
+  margin:0 0 12px;padding-bottom:8px;border-bottom:1px solid rgba(242,236,221,0.12);
 }
 .more-tools-group ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px;}
 .more-tools-group a{
   font-family:'Inter',sans-serif;font-size:13px;line-height:1.3;
-  text-decoration:none;color:var(--teal-dark);
+  text-decoration:none;color:var(--teal-light);
 }
-.more-tools-group a:hover{color:var(--teal);text-decoration:underline;}
+.more-tools-group a:hover{color:#fff;text-decoration:underline;}
 @media(max-width:640px){
   .more-tools-groups{grid-template-columns:repeat(2, minmax(0,1fr));gap:24px 16px;}
 }
@@ -707,13 +795,13 @@ footer p{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--graph
    subtle tint) so Finance/Health/Education/Everyday read as distinct,
    high-energy sections at a glance, back to back like stacked landing-page
    panels rather than one long list of near-identical cards. Each zone shows
-   only its 5 hero tools (Sync-Nav.ps1 takes the first 5 per category from
-   tools.json) plus a "view all" link that reuses the header's existing
-   category-tab filter (see the .zone-viewall handler in script.js) instead
-   of duplicating that filtering logic. Backgrounds use the *-dark variants of
-   the existing --orange/--teal/--plum/--steel tokens for AA-legible white
-   text; the brighter base tones surface only as accents (chip border, bottom
-   bar, icon tint on the floating white cards) so they don't fight the ground. */
+   only its 5 hero tools by default; the rest (marked .zone-extra by
+   Sync-Nav.ps1) stay in the same markup but hidden, and "View all" toggles
+   .zone-open on the section to reveal them in place — see the .zone-viewall
+   handler in script.js. Backgrounds use the *-dark variants of the existing
+   --orange/--teal/--plum/--steel tokens for AA-legible white text; the
+   brighter base tones surface only as accents (chip border, bottom bar, icon
+   tint on the floating white cards) so they don't fight the ground. */
 .zone{width:100vw;margin-left:calc(50% - 50vw);padding:54px 0 50px;}
 .zone-finance{background:linear-gradient(135deg, var(--orange-dark), #6E4C1B);}
 .zone-health{background:linear-gradient(135deg, var(--teal-dark), #15302C);}
@@ -738,40 +826,38 @@ footer p{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--graph
   color:#fff;text-decoration:none;white-space:nowrap;
   display:inline-flex;align-items:center;gap:6px;
   padding:9px 16px;border-radius:20px;border:1px solid rgba(255,255,255,0.35);
-  background:rgba(255,255,255,0.08);transition:background .15s,border-color .15s;
+  background:rgba(255,255,255,0.08);box-shadow:none;
+  transition:background .15s,border-color .15s;
 }
 .zone-viewall:hover{background:rgba(255,255,255,0.2);border-color:rgba(255,255,255,0.55);}
+.zone-extra{display:none;}
+.zone.zone-open .zone-extra{display:flex;}
 @media(max-width:480px){
   .zone{padding:38px 0 34px;}
   .zone-head{flex-direction:column;align-items:flex-start;}
 }
 
-/* HOMEPAGE FEATURED ROW — a curated "most reached for" strip between the dark
-   hero band and the color-blocked zones below, so a new visitor gets a
-   confident first click instead of scanning a directory. Deliberately kept on
-   the plain light page background as a breather between the two bold dark/
-   color sections above and below it. Reuses the existing
-   .tool-card-link/.tcl-icon/cat-* component so icon tint and hover behavior
-   stay identical to the cards inside each zone; .featured-card only adds the
-   rank number and bottom color bar. */
-.featured-wrap{padding:44px 0 6px;}
-.featured-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin:16px 0 0;}
-@media(max-width:900px){.featured-row{grid-template-columns:repeat(2,minmax(0,1fr));}}
-.featured-card{padding:24px 20px 22px;}
-.featured-rank{
-  position:absolute;top:16px;right:18px;
-  font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--graphite);letter-spacing:0.05em;
+/* HOMEPAGE ABOUT/FAQ — closes the page with the same full-bleed dark
+   treatment as the hero, so the homepage bookends bold-dark/bold-color/
+   bold-dark instead of ending back in the plain cream style it opened with
+   before the redesign. Scoped to the unique #about id — the .tool/.article
+   classes it reuses are the same ones every individual calculator page's own
+   sections use, so this must not become a bare-class rule or it would recolor
+   every calculator's card content across all 125 tool pages too. */
+#about{
+  width:100vw;margin-left:calc(50% - 50vw);
+  background:
+    radial-gradient(700px 360px at 85% 0%, rgba(47,110,104,0.16), transparent 60%),
+    linear-gradient(180deg, #211E19, var(--ink));
+  padding:56px 0 60px;
+  border-bottom:none;
 }
-.featured-bar{height:3px;border-radius:2px;margin-top:14px;}
-.featured-bar.bar-finance{background:var(--orange);}
-.featured-bar.bar-health{background:var(--teal);}
-.featured-bar.bar-education{background:var(--plum);}
-.featured-bar.bar-everyday{background:var(--steel);}
-.featured-label{
-  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--teal-dark);
-  text-transform:uppercase;letter-spacing:0.08em;display:flex;align-items:center;gap:8px;
-}
-.featured-label::before{content:'';width:16px;height:1px;background:var(--orange);display:inline-block;}
+#about .tool-num{color:var(--amber);}
+#about .tool-head h2{color:#fff;}
+#about .tool-sub{color:rgba(242,236,221,0.6);}
+#about .article{color:rgba(242,236,221,0.8);}
+#about .article h3{color:#fff;}
+#about .article p{color:rgba(242,236,221,0.7);}
 
 /* PWA INSTALL BANNER */
 #installBanner{
@@ -903,7 +989,11 @@ body.nav-open .tb-chat-toggle,
 body.nav-open .tb-chat-panel{display:none;}
 
 /* EMBED WIDGET — "Embed this calculator" button + modal (normal page view) */
-.tb-embed-row{margin:-8px 0 20px;}
+/* Was a -8px negative top margin tuned to sit snug under the old hero's
+   plain bottom border. Now that every hero is a padded, rounded, colored
+   banner, that negative margin dragged this button up into/over the banner
+   instead — a positive gap below it instead. */
+.tb-embed-row{margin:20px 0 20px;}
 .tb-embed-row button{font-size:11px;}
 .tb-embed-backdrop{
   position:fixed;inset:0;z-index:300;
@@ -934,7 +1024,7 @@ body.nav-open .tb-chat-panel{display:none;}
 .tb-embed-modal-body label:first-child{margin-top:0;}
 .tb-embed-modal-body textarea{
   font-family:'JetBrains Mono',monospace;font-size:11.5px;min-height:90px;
-  background:var(--paper);color:var(--ink);resize:vertical;
+  background:#F5F4F1;color:var(--ink);resize:vertical;
 }
 
 /* EMBED MODE (?embed=1) — stripped-down layout meant for someone else's <iframe> */
@@ -966,11 +1056,11 @@ body.nav-open .tb-chat-panel{display:none;}
 .tb-embed-credit{
   position:fixed;left:0;right:0;bottom:0;z-index:10;
   display:block;text-align:center;font-family:'JetBrains Mono',monospace;
-  font-size:10px;letter-spacing:0.05em;color:var(--graphite);
+  font-size:10px;letter-spacing:0.05em;color:rgba(242,236,221,0.5);
   text-decoration:none;padding:9px 0;
-  background:var(--paper);border-top:1px solid var(--paper-line);
+  background:var(--ink);border-top:1px solid rgba(242,236,221,0.1);
 }
-.tb-embed-credit:hover{color:var(--teal-dark);text-decoration:underline;}
+.tb-embed-credit:hover{color:var(--teal-light);text-decoration:underline;}
 
 /* Amortization schedule table (yearly/monthly view) */
 .data-table{
@@ -984,7 +1074,7 @@ body.nav-open .tb-chat-panel{display:none;}
 .data-table thead th{
   position:sticky;
   top:0;
-  background:var(--paper);
+  background:rgba(28,26,23,0.04);
   color:var(--graphite);
   font-weight:500;
   text-transform:uppercase;

@@ -82,10 +82,10 @@ $catCssClass = @{ finance = 'cat-finance'; health = 'cat-health'; education = 'c
 function New-HomeGridBlock($indent) {
     $lines = New-Object System.Collections.Generic.List[string]
     $innerIndent = "$indent  "
+    $heroCount = 5
     foreach ($cat in $data.categories) {
         $toolsInCat = @($data.tools | Where-Object { $_.category -eq $cat.id })
         if ($toolsInCat.Count -eq 0) { continue }
-        $heroTools = $toolsInCat | Select-Object -First 5
         $label = (Get-Culture).TextInfo.ToTitleCase($cat.label.ToLower())
         $lines.Add("$indent<section class=`"zone zone-$($cat.id)`">")
         $lines.Add("$innerIndent<div class=`"wrap`">")
@@ -94,14 +94,19 @@ function New-HomeGridBlock($indent) {
         $lines.Add("$innerIndent<span class=`"zone-chip`">$($cat.label)</span>")
         $lines.Add("$innerIndent<span class=`"zone-count`">$($toolsInCat.Count) tools</span>")
         $lines.Add("$innerIndent</div>")
-        $lines.Add("$innerIndent<a class=`"zone-viewall`" href=`"#`" data-cat=`"$($cat.id)`">View all $($toolsInCat.Count) &#8594;</a>")
+        if ($toolsInCat.Count -gt $heroCount) {
+            $lines.Add("$innerIndent<button class=`"zone-viewall`" type=`"button`">View all $($toolsInCat.Count) &#8594;</button>")
+        }
         $lines.Add("$innerIndent</div>")
         $lines.Add("$innerIndent<h2 class=`"zone-title`">$label</h2>")
         $lines.Add("$innerIndent<p class=`"zone-blurb`">$($cat.blurb)</p>")
         $lines.Add("$innerIndent<div class=`"tool-grid`">")
         $cssClass = $catCssClass[$cat.id]
-        foreach ($tool in $heroTools) {
-            $lines.Add("$innerIndent<a class=`"tool-card-link $cssClass`" href=`"$($tool.file)`">")
+        $i = 0
+        foreach ($tool in $toolsInCat) {
+            $i++
+            $extraClass = if ($i -gt $heroCount) { " zone-extra" } else { "" }
+            $lines.Add("$innerIndent<a class=`"tool-card-link $cssClass$extraClass`" href=`"$($tool.file)`">")
             $lines.Add("$innerIndent<div class=`"tcl-top`"><div class=`"tcl-icon`"><svg><use href=`"icons.svg#$($tool.icon)`"/></svg></div></div>")
             $lines.Add("$innerIndent<h3>$($tool.title)</h3>")
             $lines.Add("$innerIndent<p>$($tool.blurb)</p>")
