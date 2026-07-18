@@ -9347,3 +9347,28 @@ function tbMoney(n){
     if(!e.target.closest('.tb-search')) close();
   });
 })();
+
+
+// ---- Homepage hero readout cycle ----
+(function(){
+  var valueEl = document.getElementById('tbRigValue');
+  if(!valueEl) return;
+  var labelEl = document.getElementById('tbRigLabel');
+  var subEl = document.getElementById('tbRigSub');
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  var examples = [
+    { label:'MORTGAGE / MONTHLY', value:'$2,146', sub:'30 yr · 6.4% · $420,000' },
+    { label:'BMI', value:'23.4', sub:'175cm · 72kg' },
+    { label:'GPA', value:'3.72', sub:'5 courses · 4.0 scale' },
+    { label:'TIP SPLIT', value:'$18.40', sub:'$92 bill · 20% · 5 people' }
+  ];
+  var i = 0;
+  setInterval(function(){
+    i = (i + 1) % examples.length;
+    var ex = examples[i];
+    labelEl.textContent = ex.label;
+    valueEl.textContent = ex.value;
+    subEl.textContent = ex.sub;
+  }, 3200);
+})();

@@ -85,11 +85,15 @@ function New-HomeGridBlock($indent) {
         $toolsInCat = @($data.tools | Where-Object { $_.category -eq $cat.id })
         if ($toolsInCat.Count -eq 0) { continue }
         $label = (Get-Culture).TextInfo.ToTitleCase($cat.label.ToLower())
-        $lines.Add("$indent<section>")
-        $lines.Add("$indent<div class=`"section-head`">")
+        $lines.Add("$indent<section class=`"zone zone-$($cat.id)`">")
+        $lines.Add("$indent<div class=`"zone-head`">")
+        $lines.Add("$indent<div class=`"zone-head-left`">")
+        $lines.Add("$indent<span class=`"zone-chip chip-$($cat.id)`">$($cat.label)</span>")
         $lines.Add("$indent<h2>$label</h2>")
-        $lines.Add("$indent<p>$($cat.blurb)</p>")
         $lines.Add("$indent</div>")
+        $lines.Add("$indent<span class=`"zone-count`">$($toolsInCat.Count) tools</span>")
+        $lines.Add("$indent</div>")
+        $lines.Add("$indent<p class=`"zone-blurb`">$($cat.blurb)</p>")
         $lines.Add("$indent<div class=`"tool-grid`">")
         $cssClass = $catCssClass[$cat.id]
         foreach ($tool in $toolsInCat) {
