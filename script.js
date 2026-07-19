@@ -100,9 +100,16 @@ window.__TB_EMBED__ = new URLSearchParams(window.location.search).get('embed') =
     if(tick.getAttribute('href') === path) tick.classList.add('active');
   });
 
-  // Auto-open the category this page belongs to, so the current tool is visible on load
+  // Auto-open the category this page belongs to, so the current tool is visible on load.
+  // Article pages set data-page-cat="articles" (not a real tool category, so there's no
+  // matching .cat-tab/.sub-tick to open) purely so the plain ARTICLES nav link gets the
+  // same copper "you are here" highlight a calculator page's category tab gets, instead
+  // of staying its default muted color while you're reading an article.
   const pageCat = document.body.dataset.pageCat;
-  if(pageCat){
+  if(pageCat === 'articles'){
+    const articlesLink = document.querySelector('.tick[href="articles.html"]');
+    if(articlesLink) articlesLink.classList.add('active');
+  } else if(pageCat){
     openCategory(pageCat, false);
   }
 
