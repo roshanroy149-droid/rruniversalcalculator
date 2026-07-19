@@ -79,24 +79,23 @@ window.__TB_EMBED__ = new URLSearchParams(window.location.search).get('embed') =
 
   // .sub-ruler uses justify-content:space-between so a wrapped row of tools
   // spreads across the full width instead of hugging the left edge with a
-  // dead gap on the right — but a row with only a handful of items (usually
-  // the last one) looks worse stretched, since a few labels end up scattered
-  // across the whole width with big gaps between each one. Only stretch
-  // when the last row is reasonably full (at least half as many items as
-  // the fullest row); otherwise fall back to left-aligned. Desktop only —
-  // the mobile drawer stacks one tool per line, so there's no multi-item
-  // row to judge the fullness of.
+  // dead gap on the right — but a row with only a handful of items looks
+  // worse stretched than left, since whatever space is left over gets
+  // divided among very few gaps, each one growing huge. What actually
+  // determines whether that looks fine or bad is the size of each
+  // individual gap once stretched, not the row's overall fill ratio: 6
+  // items covering 62% of the row (~86px added to each of 5 gaps) reads as
+  // obviously broken, while 8 items covering 69% (~50px added to each of 7
+  // gaps) reads as normal, evenly-justified spacing — a plain fill-ratio
+  // check can't tell these two cases apart, but dividing the leftover space
+  // by the number of gaps in that row can. Desktop only — the mobile
+  // drawer stacks one tool per line, so there's no multi-item row to judge.
   function adjustSubRulerJustify(){
     if(isMobileDrawer()){ subRuler.style.justifyContent = ''; return; }
     const visible = Array.from(subTicks).filter(t=>t.classList.contains('cat-visible'));
     if(!visible.length){ subRuler.style.justifyContent = ''; return; }
     // Force flex-start so items sit at their natural left-aligned position/
-    // size, group into rows by offsetTop, then measure how much of the
-    // container's width the *last* row's content actually spans at that
-    // natural size — a direct measurement rather than an item-count proxy,
-    // so it still works for a category whose tools all fit on one row (a
-    // handful of long labels can already be "full" while several short ones
-    // aren't, regardless of item count).
+    // size before measuring which ones land on the last wrapped row.
     subRuler.style.justifyContent = 'flex-start';
     const rows = [];
     visible.forEach(t=>{
@@ -106,11 +105,13 @@ window.__TB_EMBED__ = new URLSearchParams(window.location.search).get('embed') =
       row.items.push(t);
     });
     const lastRow = rows[rows.length-1].items;
+    if(lastRow.length < 2){ subRuler.style.justifyContent = ''; return; }
     const spanLeft = lastRow[0].getBoundingClientRect().left;
     const spanRight = lastRow[lastRow.length-1].getBoundingClientRect().right;
     const containerWidth = subRuler.getBoundingClientRect().width;
-    const fillRatio = (spanRight - spanLeft) / containerWidth;
-    subRuler.style.justifyContent = fillRatio < 0.5 ? 'flex-start' : '';
+    const leftover = containerWidth - (spanRight - spanLeft);
+    const extraPerGap = leftover / (lastRow.length - 1);
+    subRuler.style.justifyContent = extraPerGap > 60 ? 'flex-start' : '';
   }
 
   function openCategory(cat, scroll){
