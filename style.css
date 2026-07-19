@@ -100,6 +100,15 @@ header::after{
 }
 
 /* RULER NAV */
+/* .nav-drawer (holding both ruler rows) sits directly under <header>, not
+   inside a .wrap like every other section of every page — so without this,
+   its ticks start flush at the raw viewport edge (offset only by each
+   tick's own small internal padding) while the logo above and all page
+   content below align to .wrap's centered 1240px column with 24px gutters.
+   Mirroring .wrap's own max-width/margin/padding here (rather than adding
+   plain padding) keeps this correct even on ultra-wide viewports, where
+   .wrap's content is centered well inside the raw viewport edge. */
+.nav-drawer{max-width:1240px;margin:0 auto;padding:0 24px;box-sizing:border-box;}
 .ruler{
   display:flex;overflow-x:auto;
   border-top:1px solid rgba(242,236,221,0.08);
@@ -140,7 +149,18 @@ header::after{
 .cat-tab{
   cursor:pointer;
   appearance:none;-webkit-appearance:none;
+  /* .cat-tab is a real <button>, and only :hover/.cat-open ever override the
+     generic button{background:var(--orange);color:#fff;box-shadow:...} rule
+     below — its resting/unopened state was never reset, so FINANCE/HEALTH/
+     EDUCATION/EVERYDAY rendered as solid copper blocks while the plain <a>
+     nav ticks (HOME, ARTICLES) never had that base button style to begin
+     with. Reset to a plain tab here so all six nav items match at rest. */
+  background:transparent;
+  border:none;
+  border-radius:0;
+  box-shadow:none;
 }
+.cat-tab:active{transform:none;box-shadow:none;}
 .cat-tab.cat-open{background:rgba(242,236,221,0.08);}
 .cat-tab.cat-open::after{
   content:'';
@@ -240,6 +260,7 @@ body.nav-open .nav-backdrop{display:block;}
   .nav-toggle{display:flex;}
 
   .nav-drawer{
+    max-width:none;margin:0;padding:0;box-sizing:content-box;
     position:fixed;top:0;right:0;bottom:0;
     width:min(84vw, 320px);
     background:linear-gradient(165deg, #211E19, var(--ink));
