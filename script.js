@@ -77,6 +77,42 @@ window.__TB_EMBED__ = new URLSearchParams(window.location.search).get('embed') =
   const subRulerHomeNext = subRuler.nextElementSibling;
   const isMobileDrawer = () => window.matchMedia('(max-width:640px)').matches;
 
+  // .sub-ruler uses justify-content:space-between so a wrapped row of tools
+  // spreads across the full width instead of hugging the left edge with a
+  // dead gap on the right — but a row with only a handful of items (usually
+  // the last one) looks worse stretched, since a few labels end up scattered
+  // across the whole width with big gaps between each one. Only stretch
+  // when the last row is reasonably full (at least half as many items as
+  // the fullest row); otherwise fall back to left-aligned. Desktop only —
+  // the mobile drawer stacks one tool per line, so there's no multi-item
+  // row to judge the fullness of.
+  function adjustSubRulerJustify(){
+    if(isMobileDrawer()){ subRuler.style.justifyContent = ''; return; }
+    const visible = Array.from(subTicks).filter(t=>t.classList.contains('cat-visible'));
+    if(!visible.length){ subRuler.style.justifyContent = ''; return; }
+    // Force flex-start so items sit at their natural left-aligned position/
+    // size, group into rows by offsetTop, then measure how much of the
+    // container's width the *last* row's content actually spans at that
+    // natural size — a direct measurement rather than an item-count proxy,
+    // so it still works for a category whose tools all fit on one row (a
+    // handful of long labels can already be "full" while several short ones
+    // aren't, regardless of item count).
+    subRuler.style.justifyContent = 'flex-start';
+    const rows = [];
+    visible.forEach(t=>{
+      const top = t.offsetTop;
+      let row = rows.find(r=>Math.abs(r.top-top)<2);
+      if(!row){ row = {top, items:[]}; rows.push(row); }
+      row.items.push(t);
+    });
+    const lastRow = rows[rows.length-1].items;
+    const spanLeft = lastRow[0].getBoundingClientRect().left;
+    const spanRight = lastRow[lastRow.length-1].getBoundingClientRect().right;
+    const containerWidth = subRuler.getBoundingClientRect().width;
+    const fillRatio = (spanRight - spanLeft) / containerWidth;
+    subRuler.style.justifyContent = fillRatio < 0.5 ? 'flex-start' : '';
+  }
+
   function openCategory(cat, scroll){
     catTabs.forEach(tab=>tab.classList.toggle('cat-open', tab.dataset.cat === cat));
     subTicks.forEach(tick=>tick.classList.toggle('cat-visible', tick.dataset.cat === cat));
@@ -87,6 +123,7 @@ window.__TB_EMBED__ = new URLSearchParams(window.location.search).get('embed') =
     subRuler.classList.add('open');
     subRuler.dataset.openCat = cat;
     if(scroll) subRuler.scrollLeft = 0;
+    adjustSubRulerJustify();
   }
 
   function closeAll(){
@@ -123,6 +160,12 @@ window.__TB_EMBED__ = new URLSearchParams(window.location.search).get('embed') =
         openCategory(cat, true);
       }
     });
+  });
+
+  // Re-check row fullness on resize — how many tools wrap onto the last row
+  // (and whether that's still worth stretching) changes with viewport width.
+  window.addEventListener('resize', ()=>{
+    if(subRuler.classList.contains('open')) adjustSubRulerJustify();
   });
 
   // Mobile hamburger menu: the same nav markup above becomes a slide-in
