@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hex Calculator — Add, Subtract, Multiply &amp; Convert | TallyBench</title>
-<meta name="description" content="Free hexadecimal calculator. Add, subtract, or multiply two hex values, or convert between hex and decimal, with input validation and a decimal readout.">
-<link rel="canonical" href="https://tallybench.com/hex-calculator.html">
+<title>Articles — Finance, Health &amp; Money Guides | TallyBench</title>
+<meta name="description" content="Explainers and worked-example guides on debt, saving, and everyday money math — from the team behind TallyBench's calculators.">
+<link rel="canonical" href="https://tallybench.com/articles.html">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.svg">
@@ -15,72 +15,16 @@
 <meta name="apple-mobile-web-app-title" content="TallyBench">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TallyBench">
-<meta property="og:title" content="Hex Calculator — Add, Subtract, Multiply &amp; Convert">
-<meta property="og:description" content="Add, subtract, or multiply hexadecimal values, or convert between hex and decimal, instantly.">
-<meta property="og:url" content="https://tallybench.com/hex-calculator.html">
+<meta property="og:title" content="Articles — Finance, Health &amp; Money Guides">
+<meta property="og:description" content="Explainers and worked-example guides on debt, saving, and everyday money math — from the team behind TallyBench's calculators.">
+<meta property="og:url" content="https://tallybench.com/articles.html">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hex Calculator — Add, Subtract, Multiply &amp; Convert">
-<meta name="twitter:description" content="Add, subtract, or multiply hexadecimal values, or convert between hex and decimal, instantly.">
+<meta name="twitter:title" content="Articles — Finance, Health &amp; Money Guides">
+<meta name="twitter:description" content="Explainers and worked-example guides on debt, saving, and everyday money math — from the team behind TallyBench's calculators.">
 <link rel="stylesheet" href="fonts/fonts.css">
 <link rel="stylesheet" href="style.css">
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "How do I convert hex to decimal?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Each hex digit represents a power of 16 based on its position, counting from the right starting at 16^0, with A-F representing the values 10-15. To convert, multiply each digit's value by its positional power of 16 and add: hex 1A = 1×16^1 + 10×16^0 = 16 + 10 = 26 in decimal."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Why is hexadecimal used in computing?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Hex offers a compact, human-friendly way to represent binary data — each hex digit corresponds to exactly 4 binary bits (a nibble), so a full byte is always exactly 2 hex digits. This makes hex far shorter to read and write than the equivalent binary string, which is why it's used for memory addresses, color codes, and byte-level data throughout computing."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How does hex addition work?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Hex addition carries the same way decimal addition does, but a column rolls over to a carry once it passes F (15) instead of 9. This tool handles that by converting each hex value to decimal, adding normally, and converting the sum back to hex."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What's the largest single hex digit?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "F, which represents the decimal value 15 — the largest value a single hex digit can hold, the same way 9 is the largest single decimal digit."
-      }
-    }
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  "name": "Hex Calculator — TallyBench",
-  "applicationCategory": "UtilitiesApplication",
-  "operatingSystem": "Any (runs in browser)",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "url": "https://tallybench.com/hex-calculator.html"
-}
-</script>
 </head>
-<body data-page-cat="education">
+<body data-page-cat="articles">
 
 <header>
   <div class="wrap">
@@ -239,76 +183,28 @@
 <div class="nav-backdrop" id="navBackdrop"></div>
 
 <div class="wrap">
-  <div class="crumb"><a href="index.html">TallyBench</a> / Hex Calculator</div>
+  <div class="crumb"><a href="index.html">TallyBench</a> / Articles</div>
 
   <section class="hero">
-    <div class="hero-icon-row cat-education">
-      <div class="hero-icon"><svg><use href="icons.svg#icon-scientific"/></svg></div>
-      <div class="eyebrow">// HEX CALCULATOR</div>
-    </div>
-    <h1>Add, subtract, multiply, or convert hexadecimal values.</h1>
-    <p>Enter two hex values and an operation, or convert a single value between hex and decimal.</p>
+    <div class="eyebrow">// ARTICLES</div>
+    <h1>Guides, explainers, and worked examples.</h1>
+    <p>Longer reads on the money and health decisions behind our calculators — with real numbers, not just rules of thumb.</p>
   </section>
 
-  <section class="tool" id="hex">
-    <div class="disclaimer">
-      <strong>Educational tool.</strong> Double-check critical calculations independently.
-    </div>
-    <div class="card">
-      <div>
-        <div class="field"><label>First hex value</label><input type="text" id="hxA" value="1A" placeholder="e.g. 1A"></div>
-        <div class="field"><label>Operation</label>
-          <select id="hxOp">
-            <option value="add" selected>Add (+)</option>
-            <option value="sub">Subtract (−)</option>
-            <option value="mul">Multiply (×)</option>
-          </select>
-        </div>
-        <div class="field"><label>Second hex value</label><input type="text" id="hxB" value="2F" placeholder="e.g. 2F"></div>
-        <div class="field-warning" id="hxWarning"></div>
-      </div>
-      <div class="readout">
-        <div class="r-row"><span class="r-label">Result (hex)</span><span class="r-value" id="hxResultHex">0</span></div>
-        <div class="r-row"><span class="r-label">Result (decimal)</span><span class="r-sub" id="hxResultDec">0</span></div>
-      </div>
-    </div>
+  <section class="article-list">
+    <!-- TB:ARTICLELIST:START -->
+    <a class="article-card cat-finance" href="debt-snowball-vs-avalanche.html">
+      <span class="article-card-tag">FINANCE GUIDE</span>
+      <h3>Debt Snowball vs. Avalanche: Which Payoff Method Actually Saves You More</h3>
+      <p>Both methods put every spare dollar toward debt. The difference is which debt gets that dollar first — and it changes both how much interest you pay and how fast it feels like you're winning.</p>
+      <div class="article-card-meta"><span>July 18, 2026</span><span>&middot;</span><span>7 min read</span></div>
+    </a>
+    <!-- TB:ARTICLELIST:END -->
   </section>
-
-  <section class="tool" id="hexConvert" style="padding-top:0;">
-    <div class="tool-head"><span class="tool-num">//</span><div><h2>Hex ↔ Decimal conversion</h2><p class="tool-sub">Convert a single value between the two number systems.</p></div></div>
-    <div class="card">
-      <div>
-        <div class="field"><label>Mode</label>
-          <div class="seg" id="hxConvModeSeg">
-            <button type="button" class="active" data-mode="hex2dec">Hex → Decimal</button>
-            <button type="button" data-mode="dec2hex">Decimal → Hex</button>
-          </div>
-        </div>
-        <div class="field"><label id="hxConvInputLabel">Hex value</label><input type="text" id="hxConvInput" value="FF" placeholder="e.g. FF"></div>
-        <div class="field-warning" id="hxConvWarning"></div>
-      </div>
-      <div class="readout">
-        <div class="r-row"><span class="r-label" id="hxConvOutLabel">Decimal value</span><span class="r-value" id="hxConvResult">0</span></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="article">
-    <h3>How do I convert hex to decimal?</h3>
-    <p>Each hex digit represents a power of 16 based on its position, counting from the right starting at 16⁰, with the letters A-F standing in for the values 10-15. Multiply each digit's value by its positional power of 16 and add them up: hex <strong>1A</strong> = 1×16¹ + 10×16⁰ = 16 + 10 = <strong>26</strong> in decimal.</p>
-    <h3>Why is hexadecimal used in computing?</h3>
-    <p>Hex gives a compact, human-friendly way to represent binary data — each hex digit corresponds to exactly 4 binary bits (a "nibble"), so a full 8-bit byte is always exactly 2 hex digits. That makes hex far shorter to read and write than the equivalent binary string, which is why it's the go-to notation for memory addresses, color codes (like #1A2B3C), and raw byte-level data throughout computing.</p>
-    <h3>How does hex addition work?</h3>
-    <p>Hex addition carries the same way decimal addition does, just rolling over to a carry once a column passes F (15) instead of 9. This tool handles that automatically by converting each hex value to decimal, performing the arithmetic normally, and converting the sum back to hex.</p>
-    <h3>What's the largest single hex digit?</h3>
-    <p><strong>F</strong>, representing the decimal value 15 — the largest value a single hex digit can hold, the same way 9 is the largest single decimal digit. Two hex digits together (00-FF) cover the full range of one byte, 0-255 in decimal.</p>
-    <p><strong>Worked example:</strong> adding hex 1A (26) and 2F (47): 26 + 47 = 73, which is <strong>49</strong> in hex. Converting FF to decimal: F×16¹ + F×16⁰ = 15×16 + 15×1 = 240 + 15 = <strong>255</strong>, the maximum value a single byte can hold.</p>
-  </section>
-
 
   <footer>
-<p>TALLYBENCH · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
-</footer>
+    <p>TallyBench · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
+  </footer>
 </div>
 
 <script src="script.js"></script>

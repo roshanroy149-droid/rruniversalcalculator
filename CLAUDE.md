@@ -7,14 +7,17 @@ This file is a checklist of rules earned the hard way across this project's buil
 ## 1. Single source of truth — never hand-edit generated content
 
 - `build/tools.json` is the ONLY place the tool list lives. Every tool needs: `id`, `file`, `category`, `navLabel`, `title`, `icon`, `blurb`.
-- `build/Sync-Nav.ps1` generates, from `tools.json`, four things across every HTML page via marker comments:
-  - `<!-- TB:NAV:START/END -->` — header category tabs + tool list (desktop ruler / mobile drawer)
-  - `<!-- TB:MORETOOLS:START/END -->` — the "more calculators" footer nav
+- `build/articles.json` is the equivalent single source of truth for the **articles/guides** content type (long-form editorial pages, separate from the 125 calculator tools) — each entry needs `id`, `file`, `category`, `tag`, `title`, `dek`, `date` (`YYYY-MM-DD`), `readTime`.
+- `build/Sync-Nav.ps1` generates, from `tools.json`/`articles.json`, these things across every HTML page via marker comments:
+  - `<!-- TB:NAV:START/END -->` — header category tabs + tool list (desktop ruler / mobile drawer), plus a plain "ARTICLES" link to `articles.html`
   - `<!-- TB:COUNT:START/END -->` — the "N TOOLS · 0 SIGN-UP" header tagline count
   - `<!-- TB:HOMEGRID:START/END -->` — homepage category tool grids (index.html only)
-- **Adding, removing, or renaming a tool = edit `tools.json`, then run `powershell -File build/Sync-Nav.ps1` (or `npm run sync-nav`). Never hand-edit content between those markers.**
-- This was violated twice before the templating covered everything: the header tool count went stale after two rounds of new tools ("27 TOOLS" shown when there were 40), and the homepage grid silently missed 13 newly-added tools because it was still hand-written HTML. Both are now auto-generated — keep it that way. If a future feature needs "for every tool, render X," extend `Sync-Nav.ps1` with a new marker rather than hand-editing 40+ files.
-- After adding a new tool: also update `sitemap.xml`, add a disclaimer if it's finance/health advice-adjacent, and cross-link it from related existing tools.
+  - `<!-- TB:ARTICLELIST:START/END -->` — the article list, newest-first (articles.html only)
+- **Adding, removing, or renaming a tool = edit `tools.json`; adding an article = edit `articles.json` and give the new article page a `<!-- TB:NAV:START/END -->`/`<!-- TB:COUNT:START/END -->` marker pair. Either way, then run `powershell -File build/Sync-Nav.ps1` (or `npm run sync-nav`). Never hand-edit content between those markers.**
+- This was violated twice before the templating covered everything: the header tool count went stale after two rounds of new tools ("27 TOOLS" shown when there were 40), and the homepage grid silently missed 13 newly-added tools because it was still hand-written HTML. Both are now auto-generated — keep it that way. If a future feature needs "for every tool/article, render X," extend `Sync-Nav.ps1` with a new marker rather than hand-editing every page.
+- A "more calculators" footer nav (`TB:MORETOOLS`) used to be part of this same generated system; it was deliberately removed site-wide (see git history) — don't reintroduce it without being asked.
+- Every article page's breadcrumb is `TallyBench / Articles / <Article Title>` (the middle segment links to `articles.html`), not directly under the TallyBench home page — this is different from a calculator page's `TallyBench / <Tool Title>`.
+- After adding a new tool or article: also update `sitemap.xml`, add a disclaimer if it's finance/health advice-adjacent, and cross-link it from related existing tools/articles.
 
 ## 2. CSS rules that have bitten us more than once
 

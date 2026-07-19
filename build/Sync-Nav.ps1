@@ -1,6 +1,9 @@
 # Regenerates the shared header nav, header tool count, and (on index.html
 # only) the homepage's category tool grids and search data — all from
-# build/tools.json, the single source of truth for the tool list.
+# build/tools.json, the single source of truth for the tool list. Also
+# regenerates the "ARTICLES" nav link and (on articles.html only) the
+# article list, from build/articles.json — the equivalent single source of
+# truth for the article/guide content type.
 #
 # Usage:  powershell -File build/Sync-Nav.ps1
 #
@@ -9,18 +12,24 @@
 #   <!-- TB:COUNT:START --> ... <!-- TB:COUNT:END -->
 #   <!-- TB:HOMEGRID:START --> ... <!-- TB:HOMEGRID:END --> (index.html only)
 #   <!-- TB:SEARCHDATA:START --> ... <!-- TB:SEARCHDATA:END --> (index.html only)
+#   <!-- TB:ARTICLELIST:START --> ... <!-- TB:ARTICLELIST:END --> (articles.html only)
 # On first run (no markers present yet) the script wraps the existing
 # hand-written blocks with markers. On every run it regenerates the content
-# between the markers from tools.json, so adding/renaming/reordering a tool
-# only ever requires editing tools.json once — this used to also require
-# manually updating the "N TOOLS" tagline and the homepage's category grids
-# by hand on every page, and both silently went stale more than once.
+# between the markers from tools.json/articles.json, so adding/renaming/
+# reordering a tool or article only ever requires editing the JSON once —
+# this used to also require manually updating the "N TOOLS" tagline and the
+# homepage's category grids by hand on every page, and both silently went
+# stale more than once. Never hand-edit content between marker pairs, or
+# hand-add a new article page's link anywhere but articles.json — extend
+# this script instead if a new "for every article, render X" need shows up.
 
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
 $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
 $toolsJsonText = [System.IO.File]::ReadAllText((Join-Path $PSScriptRoot 'tools.json'), [System.Text.Encoding]::UTF8)
 $data = $toolsJsonText | ConvertFrom-Json
+$articlesJsonText = [System.IO.File]::ReadAllText((Join-Path $PSScriptRoot 'articles.json'), [System.Text.Encoding]::UTF8)
+$articleData = $articlesJsonText | ConvertFrom-Json
 $nl = "`r`n"
 
 function New-NavBlock($indent) {
@@ -32,6 +41,7 @@ function New-NavBlock($indent) {
     $lines.Add("$indent  </div>")
     $lines.Add("$indent  <nav class=`"ruler cat-ruler`" aria-label=`"Category`">")
     $lines.Add("$indent    <a class=`"tick`" href=`"index.html`">HOME</a>")
+    $lines.Add("$indent    <a class=`"tick`" href=`"articles.html`">ARTICLES</a>")
     foreach ($cat in $data.categories) {
         $lines.Add("$indent    <button class=`"tick cat-tab`" type=`"button`" data-cat=`"$($cat.id)`">$($cat.label)</button>")
     }
@@ -102,6 +112,23 @@ function New-SearchDataBlock($indent) {
     return "$indent<script>window.TB_SEARCH_DATA = $json;</script>"
 }
 
+function New-ArticleListBlock($indent) {
+    $lines = New-Object System.Collections.Generic.List[string]
+    $innerIndent = "$indent  "
+    $sorted = @($articleData.articles | Sort-Object -Property date -Descending)
+    foreach ($art in $sorted) {
+        $cssClass = $catCssClass[$art.category]
+        $niceDate = ([datetime]$art.date).ToString('MMMM d, yyyy')
+        $lines.Add("$indent<a class=`"article-card $cssClass`" href=`"$($art.file)`">")
+        $lines.Add("$innerIndent<span class=`"article-card-tag`">$($art.tag)</span>")
+        $lines.Add("$innerIndent<h3>$($art.title)</h3>")
+        $lines.Add("$innerIndent<p>$($art.dek)</p>")
+        $lines.Add("$innerIndent<div class=`"article-card-meta`"><span>$niceDate</span><span>&middot;</span><span>$($art.readTime)</span></div>")
+        $lines.Add("$indent</a>")
+    }
+    return ($lines -join $nl)
+}
+
 function Sync-Marker($content, $markerName, $generator) {
     $startTag = "<!-- TB:${markerName}:START -->"
     $endTag = "<!-- TB:${markerName}:END -->"
@@ -159,6 +186,9 @@ foreach ($f in $htmlFiles) {
 
     $searchDataResult = Sync-Marker $content 'SEARCHDATA' { param($indent) New-SearchDataBlock $indent }
     if ($null -ne $searchDataResult) { $content = $searchDataResult }
+
+    $articleListResult = Sync-Marker $content 'ARTICLELIST' { param($indent) New-ArticleListBlock $indent }
+    if ($null -ne $articleListResult) { $content = $articleListResult }
 
     if ($content -ne $original) {
         [System.IO.File]::WriteAllText($f.FullName, $content, $utf8NoBom)
