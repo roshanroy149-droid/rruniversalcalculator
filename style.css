@@ -180,12 +180,22 @@ header::after{
    Finance has 20+ tools, far more than fit in one line, and a scrollable
    strip hid most of them with no visible affordance to scroll. Tints toward
    whichever category is open (data-open-cat, set in script.js) instead of
-   staying flat charcoal regardless of category. */
+   staying flat charcoal regardless of category.
+   justify-content:space-between is what fixes the last (ragged) row: with
+   fixed-width, non-growing ticks (flex:0 0 auto) and the default flex-start
+   alignment, a wrapped row that doesn't happen to fill exactly to the
+   container's edge just left-aligns and leaves a big blank gap on the
+   right — most visible on whichever row is shortest (usually the last one,
+   but any category can have this on any row depending on its tool count and
+   label lengths). justify-content applies per flex line when wrapping, so
+   this spreads every row's ticks out to the full row width instead, on
+   every category, without needing a per-category fix. */
 .sub-ruler{
   max-height:0;
   overflow-x:visible;
   overflow-y:hidden;
   flex-wrap:wrap;
+  justify-content:space-between;
   background:#141210;
   border-top:0 solid rgba(242,236,221,0.08);
   transition:max-height .22s ease, background .2s ease;
