@@ -5118,7 +5118,7 @@ function amortizationToCSV(years, cur){
 
   const row = document.createElement('div');
   row.className = 'tb-embed-row';
-  row.innerHTML = '<button type="button" class="ghost" id="tbEmbedOpen">&lt;/&gt; Embed this calculator</button>';
+  row.innerHTML = '<span class="tb-embed-hint">Free to use on your own site — no attribution beyond the credit link required.</span><button type="button" class="ghost" id="tbEmbedOpen">&lt;/&gt; Embed this calculator</button>';
   hero.insertAdjacentElement('afterend', row);
 
   const backdrop = document.createElement('div');
@@ -5145,6 +5145,99 @@ function amortizationToCSV(years, cur){
   document.getElementById('tbEmbedCreditCode').value = creditSnippet;
 
   document.getElementById('tbEmbedOpen').addEventListener('click', ()=>{ backdrop.hidden = false; });
+  backdrop.querySelector('.tb-embed-close').addEventListener('click', ()=>{ backdrop.hidden = true; });
+  backdrop.addEventListener('click', (e)=>{ if(e.target === backdrop) backdrop.hidden = true; });
+  backdrop.querySelectorAll('.tb-embed-copy').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const ta = document.getElementById(btn.dataset.target);
+      ta.select();
+      navigator.clipboard.writeText(ta.value).then(()=>{
+        const original = btn.textContent;
+        btn.textContent = 'Copied!';
+        setTimeout(()=>{ btn.textContent = original; }, 1500);
+      }).catch(()=>{ /* selection above still lets the user copy manually */ });
+    });
+  });
+})();
+
+// ---- Embed widget on article pages: they have no .hero/.tool .card of
+// their own to embed (they're editorial content, not a live tool), so the
+// IIFE above skips them entirely. Instead, offer to embed whichever
+// calculator the article's own first CTA button already points to — the
+// article was written specifically to lead into that tool, so it's the
+// natural thing a reader (or a blogger citing the article) would want to
+// drop into their own page. Deliberately a separate, self-contained block
+// rather than a shared refactor of the logic above, so this can't regress
+// the already-working calculator-page embed feature. ----
+(function(){
+  if (window.__TB_EMBED__) return;
+  const ctaRow = document.querySelector('.article-cta-row');
+  const firstCta = ctaRow ? ctaRow.querySelector('.article-cta-btn[href]') : null;
+  if (!ctaRow || !firstCta) return; // not an article page, or nothing to embed
+
+  const targetFile = firstCta.getAttribute('href');
+  // The primary CTA's own text is an action phrase ("Run your India tax
+  // estimate →"), not a clean tool name — fine as a link label, but reads
+  // oddly prefixed with "Embed the ". Derive an actual name from the
+  // filename instead (with overrides for the handful of tools whose name
+  // is an acronym a naive title-case would mangle).
+  const toolNameOverrides = {
+    'gst-vat-calculator.html':'GST / VAT Calculator', 'hra-calculator.html':'HRA Calculator',
+    'ppf-calculator.html':'PPF Calculator', 'fd-calculator.html':'FD Calculator',
+    'rd-calculator.html':'RD Calculator', 'cd-calculator.html':'CD Calculator',
+    'ira-calculator.html':'IRA & Roth IRA Calculator', 'apr-calculator.html':'APR Calculator',
+    'fha-loan-calculator.html':'FHA Loan Calculator', 'va-mortgage-calculator.html':'VA Mortgage Calculator',
+    'heloc-calculator.html':'HELOC Calculator', 'rmd-calculator.html':'RMD Calculator',
+    'roi-calculator.html':'ROI Calculator', 'irr-calculator.html':'IRR Calculator',
+    '401k-calculator.html':'401(k) Calculator', 'gpa-calculator.html':'GPA Calculator',
+    'bmi-calculator.html':'BMI Calculator'
+  };
+  const targetName = toolNameOverrides[targetFile] || targetFile
+    .replace(/\.html$/, '').split('-')
+    .map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+  const targetUrl = 'https://tallybench.com/' + targetFile;
+  const embedUrl = targetUrl + '?embed=1';
+  const toolId = targetFile.replace(/\.html$/, '');
+  const iframeId = 'tb-embed-' + toolId;
+
+  const iframeSnippet =
+    '<iframe id="' + iframeId + '" src="' + embedUrl + '" width="100%" height="640" ' +
+    'style="border:0;max-width:640px;" loading="lazy" title="' + targetName + ' — TallyBench"></iframe>\n' +
+    '<script>window.addEventListener("message",function(e){if(e.data&&e.data.tbEmbedId==="' + toolId + '"){' +
+    'var f=document.getElementById("' + iframeId + '");if(f)f.style.height=e.data.tbEmbedHeight+"px";}});<' + '/script>';
+
+  const creditSnippet = 'Calculator by <a href="' + targetUrl + '" rel="noopener">TallyBench</a>';
+
+  const row = document.createElement('div');
+  row.className = 'tb-embed-row';
+  row.innerHTML = '<span class="tb-embed-hint">Citing this? Embed the calculator it’s based on.</span>' +
+    '<button type="button" class="ghost" id="tbArticleEmbedOpen">&lt;/&gt; Embed the ' + targetName + '</button>';
+  ctaRow.insertAdjacentElement('afterend', row);
+
+  const backdrop = document.createElement('div');
+  backdrop.className = 'tb-embed-backdrop';
+  backdrop.hidden = true;
+  backdrop.innerHTML =
+    '<div class="tb-embed-modal">' +
+      '<div class="tb-embed-modal-head"><strong>Embed <span id="tbArticleEmbedToolName"></span></strong>' +
+        '<button type="button" class="tb-embed-close" aria-label="Close">&#10005;</button></div>' +
+      '<div class="tb-embed-modal-body">' +
+        '<label>1. Paste this where you want the calculator to appear</label>' +
+        '<textarea readonly id="tbArticleEmbedIframeCode"></textarea>' +
+        '<button type="button" class="ghost tb-embed-copy" data-target="tbArticleEmbedIframeCode">Copy code</button>' +
+        '<label>2. Paste this directly below it — required, this is what credits TallyBench</label>' +
+        '<textarea readonly id="tbArticleEmbedCreditCode"></textarea>' +
+        '<button type="button" class="ghost tb-embed-copy" data-target="tbArticleEmbedCreditCode">Copy credit link</button>' +
+        '<p class="tb-chat-hint">The widget reports its own height automatically as visitors use it — no need to guess a size.</p>' +
+      '</div>' +
+    '</div>';
+  document.body.appendChild(backdrop);
+
+  document.getElementById('tbArticleEmbedToolName').textContent = targetName;
+  document.getElementById('tbArticleEmbedIframeCode').value = iframeSnippet;
+  document.getElementById('tbArticleEmbedCreditCode').value = creditSnippet;
+
+  document.getElementById('tbArticleEmbedOpen').addEventListener('click', ()=>{ backdrop.hidden = false; });
   backdrop.querySelector('.tb-embed-close').addEventListener('click', ()=>{ backdrop.hidden = true; });
   backdrop.addEventListener('click', (e)=>{ if(e.target === backdrop) backdrop.hidden = true; });
   backdrop.querySelectorAll('.tb-embed-copy').forEach(btn=>{

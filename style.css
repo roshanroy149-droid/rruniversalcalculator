@@ -1103,8 +1103,19 @@ body.nav-open .tb-chat-panel{display:none;}
    plain bottom border. Now that every hero is a padded, rounded, colored
    banner, that negative margin dragged this button up into/over the banner
    instead — a positive gap below it instead. */
-.tb-embed-row{margin:20px 0 20px;}
-.tb-embed-row button{font-size:11px;}
+/* A plain 11px ghost button here was easy to scroll straight past — this is
+   a real growth channel (every embed is a permanent backlink + referral
+   traffic from someone else's site), so it earns a proper bordered callout
+   instead of blending into the page furniture. Shared by both the
+   calculator-page embed button and the article-page one below it. */
+.tb-embed-row{
+  margin:22px 0;padding:14px 18px;
+  border:1px solid rgba(242,236,221,0.14);border-radius:var(--radius);
+  background:rgba(242,236,221,0.03);
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+}
+.tb-embed-hint{font-size:13px;color:rgba(242,236,221,0.6);flex:1 1 220px;}
+.tb-embed-row button{font-size:12px;}
 .tb-embed-backdrop{
   position:fixed;inset:0;z-index:300;
   background:rgba(20,18,15,0.55);

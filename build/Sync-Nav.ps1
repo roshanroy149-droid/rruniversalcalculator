@@ -13,6 +13,7 @@
 #   <!-- TB:HOMEGRID:START --> ... <!-- TB:HOMEGRID:END --> (index.html only)
 #   <!-- TB:SEARCHDATA:START --> ... <!-- TB:SEARCHDATA:END --> (index.html only)
 #   <!-- TB:ARTICLELIST:START --> ... <!-- TB:ARTICLELIST:END --> (articles.html only)
+#   <!-- TB:BREADCRUMB:START --> ... <!-- TB:BREADCRUMB:END --> (every page except index.html)
 # On first run (no markers present yet) the script wraps the existing
 # hand-written blocks with markers. On every run it regenerates the content
 # between the markers from tools.json/articles.json, so adding/renaming/
@@ -149,6 +150,52 @@ function New-ArticleListBlock($indent) {
     return ($lines -join $nl)
 }
 
+# Generates a page's BreadcrumbList JSON-LD purely from tools.json/
+# articles.json — no need to parse each page's own .crumb HTML, since the
+# breadcrumb structure is fully determined by which list (if any) the
+# current filename appears in. Titles are stored in tools.json/articles.json
+# pre-encoded for raw HTML interpolation elsewhere (e.g. "Break-Even &amp;
+# Profit Margin Calculator"), so &amp; is decoded back to a literal & here
+# since JSON-LD string values don't need HTML entity escaping.
+function New-BreadcrumbBlock($indent, $fileName) {
+    $tool = $data.tools | Where-Object { $_.file -eq $fileName } | Select-Object -First 1
+    $article = $articleData.articles | Where-Object { $_.file -eq $fileName } | Select-Object -First 1
+
+    $crumbs = New-Object System.Collections.Generic.List[object]
+    $crumbs.Add(@{ name = 'TallyBench'; item = 'https://tallybench.com/' })
+
+    if ($tool) {
+        $crumbs.Add(@{ name = ($tool.title -replace '&amp;', '&'); item = "https://tallybench.com/$($tool.file)" })
+    } elseif ($article) {
+        $crumbs.Add(@{ name = 'Articles'; item = 'https://tallybench.com/articles.html' })
+        $crumbs.Add(@{ name = ($article.title -replace '&amp;', '&'); item = "https://tallybench.com/$($article.file)" })
+    } elseif ($fileName -eq 'articles.html') {
+        $crumbs.Add(@{ name = 'Articles'; item = 'https://tallybench.com/articles.html' })
+    } elseif ($fileName -eq 'about.html') {
+        $crumbs.Add(@{ name = 'About'; item = 'https://tallybench.com/about.html' })
+    } elseif ($fileName -eq 'privacy-policy.html') {
+        $crumbs.Add(@{ name = 'Privacy Policy'; item = 'https://tallybench.com/privacy-policy.html' })
+    } else {
+        return "$indent<!-- no breadcrumb rule for this page -->"
+    }
+
+    $listItems = New-Object System.Collections.Generic.List[object]
+    for ($i = 0; $i -lt $crumbs.Count; $i++) {
+        $listItems.Add([ordered]@{ '@type' = 'ListItem'; position = ($i + 1); name = $crumbs[$i].name; item = $crumbs[$i].item })
+    }
+    $obj = [ordered]@{
+        '@context' = 'https://schema.org'
+        '@type' = 'BreadcrumbList'
+        itemListElement = $listItems
+    }
+    $json = $obj | ConvertTo-Json -Depth 6
+    $lines = New-Object System.Collections.Generic.List[string]
+    $lines.Add("$indent<script type=`"application/ld+json`">")
+    ($json -split "`r?`n") | ForEach-Object { $lines.Add("$indent$_") }
+    $lines.Add("$indent</script>")
+    return ($lines -join $nl)
+}
+
 function Sync-Marker($content, $markerName, $generator) {
     $startTag = "<!-- TB:${markerName}:START -->"
     $endTag = "<!-- TB:${markerName}:END -->"
@@ -209,6 +256,9 @@ foreach ($f in $htmlFiles) {
 
     $articleListResult = Sync-Marker $content 'ARTICLELIST' { param($indent) New-ArticleListBlock $indent }
     if ($null -ne $articleListResult) { $content = $articleListResult }
+
+    $breadcrumbResult = Sync-Marker $content 'BREADCRUMB' { param($indent) New-BreadcrumbBlock $indent $f.Name }
+    if ($null -ne $breadcrumbResult) { $content = $breadcrumbResult }
 
     if ($content -ne $original) {
         [System.IO.File]::WriteAllText($f.FullName, $content, $utf8NoBom)
