@@ -1,0 +1,45 @@
+name: Notify IndexNow of changed pages
+
+# Pings Bing/Yandex/etc. (via the shared IndexNow protocol) with exactly the
+# HTML pages that changed in this push, right after every deploy — instead
+# of waiting for the next scheduled crawl to notice new or updated content.
+# The API key below is public by design (IndexNow's own docs note the key
+# is not a secret — it's just a lightweight domain-ownership proof, verified
+# via the matching key file hosted at the repo root), so no GitHub secret is
+# needed here.
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  indexnow:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Find changed HTML files and submit to IndexNow
+        env:
+          BEFORE_SHA: ${{ github.event.before }}
+          AFTER_SHA: ${{ github.sha }}
+        run: |
+          if [ "$BEFORE_SHA" = "0000000000000000000000000000000000000000" ] || ! git cat-file -e "$BEFORE_SHA" 2>/dev/null; then
+            CHANGED=$(git diff --name-only "${AFTER_SHA}^" "${AFTER_SHA}" -- '*.html' 2>/dev/null || true)
+          else
+            CHANGED=$(git diff --name-only "$BEFORE_SHA" "$AFTER_SHA" -- '*.html')
+          fi
+
+          if [ -z "$CHANGED" ]; then
+            echo "No HTML changes in this push, skipping IndexNow submission."
+            exit 0
+          fi
+
+          URLS_JSON=$(echo "$CHANGED" | sed 's#^#https://tallybench.com/#' | jq -R -s -c 'split("\n") | map(select(length > 0))')
+          echo "Submitting changed URLs to IndexNow:"
+          echo "$URLS_JSON"
+
+          curl -s -o /dev/stderr -w "\nIndexNow response status: %{http_code}\n" -X POST "https://api.indexnow.org/indexnow" \
+            -H "Content-Type: application/json; charset=utf-8" \
+            -d "{\"host\":\"tallybench.com\",\"key\":\"cea41b609d124e96b6b760f3d15617cc\",\"keyLocation\":\"https://tallybench.com/cea41b609d124e96b6b760f3d15617cc.txt\",\"urlList\":$URLS_JSON}"
