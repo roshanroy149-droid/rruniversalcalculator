@@ -63,9 +63,7 @@ a{color:inherit;}
    tab/sub-tick accents below) rather than reading as a plain flat bar. */
 header{
   position:sticky;top:0;z-index:50;
-  background:
-    repeating-linear-gradient(90deg, rgba(242,236,221,0.05) 0, rgba(242,236,221,0.05) 1px, transparent 1px, transparent 44px),
-    linear-gradient(165deg, #211E19, var(--ink));
+  background:linear-gradient(165deg, #211E19, var(--ink));
   border-bottom:1px solid rgba(242,236,221,0.08);
   box-shadow:0 4px 18px rgba(0,0,0,0.25);
 }
@@ -200,6 +198,10 @@ header::after{
   border-top:0 solid rgba(242,236,221,0.08);
   transition:max-height .22s ease, background .2s ease;
 }
+/* Invisible gap-dividing spacers, see the comment in Sync-Nav.ps1's
+   New-NavBlock — they only ever affect whichever row they land on (always
+   the current category's actual last row), never the fuller rows above. */
+.sub-ruler-filler{width:0;height:0;flex:0 0 auto;}
 .sub-ruler.open{
   max-height:220px;
   border-top-width:1px;

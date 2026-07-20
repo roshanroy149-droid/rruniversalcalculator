@@ -4,6 +4,12 @@ Static HTML/CSS/JS calculator site (40 tools), no build step, deployed via GitHu
 
 This file is a checklist of rules earned the hard way across this project's build sessions. Follow it every time — building something new, fixing a bug, or deploying — even in a brand-new conversation with no memory of how it was learned.
 
+## 0. Brand positioning — finance-first, not "just a calculator site"
+
+- TallyBench's official identity is **a finance site with calculators for everything else too** — not a generic "everyday calculators" site that happens to include finance. This isn't a stretch: 76 of 125 tools (61%) are finance, versus 16 health, 20 education, 13 everyday, so the framing just names what's already true of the tool inventory.
+- This is reflected in index.html's title/meta/hero copy, about.html, and manifest.json — if any of those drift back to generic "everyday calculators" language in a future edit, that's a regression, not a style choice; fix it back to the finance-first framing.
+- **Articles are finance-primary by the same logic.** Health and education trend articles are fine when a genuinely strong, well-sourced news hook exists (a real policy or curriculum change, not just "there's a health calculator on the site so let's write about health") — but don't put them on a fixed rotation alongside finance. Finance has the highest and steadiest supply of "real news" (rate decisions, tax law, regulatory changes happen constantly); health is much higher-scrutiny YMYL territory that needs more care per article; education has far fewer genuine breaking-news moments to hang articles on. Default to finance; branch out opportunistically, not on a schedule.
+
 ## 1. Single source of truth — never hand-edit generated content
 
 - `build/tools.json` is the ONLY place the tool list lives. Every tool needs: `id`, `file`, `category`, `navLabel`, `title`, `icon`, `blurb`.

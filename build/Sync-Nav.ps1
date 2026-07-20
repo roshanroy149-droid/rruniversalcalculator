@@ -50,6 +50,26 @@ function New-NavBlock($indent) {
     foreach ($tool in $data.tools) {
         $lines.Add("$indent    <a class=`"tick sub-tick`" data-cat=`"$($tool.category)`" href=`"$($tool.file)`">$($tool.navLabel)</a>")
     }
+    # .sub-ruler wraps onto as many rows as a category needs and uses
+    # justify-content:space-between so every row spans the full width instead
+    # of a real row hugging the left edge with a dead gap on the right. That
+    # works per-line automatically for any row with enough items — but a
+    # sparse last row (few items) would get the exact same treatment and end
+    # up scattered across the whole width with huge gaps between just a
+    # handful of words. These 60 invisible, zero-size filler items sit after
+    # every real tool link — only one category's real .sub-tick links are
+    # ever display:none-toggled visible at a time, so the fillers always
+    # attach directly after whichever category's own last visible link ends,
+    # landing on that category's actual last row. Because space-between
+    # distributes leftover space per gap regardless of an item's own size, a
+    # sparse last row with 60 extra (invisible) gap-dividing points keeps its
+    # real items tightly clustered near the left, while every fuller row
+    # above it is completely unaffected and keeps justifying normally — a
+    # single style toggled in JS can't do both at once since justify-content
+    # is one value for the whole wrapped container, not per-row.
+    for ($i = 0; $i -lt 60; $i++) {
+        $lines.Add("$indent    <span class=`"sub-ruler-filler`" aria-hidden=`"true`"></span>")
+    }
     $lines.Add("$indent  </nav>")
     $lines.Add("$indent</div>")
     return ($lines -join $nl)

@@ -1,12 +1,12 @@
 {
-  "name": "TallyBench — Everyday Calculators",
+  "name": "TallyBench — Finance Calculators & More",
   "short_name": "TallyBench",
-  "description": "49 free calculators covering finance (loan, mortgage, refinance, car loan, rent vs. buy, tax, paycheck, salary, sales tax, CD, retirement, net worth, savings goal, debt payoff, GST/VAT, SIP/investment), health (BMI, calorie/BMR, macros, pregnancy, ovulation, ideal weight), education (GPA, grade, scientific, fraction, statistics), and everyday math (time, random number).",
+  "description": "TallyBench is a finance-first calculator site — loans, mortgages, taxes, investing, debt payoff, and retirement — plus trusted tools for health, education, and everyday math. 125 free calculators, no sign-up, nothing stored.",
   "start_url": "/?source=pwa",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "background_color": "#F6F3EC",
+  "background_color": "#1C1A17",
   "theme_color": "#1C1A17",
   "icons": [
     { "src": "icon-192.svg", "sizes": "192x192", "type": "image/svg+xml", "purpose": "any" },

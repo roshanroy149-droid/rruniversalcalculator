@@ -77,43 +77,6 @@ window.__TB_EMBED__ = new URLSearchParams(window.location.search).get('embed') =
   const subRulerHomeNext = subRuler.nextElementSibling;
   const isMobileDrawer = () => window.matchMedia('(max-width:640px)').matches;
 
-  // .sub-ruler uses justify-content:space-between so a wrapped row of tools
-  // spreads across the full width instead of hugging the left edge with a
-  // dead gap on the right — but a row with only a handful of items looks
-  // worse stretched than left, since whatever space is left over gets
-  // divided among very few gaps, each one growing huge. What actually
-  // determines whether that looks fine or bad is the size of each
-  // individual gap once stretched, not the row's overall fill ratio: 6
-  // items covering 62% of the row (~86px added to each of 5 gaps) reads as
-  // obviously broken, while 8 items covering 69% (~50px added to each of 7
-  // gaps) reads as normal, evenly-justified spacing — a plain fill-ratio
-  // check can't tell these two cases apart, but dividing the leftover space
-  // by the number of gaps in that row can. Desktop only — the mobile
-  // drawer stacks one tool per line, so there's no multi-item row to judge.
-  function adjustSubRulerJustify(){
-    if(isMobileDrawer()){ subRuler.style.justifyContent = ''; return; }
-    const visible = Array.from(subTicks).filter(t=>t.classList.contains('cat-visible'));
-    if(!visible.length){ subRuler.style.justifyContent = ''; return; }
-    // Force flex-start so items sit at their natural left-aligned position/
-    // size before measuring which ones land on the last wrapped row.
-    subRuler.style.justifyContent = 'flex-start';
-    const rows = [];
-    visible.forEach(t=>{
-      const top = t.offsetTop;
-      let row = rows.find(r=>Math.abs(r.top-top)<2);
-      if(!row){ row = {top, items:[]}; rows.push(row); }
-      row.items.push(t);
-    });
-    const lastRow = rows[rows.length-1].items;
-    if(lastRow.length < 2){ subRuler.style.justifyContent = ''; return; }
-    const spanLeft = lastRow[0].getBoundingClientRect().left;
-    const spanRight = lastRow[lastRow.length-1].getBoundingClientRect().right;
-    const containerWidth = subRuler.getBoundingClientRect().width;
-    const leftover = containerWidth - (spanRight - spanLeft);
-    const extraPerGap = leftover / (lastRow.length - 1);
-    subRuler.style.justifyContent = extraPerGap > 60 ? 'flex-start' : '';
-  }
-
   function openCategory(cat, scroll){
     catTabs.forEach(tab=>tab.classList.toggle('cat-open', tab.dataset.cat === cat));
     subTicks.forEach(tick=>tick.classList.toggle('cat-visible', tick.dataset.cat === cat));
@@ -124,7 +87,6 @@ window.__TB_EMBED__ = new URLSearchParams(window.location.search).get('embed') =
     subRuler.classList.add('open');
     subRuler.dataset.openCat = cat;
     if(scroll) subRuler.scrollLeft = 0;
-    adjustSubRulerJustify();
   }
 
   function closeAll(){
@@ -161,12 +123,6 @@ window.__TB_EMBED__ = new URLSearchParams(window.location.search).get('embed') =
         openCategory(cat, true);
       }
     });
-  });
-
-  // Re-check row fullness on resize — how many tools wrap onto the last row
-  // (and whether that's still worth stretching) changes with viewport width.
-  window.addEventListener('resize', ()=>{
-    if(subRuler.classList.contains('open')) adjustSubRulerJustify();
   });
 
   // Mobile hamburger menu: the same nav markup above becomes a slide-in
