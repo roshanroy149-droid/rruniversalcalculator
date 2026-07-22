@@ -9945,3 +9945,61 @@ function tbMoney(n){
   updatePriceLabel();
   calc();
 })();
+
+// ---- Sleep cycle calculator ----
+(function(){
+  if(!document.getElementById('scTime')) return;
+  let mode = 'wake';
+  const seg = document.getElementById('scModeSeg');
+  const timeLabel = document.getElementById('scTimeLabel');
+  const headerEl = document.getElementById('scResultTimeHeader');
+  const subEl = document.getElementById('scOptionsSub');
+  const CYCLES = [3,4,5,6];
+
+  function fmtTime(mins){
+    mins = ((mins%1440)+1440)%1440;
+    let h = Math.floor(mins/60), m = mins%60;
+    const ampm = h>=12 ? 'PM':'AM';
+    let h12 = h%12; if(h12===0) h12=12;
+    return h12+':'+String(m).padStart(2,'0')+' '+ampm;
+  }
+
+  function calc(){
+    const timeVal = document.getElementById('scTime').value || '07:00';
+    const [hh,mm] = timeVal.split(':').map(Number);
+    const inputMin = hh*60+mm;
+    const buffer = Math.max(parseFloat(document.getElementById('scBuffer').value)||0, 0);
+
+    const body = document.getElementById('scOptionsBody');
+    body.innerHTML = '';
+    CYCLES.forEach(c=>{
+      const sleepMin = c*90;
+      const resultMin = mode==='wake' ? inputMin - (sleepMin+buffer) : inputMin + buffer + sleepMin;
+      const hours = (sleepMin/60);
+      const tr = document.createElement('tr');
+      tr.innerHTML = '<td>'+c+'</td><td>'+hours+' hr</td><td>'+fmtTime(resultMin)+'</td>';
+      body.appendChild(tr);
+    });
+  }
+
+  seg.addEventListener('click',(e)=>{
+    const btn=e.target.closest('button'); if(!btn) return;
+    mode = btn.dataset.mode;
+    seg.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    if(mode==='wake'){
+      timeLabel.textContent = 'Wake-up time';
+      headerEl.textContent = 'Bedtime';
+      subEl.textContent = 'Each row is a bedtime that lands you between full sleep cycles instead of in the middle of one.';
+    } else {
+      timeLabel.textContent = 'Bedtime';
+      headerEl.textContent = 'Wake-up time';
+      subEl.textContent = 'Each row is a wake-up time that lands you between full sleep cycles instead of in the middle of one.';
+    }
+    calc();
+  });
+  document.getElementById('scTime').addEventListener('input',calc);
+  document.getElementById('scTime').addEventListener('change',calc);
+  document.getElementById('scBuffer').addEventListener('input',calc);
+  calc();
+})();
