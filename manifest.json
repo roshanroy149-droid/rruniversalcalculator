@@ -1,7 +1,7 @@
 {
   "name": "TallyBench — Finance Calculators & More",
   "short_name": "TallyBench",
-  "description": "TallyBench is a finance-first calculator site — loans, mortgages, taxes, investing, debt payoff, and retirement — plus trusted tools for health, education, and everyday math. 125 free calculators, no sign-up, nothing stored.",
+  "description": "TallyBench is a finance-first calculator site — loans, mortgages, taxes, investing, debt payoff, and retirement — plus trusted tools for health, education, and everyday math. 135 free calculators, no sign-up, nothing stored.",
   "start_url": "/?source=pwa",
   "scope": "/",
   "display": "standalone",
