@@ -9879,3 +9879,69 @@ function tbMoney(n){
   updateVisibleRows();
   calc();
 })();
+
+// ---- Fuel / trip cost calculator ----
+(function(){
+  if(!document.getElementById('fcDistance')) return;
+  let distUnit = 'km';
+  let effUnit = 'l100km';
+  const distSeg = document.getElementById('fcDistUnitSeg');
+  const effSeg = document.getElementById('fcEffUnitSeg');
+  const priceLabelEl = document.getElementById('fcPriceUnitLabel');
+
+  function updatePriceLabel(){
+    priceLabelEl.textContent = effUnit==='mpg' ? 'gallon' : 'liter';
+  }
+
+  function calc(){
+    const cur = document.getElementById('fcCur').value;
+    const distance = Math.max(parseFloat(document.getElementById('fcDistance').value)||0, 0);
+    const effValue = Math.max(parseFloat(document.getElementById('fcEffValue').value)||0, 0.001);
+    const price = Math.max(parseFloat(document.getElementById('fcPrice').value)||0, 0);
+    const roundTrip = document.getElementById('fcRoundTrip').checked;
+
+    let distanceKm = distUnit==='mi' ? distance*1.60934 : distance;
+    let distanceMi = distUnit==='mi' ? distance : distance/1.60934;
+    if(roundTrip){ distanceKm*=2; distanceMi*=2; }
+
+    let fuelNeeded, unitLabel;
+    if(effUnit==='mpg'){
+      fuelNeeded = distanceMi/effValue;
+      unitLabel = 'gal';
+    } else if(effUnit==='l100km'){
+      fuelNeeded = distanceKm*(effValue/100);
+      unitLabel = 'L';
+    } else {
+      fuelNeeded = distanceKm/effValue;
+      unitLabel = 'L';
+    }
+    const cost = fuelNeeded*price;
+
+    document.getElementById('fcFuelNeeded').textContent = fuelNeeded.toFixed(2)+' '+unitLabel;
+    document.getElementById('fcCost').textContent = cur+cost.toFixed(2);
+  }
+
+  distSeg.addEventListener('click',(e)=>{
+    const btn=e.target.closest('button'); if(!btn) return;
+    distUnit = btn.dataset.unit;
+    distSeg.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    calc();
+  });
+  effSeg.addEventListener('click',(e)=>{
+    const btn=e.target.closest('button'); if(!btn) return;
+    effUnit = btn.dataset.unit;
+    effSeg.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    updatePriceLabel();
+    calc();
+  });
+  ['fcDistance','fcEffValue','fcCur','fcPrice','fcRoundTrip'].forEach(id=>{
+    const el = document.getElementById(id);
+    el.addEventListener('input',calc);
+    el.addEventListener('change',calc);
+  });
+
+  updatePriceLabel();
+  calc();
+})();

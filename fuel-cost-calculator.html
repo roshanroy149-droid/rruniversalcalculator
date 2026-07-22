@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CM to Inches Converter | TallyBench</title>
-<meta name="description" content="Convert centimeters to inches and inches to centimeters instantly, plus a quick-reference table of common conversions.">
-<link rel="canonical" href="https://tallybench.com/cm-to-inches.html">
+<title>Fuel Cost Calculator — Trip Cost by Distance &amp; Efficiency | TallyBench</title>
+<meta name="description" content="Free fuel cost calculator. Enter distance, fuel efficiency (MPG, L/100km, or km/L), and fuel price to see exactly what a trip will cost, one-way or round trip.">
+<link rel="canonical" href="https://tallybench.com/fuel-cost-calculator.html">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.svg">
@@ -15,18 +15,19 @@
 <meta name="apple-mobile-web-app-title" content="TallyBench">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TallyBench">
-<meta property="og:title" content="CM to Inches Converter">
-<meta property="og:description" content="Convert centimeters to inches and inches to centimeters instantly, plus a quick-reference table of common conversions.">
-<meta property="og:url" content="https://tallybench.com/cm-to-inches.html">
+<meta property="og:title" content="Fuel Cost Calculator — Trip Cost by Distance & Efficiency">
+<meta property="og:description" content="Free fuel cost calculator. Enter distance, fuel efficiency (MPG, L/100km, or km/L), and fuel price to see exactly what a trip will cost, one-way or round trip.">
+<meta property="og:url" content="https://tallybench.com/fuel-cost-calculator.html">
 <meta property="og:image" content="https://tallybench.com/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="CM to Inches Converter">
-<meta name="twitter:description" content="Convert centimeters to inches and inches to centimeters instantly, plus a quick-reference table of common conversions.">
+<meta name="twitter:title" content="Fuel Cost Calculator — Trip Cost by Distance & Efficiency">
+<meta name="twitter:description" content="Free fuel cost calculator. Enter distance, fuel efficiency (MPG, L/100km, or km/L), and fuel price to see exactly what a trip will cost, one-way or round trip.">
 <meta name="twitter:image" content="https://tallybench.com/og-image.png">
 <link rel="stylesheet" href="fonts/fonts.css">
 <link rel="stylesheet" href="style.css">
+
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -34,18 +35,26 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "How do I convert cm to inches?",
+      "name": "How do I convert between MPG, L/100km, and km/L?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Divide the centimeter value by 2.54 — 1 inch is defined as exactly 2.54 cm, so this conversion is exact, not an approximation."
+        "text": "They measure efficiency in opposite directions — MPG and km/L are \"distance per unit of fuel\" (higher is better), while L/100km is \"fuel per unit of distance\" (lower is better) — which is why you can't just multiply by a fixed conversion factor between L/100km and the other two. This calculator handles the math internally based on whichever unit you select, so you don't need to convert manually."
       }
     },
     {
       "@type": "Question",
-      "name": "How do I convert inches to cm?",
+      "name": "Does this account for highway vs. city driving efficiency?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Multiply the inch value by 2.54. For example, 10 inches × 2.54 = 25.4 cm."
+        "text": "No — enter whichever efficiency figure best represents your actual trip (many vehicles list separate city and highway MPG or L/100km ratings). For a mixed trip, a combined or average rating will be more accurate than either extreme."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why would I use this instead of just checking my car's trip computer?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A trip computer tells you what a trip already cost, or estimates range remaining — this tool is for planning ahead, before you drive: comparing routes, budgeting a road trip, or estimating commute costs at different fuel prices without needing to actually drive the distance first."
       }
     }
   ]
@@ -55,7 +64,7 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "CM to Inches Converter — TallyBench",
+  "name": "Fuel Cost Calculator — TallyBench",
   "applicationCategory": "UtilitiesApplication",
   "operatingSystem": "Any (runs in browser)",
   "offers": {
@@ -63,7 +72,7 @@
     "price": "0",
     "priceCurrency": "USD"
   },
-  "url": "https://tallybench.com/cm-to-inches.html"
+  "url": "https://tallybench.com/fuel-cost-calculator.html"
 }
 </script>
 <!-- TB:BREADCRUMB:START -->
@@ -81,8 +90,8 @@
                             {
                                 "@type":  "ListItem",
                                 "position":  2,
-                                "name":  "CM to Inches",
-                                "item":  "https://tallybench.com/cm-to-inches.html"
+                                "name":  "Fuel Cost Calculator",
+                                "item":  "https://tallybench.com/fuel-cost-calculator.html"
                             }
                         ]
 }
@@ -316,53 +325,85 @@
 <div class="nav-backdrop" id="navBackdrop"></div>
 
 <div class="wrap">
-  <div class="crumb"><a href="index.html">TallyBench</a> / CM to Inches</div>
+  <div class="crumb"><a href="index.html">TallyBench</a> / Fuel Cost Calculator</div>
 
   <section class="hero">
-    <div class="hero-icon-row cat-utility">
+    <div class="hero-icon-row cat-everyday">
       <div class="hero-icon"><svg><use href="icons.svg#icon-units"/></svg></div>
-      <div class="eyebrow">// CM ↔ INCHES CONVERTER</div>
+      <div class="eyebrow">// FUEL COST CALCULATOR</div>
     </div>
-    <h1>Centimeters to inches, both ways.</h1>
-    <p>Type into either field — the exact conversion (1 in = 2.54 cm) updates live.</p>
+    <h1>What will this trip actually cost in fuel?</h1>
+    <p>Enter distance, your vehicle's efficiency in whichever unit you know it, and the fuel price — works in miles or kilometers, MPG, L/100km, or km/L.</p>
   </section>
 
-  <section class="tool" id="cmin">
+  <section class="tool" id="fuelcost">
     <div class="card">
       <div>
-        <div class="field"><label>Centimeters</label><input type="number" id="ctiCm" value="170" step="0.1"></div>
-        <div class="field"><label>Inches</label><input type="number" id="ctiIn" value="66.93" step="0.01"></div>
+        <div class="field"><label>Distance</label>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+            <input type="number" id="fcDistance" value="500" min="0" step="10" style="flex:1;min-width:100px;">
+            <div class="seg" id="fcDistUnitSeg">
+              <button type="button" class="active" data-unit="km">km</button>
+              <button type="button" data-unit="mi">miles</button>
+            </div>
+          </div>
+        </div>
+        <div class="field"><label>Round trip?</label>
+          <div class="checks"><label><input type="checkbox" id="fcRoundTrip"> Double the distance (there and back)</label></div>
+        </div>
+        <div class="field"><label>Fuel efficiency unit</label>
+          <div class="seg" id="fcEffUnitSeg">
+            <button type="button" data-unit="mpg">MPG (US)</button>
+            <button type="button" class="active" data-unit="l100km">L/100km</button>
+            <button type="button" data-unit="kml">km/L</button>
+          </div>
+        </div>
+        <div class="field"><label>Efficiency value</label><input type="number" id="fcEffValue" value="6.5" min="0.1" step="0.1"></div>
+        <div class="field"><label>Currency</label>
+          <select id="fcCur">
+            <option value="$">USD ($)</option>
+            <option value="€">EUR (€)</option>
+            <option value="£">GBP (£)</option>
+            <option value="₹">INR (₹)</option>
+            <option value="¥">JPY (¥)</option>
+            <option value="A$">AUD (A$)</option>
+            <option value="C$">CAD (C$)</option>
+            <option value="CHF ">CHF</option>
+            <option value="CN¥">CNY (CN¥)</option>
+            <option value="S$">SGD (S$)</option>
+            <option value="AED ">AED</option>
+            <option value="NZ$">NZD (NZ$)</option>
+            <option value="R">ZAR (R)</option>
+            <option value="R$">BRL (R$)</option>
+            <option value="MX$">MXN (MX$)</option>
+            <option value="HK$">HKD (HK$)</option>
+            <option value="₩">KRW (₩)</option>
+            <option value="kr">SEK/NOK (kr)</option>
+          </select>
+        </div>
+        <div class="field"><label>Fuel price (per <span id="fcPriceUnitLabel">liter</span>)</label><input type="number" id="fcPrice" value="1.50" min="0" step="0.01"></div>
       </div>
       <div class="readout">
-        <div class="r-row"><span class="r-label">170 cm equals</span><span class="r-value" id="ctiResult">66.93 in</span></div>
+        <div class="r-row"><span class="r-label">Fuel needed</span><span class="r-value" id="fcFuelNeeded">0</span></div>
+        <div class="r-row"><span class="r-label">Total trip cost</span><span class="r-value" id="fcCost">$0</span></div>
       </div>
-      <div class="field-warning" id="ctiWarning"></div>
-    </div>
-  </section>
-
-  <section class="tool" id="reference">
-    <div class="tool-head"><span class="tool-num">//</span><div><h2>Quick reference</h2><p class="tool-sub">Common centimeter-to-inch conversions.</p></div></div>
-    <div class="table-scroll">
-      <table class="bracket-table" id="ctiTable">
-        <thead><tr><th>Centimeters</th><th>Inches</th></tr></thead>
-        <tbody></tbody>
-      </table>
     </div>
   </section>
 
   <section class="article">
-    <h3>How do I convert cm to inches?</h3>
-    <p>Divide the centimeter value by 2.54: <strong>inches = cm ÷ 2.54</strong>. 1 inch is defined as exactly 2.54 cm by international agreement, so this conversion is exact, not an approximation.</p>
-    <h3>How do I convert inches to cm?</h3>
-    <p>Multiply the inch value by 2.54: <strong>cm = inches × 2.54</strong>. For example, 10 inches × 2.54 = 25.4 cm.</p>
-    <h3>Where does 2.54 come from?</h3>
-    <p>The international inch was formally standardized as exactly 2.54 cm in 1959 by agreement between the US, UK, and other Commonwealth countries, replacing several slightly different national definitions that existed before then.</p>
-    <p><strong>Worked example:</strong> a 175 cm height converts to 175 ÷ 2.54 ≈ 68.9 inches (5 ft 8.9 in). Need feet and inches specifically, or other length/weight/volume units? Try the full <a href="unit-converter.html">Unit Converter</a>.</p>
+    <h3>How do I convert between MPG, L/100km, and km/L?</h3>
+    <p>They measure efficiency in opposite directions — MPG and km/L are "distance per unit of fuel" (higher is better), while L/100km is "fuel per unit of distance" (lower is better) — which is why you can't just multiply by a fixed conversion factor between L/100km and the other two. This calculator handles the math internally based on whichever unit you select, so you don't need to convert manually.</p>
+    <h3>Does this account for highway vs. city driving efficiency?</h3>
+    <p>No — enter whichever efficiency figure best represents your actual trip; many vehicles list separate city and highway MPG or L/100km ratings. For a mixed trip, a combined or average rating will be more accurate than either extreme.</p>
+    <h3>Why would I use this instead of just checking my car's trip computer?</h3>
+    <p>A trip computer tells you what a trip already cost, or estimates range remaining — this tool is for planning ahead, before you drive: comparing routes, budgeting a road trip, or estimating commute costs at different fuel prices without needing to actually drive the distance first.</p>
+    <p><strong>Worked example:</strong> a 500km round trip (1,000km total) at 6.5 L/100km and $1.50/liter needs 65 liters of fuel, for a total cost of $97.50.</p>
   </section>
 
+  <p style="font-size:13px;color:rgba(242,236,221,0.55);margin:0 0 24px;">Converting other units for the trip? Try the <a href="unit-converter.html">Unit Converter</a>.</p>
 
   <footer>
-    <p>TallyBench · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
+    <p>TALLYBENCH · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
   </footer>
 </div>
 
