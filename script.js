@@ -9548,3 +9548,43 @@ function tbMoney(n){
   });
   calc();
 })();
+
+// ---- EPF calculator (India) ----
+(function(){
+  if(!document.getElementById('epfBasic')) return;
+  const WAGE_CEILING = 15000;
+  function calc(){
+    const basicStart = Math.max(parseFloat(document.getElementById('epfBasic').value)||0, 0);
+    const opening = Math.max(parseFloat(document.getElementById('epfOpening').value)||0, 0);
+    const years = Math.max(parseFloat(document.getElementById('epfYears').value)||0, 0);
+    const incrementPct = Math.max(parseFloat(document.getElementById('epfIncrement').value)||0, 0);
+    const ratePct = Math.max(parseFloat(document.getElementById('epfRate').value)||0, 0);
+    const monthlyRate = ratePct/1200;
+
+    let balance = opening;
+    let totalEmployee = 0, totalEmployerEPF = 0, totalInterest = 0;
+    let basic = basicStart;
+    const totalMonths = Math.round(years*12);
+
+    for(let m=1; m<=totalMonths; m++){
+      if(m>1 && (m-1)%12===0){ basic *= (1+incrementPct/100); }
+      const empShare = basic*0.12;
+      const epsShare = Math.min(basic,WAGE_CEILING)*0.0833;
+      const erEpfShare = Math.max(basic*0.12 - epsShare, 0);
+      totalEmployee += empShare;
+      totalEmployerEPF += erEpfShare;
+      const interest = balance*monthlyRate;
+      totalInterest += interest;
+      balance += empShare + erEpfShare + interest;
+    }
+
+    document.getElementById('epfCorpus').textContent = '₹'+Math.round(balance).toLocaleString('en-IN');
+    document.getElementById('epfEmployee').textContent = '₹'+Math.round(totalEmployee).toLocaleString('en-IN');
+    document.getElementById('epfEmployer').textContent = '₹'+Math.round(totalEmployerEPF).toLocaleString('en-IN');
+    document.getElementById('epfInterest').textContent = '₹'+Math.round(totalInterest).toLocaleString('en-IN');
+  }
+  ['epfBasic','epfOpening','epfYears','epfIncrement','epfRate'].forEach(id=>{
+    document.getElementById(id).addEventListener('input',calc);
+  });
+  calc();
+})();
