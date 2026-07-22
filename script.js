@@ -10003,3 +10003,62 @@ function tbMoney(n){
   document.getElementById('scBuffer').addEventListener('input',calc);
   calc();
 })();
+
+// ---- Water intake calculator ----
+(function(){
+  if(!document.getElementById('wiWeight')) return;
+  let weightUnit = 'kg';
+  let climate = 'normal';
+  let outUnit = 'l';
+  const weightSeg = document.getElementById('wiWeightUnitSeg');
+  const climateSeg = document.getElementById('wiClimateSeg');
+  const outSeg = document.getElementById('wiOutUnitSeg');
+
+  function fmtVolume(ml){
+    if(outUnit==='l') return (ml/1000).toFixed(2)+' L';
+    if(outUnit==='floz') return (ml/29.5735).toFixed(1)+' fl oz';
+    return (ml/236.588).toFixed(1)+' cups';
+  }
+
+  function calc(){
+    const weightInput = Math.max(parseFloat(document.getElementById('wiWeight').value)||0, 0);
+    const weightKg = weightUnit==='lb' ? weightInput*0.453592 : weightInput;
+    const exerciseMin = Math.max(parseFloat(document.getElementById('wiExercise').value)||0, 0);
+
+    const base = weightKg*35;
+    const exerciseExtra = (exerciseMin/30)*350;
+    const climateExtra = climate==='hot' ? base*0.1 : 0;
+    const total = base+exerciseExtra+climateExtra;
+
+    document.getElementById('wiTotal').textContent = fmtVolume(total);
+    document.getElementById('wiBase').textContent = fmtVolume(base);
+    document.getElementById('wiExerciseExtra').textContent = exerciseExtra>0 ? '+'+fmtVolume(exerciseExtra) : 'None';
+    document.getElementById('wiClimateExtra').textContent = climateExtra>0 ? '+'+fmtVolume(climateExtra) : 'None';
+  }
+
+  weightSeg.addEventListener('click',(e)=>{
+    const btn=e.target.closest('button'); if(!btn) return;
+    weightUnit = btn.dataset.unit;
+    weightSeg.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    calc();
+  });
+  climateSeg.addEventListener('click',(e)=>{
+    const btn=e.target.closest('button'); if(!btn) return;
+    climate = btn.dataset.climate;
+    climateSeg.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    calc();
+  });
+  outSeg.addEventListener('click',(e)=>{
+    const btn=e.target.closest('button'); if(!btn) return;
+    outUnit = btn.dataset.unit;
+    outSeg.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    calc();
+  });
+  ['wiWeight','wiExercise'].forEach(id=>{
+    document.getElementById(id).addEventListener('input',calc);
+  });
+  calc();
+})();
