@@ -9824,3 +9824,58 @@ function tbMoney(n){
   });
   calc();
 })();
+
+// ---- Bill split calculator (uneven amounts) ----
+(function(){
+  if(!document.getElementById('bsPeopleCount')) return;
+  const countEl = document.getElementById('bsPeopleCount');
+  const rows = Array.from(document.querySelectorAll('.bs-person-row'));
+
+  function updateVisibleRows(){
+    const n = Math.min(Math.max(parseInt(countEl.value,10)||1, 1), 8);
+    rows.forEach(row=>{
+      const idx = parseInt(row.dataset.idx,10);
+      row.style.display = idx<=n ? '' : 'none';
+    });
+  }
+
+  function calc(){
+    const n = Math.min(Math.max(parseInt(countEl.value,10)||1, 1), 8);
+    const taxPct = Math.max(parseFloat(document.getElementById('bsTax').value)||0, 0);
+    const tipPct = Math.max(parseFloat(document.getElementById('bsTip').value)||0, 0);
+
+    const active = rows.filter(row=>parseInt(row.dataset.idx,10)<=n);
+    const amounts = active.map(row=>Math.max(parseFloat(row.querySelector('.bs-amt').value)||0, 0));
+    const subtotal = amounts.reduce((a,b)=>a+b,0);
+    const taxAmt = subtotal*(taxPct/100);
+    const tipAmt = subtotal*(tipPct/100);
+    const total = subtotal+taxAmt+tipAmt;
+
+    document.getElementById('bsSubtotal').textContent = '$'+subtotal.toFixed(2);
+    document.getElementById('bsTaxAmt').textContent = '$'+taxAmt.toFixed(2);
+    document.getElementById('bsTipAmt').textContent = '$'+tipAmt.toFixed(2);
+    document.getElementById('bsTotal').textContent = '$'+total.toFixed(2);
+
+    const body = document.getElementById('bsBreakdownBody');
+    body.innerHTML = '';
+    amounts.forEach((amt,i)=>{
+      const share = subtotal>0 ? amt/subtotal : 0;
+      const shareOfExtra = share*(taxAmt+tipAmt);
+      const owed = amt+shareOfExtra;
+      const tr = document.createElement('tr');
+      tr.innerHTML = '<td>Person '+(i+1)+'</td><td>$'+amt.toFixed(2)+'</td><td>$'+shareOfExtra.toFixed(2)+'</td><td>$'+owed.toFixed(2)+'</td>';
+      body.appendChild(tr);
+    });
+  }
+
+  countEl.addEventListener('input',()=>{ updateVisibleRows(); calc(); });
+  countEl.addEventListener('change',()=>{ updateVisibleRows(); calc(); });
+  document.getElementById('bsTax').addEventListener('input',calc);
+  document.getElementById('bsTip').addEventListener('input',calc);
+  rows.forEach(row=>{
+    row.querySelector('.bs-amt').addEventListener('input',calc);
+  });
+
+  updateVisibleRows();
+  calc();
+})();

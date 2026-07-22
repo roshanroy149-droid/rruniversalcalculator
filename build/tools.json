@@ -136,6 +136,7 @@
     { "id": "password-generator", "file": "password-generator.html", "category": "everyday", "navLabel": "PASSWORD", "title": "Password Generator", "icon": "icon-password", "blurb": "Strong random passwords, generated locally." },
     { "id": "random-number-generator", "file": "random-number-generator.html", "category": "everyday", "navLabel": "RANDOM #", "title": "Random Number Generator", "icon": "icon-password", "blurb": "Random integers in a range, with optional no-repeat mode." },
     { "id": "word-counter", "file": "word-counter.html", "category": "everyday", "navLabel": "WORD COUNT", "title": "Word Counter", "icon": "icon-words", "blurb": "Live word, character, and sentence counts." },
-    { "id": "pace-calculator", "file": "pace-calculator.html", "category": "everyday", "navLabel": "PACE", "title": "Pace Calculator", "icon": "icon-days", "blurb": "Running/walking pace, split times, and finish-time projections." }
+    { "id": "pace-calculator", "file": "pace-calculator.html", "category": "everyday", "navLabel": "PACE", "title": "Pace Calculator", "icon": "icon-days", "blurb": "Running/walking pace, split times, and finish-time projections." },
+    { "id": "bill-split-calculator", "file": "bill-split-calculator.html", "category": "everyday", "navLabel": "BILL SPLIT", "title": "Bill Split Calculator", "icon": "icon-tip", "blurb": "Split an uneven bill fairly, with tax and tip proportional to what each person ordered." }
   ]
 }
