@@ -9693,3 +9693,87 @@ function tbMoney(n){
   });
   calc();
 })();
+
+// ---- FX hidden-fee calculator (live mid-market rate via frankfurter.dev) ----
+(function(){
+  if(!document.getElementById('fxFrom')) return;
+  const fromEl = document.getElementById('fxFrom');
+  const toEl = document.getElementById('fxTo');
+  const fallbackCurrencies = ['USD','EUR','GBP','INR','JPY','AUD','CAD','CHF','CNY','SGD','NZD','ZAR','SEK','NOK','MXN','BRL','HKD','KRW','THB','PLN'];
+  let ratesUSD = null;
+  let asOfDate = '';
+  let midRate = null;
+
+  function fillSelect(select, list, def){
+    select.innerHTML = list.map(c=>`<option value="${c}">${c}</option>`).join('');
+    select.value = list.includes(def) ? def : list[0];
+  }
+
+  function updateMidRate(){
+    const from = fromEl.value, to = toEl.value;
+    const lineEl = document.getElementById('fxMidLine');
+    if(!ratesUSD || !(from in ratesUSD) || !(to in ratesUSD)){
+      midRate = null;
+      if(lineEl) lineEl.textContent = 'Mid-market rate unavailable right now.';
+      calc();
+      return;
+    }
+    midRate = ratesUSD[to]/ratesUSD[from];
+    if(lineEl) lineEl.textContent = 'Live mid-market rate: 1 '+from+' = '+midRate.toFixed(4)+' '+to+' (as of '+asOfDate+', via frankfurter.dev)';
+    const yourRateEl = document.getElementById('fxYourRate');
+    if(!parseFloat(yourRateEl.value)) yourRateEl.value = midRate.toFixed(4);
+    calc();
+  }
+
+  function calc(){
+    const amt = Math.max(parseFloat(document.getElementById('fxAmt').value)||0, 0);
+    const yourRate = Math.max(parseFloat(document.getElementById('fxYourRate').value)||0, 0);
+    const to = toEl.value;
+
+    const yourAmt = amt*yourRate;
+    const midAmt = midRate!=null ? amt*midRate : null;
+
+    document.getElementById('fxYourAmt').textContent = yourAmt.toFixed(2)+' '+to;
+    const warnEl = document.getElementById('fxWarning');
+
+    if(midAmt==null){
+      document.getElementById('fxMidAmt').textContent = '—';
+      document.getElementById('fxCost').textContent = '—';
+      document.getElementById('fxMarkupPct').textContent = '—';
+      return;
+    }
+    const cost = midAmt-yourAmt;
+    const markupPct = midAmt>0 ? (cost/midAmt)*100 : 0;
+    document.getElementById('fxMidAmt').textContent = midAmt.toFixed(2)+' '+to;
+    document.getElementById('fxCost').textContent = cost.toFixed(2)+' '+to;
+    document.getElementById('fxMarkupPct').textContent = markupPct.toFixed(2)+'%'+(cost<0 ? ' (your rate beat mid-market)' : '');
+    if(warnEl){
+      if(yourRate<=0){ warnEl.textContent = 'Enter the rate your bank or card actually gave you to see the comparison.'; warnEl.classList.add('show'); }
+      else { warnEl.textContent=''; warnEl.classList.remove('show'); }
+    }
+  }
+
+  fromEl.addEventListener('change', updateMidRate);
+  toEl.addEventListener('change', updateMidRate);
+  ['fxAmt','fxYourRate'].forEach(id=>{
+    document.getElementById(id).addEventListener('input',calc);
+  });
+
+  fetch('https://api.frankfurter.dev/v1/latest?base=USD')
+    .then(r=>{ if(!r.ok) throw new Error('bad response'); return r.json(); })
+    .then(data=>{
+      ratesUSD = Object.assign({USD:1}, data.rates);
+      asOfDate = data.date;
+      const codes = Object.keys(ratesUSD).sort();
+      fillSelect(fromEl, codes, 'USD');
+      fillSelect(toEl, codes, 'EUR');
+      updateMidRate();
+    })
+    .catch(()=>{
+      fillSelect(fromEl, fallbackCurrencies, 'USD');
+      fillSelect(toEl, fallbackCurrencies, 'EUR');
+      const lineEl = document.getElementById('fxMidLine');
+      if(lineEl) lineEl.textContent = 'Live rate feed unavailable — enter both rates manually to compare.';
+      calc();
+    });
+})();
