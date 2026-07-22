@@ -9621,3 +9621,75 @@ function tbMoney(n){
   });
   calc();
 })();
+
+// ---- RSU vesting calculator ----
+(function(){
+  if(!document.getElementById('rsuShares')) return;
+  let freqMonths = 3;
+  const seg = document.getElementById('rsuFreqSeg');
+
+  function calc(){
+    const cur = document.getElementById('rsuCur').value;
+    const totalShares = Math.max(parseFloat(document.getElementById('rsuShares').value)||0, 0);
+    const price = Math.max(parseFloat(document.getElementById('rsuPrice').value)||0, 0);
+    const years = Math.max(parseFloat(document.getElementById('rsuYears').value)||0, 0.1);
+    const cliffMonths = Math.min(Math.max(parseFloat(document.getElementById('rsuCliff').value)||0, 0), years*12);
+    const growthPct = parseFloat(document.getElementById('rsuGrowth').value)||0;
+    const withholdingPct = Math.max(parseFloat(document.getElementById('rsuWithholding').value)||0, 0);
+
+    const totalMonths = years*12;
+    const cliffShares = totalMonths>0 ? totalShares * (cliffMonths/totalMonths) : 0;
+    const remainingShares = totalShares - cliffShares;
+    const postCliffMonths = totalMonths - cliffMonths;
+    const numPeriods = Math.max(Math.round(postCliffMonths/freqMonths), postCliffMonths>0 ? 1 : 0);
+    const perPeriodShares = numPeriods>0 ? remainingShares/numPeriods : 0;
+
+    const events = [];
+    if(cliffShares>0) events.push({month: cliffMonths, shares: cliffShares});
+    for(let i=1;i<=numPeriods;i++){
+      events.push({month: cliffMonths + i*freqMonths, shares: perPeriodShares});
+    }
+
+    const yearBuckets = {};
+    let totalValue = 0;
+    events.forEach(e=>{
+      const priceAtVest = price * Math.pow(1+growthPct/100, e.month/12);
+      const value = e.shares * priceAtVest;
+      totalValue += value;
+      const yr = Math.max(Math.ceil(e.month/12), 1);
+      if(!yearBuckets[yr]) yearBuckets[yr] = {shares:0, value:0};
+      yearBuckets[yr].shares += e.shares;
+      yearBuckets[yr].value += value;
+    });
+
+    const afterTaxTotal = totalValue * (1-withholdingPct/100);
+
+    document.getElementById('rsuTotalShares').textContent = Math.round(totalShares).toLocaleString();
+    document.getElementById('rsuTotalValue').textContent = cur+Math.round(totalValue).toLocaleString();
+    document.getElementById('rsuAfterTax').textContent = cur+Math.round(afterTaxTotal).toLocaleString();
+
+    const body = document.getElementById('rsuScheduleBody');
+    body.innerHTML = '';
+    Object.keys(yearBuckets).sort((a,b)=>a-b).forEach(yr=>{
+      const b = yearBuckets[yr];
+      const afterTax = b.value*(1-withholdingPct/100);
+      const tr = document.createElement('tr');
+      tr.innerHTML = '<td>Year '+yr+'</td><td>'+Math.round(b.shares).toLocaleString()+'</td><td>'+cur+Math.round(b.value).toLocaleString()+'</td><td>'+cur+Math.round(afterTax).toLocaleString()+'</td>';
+      body.appendChild(tr);
+    });
+  }
+
+  seg.addEventListener('click',(e)=>{
+    const btn=e.target.closest('button'); if(!btn) return;
+    freqMonths = parseInt(btn.dataset.months,10);
+    seg.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    calc();
+  });
+  ['rsuCur','rsuShares','rsuPrice','rsuYears','rsuCliff','rsuGrowth','rsuWithholding'].forEach(id=>{
+    const el = document.getElementById(id);
+    el.addEventListener('input',calc);
+    el.addEventListener('change',calc);
+  });
+  calc();
+})();

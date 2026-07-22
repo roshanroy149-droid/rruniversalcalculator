@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Log Calculator — Logarithm, Any Base | TallyBench</title>
-<meta name="description" content="Free logarithm calculator. Compute log base 10, natural log (ln), base 2, or any custom base using the change-of-base formula, with clear undefined warnings.">
-<link rel="canonical" href="https://tallybench.com/log-calculator.html">
+<title>RSU Vesting Calculator — Schedule &amp; After-Tax Value | TallyBench</title>
+<meta name="description" content="Free RSU vesting calculator. Enter your grant size, cliff, and vesting schedule to see a year-by-year vesting table with pre-tax and after-tax value.">
+<link rel="canonical" href="https://tallybench.com/rsu-vesting-calculator.html">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.svg">
@@ -15,15 +15,15 @@
 <meta name="apple-mobile-web-app-title" content="TallyBench">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TallyBench">
-<meta property="og:title" content="Log Calculator — Logarithm, Any Base">
-<meta property="og:description" content="Compute log base 10, natural log, base 2, or any custom base, instantly.">
-<meta property="og:url" content="https://tallybench.com/log-calculator.html">
+<meta property="og:title" content="RSU Vesting Calculator — Schedule & After-Tax Value">
+<meta property="og:description" content="Free RSU vesting calculator. Enter your grant size, cliff, and vesting schedule to see a year-by-year vesting table with pre-tax and after-tax value.">
+<meta property="og:url" content="https://tallybench.com/rsu-vesting-calculator.html">
 <meta property="og:image" content="https://tallybench.com/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Log Calculator — Logarithm, Any Base">
-<meta name="twitter:description" content="Compute log base 10, natural log, base 2, or any custom base, instantly.">
+<meta name="twitter:title" content="RSU Vesting Calculator — Schedule & After-Tax Value">
+<meta name="twitter:description" content="Free RSU vesting calculator. Enter your grant size, cliff, and vesting schedule to see a year-by-year vesting table with pre-tax and after-tax value.">
 <meta name="twitter:image" content="https://tallybench.com/og-image.png">
 <link rel="stylesheet" href="fonts/fonts.css">
 <link rel="stylesheet" href="style.css">
@@ -35,34 +35,34 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "What is a logarithm?",
+      "name": "How does a standard 4-year RSU vesting schedule with a 1-year cliff work?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "A logarithm answers the question 'what exponent do I need to raise the base to, to get this number?' log_base(x) = y means base^y = x. For example, log base 10 of 100 is 2, because 10² = 100."
+        "text": "Nothing vests for the first 12 months (the cliff). At the 1-year mark, a pro-rata chunk vests all at once — typically 25% of the total grant for a 4-year schedule. The remaining 75% then vests in equal installments (monthly, quarterly, or annually depending on your employer's plan) over the remaining 3 years."
       }
     },
     {
       "@type": "Question",
-      "name": "How do I compute a log with any base using just ln or log10?",
+      "name": "What happens to unvested RSUs if I leave the company?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Using the change-of-base formula: log_base(x) = ln(x) / ln(base) (or equally, log10(x) / log10(base)). This is exactly what this calculator computes internally, which is why it can support any base you type in, not just the few buttons a physical calculator has."
+        "text": "Unvested RSUs are almost always forfeited when you leave voluntarily or are terminated for cause — vesting is specifically the mechanism that requires continued employment. Some companies offer accelerated vesting in an acquisition or layoff scenario, but that depends entirely on your specific grant agreement, not a general rule."
       }
     },
     {
       "@type": "Question",
-      "name": "What's the difference between log, ln, and log10?",
+      "name": "How are RSUs taxed when they vest?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "'log' by itself is ambiguous and context-dependent — in most math and engineering contexts it means log base 10, while in computer science it sometimes means log base 2. 'log10' is explicitly base 10. 'ln' is the natural logarithm, base e (Euler's number, approximately 2.71828), and shows up constantly in calculus, compound growth, and probability."
+        "text": "In most countries, RSUs are taxed as ordinary income at the fair market value on the vesting date, not the grant date — this is what the withholding rate above estimates. Any gain or loss after that (if you hold the shares rather than selling immediately) is typically taxed separately as a capital gain or loss when you eventually sell. Exact treatment varies by country, so confirm with a tax professional for your situation."
       }
     },
     {
       "@type": "Question",
-      "name": "Why is log undefined for zero or negative numbers?",
+      "name": "Why does the vesting frequency (monthly vs. quarterly vs. annually) matter?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Because no real exponent applied to a positive base ever produces zero or a negative number — a positive base raised to any real power always stays positive. Since a logarithm is just asking which exponent produces a given value, there's simply no real answer when that value isn't positive."
+        "text": "More frequent vesting means smaller, more regular batches of shares becoming yours (and taxable) rather than large lump sums, which can make tax withholding and selling decisions smoother — but the total number of shares and total value over the full schedule is identical either way. It changes the shape of the payout, not the total amount."
       }
     }
   ]
@@ -72,7 +72,7 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "Log Calculator — TallyBench",
+  "name": "RSU Vesting Calculator — TallyBench",
   "applicationCategory": "UtilitiesApplication",
   "operatingSystem": "Any (runs in browser)",
   "offers": {
@@ -80,7 +80,7 @@
     "price": "0",
     "priceCurrency": "USD"
   },
-  "url": "https://tallybench.com/log-calculator.html"
+  "url": "https://tallybench.com/rsu-vesting-calculator.html"
 }
 </script>
 <!-- TB:BREADCRUMB:START -->
@@ -98,15 +98,15 @@
                             {
                                 "@type":  "ListItem",
                                 "position":  2,
-                                "name":  "Log Calculator",
-                                "item":  "https://tallybench.com/log-calculator.html"
+                                "name":  "RSU Vesting Calculator",
+                                "item":  "https://tallybench.com/rsu-vesting-calculator.html"
                             }
                         ]
 }
 </script>
 <!-- TB:BREADCRUMB:END -->
 </head>
-<body data-page-cat="education">
+<body data-page-cat="finance">
 
 <header>
   <div class="wrap">
@@ -329,57 +329,92 @@
 <div class="nav-backdrop" id="navBackdrop"></div>
 
 <div class="wrap">
-  <div class="crumb"><a href="index.html">TallyBench</a> / Log Calculator</div>
+  <div class="crumb"><a href="index.html">TallyBench</a> / RSU Vesting Calculator</div>
 
   <section class="hero">
-    <div class="hero-icon-row cat-education">
-      <div class="hero-icon"><svg><use href="icons.svg#icon-scientific"/></svg></div>
-      <div class="eyebrow">// LOG CALCULATOR</div>
+    <div class="hero-icon-row cat-finance">
+      <div class="hero-icon"><svg><use href="icons.svg#icon-investment"/></svg></div>
+      <div class="eyebrow">// RSU VESTING CALCULATOR</div>
     </div>
-    <h1>Compute a logarithm in any base.</h1>
-    <p>Enter a value and choose base 10, natural log, base 2, or type your own custom base.</p>
+    <h1>Your RSU grant, turned into a year-by-year vesting schedule.</h1>
+    <p>Enter your share grant, cliff, and vesting schedule to see how many shares vest each year, what they're worth, and what's left after withholding.</p>
   </section>
 
-  <section class="tool" id="lg">
+  <section class="tool" id="rsu">
     <div class="disclaimer">
-      <strong>Educational tool.</strong> Double-check critical calculations independently.
+      <strong>Estimate only — not tax or financial advice.</strong> This assumes a standard cliff-then-even-installments vesting structure and a constant assumed stock price growth rate. Your actual grant agreement, company plan rules, and real stock price movements will differ. Confirm your exact schedule with your equity plan documents.
     </div>
     <div class="card">
       <div>
-        <div class="field"><label>Value (x)</label><input type="number" id="lgValue" value="100" step="any"></div>
-        <div class="field"><label>Base</label>
-          <select id="lgBaseSelect">
-            <option value="10" selected>10 (log)</option>
-            <option value="e">e (ln)</option>
-            <option value="2">2</option>
-            <option value="custom">Custom</option>
+        <div class="field"><label>Currency</label>
+          <select id="rsuCur">
+            <option value="$">USD ($)</option>
+            <option value="€">EUR (€)</option>
+            <option value="£">GBP (£)</option>
+            <option value="₹">INR (₹)</option>
+            <option value="¥">JPY (¥)</option>
+            <option value="A$">AUD (A$)</option>
+            <option value="C$">CAD (C$)</option>
+            <option value="CHF ">CHF</option>
+            <option value="CN¥">CNY (CN¥)</option>
+            <option value="S$">SGD (S$)</option>
+            <option value="AED ">AED</option>
+            <option value="NZ$">NZD (NZ$)</option>
+            <option value="R">ZAR (R)</option>
+            <option value="R$">BRL (R$)</option>
+            <option value="MX$">MXN (MX$)</option>
+            <option value="HK$">HKD (HK$)</option>
+            <option value="₩">KRW (₩)</option>
+            <option value="kr">SEK/NOK (kr)</option>
           </select>
         </div>
-        <div class="field" id="lgCustomBaseField" style="display:none;"><label>Custom base</label><input type="number" id="lgCustomBase" value="10" step="any"></div>
-        <div class="field-warning" id="lgWarning"></div>
+        <div class="field"><label>Total shares granted</label><input type="number" id="rsuShares" value="4000" min="0" step="10"></div>
+        <div class="field"><label>Current share price</label><input type="number" id="rsuPrice" value="50" min="0" step="0.5"></div>
+        <div class="field"><label>Total vesting period (years)</label><input type="number" id="rsuYears" value="4" min="1" max="10" step="1"></div>
+        <div class="field"><label>Cliff (months)</label><input type="number" id="rsuCliff" value="12" min="0" max="48" step="1"></div>
+        <div class="field"><label>Vesting frequency after cliff</label>
+          <div class="seg" id="rsuFreqSeg">
+            <button type="button" data-months="1">Monthly</button>
+            <button type="button" class="active" data-months="3">Quarterly</button>
+            <button type="button" data-months="12">Annually</button>
+          </div>
+        </div>
+        <div class="field"><label>Assumed annual price growth (%)</label><input type="number" id="rsuGrowth" value="0" step="1"></div>
+        <div class="field"><label>Tax withholding rate (%)</label><input type="number" id="rsuWithholding" value="22" min="0" max="60" step="1"></div>
       </div>
       <div class="readout">
-        <div class="r-row"><span class="r-label">Result</span><span class="r-value" id="lgResult">0</span></div>
+        <div class="r-row"><span class="r-label">Total shares</span><span class="r-value" id="rsuTotalShares">0</span></div>
+        <div class="r-row"><span class="r-label">Total value at vest (pre-tax)</span><span class="r-value" id="rsuTotalValue">$0</span></div>
+        <div class="r-row"><span class="r-label">Total after-tax value</span><span class="r-value" id="rsuAfterTax">$0</span></div>
       </div>
+    </div>
+  </section>
+
+  <section style="padding:32px 0;border-bottom:1px solid rgba(242,236,221,0.1);" id="rsuScheduleWrap">
+    <h2 style="font-family:'Space Grotesk',sans-serif;font-size:20px;margin:0 0 6px;">Vesting schedule by year</h2>
+    <p style="color:rgba(242,236,221,0.55);font-size:13px;margin:0 0 16px;">How many shares vest each year, their value at vest, and the after-tax amount.</p>
+    <div class="table-scroll">
+      <table class="bracket-table"><thead><tr><th>Year</th><th>Shares vesting</th><th>Value at vest</th><th>After-tax value</th></tr></thead><tbody id="rsuScheduleBody"></tbody></table>
     </div>
   </section>
 
   <section class="article">
-    <h3>What is a logarithm?</h3>
-    <p>A logarithm answers the question "what exponent do I need to raise the base to, in order to get this number?" — <strong>log_base(x) = y means base^y = x</strong>. For example, log base 10 of 100 is 2, because 10² = 100.</p>
-    <h3>How do I compute a log with any base using just ln or log10?</h3>
-    <p>Using the change-of-base formula: <strong>log_base(x) = ln(x) / ln(base)</strong> (equivalently, log10(x) / log10(base)). This is exactly what this calculator computes internally whenever you pick a base — which is why it can support any base you type in, not just the couple of buttons a physical calculator gives you.</p>
-    <h3>What's the difference between log, ln, and log10?</h3>
-    <p>"log" by itself is context-dependent — in most everyday math and engineering it means log base 10, while some computer science contexts use it to mean log base 2. "log10" is explicitly base 10, avoiding the ambiguity. "ln" is the natural logarithm, base e (Euler's number, ≈2.71828), and shows up constantly in calculus, continuous compound growth, and probability.</p>
-    <h3>Why is log undefined for zero or negative numbers?</h3>
-    <p>Because no real exponent applied to a positive base ever produces zero or a negative result — a positive base raised to any real power always stays positive, no matter how large or small (even negative) the exponent gets. Since a logarithm is simply asking which exponent produces a given value, there's no real answer when that value itself isn't positive. The base must also be positive and not equal to 1, for the same underlying reason.</p>
-    <p><strong>Worked example:</strong> log base 10 of 100: ln(100) / ln(10) ≈ 4.60517 / 2.302585 = <strong>2</strong>, confirming 10² = 100. Switching to natural log (base e) of the same value 100 gives ln(100) ≈ <strong>4.60517</strong>, since the change-of-base formula for ln itself is just ln(x)/ln(e) = ln(x)/1 = ln(x).</p>
+    <h3>How does a standard 4-year RSU vesting schedule with a 1-year cliff work?</h3>
+    <p>Nothing vests for the first 12 months — that's the cliff. At the 1-year mark, a pro-rata chunk vests all at once, typically 25% of the total grant for a 4-year schedule. The remaining 75% then vests in equal installments — monthly, quarterly, or annually depending on your employer's plan — over the remaining 3 years.</p>
+    <h3>What happens to unvested RSUs if I leave the company?</h3>
+    <p>Unvested RSUs are almost always forfeited when you leave voluntarily or are terminated for cause — vesting is specifically the mechanism that requires continued employment to earn the grant. Some companies offer accelerated vesting in an acquisition or layoff scenario, but that depends entirely on your specific grant agreement, not a general rule.</p>
+    <h3>How are RSUs taxed when they vest?</h3>
+    <p>In most countries, RSUs are taxed as ordinary income at the fair market value on the vesting date, not the grant date — that's what the withholding rate above estimates. Any gain or loss after that, if you hold the shares rather than selling immediately, is typically taxed separately as a capital gain or loss when you eventually sell. Exact treatment varies significantly by country, so confirm with a tax professional for your specific situation.</p>
+    <h3>Why does the vesting frequency matter?</h3>
+    <p>More frequent vesting means smaller, more regular batches of shares becoming yours — and taxable — rather than large lump sums, which can make withholding and selling decisions smoother. But the total number of shares and total value over the full schedule is identical either way; frequency changes the shape of the payout, not the total amount.</p>
+    <p><strong>Worked example:</strong> a grant of 4,000 shares at $50/share (a $200,000 grant), 4-year vesting with a 1-year cliff, quarterly vesting after the cliff, 0% assumed price growth: 1,000 shares (worth $50,000) vest in each of the 4 years, for a total pre-tax value of $200,000 — and $156,000 after a 22% withholding rate.</p>
   </section>
 
+  <p style="font-size:13px;color:rgba(242,236,221,0.55);margin:0 0 24px;">Planning what to do with vested shares? See the <a href="investment-calculator.html">Investment Calculator</a> and <a href="tax-calculator.html">Tax Calculator</a>, or work out your <a href="fire-calculator.html">FIRE number</a>.</p>
 
   <footer>
-<p>TALLYBENCH · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
-</footer>
+    <p>TALLYBENCH · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
+  </footer>
 </div>
 
 <script src="script.js"></script>
