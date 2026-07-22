@@ -9493,3 +9493,58 @@ function tbMoney(n){
     });
   });
 })();
+
+// ---- Gratuity calculator (India) ----
+(function(){
+  if(!document.getElementById('gratBasic')) return;
+  let empType = 'private-covered';
+  const seg = document.getElementById('gratEmpSeg');
+  function setWarning(msg){
+    const el = document.getElementById('gratWarning');
+    if(!el) return;
+    if(msg){ el.textContent = msg; el.classList.add('show'); }
+    else { el.textContent = ''; el.classList.remove('show'); }
+  }
+  function calc(){
+    const basic = parseFloat(document.getElementById('gratBasic').value)||0;
+    const years = parseFloat(document.getElementById('gratYears').value)||0;
+    const months = parseFloat(document.getElementById('gratMonths').value)||0;
+    const completedYears = Math.floor(years) + (months>=6 ? 1 : 0);
+
+    if(basic < 0 || years < 0){
+      setWarning('Basic + DA and years of service can\'t be negative.');
+    } else if((years + months/12) < 5 && empType !== 'govt'){
+      setWarning('Under 5 years of service — gratuity is normally only payable at 5+ years, except for death or disablement.');
+    } else {
+      setWarning(null);
+    }
+
+    const factor = empType === 'private-notcovered' ? 15/30 : 15/26;
+    const amount = Math.max(basic,0) * factor * completedYears;
+    const ceiling = 2000000;
+    let exempt, taxable;
+    if(empType === 'govt'){
+      exempt = amount;
+      taxable = 0;
+    } else {
+      exempt = Math.min(amount, ceiling);
+      taxable = Math.max(amount - ceiling, 0);
+    }
+
+    document.getElementById('gratAmount').textContent = '₹'+Math.round(amount).toLocaleString('en-IN');
+    document.getElementById('gratExempt').textContent = '₹'+Math.round(exempt).toLocaleString('en-IN');
+    document.getElementById('gratTaxable').textContent = '₹'+Math.round(taxable).toLocaleString('en-IN');
+    document.getElementById('gratCompletedYears').textContent = completedYears+' yr'+(completedYears!==1?'s':'');
+  }
+  seg.addEventListener('click',(e)=>{
+    const btn=e.target.closest('button'); if(!btn) return;
+    empType = btn.dataset.type;
+    seg.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    calc();
+  });
+  ['gratBasic','gratYears','gratMonths'].forEach(id=>{
+    document.getElementById(id).addEventListener('input',calc);
+  });
+  calc();
+})();
