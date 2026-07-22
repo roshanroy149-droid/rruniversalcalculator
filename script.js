@@ -9588,3 +9588,36 @@ function tbMoney(n){
   });
   calc();
 })();
+
+// ---- FIRE / Coast FIRE calculator ----
+(function(){
+  if(!document.getElementById('fireExpenses')) return;
+  function calc(){
+    const cur = document.getElementById('fireCur').value;
+    const expenses = Math.max(parseFloat(document.getElementById('fireExpenses').value)||0, 0);
+    const withdrawalPct = Math.max(parseFloat(document.getElementById('fireWithdrawal').value)||0, 0.01);
+    const savings = Math.max(parseFloat(document.getElementById('fireSavings').value)||0, 0);
+    const age = Math.max(parseFloat(document.getElementById('fireAge').value)||0, 0);
+    const retireAge = Math.max(parseFloat(document.getElementById('fireRetireAge').value)||0, 0);
+    const returnPct = parseFloat(document.getElementById('fireReturn').value)||0;
+
+    const fireNumber = expenses / (withdrawalPct/100);
+    const years = Math.max(retireAge - age, 0);
+    const coastNumber = fireNumber / Math.pow(1+returnPct/100, years);
+    const progressPct = fireNumber>0 ? (savings/fireNumber)*100 : 0;
+    const coastGap = coastNumber - savings;
+
+    document.getElementById('fireNumber').textContent = cur+Math.round(fireNumber).toLocaleString();
+    document.getElementById('fireCoastNumber').textContent = cur+Math.round(coastNumber).toLocaleString();
+    document.getElementById('fireProgress').textContent = progressPct.toFixed(1)+'%';
+    document.getElementById('fireCoastStatus').textContent = coastGap<=0
+      ? 'Already past Coast FIRE by '+cur+Math.round(-coastGap).toLocaleString()
+      : cur+Math.round(coastGap).toLocaleString()+' more needed today to coast to your number by age '+retireAge;
+  }
+  ['fireCur','fireExpenses','fireWithdrawal','fireSavings','fireAge','fireRetireAge','fireReturn'].forEach(id=>{
+    const el = document.getElementById(id);
+    el.addEventListener('input',calc);
+    el.addEventListener('change',calc);
+  });
+  calc();
+})();

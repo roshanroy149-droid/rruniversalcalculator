@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pace Calculator — Running Pace, Time &amp; Distance | TallyBench</title>
-<meta name="description" content="Free running pace calculator. Find your pace, finish time, or distance, plus predicted 5K, 10K, half marathon, and marathon times at your current pace.">
-<link rel="canonical" href="https://tallybench.com/pace-calculator.html">
+<title>FIRE &amp; Coast FIRE Calculator — Your Retire-Early Number | TallyBench</title>
+<meta name="description" content="Free FIRE calculator. Enter your annual expenses to find your FIRE number, plus your Coast FIRE number — how much you need saved today to retire on schedule with no more contributions.">
+<link rel="canonical" href="https://tallybench.com/fire-calculator.html">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.svg">
@@ -15,15 +15,15 @@
 <meta name="apple-mobile-web-app-title" content="TallyBench">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TallyBench">
-<meta property="og:title" content="Pace Calculator — Running Pace, Time &amp; Distance">
-<meta property="og:description" content="Free running pace calculator. Find your pace, finish time, or distance, plus predicted 5K, 10K, half marathon, and marathon times at your current pace.">
-<meta property="og:url" content="https://tallybench.com/pace-calculator.html">
+<meta property="og:title" content="FIRE & Coast FIRE Calculator — Your Retire-Early Number">
+<meta property="og:description" content="Free FIRE calculator. Enter your annual expenses to find your FIRE number, plus your Coast FIRE number — how much you need saved today to retire on schedule with no more contributions.">
+<meta property="og:url" content="https://tallybench.com/fire-calculator.html">
 <meta property="og:image" content="https://tallybench.com/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Pace Calculator — Running Pace, Time &amp; Distance">
-<meta name="twitter:description" content="Free running pace calculator. Find your pace, finish time, or distance, plus predicted 5K, 10K, half marathon, and marathon times at your current pace.">
+<meta name="twitter:title" content="FIRE & Coast FIRE Calculator — Your Retire-Early Number">
+<meta name="twitter:description" content="Free FIRE calculator. Enter your annual expenses to find your FIRE number, plus your Coast FIRE number — how much you need saved today to retire on schedule with no more contributions.">
 <meta name="twitter:image" content="https://tallybench.com/og-image.png">
 <link rel="stylesheet" href="fonts/fonts.css">
 <link rel="stylesheet" href="style.css">
@@ -35,34 +35,34 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "How do I calculate my running pace?",
+      "name": "What is a FIRE number?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Divide your total time by the distance covered. Convert your time to seconds, divide by distance, and convert back to minutes and seconds per unit — for example, running 5 km in 25 minutes gives a pace of 5:00 per kilometer."
+        "text": "Your FIRE number is the invested net worth needed to sustain your spending indefinitely using a safe withdrawal rate — most commonly the \"4% rule,\" derived from the Trinity Study, which implies a FIRE number of 25× your annual expenses. A lower withdrawal rate (more conservative) means a higher FIRE number; a higher withdrawal rate (more aggressive) means a lower one."
       }
     },
     {
       "@type": "Question",
-      "name": "What's a good pace for a beginner runner?",
+      "name": "What is Coast FIRE?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "It varies hugely by person, but a common illustrative range for beginners is roughly 6:00-8:00 per kilometer (about 10-13 minutes per mile). Treat that as a rough reference point, not a target — consistency matters far more than hitting a specific number early on."
+        "text": "Coast FIRE is the amount you'd need invested today such that, left alone with no further contributions, compound growth alone carries it to your full FIRE number by your target retirement age. Once you've hit your Coast FIRE number, you can theoretically stop saving for retirement entirely and just cover current expenses — though most people keep contributing rather than literally stopping."
       }
     },
     {
       "@type": "Question",
-      "name": "How accurate are race time predictions from a training pace?",
+      "name": "Is the 4% rule still considered safe?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "This tool does a straight linear extrapolation from your entered pace, not a physiological model like Riegel's formula. Real race performance also depends on pacing strategy, terrain, weather, and endurance over longer distances, so treat these predictions as a rough starting point."
+        "text": "It's debated. The original Trinity Study looked at 30-year US retirement horizons; retiring in your 30s or 40s means a much longer horizon, which is why many in the FIRE community use a more conservative 3.25-3.5% withdrawal rate instead. Adjust the withdrawal rate field above to see how that assumption changes your target."
       }
     },
     {
       "@type": "Question",
-      "name": "Miles or kilometers — does it matter?",
+      "name": "Does this account for Social Security, pensions, or other income?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No — pick whichever unit you train in. The math is unit-consistent either way, and race time predictions are calculated correctly regardless of which unit you choose."
+        "text": "No — this calculates the FIRE number needed if your investment portfolio alone had to cover 100% of expenses. Any pension, Social Security, or other guaranteed income you'll eventually receive would reduce how much portfolio-funded spending you actually need, and therefore your real FIRE number — factor that in separately if it applies to you."
       }
     }
   ]
@@ -72,7 +72,7 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "Pace Calculator — TallyBench",
+  "name": "FIRE & Coast FIRE Calculator — TallyBench",
   "applicationCategory": "UtilitiesApplication",
   "operatingSystem": "Any (runs in browser)",
   "offers": {
@@ -80,7 +80,7 @@
     "price": "0",
     "priceCurrency": "USD"
   },
-  "url": "https://tallybench.com/pace-calculator.html"
+  "url": "https://tallybench.com/fire-calculator.html"
 }
 </script>
 <!-- TB:BREADCRUMB:START -->
@@ -98,15 +98,15 @@
                             {
                                 "@type":  "ListItem",
                                 "position":  2,
-                                "name":  "Pace Calculator",
-                                "item":  "https://tallybench.com/pace-calculator.html"
+                                "name":  "FIRE \u0026 Coast FIRE Calculator",
+                                "item":  "https://tallybench.com/fire-calculator.html"
                             }
                         ]
 }
 </script>
 <!-- TB:BREADCRUMB:END -->
 </head>
-<body data-page-cat="everyday">
+<body data-page-cat="finance">
 
 <header>
   <div class="wrap">
@@ -328,110 +328,78 @@
 <div class="nav-backdrop" id="navBackdrop"></div>
 
 <div class="wrap">
-  <div class="crumb"><a href="index.html">TallyBench</a> / Pace Calculator</div>
+  <div class="crumb"><a href="index.html">TallyBench</a> / FIRE Calculator</div>
 
   <section class="hero">
-    <div class="hero-icon-row cat-utility">
-      <div class="hero-icon"><svg><use href="icons.svg#icon-days"/></svg></div>
-      <div class="eyebrow">// PACE CALCULATOR</div>
+    <div class="hero-icon-row cat-finance">
+      <div class="hero-icon"><svg><use href="icons.svg#icon-investment"/></svg></div>
+      <div class="eyebrow">// FIRE &amp; COAST FIRE CALCULATOR</div>
     </div>
-    <h1>Pace, time, or distance — solve for whichever you're missing.</h1>
-    <p>Enter any two of pace, time, and distance to find the third, then see predicted finish times for common race distances at that pace.</p>
+    <h1>Your FIRE number — and how much you need saved today to coast there.</h1>
+    <p>Enter your annual expenses and a withdrawal rate to find your FIRE number, then your age and current savings to see your Coast FIRE target and progress.</p>
   </section>
 
-  <section class="tool" id="pace">
+  <section class="tool" id="fire">
     <div class="disclaimer">
-      <strong>Estimate only</strong> — a linear pace extrapolation, not a physiological race-time prediction model.
+      <strong>Estimate only — not financial advice.</strong> This applies the standard safe-withdrawal-rate FIRE model with a constant assumed return. Real portfolio returns vary year to year, and sequence-of-returns risk means actual outcomes can differ meaningfully from a smooth average.
     </div>
     <div class="card">
       <div>
-        <div class="field"><label>Solve for</label>
-          <div class="seg" id="paceModeSeg">
-            <button type="button" class="active" data-mode="pace">Find Pace</button>
-            <button type="button" data-mode="time">Find Time</button>
-            <button type="button" data-mode="distance">Find Distance</button>
-          </div>
-        </div>
-        <div class="field"><label>Unit</label>
-          <select id="paceUnit">
-            <option value="km">Kilometers</option>
-            <option value="mi">Miles</option>
+        <div class="field"><label>Currency</label>
+          <select id="fireCur">
+            <option value="$">USD ($)</option>
+            <option value="€">EUR (€)</option>
+            <option value="£">GBP (£)</option>
+            <option value="₹">INR (₹)</option>
+            <option value="¥">JPY (¥)</option>
+            <option value="A$">AUD (A$)</option>
+            <option value="C$">CAD (C$)</option>
+            <option value="CHF ">CHF</option>
+            <option value="CN¥">CNY (CN¥)</option>
+            <option value="S$">SGD (S$)</option>
+            <option value="AED ">AED</option>
+            <option value="NZ$">NZD (NZ$)</option>
+            <option value="R">ZAR (R)</option>
+            <option value="R$">BRL (R$)</option>
+            <option value="MX$">MXN (MX$)</option>
+            <option value="HK$">HKD (HK$)</option>
+            <option value="₩">KRW (₩)</option>
+            <option value="kr">SEK/NOK (kr)</option>
           </select>
         </div>
-
-        <div id="pcFieldsPace">
-          <div class="field"><label>Distance</label><input type="number" id="pcDistance1" value="5" min="0" step="0.01"></div>
-          <div class="field"><label>Time (H / M / S)</label>
-            <div class="row3">
-              <input type="number" id="pcH1" value="0" min="0" placeholder="Hours" title="Hours">
-              <input type="number" id="pcM1" value="25" min="0" max="59" placeholder="Minutes" title="Minutes">
-              <input type="number" id="pcS1" value="0" min="0" max="59" placeholder="Seconds" title="Seconds">
-            </div>
-          </div>
-        </div>
-
-        <div id="pcFieldsTime" style="display:none;">
-          <div class="field"><label>Distance</label><input type="number" id="pcDistance2" value="10" min="0" step="0.01"></div>
-          <div class="field"><label>Pace (M / S per unit)</label>
-            <div class="row2">
-              <input type="number" id="pcPaceM2" value="5" min="0" placeholder="Minutes" title="Minutes">
-              <input type="number" id="pcPaceS2" value="0" min="0" max="59" placeholder="Seconds" title="Seconds">
-            </div>
-          </div>
-        </div>
-
-        <div id="pcFieldsDistance" style="display:none;">
-          <div class="field"><label>Time (H / M / S)</label>
-            <div class="row3">
-              <input type="number" id="pcH3" value="1" min="0" placeholder="Hours" title="Hours">
-              <input type="number" id="pcM3" value="0" min="0" max="59" placeholder="Minutes" title="Minutes">
-              <input type="number" id="pcS3" value="0" min="0" max="59" placeholder="Seconds" title="Seconds">
-            </div>
-          </div>
-          <div class="field"><label>Pace (M / S per unit)</label>
-            <div class="row2">
-              <input type="number" id="pcPaceM3" value="5" min="0" placeholder="Minutes" title="Minutes">
-              <input type="number" id="pcPaceS3" value="0" min="0" max="59" placeholder="Seconds" title="Seconds">
-            </div>
-          </div>
-        </div>
-
-        <div class="field-warning" id="pcWarning"></div>
+        <div class="field"><label>Annual expenses (current)</label><input type="number" id="fireExpenses" value="40000" step="1000"></div>
+        <div class="field"><label>Safe withdrawal rate (%)</label><input type="number" id="fireWithdrawal" value="4" step="0.25"></div>
+        <div class="field"><label>Current invested savings</label><input type="number" id="fireSavings" value="150000" min="0" step="5000"></div>
+        <div class="field"><label>Current age</label><input type="number" id="fireAge" value="30" min="0" max="100" step="1"></div>
+        <div class="field"><label>Target retirement age</label><input type="number" id="fireRetireAge" value="60" min="0" max="100" step="1"></div>
+        <div class="field"><label>Expected annual return (%)</label><input type="number" id="fireReturn" value="7" step="0.5"></div>
       </div>
       <div class="readout">
-        <div class="r-row"><span class="r-label" id="pcResultLabel">Pace</span><span class="r-value" id="pcResultValue">5:00 /km</span></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="tool" id="paceRaces" style="padding-top:0;">
-    <div class="tool-head"><span class="tool-num">//</span><div><h2>Race Time Predictions</h2><p class="tool-sub">Straight-line extrapolation from your current pace — not a physiological model.</p></div></div>
-    <div class="card" style="grid-template-columns:1fr;">
-      <div class="readout">
-        <div class="r-row"><span class="r-label">5K</span><span class="r-value" id="pcPred5k">—</span></div>
-        <div class="r-row"><span class="r-label">10K</span><span class="r-value" id="pcPred10k">—</span></div>
-        <div class="r-row"><span class="r-label">Half Marathon</span><span class="r-value" id="pcPredHalf">—</span></div>
-        <div class="r-row"><span class="r-label">Marathon</span><span class="r-value" id="pcPredFull">—</span></div>
+        <div class="r-row"><span class="r-label">FIRE number</span><span class="r-value" id="fireNumber">$0</span></div>
+        <div class="r-row"><span class="r-label">Coast FIRE number (today)</span><span class="r-value" id="fireCoastNumber">$0</span></div>
+        <div class="r-row"><span class="r-label">Progress toward FIRE</span><span class="r-value" id="fireProgress">0%</span></div>
+        <div class="r-row"><span class="r-label">Coast FIRE status</span><span class="r-sub" id="fireCoastStatus">—</span></div>
       </div>
     </div>
   </section>
 
   <section class="article">
-    <h3>How do I calculate my running pace?</h3>
-    <p>Divide your total time by the distance covered: convert your time to total seconds, divide by the distance, then convert the result back to minutes and seconds per unit. Running 5 km in 25 minutes works out to 1,500 seconds ÷ 5 km = 300 seconds per km, or 5:00/km.</p>
-    <h3>What's a good pace for a beginner runner?</h3>
-    <p>It varies hugely from person to person, but a commonly cited illustrative range for beginners is roughly 6:00-8:00 per kilometer (about 10-13 minutes per mile). Treat that purely as a reference point rather than a target to hit — showing up consistently matters far more than any specific pace number early on.</p>
-    <h3>How accurate are race time predictions from a training pace?</h3>
-    <p>This tool does a straight linear extrapolation from whatever pace you've entered or computed, not a physiological model like Riegel's formula, which accounts for endurance fall-off over longer distances. Real race performance also depends heavily on pacing strategy, terrain, weather, and how well-trained you are for the specific distance, so treat these predictions as a rough starting point rather than a guarantee.</p>
-    <h3>Miles or kilometers — does it matter?</h3>
-    <p>No — pick whichever unit you actually train in. The math is unit-consistent either way: race distances are converted internally so the predictions below come out correctly whether you're working in km or miles. If you need to convert between the two elsewhere, the <a href="unit-converter.html">Unit Converter</a> handles that directly.</p>
-    <p><strong>Worked example:</strong> running 5 km in 25:00 gives a pace of 1,500 seconds ÷ 5 = 300 seconds per km, i.e. 5:00/km. At that same pace, a 10K would take 300 × 10 = 3,000 seconds, or exactly 50:00. Pair this with the <a href="time-calculator.html">Time Calculator</a> for adding up split times, or the <a href="calorie-calculator.html">Calorie Calculator</a> to estimate energy burned over a training run.</p>
+    <h3>What is a FIRE number?</h3>
+    <p>Your FIRE number is the invested net worth needed to sustain your spending indefinitely using a safe withdrawal rate — most commonly the "4% rule," derived from the Trinity Study, which implies a FIRE number of 25× your annual expenses (1 ÷ 0.04 = 25). A lower withdrawal rate is more conservative and produces a higher FIRE number; a higher withdrawal rate is more aggressive and produces a lower one.</p>
+    <h3>What is Coast FIRE?</h3>
+    <p>Coast FIRE is the amount you'd need invested today such that, left alone with no further contributions, compound growth alone carries it to your full FIRE number by your target retirement age: <strong>Coast FIRE number = FIRE number ÷ (1 + return)<sup>years to retirement</sup></strong>. Once you've hit your Coast FIRE number, you can theoretically stop saving for retirement entirely and just cover current living expenses — though most people in practice keep contributing rather than literally stopping.</p>
+    <h3>Is the 4% rule still considered safe?</h3>
+    <p>It's genuinely debated. The original Trinity Study looked at 30-year US retirement horizons; retiring in your 30s or 40s implies a much longer horizon than that study modeled, which is why many in the FIRE community use a more conservative 3.25–3.5% withdrawal rate instead. Adjust the withdrawal rate field above to see how that single assumption moves your entire target.</p>
+    <h3>Does this account for Social Security, pensions, or other income?</h3>
+    <p>No — this calculates the FIRE number needed if your investment portfolio alone had to cover 100% of expenses. Any pension, Social Security, or other guaranteed income you'll eventually receive would reduce how much portfolio-funded spending you actually need, and therefore your real FIRE number — factor that in separately if it applies to you.</p>
+    <p><strong>Worked example:</strong> $40,000/year in expenses at a 4% withdrawal rate gives a FIRE number of $1,000,000. At age 30 targeting retirement at 60 (30 years) with a 7% expected return, the Coast FIRE number today is about $131,367 — meaning $150,000 already saved at age 30 has already cleared Coast FIRE for this scenario.</p>
   </section>
 
+  <p style="font-size:13px;color:rgba(242,236,221,0.55);margin:0 0 24px;">Building toward this number? See the <a href="retirement-calculator.html">Retirement Calculator</a>, <a href="savings-calculator.html">Savings Calculator</a>, and <a href="investment-calculator.html">Investment Calculator</a>.</p>
 
   <footer>
-<p>TALLYBENCH · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
-</footer>
+    <p>TALLYBENCH · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
+  </footer>
 </div>
 
 <script src="script.js"></script>
