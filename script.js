@@ -9777,3 +9777,50 @@ function tbMoney(n){
       calc();
     });
 })();
+
+// ---- Zakat calculator ----
+(function(){
+  if(!document.getElementById('zakCash')) return;
+  let nisabBasis = 'silver';
+  const seg = document.getElementById('zakNisabSeg');
+  const GOLD_GRAMS = 87.48, SILVER_GRAMS = 612.36;
+
+  function calc(){
+    const cur = document.getElementById('zakCur').value;
+    const cash = Math.max(parseFloat(document.getElementById('zakCash').value)||0, 0);
+    const metals = Math.max(parseFloat(document.getElementById('zakMetals').value)||0, 0);
+    const invest = Math.max(parseFloat(document.getElementById('zakInvest').value)||0, 0);
+    const inventory = Math.max(parseFloat(document.getElementById('zakInventory').value)||0, 0);
+    const other = Math.max(parseFloat(document.getElementById('zakOther').value)||0, 0);
+    const debts = Math.max(parseFloat(document.getElementById('zakDebts').value)||0, 0);
+    const goldPrice = Math.max(parseFloat(document.getElementById('zakGoldPrice').value)||0, 0);
+    const silverPrice = Math.max(parseFloat(document.getElementById('zakSilverPrice').value)||0, 0);
+
+    const nisab = nisabBasis==='gold' ? GOLD_GRAMS*goldPrice : SILVER_GRAMS*silverPrice;
+    const totalAssets = cash+metals+invest+inventory+other;
+    const netWealth = Math.max(totalAssets-debts, 0);
+    const eligible = netWealth >= nisab && nisab > 0;
+    const zakatDue = eligible ? netWealth*0.025 : 0;
+
+    document.getElementById('zakNetWealth').textContent = cur+Math.round(netWealth).toLocaleString();
+    document.getElementById('zakNisab').textContent = cur+Math.round(nisab).toLocaleString();
+    document.getElementById('zakDue').textContent = cur+zakatDue.toFixed(2);
+    document.getElementById('zakStatus').textContent = eligible
+      ? 'Above nisab — Zakat is due (if held for a full lunar year)'
+      : 'Below nisab — Zakat is not obligatory on this wealth';
+  }
+
+  seg.addEventListener('click',(e)=>{
+    const btn=e.target.closest('button'); if(!btn) return;
+    nisabBasis = btn.dataset.basis;
+    seg.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    calc();
+  });
+  ['zakCur','zakCash','zakMetals','zakInvest','zakInventory','zakOther','zakDebts','zakGoldPrice','zakSilverPrice'].forEach(id=>{
+    const el = document.getElementById(id);
+    el.addEventListener('input',calc);
+    el.addEventListener('change',calc);
+  });
+  calc();
+})();
