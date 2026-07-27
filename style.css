@@ -428,31 +428,6 @@ body.nav-open .nav-backdrop{display:block;}
 }
 .article-body .callout p:last-child{margin-bottom:0;}
 .article-body .callout strong{color:#fff;}
-
-/* Justified long-form prose — articles only, desktop only.
-   Scoped deliberately:
-   - p and li only. Headings are never justified; a justified multi-line h2
-     reads as broken, not tidy.
-   - .article-body only. Calculator FAQ answers (.article) and all UI text
-     stay ragged-right.
-   - min-width:641px only. Below the mobile breakpoint there are too few
-     words per line, so justifying blows the word gaps out badly.
-   hyphens:auto is REQUIRED here, not optional. Browsers justify by
-   stretching word spaces only; without hyphenation the leftover space per
-   line piles into a handful of gaps and produces vertical "rivers" of
-   whitespace. hyphenate-limit-chars keeps it from hyphenating short words
-   (ignored by browsers that don't support it).
-   Must stay AFTER the .article-body rules above — equal specificity, so
-   source order decides the winner. */
-@media(min-width:641px){
-  .article-body p,
-  .article-body li{
-    text-align:justify;
-    -webkit-hyphens:auto;
-    hyphens:auto;
-    hyphenate-limit-chars:7 4 3;
-  }
-}
 .article-cta-row{display:flex;flex-wrap:wrap;gap:12px;margin:28px 0 8px;}
 .article-cta-btn{
   font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.05em;text-transform:uppercase;
