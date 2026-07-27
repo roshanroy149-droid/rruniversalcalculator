@@ -457,7 +457,12 @@ body.nav-open .nav-backdrop{display:block;}
 .cat-finance .article-card-tag{color:var(--orange);}
 .cat-health .article-card-tag{color:var(--teal-light);}
 .cat-education .article-card-tag{color:var(--plum-light);}
-.cat-utility .article-card-tag{color:var(--steel-light);}
+/* The "everyday" tool category is themed steel. Historically the class was
+   named .cat-utility while tools.json calls the category "everyday", so both
+   names are accepted here — otherwise a page authored with the category name
+   silently renders with no hero gradient at all (which is what happened to
+   bill-split and fuel-cost). Keep both selectors on every rule below. */
+.cat-utility .article-card-tag,.cat-everyday .article-card-tag{color:var(--steel-light);}
 .article-card h3{
   font-family:'Space Grotesk',sans-serif;font-size:20px;letter-spacing:-0.01em;
   margin:0 0 8px;color:var(--text-on-dark);
@@ -501,7 +506,8 @@ body.nav-open .nav-backdrop{display:block;}
 }
 body:has(.hero-icon-row.cat-health) .tool-num{color:var(--teal-light);}
 body:has(.hero-icon-row.cat-education) .tool-num{color:var(--plum-light);}
-body:has(.hero-icon-row.cat-utility) .tool-num{color:var(--steel-light);}
+body:has(.hero-icon-row.cat-utility) .tool-num,
+body:has(.hero-icon-row.cat-everyday) .tool-num{color:var(--steel-light);}
 .tool h2{
   font-family:'Space Grotesk',sans-serif;font-size:24px;margin:0;letter-spacing:-0.01em;
 }
@@ -709,11 +715,12 @@ footer a{color:var(--teal-light) !important;}
 .cat-finance .tcl-icon,.cat-finance .hero-icon{background:rgba(192,138,52,0.14);color:var(--orange-dark);}
 .cat-health .tcl-icon,.cat-health .hero-icon{background:rgba(47,110,104,0.14);color:var(--teal);}
 .cat-education .tcl-icon,.cat-education .hero-icon{background:rgba(124,74,107,0.14);color:var(--plum);}
-.cat-utility .tcl-icon,.cat-utility .hero-icon{background:rgba(61,90,115,0.12);color:var(--steel);}
+.cat-utility .tcl-icon,.cat-utility .hero-icon,
+.cat-everyday .tcl-icon,.cat-everyday .hero-icon{background:rgba(61,90,115,0.12);color:var(--steel);}
 .cat-finance:hover{border-color:var(--orange);}
 .cat-health:hover{border-color:var(--teal);}
 .cat-education:hover{border-color:var(--plum);}
-.cat-utility:hover{border-color:var(--steel);}
+.cat-utility:hover,.cat-everyday:hover{border-color:var(--steel);}
 
 /* PAGE HERO ICON (tool pages) */
 .hero-icon-row{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
@@ -737,7 +744,8 @@ footer a{color:var(--teal-light) !important;}
 .hero:has(.hero-icon-row.cat-finance){background:linear-gradient(135deg, var(--orange-dark), #6E4C1B);}
 .hero:has(.hero-icon-row.cat-health){background:linear-gradient(135deg, var(--teal-dark), #15302C);}
 .hero:has(.hero-icon-row.cat-education){background:linear-gradient(135deg, var(--plum), #46283C);}
-.hero:has(.hero-icon-row.cat-utility){background:linear-gradient(135deg, var(--steel), var(--steel-dark));}
+.hero:has(.hero-icon-row.cat-utility),
+.hero:has(.hero-icon-row.cat-everyday){background:linear-gradient(135deg, var(--steel), var(--steel-dark));}
 .hero:has(.hero-icon-row[class*="cat-"]){
   border-radius:var(--radius);
   padding:30px 28px;
