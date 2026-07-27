@@ -234,6 +234,7 @@ $countLegacyPattern = '\d+ TOOLS [^<]*SIGN-UP'
 
 $htmlFiles = Get-ChildItem -Path $root -Filter '*.html' -File
 $changed = @()
+$missingMarkers = @()
 
 foreach ($f in $htmlFiles) {
     $original = [System.IO.File]::ReadAllText($f.FullName)
@@ -260,6 +261,35 @@ foreach ($f in $htmlFiles) {
     $breadcrumbResult = Sync-Marker $content 'BREADCRUMB' { param($indent) New-BreadcrumbBlock $indent $f.Name }
     if ($null -ne $breadcrumbResult) { $content = $breadcrumbResult }
 
+    # A page with no marker is silently skipped by Sync-Marker, so a page that
+    # was created without one keeps shipping stale/absent generated content and
+    # nothing here complains. That has bitten this project twice (16 article
+    # pages missing TB:BREADCRUMB). Collect the gaps and report them below.
+    # Legitimate exceptions: the Google Search Console verification file is a
+    # bare stub with no site chrome (and must never be edited), and index.html
+    # is intentionally the one page with no breadcrumb, since it IS the root.
+    $isVerificationFile = $f.Name -like 'google*.html'
+    if (-not $isVerificationFile) {
+        foreach ($m in @('NAV', 'COUNT')) {
+            if ($content -notmatch "TB:${m}:START") {
+                $missingMarkers += [PSCustomObject]@{ File = $f.Name; Marker = $m }
+            }
+        }
+        if ($f.Name -ne 'index.html' -and $content -notmatch 'TB:BREADCRUMB:START') {
+            $missingMarkers += [PSCustomObject]@{ File = $f.Name; Marker = 'BREADCRUMB' }
+        }
+    }
+    if ($f.Name -eq 'index.html') {
+        foreach ($m in @('HOMEGRID', 'SEARCHDATA')) {
+            if ($content -notmatch "TB:${m}:START") {
+                $missingMarkers += [PSCustomObject]@{ File = $f.Name; Marker = $m }
+            }
+        }
+    }
+    if ($f.Name -eq 'articles.html' -and $content -notmatch 'TB:ARTICLELIST:START') {
+        $missingMarkers += [PSCustomObject]@{ File = $f.Name; Marker = 'ARTICLELIST' }
+    }
+
     if ($content -ne $original) {
         [System.IO.File]::WriteAllText($f.FullName, $content, $utf8NoBom)
         $changed += $f.Name
@@ -268,3 +298,12 @@ foreach ($f in $htmlFiles) {
 
 Write-Host "Synced $($htmlFiles.Count) pages. Changed: $($changed.Count)"
 $changed | ForEach-Object { Write-Host "  $_" }
+
+if ($missingMarkers.Count -gt 0) {
+    Write-Host ""
+    Write-Warning "$($missingMarkers.Count) missing marker(s) - these pages were SKIPPED, not synced:"
+    $missingMarkers | ForEach-Object { Write-Host "  $($_.File) is missing TB:$($_.Marker)" -ForegroundColor Yellow }
+    Write-Host "Add the marker pair to each page, then re-run this script." -ForegroundColor Yellow
+} else {
+    Write-Host "All expected markers present."
+}
