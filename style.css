@@ -907,6 +907,16 @@ footer a{color:var(--teal-light) !important;}
 .bracket-table th,.bracket-table td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--paper-line);}
 .bracket-table th{color:var(--graphite);font-weight:500;text-transform:uppercase;font-size:10px;letter-spacing:0.05em;background:rgba(28,26,23,0.04);}
 .bracket-table tbody tr:last-child td{border-bottom:none;}
+/* Tables are a light surface sitting inside the dark page shell, so the
+   dark-shell text rules must not leak into them. .article-body strong sets
+   colour to --text-on-dark (near-white), which inside a white table cell
+   rendered at a 1.18:1 contrast ratio — effectively invisible. These
+   selectors carry a class more than .article-body strong, so they win on
+   specificity rather than relying on source order. */
+.article-body .bracket-table strong,
+.article-body .bracket-table b,
+.article-body .data-table strong,
+.article-body .data-table b{color:var(--ink);}
 .bracket-table tbody tr:hover{background:rgba(192,138,52,0.05);}
 .field-warning{
   display:none;
