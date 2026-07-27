@@ -10062,3 +10062,78 @@ function tbMoney(n){
   });
   calc();
 })();
+
+// ---- Cash Back vs. Low Interest Calculator ----
+(function(){
+  if(!document.getElementById('cblPrice')) return;
+  const curEl = document.getElementById('cblCur');
+  const priceEl = document.getElementById('cblPrice');
+  const cashEl = document.getElementById('cblCashBack');
+  const lowEl = document.getElementById('cblLowApr');
+  const stdEl = document.getElementById('cblStdApr');
+  const termEl = document.getElementById('cblTerm');
+  const warnEl = document.getElementById('cblWarning');
+
+  // Standard fixed-rate amortization payment. A 0% promotional APR is common
+  // on these offers, so the zero-rate branch is a real case, not a guard.
+  function payment(principal, apr, months){
+    const r = apr/100/12;
+    if(r === 0) return principal/months;
+    return principal*r*Math.pow(1+r,months)/(Math.pow(1+r,months)-1);
+  }
+  function money(cur, v){
+    return cur + v.toLocaleString(undefined,{minimumFractionDigits:2, maximumFractionDigits:2});
+  }
+  function set(id, txt){ document.getElementById(id).textContent = txt; }
+
+  function calc(){
+    const cur = curEl.value;
+    const price = parseFloat(priceEl.value);
+    const cash = parseFloat(cashEl.value);
+    const lowApr = parseFloat(lowEl.value);
+    const stdApr = parseFloat(stdEl.value);
+    const term = parseInt(termEl.value, 10);
+
+    const blank = ['cblPayA','cblTotalA','cblPayB','cblTotalB','cblRecommended','cblSavings'];
+    if(!isFinite(price) || !isFinite(cash) || !isFinite(lowApr) || !isFinite(stdApr) ||
+       !isFinite(term) || price <= 0 || term < 1){
+      blank.forEach(id=>set(id,'—'));
+      warnEl.textContent = 'Enter a vehicle price above 0 and a loan term of at least 1 month.';
+      return;
+    }
+    if(cash > price){
+      blank.forEach(id=>set(id,'—'));
+      warnEl.textContent = 'Cash back cannot be larger than the vehicle price.';
+      return;
+    }
+    warnEl.textContent = '';
+
+    // Option A: take the rebate, finance (price - rebate) at the standard APR.
+    // Option B: skip the rebate, finance the full price at the promotional APR.
+    const payA = payment(price - cash, stdApr, term), totalA = payA*term;
+    const payB = payment(price, lowApr, term), totalB = payB*term;
+
+    set('cblPayA', money(cur, payA));
+    set('cblTotalA', money(cur, totalA));
+    set('cblPayB', money(cur, payB));
+    set('cblTotalB', money(cur, totalB));
+
+    const diff = Math.abs(totalA - totalB);
+    if(Math.abs(totalA - totalB) < 0.01){
+      set('cblRecommended', 'Either — same cost');
+      set('cblSavings', money(cur, 0));
+    } else if(totalA < totalB){
+      set('cblRecommended', 'Option A — Take Cash Back');
+      set('cblSavings', money(cur, diff));
+    } else {
+      set('cblRecommended', 'Option B — Low Rate');
+      set('cblSavings', money(cur, diff));
+    }
+  }
+
+  [curEl, priceEl, cashEl, lowEl, stdEl, termEl].forEach(el=>{
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+  calc();
+})();

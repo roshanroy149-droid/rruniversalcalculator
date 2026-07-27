@@ -352,18 +352,44 @@
     </div>
     <div class="card">
       <div>
-        <div class="field"><label>Vehicle price ($)</label><input type="number" id="cblPrice" value="30000" step="100"></div>
-        <div class="field"><label>Cash back offer ($)</label><input type="number" id="cblCashBack" value="3000" step="100" min="0"></div>
-        <div class="field"><label>Low promotional APR (%) — if you skip cash back</label><input type="number" id="cblLowApr" value="1.9" step="0.01" min="0"></div>
-        <div class="field"><label>Standard APR (%) — if you take cash back</label><input type="number" id="cblStdApr" value="6.9" step="0.01" min="0"></div>
-        <div class="field"><label>Loan term (months)</label><input type="number" id="cblTerm" value="60" step="1" min="1"></div>
+        <div class="field"><label for="cblCur">Currency</label>
+          <select id="cblCur">
+            <option value="$">USD ($)</option>
+            <option value="€">EUR (€)</option>
+            <option value="£">GBP (£)</option>
+            <option value="₹">INR (₹)</option>
+            <option value="¥">JPY (¥)</option>
+            <option value="A$">AUD (A$)</option>
+            <option value="C$">CAD (C$)</option>
+            <option value="CHF ">CHF</option>
+            <option value="CN¥">CNY (CN¥)</option>
+            <option value="S$">SGD (S$)</option>
+            <option value="AED ">AED</option>
+            <option value="NZ$">NZD (NZ$)</option>
+            <option value="R">ZAR (R)</option>
+            <option value="R$">BRL (R$)</option>
+            <option value="MX$">MXN (MX$)</option>
+            <option value="HK$">HKD (HK$)</option>
+            <option value="₩">KRW (₩)</option>
+            <option value="kr">SEK/NOK (kr)</option>
+          </select>
+        </div>
+        <div class="field"><label for="cblPrice">Vehicle price</label><input type="number" id="cblPrice" value="30000" step="100" min="0"></div>
+        <div class="field"><label for="cblCashBack">Cash back offer</label><input type="number" id="cblCashBack" value="3000" step="100" min="0"></div>
+        <div class="field"><label for="cblLowApr">Low promotional APR (%) — if you skip cash back</label><input type="number" id="cblLowApr" value="1.9" step="0.01" min="0"></div>
+        <div class="field"><label for="cblStdApr">Standard APR (%) — if you take cash back</label><input type="number" id="cblStdApr" value="6.9" step="0.01" min="0"></div>
+        <div class="field"><label for="cblTerm">Loan term (months)</label><input type="number" id="cblTerm" value="60" step="1" min="1"></div>
       </div>
       <div class="readout">
-        <div class="r-row"><span class="r-label">Option A — Take Cash Back: Total Cost</span><span class="r-value" id="cblTotalA">$0</span></div>
-        <div class="r-row"><span class="r-label">Option B — Low Rate: Total Cost</span><span class="r-value" id="cblTotalB">$0</span></div>
+        <div class="r-row"><span class="r-label">Option A — Take Cash Back: Monthly Payment</span><span class="r-value" id="cblPayA">—</span></div>
+        <div class="r-row"><span class="r-label">Option A — Take Cash Back: Total Cost</span><span class="r-value" id="cblTotalA">—</span></div>
+        <div class="r-row"><span class="r-label">Option B — Low Rate: Monthly Payment</span><span class="r-value" id="cblPayB">—</span></div>
+        <div class="r-row"><span class="r-label">Option B — Low Rate: Total Cost</span><span class="r-value" id="cblTotalB">—</span></div>
         <div class="r-row"><span class="r-label">Recommended Option</span><span class="r-value" id="cblRecommended">—</span></div>
-        <div class="r-row"><span class="r-label">You Save</span><span class="r-value" id="cblSavings">$0</span></div>
+        <div class="r-row"><span class="r-label">You Save</span><span class="r-value" id="cblSavings">—</span></div>
+        <div class="r-sub" id="cblSub">Option A finances the price minus the rebate at the standard APR; Option B finances the full price at the promotional APR.</div>
       </div>
+      <div class="field-warning" id="cblWarning"></div>
     </div>
   </section>
 
