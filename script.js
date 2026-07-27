@@ -105,10 +105,12 @@ window.__TB_EMBED__ = new URLSearchParams(window.location.search).get('embed') =
   // matching .cat-tab/.sub-tick to open) purely so the plain ARTICLES nav link gets the
   // same copper "you are here" highlight a calculator page's category tab gets, instead
   // of staying its default muted color while you're reading an article.
+  // book.html does the same with data-page-cat="book" and the BOOK link.
   const pageCat = document.body.dataset.pageCat;
-  if(pageCat === 'articles'){
-    const articlesLink = document.querySelector('.tick[href="articles.html"]');
-    if(articlesLink) articlesLink.classList.add('active');
+  const PLAIN_LINKS = { articles: 'articles.html', book: 'book.html' };
+  if(PLAIN_LINKS[pageCat]){
+    const link = document.querySelector('.tick[href="' + PLAIN_LINKS[pageCat] + '"]');
+    if(link) link.classList.add('active');
   } else if(pageCat){
     openCategory(pageCat, false);
   }

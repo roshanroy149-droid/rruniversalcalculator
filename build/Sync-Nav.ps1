@@ -43,6 +43,7 @@ function New-NavBlock($indent) {
     $lines.Add("$indent  <nav class=`"ruler cat-ruler`" aria-label=`"Category`">")
     $lines.Add("$indent    <a class=`"tick`" href=`"index.html`">HOME</a>")
     $lines.Add("$indent    <a class=`"tick`" href=`"articles.html`">ARTICLES</a>")
+    $lines.Add("$indent    <a class=`"tick`" href=`"book.html`">BOOK</a>")
     foreach ($cat in $data.categories) {
         $lines.Add("$indent    <button class=`"tick cat-tab`" type=`"button`" data-cat=`"$($cat.id)`">$($cat.label)</button>")
     }
@@ -171,6 +172,8 @@ function New-BreadcrumbBlock($indent, $fileName) {
         $crumbs.Add(@{ name = ($article.title -replace '&amp;', '&'); item = "https://tallybench.com/$($article.file)" })
     } elseif ($fileName -eq 'articles.html') {
         $crumbs.Add(@{ name = 'Articles'; item = 'https://tallybench.com/articles.html' })
+    } elseif ($fileName -eq 'book.html') {
+        $crumbs.Add(@{ name = 'The Book'; item = 'https://tallybench.com/book.html' })
     } elseif ($fileName -eq 'about.html') {
         $crumbs.Add(@{ name = 'About'; item = 'https://tallybench.com/about.html' })
     } elseif ($fileName -eq 'privacy-policy.html') {
