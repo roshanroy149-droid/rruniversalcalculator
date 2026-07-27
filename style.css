@@ -917,6 +917,16 @@ footer a{color:var(--teal-light) !important;}
 .article-body .bracket-table b,
 .article-body .data-table strong,
 .article-body .data-table b{color:var(--ink);}
+
+/* Book contents table: the Part column is numbered ("1. Money Foundations"),
+   and in a narrow column the name wraps. Without a hanging indent the second
+   line resets to the cell's left edge and sits under the "1.", which reads as
+   broken alignment. The table is set in JetBrains Mono, so "1. " is exactly
+   3 characters wide and 3ch is an exact offset rather than an approximation. */
+.book-contents td:first-child{
+  padding-left:calc(12px + 3ch);
+  text-indent:-3ch;
+}
 .bracket-table tbody tr:hover{background:rgba(192,138,52,0.05);}
 .field-warning{
   display:none;
