@@ -399,11 +399,13 @@ body.nav-open .nav-backdrop{display:block;}
 }
 @media(max-width:480px){.article-hero{padding:36px 0 30px;}}
 
-/* ARTICLE BODY — long-form guide content, wider measure and bigger section
-   headings than the FAQ-oriented .article block so a multi-section guide
-   reads well; the FAQ at the bottom of an article page still uses .article
-   for visual consistency with every calculator page's FAQ section. */
-.article-body{max-width:700px;color:rgba(242,236,221,0.82);line-height:1.75;font-size:16px;}
+/* ARTICLE BODY — long-form guide content, with bigger section headings than
+   the FAQ-oriented .article block so a multi-section guide reads well; the
+   FAQ at the bottom of an article page still uses .article for visual
+   consistency with every calculator page's FAQ section.
+   Like .article, this carries no max-width so the text column runs flush
+   with the rest of the page rather than stopping short of it. */
+.article-body{color:rgba(242,236,221,0.82);line-height:1.75;font-size:16px;}
 .article-body h2{
   font-family:'Space Grotesk',sans-serif;font-size:25px;letter-spacing:-0.015em;
   color:var(--text-on-dark);margin:40px 0 14px;
@@ -631,7 +633,10 @@ footer a{color:var(--teal-light) !important;}
    tool pages, sitting directly on the dark page shell, not just inside
    #about's own richer dark band. Must be light-on-dark by default here, or
    every page's FAQ section goes dark-text-on-dark-background and disappears. */
-.article{max-width:640px;color:rgba(242,236,221,0.78);line-height:1.7;font-size:15px;}
+/* No max-width: the FAQ deliberately runs the same width as the .tool section
+   above it, so the column edge doesn't jump inward partway down the page.
+   Overall line length is still bounded by .wrap's 1240px cap. */
+.article{color:rgba(242,236,221,0.78);line-height:1.7;font-size:15px;}
 .article h3{font-family:'Space Grotesk',sans-serif;font-size:17px;margin:26px 0 8px;color:var(--text-on-dark);}
 .article a{color:var(--teal-light);}
 .article a:hover{color:#fff;}
