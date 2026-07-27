@@ -105,9 +105,10 @@ window.__TB_EMBED__ = new URLSearchParams(window.location.search).get('embed') =
   // matching .cat-tab/.sub-tick to open) purely so the plain ARTICLES nav link gets the
   // same copper "you are here" highlight a calculator page's category tab gets, instead
   // of staying its default muted color while you're reading an article.
-  // book.html does the same with data-page-cat="book" and the BOOK link.
+  // book.html does the same with data-page-cat="book" and the BOOK link,
+  // and tallystock.html with data-page-cat="tallystock" and the TALLYSTOCK link.
   const pageCat = document.body.dataset.pageCat;
-  const PLAIN_LINKS = { articles: 'articles.html', book: 'book.html' };
+  const PLAIN_LINKS = { articles: 'articles.html', book: 'book.html', tallystock: 'tallystock.html' };
   if(PLAIN_LINKS[pageCat]){
     const link = document.querySelector('.tick[href="' + PLAIN_LINKS[pageCat] + '"]');
     if(link) link.classList.add('active');
@@ -5173,11 +5174,17 @@ function amortizationToCSV(years, cur){
 // the already-working calculator-page embed feature. ----
 (function(){
   if (window.__TB_EMBED__) return;
+  // Gate on the actual article page-cat, not just the presence of these CSS
+  // classes — book.html and tallystock.html reuse .article-cta-row/.article-cta-btn
+  // for their own CTA styling but aren't articles, and their first CTA (an
+  // Amazon link, a mailto: link) isn't a calculator this widget can embed.
+  if (document.body.dataset.pageCat !== 'articles') return;
   const ctaRow = document.querySelector('.article-cta-row');
   const firstCta = ctaRow ? ctaRow.querySelector('.article-cta-btn[href]') : null;
-  if (!ctaRow || !firstCta) return; // not an article page, or nothing to embed
+  if (!ctaRow || !firstCta) return; // nothing to embed
 
   const targetFile = firstCta.getAttribute('href');
+  if (!/^[\w-]+\.html$/.test(targetFile)) return; // not a local calculator page
   // The primary CTA's own text is an action phrase ("Run your India tax
   // estimate →"), not a clean tool name — fine as a link label, but reads
   // oddly prefixed with "Embed the ". Derive an actual name from the
