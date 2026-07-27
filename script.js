@@ -10137,3 +10137,80 @@ function tbMoney(n){
   });
   calc();
 })();
+
+// ---- TDEE Calculator ----
+(function(){
+  if(!document.getElementById('tdeeAge')) return;
+  const unitSeg = document.getElementById('tdeeUnitSeg');
+  const sexSeg = document.getElementById('tdeeSexSeg');
+  const activityEl = document.getElementById('tdeeActivity');
+  const warnEl = document.getElementById('tdeeWarning');
+  let unit = 'metric', sex = 'male';
+
+  function set(id, txt){ document.getElementById(id).textContent = txt; }
+  function kcal(v){ return Math.round(v).toLocaleString() + ' kcal/day'; }
+
+  function weightKg(){
+    return unit === 'metric'
+      ? parseFloat(document.getElementById('tdeeWeightKg').value)
+      : parseFloat(document.getElementById('tdeeWeightLb').value) * 0.45359237;
+  }
+  function heightCm(){
+    if(unit === 'metric') return parseFloat(document.getElementById('tdeeHeightCm').value);
+    const ft = parseFloat(document.getElementById('tdeeHeightFt').value);
+    const inch = parseFloat(document.getElementById('tdeeHeightIn').value);
+    if(!isFinite(ft) || !isFinite(inch)) return NaN;
+    return (ft*12 + inch) * 2.54;
+  }
+
+  function calc(){
+    const age = parseFloat(document.getElementById('tdeeAge').value);
+    const kg = weightKg(), cm = heightCm();
+    const mult = parseFloat(activityEl.value);
+    const ids = ['tdeeTotal','tdeeBmr','tdeeActivityBurn','tdeeCutMild','tdeeCutStd','tdeeBulk'];
+
+    if(!isFinite(age) || !isFinite(kg) || !isFinite(cm) || age < 15 || age > 100 || kg <= 0 || cm <= 0){
+      ids.forEach(id=>set(id,'—'));
+      warnEl.textContent = 'Enter age 15-100 with a valid height and weight.';
+      return;
+    }
+    warnEl.textContent = '';
+
+    // Mifflin-St Jeor: generally closer to measured resting energy expenditure
+    // than the older Harris-Benedict equation.
+    const bmr = 10*kg + 6.25*cm - 5*age + (sex === 'male' ? 5 : -161);
+    const tdee = bmr * mult;
+
+    set('tdeeTotal', kcal(tdee));
+    set('tdeeBmr', kcal(bmr));
+    set('tdeeActivityBurn', '+' + Math.round(tdee - bmr).toLocaleString() + ' kcal/day');
+    set('tdeeCutMild', kcal(tdee*0.85));
+    set('tdeeCutStd', kcal(tdee*0.80));
+    set('tdeeBulk', kcal(tdee*1.15));
+  }
+
+  unitSeg.addEventListener('click',(e)=>{
+    const btn = e.target.closest('button'); if(!btn) return;
+    unit = btn.dataset.unit;
+    unitSeg.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const metric = unit === 'metric';
+    document.getElementById('tdeeWeightMetricWrap').style.display = metric ? '' : 'none';
+    document.getElementById('tdeeWeightImpWrap').style.display = metric ? 'none' : '';
+    document.getElementById('tdeeHeightMetricWrap').style.display = metric ? '' : 'none';
+    document.getElementById('tdeeHeightImpWrap').style.display = metric ? 'none' : '';
+    calc();
+  });
+  sexSeg.addEventListener('click',(e)=>{
+    const btn = e.target.closest('button'); if(!btn) return;
+    sex = btn.dataset.sex;
+    sexSeg.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    calc();
+  });
+  ['tdeeAge','tdeeWeightKg','tdeeWeightLb','tdeeHeightCm','tdeeHeightFt','tdeeHeightIn'].forEach(id=>{
+    document.getElementById(id).addEventListener('input', calc);
+  });
+  activityEl.addEventListener('change', calc);
+  calc();
+})();
