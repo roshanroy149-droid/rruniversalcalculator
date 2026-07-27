@@ -10214,3 +10214,85 @@ function tbMoney(n){
   activityEl.addEventListener('change', calc);
   calc();
 })();
+
+// ---- Protein Calculator ----
+(function(){
+  if(!document.getElementById('pcWeight')) return;
+  const weightEl = document.getElementById('pcWeight');
+  const goalEl = document.getElementById('pcGoal');
+  const bfEl = document.getElementById('pcBodyFat');
+  const unitSeg = document.getElementById('pcWeightUnitSeg');
+  const basisSeg = document.getElementById('pcBasisSeg');
+  const warnEl = document.getElementById('pcWarning');
+  let unit = 'kg', basis = 'total';
+
+  // Grams of protein per kg of the chosen basis, per day.
+  const RANGES = {
+    sedentary: [0.8, 1.0],
+    active:    [1.2, 1.4],
+    strength:  [1.6, 2.2],
+    cut:       [1.8, 2.4],
+    endurance: [1.2, 1.6]
+  };
+
+  function set(id, txt){ document.getElementById(id).textContent = txt; }
+  function g(v){ return Math.round(v) + ' g'; }
+
+  function calc(){
+    let w = parseFloat(weightEl.value);
+    const bf = parseFloat(bfEl.value);
+    const ids = ['pcRange','pcMid','pcCals','pcBasisOut','pcPerMeal'];
+
+    if(!isFinite(w) || w <= 0){
+      ids.forEach(id=>set(id,'—'));
+      warnEl.textContent = 'Enter a body weight above 0.';
+      return;
+    }
+    const kg = unit === 'kg' ? w : w * 0.45359237;
+
+    let refKg = kg, basisLabel = 'Total body weight';
+    if(basis === 'lean'){
+      if(!isFinite(bf) || bf < 3 || bf > 60){
+        ids.forEach(id=>set(id,'—'));
+        warnEl.textContent = 'Enter a body fat percentage between 3 and 60.';
+        return;
+      }
+      // Fat tissue has little protein requirement, so at higher body-fat
+      // percentages lean mass is the more sensible basis than total weight.
+      refKg = kg * (1 - bf/100);
+      basisLabel = 'Lean body mass — ' + refKg.toFixed(1) + ' kg';
+    } else {
+      basisLabel = 'Total body weight — ' + kg.toFixed(1) + ' kg';
+    }
+    warnEl.textContent = '';
+
+    const [lo, hi] = RANGES[goalEl.value];
+    const gLo = refKg*lo, gHi = refKg*hi, mid = (gLo+gHi)/2;
+
+    set('pcRange', Math.round(gLo) + '–' + Math.round(gHi) + ' g/day');
+    set('pcMid', g(mid) + '/day');
+    set('pcCals', Math.round(mid*4).toLocaleString() + ' kcal'); // protein = 4 kcal/g
+    set('pcBasisOut', basisLabel);
+    set('pcPerMeal', '~' + Math.round(mid/4) + ' g per meal');
+  }
+
+  unitSeg.addEventListener('click',(e)=>{
+    const btn = e.target.closest('button'); if(!btn) return;
+    unit = btn.dataset.unit;
+    unitSeg.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    calc();
+  });
+  basisSeg.addEventListener('click',(e)=>{
+    const btn = e.target.closest('button'); if(!btn) return;
+    basis = btn.dataset.basis;
+    basisSeg.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('pcBodyFatWrap').style.display = basis === 'lean' ? '' : 'none';
+    calc();
+  });
+  weightEl.addEventListener('input', calc);
+  bfEl.addEventListener('input', calc);
+  goalEl.addEventListener('change', calc);
+  calc();
+})();
