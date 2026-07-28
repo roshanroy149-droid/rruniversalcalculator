@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bill Split Calculator — Uneven Shares, Tax &amp; Tip | TallyBench</title>
-<meta name="description" content="Free bill split calculator for uneven amounts. Enter what each person ordered and the tax/tip percentages to see exactly what everyone owes.">
-<link rel="canonical" href="https://tallybench.com/bill-split-calculator.html">
+<title>PSLF Calculator — Public Service Loan Forgiveness 2026 | TallyBench</title>
+<meta name="description" content="Track progress toward the 120 qualifying payments, see what would actually be forgiven, and check whether your plan and employer still count under the 2026 rules.">
+<link rel="canonical" href="https://tallybench.com/pslf-calculator.html">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.svg">
@@ -15,15 +15,15 @@
 <meta name="apple-mobile-web-app-title" content="TallyBench">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TallyBench">
-<meta property="og:title" content="Bill Split Calculator — Uneven Shares, Tax & Tip">
-<meta property="og:description" content="Free bill split calculator for uneven amounts. Enter what each person ordered and the tax/tip percentages to see exactly what everyone owes.">
-<meta property="og:url" content="https://tallybench.com/bill-split-calculator.html">
+<meta property="og:title" content="PSLF Calculator — Public Service Loan Forgiveness 2026">
+<meta property="og:description" content="Track the 120 qualifying payments, see what would actually be forgiven, and check whether your plan still counts under the 2026 rules.">
+<meta property="og:url" content="https://tallybench.com/pslf-calculator.html">
 <meta property="og:image" content="https://tallybench.com/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Bill Split Calculator — Uneven Shares, Tax & Tip">
-<meta name="twitter:description" content="Free bill split calculator for uneven amounts. Enter what each person ordered and the tax/tip percentages to see exactly what everyone owes.">
+<meta name="twitter:title" content="PSLF Calculator — Public Service Loan Forgiveness 2026">
+<meta name="twitter:description" content="Track the 120 qualifying payments, see what would actually be forgiven, and check whether your plan still counts.">
 <meta name="twitter:image" content="https://tallybench.com/og-image.png">
 <link rel="stylesheet" href="fonts/fonts.css">
 <link rel="stylesheet" href="style.css">
@@ -35,26 +35,42 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "How is this different from a regular tip calculator?",
+      "name": "Do my 120 payments have to be consecutive?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "A standard tip calculator divides one bill evenly by the number of people — fine when everyone ordered about the same. This tool is for when people ordered different amounts: enter what each person's items actually cost, and tax and tip get distributed proportionally to how much each person spent, not split evenly."
+        "text": "No. The count pauses if you leave qualifying employment and resumes where it left off when you return. Someone who works five years in the public sector, three years in the private sector and then returns keeps their sixty payments — nothing is lost, it simply stops accruing while you are elsewhere."
       }
     },
     {
       "@type": "Question",
-      "name": "Why isn't tax and tip just split evenly among everyone?",
+      "name": "Which repayment plans count toward PSLF in 2026?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Splitting tax and tip evenly means someone who ordered a side salad subsidizes someone else's steak and cocktails. Proportional splitting — where each person pays tax and tip based on their own share of the subtotal — is generally considered the fairer approach when orders are uneven, which is why this calculator does it that way rather than dividing everything by headcount."
+        "text": "The Repayment Assistance Plan and Income-Based Repayment both qualify, as does the standard 10-year plan. The Tiered Standard plan does not — and it is the plan you are placed on by default if you make no choice, which makes it the most common way progress is lost without anyone noticing."
       }
     },
     {
       "@type": "Question",
-      "name": "What if we want to split some shared items evenly and other items individually?",
+      "name": "Did the 2026 employer eligibility rule take effect?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Add the shared item's cost split evenly into each relevant person's amount before entering it here — for example, a $30 appetizer split three ways adds $10 to each of those three people's subtotal. This calculator works from whatever final subtotal you assign each person, however you've already decided to divide shared items."
+        "text": "No. A rule scheduled for 1 July 2026 would have let the Department of Education disqualify certain organisations from PSLF eligibility, but it was vacated on 30 June 2026 and never took effect. No employer lost eligibility under it. Qualifying employment remains full-time work for a government body at any level or for a qualifying non-profit."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is forgiven PSLF debt taxable?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not federally. Unlike balances forgiven at the end of an income-driven plan, PSLF forgiveness has always been excluded from federal taxable income, which is a substantial advantage. A small number of states have treated forgiven amounts as taxable at state level, so it is worth checking your own state before assuming the full amount is free."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is PSLF worth pursuing if my balance is small?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Often not. PSLF only helps when the balance outlives the payment count. If your income-driven payment would clear the loan before you reach 120 payments there is nothing left to forgive, and you will have spent ten years constraining your career for no benefit. The larger the balance relative to income, the more PSLF is worth."
       }
     }
   ]
@@ -64,15 +80,11 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "Bill Split Calculator — TallyBench",
-  "applicationCategory": "UtilitiesApplication",
+  "name": "PSLF Calculator — TallyBench",
+  "applicationCategory": "FinanceApplication",
   "operatingSystem": "Any (runs in browser)",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "url": "https://tallybench.com/bill-split-calculator.html"
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "url": "https://tallybench.com/pslf-calculator.html"
 }
 </script>
 <!-- TB:BREADCRUMB:START -->
@@ -90,15 +102,15 @@
                             {
                                 "@type":  "ListItem",
                                 "position":  2,
-                                "name":  "Bill Split Calculator",
-                                "item":  "https://tallybench.com/bill-split-calculator.html"
+                                "name":  "PSLF Calculator",
+                                "item":  "https://tallybench.com/pslf-calculator.html"
                             }
                         ]
 }
 </script>
 <!-- TB:BREADCRUMB:END -->
 </head>
-<body data-page-cat="everyday">
+<body data-page-cat="finance">
 
 <header>
   <div class="wrap">
@@ -336,83 +348,87 @@
 <div class="nav-backdrop" id="navBackdrop"></div>
 
 <div class="wrap">
-  <div class="crumb"><a href="index.html">TallyBench</a> / Bill Split Calculator</div>
+  <div class="crumb"><a href="index.html">TallyBench</a> / PSLF Calculator</div>
 
   <section class="hero">
-    <div class="hero-icon-row cat-everyday">
-      <div class="hero-icon"><svg><use href="icons.svg#icon-tip"/></svg></div>
-      <div class="eyebrow">// BILL SPLIT CALCULATOR</div>
+    <div class="hero-icon-row cat-finance">
+      <div class="hero-icon"><svg><use href="icons.svg#icon-loan"/></svg></div>
+      <div class="eyebrow">// PUBLIC SERVICE LOAN FORGIVENESS</div>
     </div>
-    <h1>Nobody ordered the same amount. Split it fairly anyway.</h1>
-    <p>Enter what each person's items cost, plus tax and tip percentage — everyone's share of tax and tip is distributed based on what they actually ordered, not split evenly.</p>
+    <h1>How far through the 120 are you — and what is actually left to forgive?</h1>
+    <p>Track qualifying payments, project the balance that would be written off, and check the two things that most often void progress: the wrong plan and the wrong employer.</p>
   </section>
 
-  <section class="tool" id="billsplit">
+  <section class="tool" id="pslf">
+    <div class="disclaimer">
+      Estimates only. Your official count is the one your servicer and studentaid.gov hold — check it there, and file an Employment Certification Form annually rather than relying on any projection. Assumes a level payment for the remaining term; a real income-driven payment changes each year with your income.
+    </div>
     <div class="card">
       <div>
-        <div class="field"><label>Number of people (1–8)</label><input type="number" id="bsPeopleCount" value="3" min="1" max="8" step="1"></div>
-        <div class="field"><label>Tax (%)</label><input type="number" id="bsTax" value="8" min="0" step="0.5"></div>
-        <div class="field"><label>Tip (%)</label><input type="number" id="bsTip" value="18" min="0" step="1"></div>
-        <div id="bsPeopleRows">
-          <div class="field bs-person-row" data-idx="1"><label>Person 1's subtotal</label><input type="number" class="bs-amt" value="25" min="0" step="0.5"></div>
-          <div class="field bs-person-row" data-idx="2"><label>Person 2's subtotal</label><input type="number" class="bs-amt" value="40" min="0" step="0.5"></div>
-          <div class="field bs-person-row" data-idx="3"><label>Person 3's subtotal</label><input type="number" class="bs-amt" value="15" min="0" step="0.5"></div>
-          <div class="field bs-person-row" data-idx="4"><label>Person 4's subtotal</label><input type="number" class="bs-amt" value="0" min="0" step="0.5"></div>
-          <div class="field bs-person-row" data-idx="5"><label>Person 5's subtotal</label><input type="number" class="bs-amt" value="0" min="0" step="0.5"></div>
-          <div class="field bs-person-row" data-idx="6"><label>Person 6's subtotal</label><input type="number" class="bs-amt" value="0" min="0" step="0.5"></div>
-          <div class="field bs-person-row" data-idx="7"><label>Person 7's subtotal</label><input type="number" class="bs-amt" value="0" min="0" step="0.5"></div>
-          <div class="field bs-person-row" data-idx="8"><label>Person 8's subtotal</label><input type="number" class="bs-amt" value="0" min="0" step="0.5"></div>
+        <div class="row2">
+          <div class="field"><label for="psPaid">Qualifying payments made</label><input type="number" id="psPaid" value="36" step="1" min="0" max="120"></div>
+          <div class="field"><label for="psPayment">Current monthly payment ($)</label><input type="number" id="psPayment" value="320" step="10" min="0"></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label for="psBalance">Current loan balance ($)</label><input type="number" id="psBalance" value="95000" step="1000" min="0"></div>
+          <div class="field"><label for="psRate">Interest rate (%)</label><input type="number" id="psRate" value="6.5" step="0.01" min="0"></div>
+        </div>
+        <div class="field"><label for="psPlan">Repayment plan</label>
+          <select id="psPlan">
+            <option value="rap" selected>RAP — qualifies</option>
+            <option value="ibr">IBR — qualifies</option>
+            <option value="standard">Standard 10-year — qualifies</option>
+            <option value="tiered">Tiered Standard — does NOT qualify</option>
+          </select>
+        </div>
+        <div class="field"><label for="psEmployer">Employer qualifies?</label>
+          <select id="psEmployer">
+            <option value="yes" selected>Yes — government or qualifying non-profit, full-time</option>
+            <option value="no">No — private sector or part-time</option>
+          </select>
         </div>
       </div>
       <div class="readout">
-        <div class="r-row"><span class="r-label">Subtotal</span><span class="r-value" id="bsSubtotal">$0</span></div>
-        <div class="r-row"><span class="r-label">Tax</span><span class="r-value" id="bsTaxAmt">$0</span></div>
-        <div class="r-row"><span class="r-label">Tip</span><span class="r-value" id="bsTipAmt">$0</span></div>
-        <div class="r-row"><span class="r-label">Total bill</span><span class="r-value" id="bsTotal">$0</span></div>
+        <div class="r-row"><span class="r-label">Payments remaining</span><span class="r-value" id="psRemaining">—</span></div>
+        <div class="r-row"><span class="r-label">Time to forgiveness</span><span class="r-value" id="psYears">—</span></div>
+        <div class="r-row"><span class="r-label">Projected eligibility</span><span class="r-value" id="psDate">—</span></div>
+        <div class="r-row"><span class="r-label">Still to pay</span><span class="r-value" id="psStillToPay">—</span></div>
+        <div class="r-row"><span class="r-label">Paid across all 120</span><span class="r-value" id="psTotalPaid">—</span></div>
+        <div class="r-row"><span class="r-label">Balance forgiven</span><span class="r-value" id="psForgiven">—</span></div>
       </div>
     </div>
-  </section>
-
-  <section style="padding:32px 0;border-bottom:1px solid rgba(242,236,221,0.1);" id="bsBreakdownWrap">
-    <h2 style="font-family:'Space Grotesk',sans-serif;font-size:20px;margin:0 0 6px;">Who owes what</h2>
-    <p style="color:rgba(242,236,221,0.55);font-size:13px;margin:0 0 16px;">Each person's subtotal plus their proportional share of tax and tip.</p>
-    <div class="table-scroll">
-      <table class="bracket-table"><thead><tr><th>Person</th><th>Subtotal</th><th>Share of tax + tip</th><th>Total owed</th></tr></thead><tbody id="bsBreakdownBody"></tbody></table>
-    </div>
+    <p id="psVerdict" style="font-size:13px;color:rgba(242,236,221,0.75);margin:14px 0 0;"></p>
   </section>
 
   <section class="article">
-    <h3>How is this different from a regular tip calculator?</h3>
-    <p>A standard tip calculator divides one bill evenly by the number of people — fine when everyone ordered about the same. This tool is for when people ordered different amounts: enter what each person's items actually cost, and tax and tip get distributed proportionally to how much each person spent, not split evenly.</p>
-    <h3>Why isn't tax and tip just split evenly among everyone?</h3>
-    <p>Splitting tax and tip evenly means someone who ordered a side salad subsidizes someone else's steak and cocktails. Proportional splitting — where each person pays tax and tip based on their own share of the subtotal — is generally considered the fairer approach when orders are uneven, which is why this calculator does it that way rather than dividing everything by headcount.</p>
-    <h3>What if we want to split some shared items evenly and other items individually?</h3>
-    <p>Add the shared item's cost split evenly into each relevant person's amount before entering it here — for example, a $30 appetizer split three ways adds $10 to each of those three people's subtotal. This calculator works from whatever final subtotal you assign each person, however you've already decided to divide shared items.</p>
-    <p><strong>Worked example:</strong> three people order $25, $40, and $15 of food (a $80 subtotal), with 8% tax and 18% tip: the total bill is $100.80, and — because tax and tip scale with each person's share — they owe $31.50, $50.40, and $18.90 respectively, in proportion to what they ordered.</p>
+    <h3>The two ways progress disappears</h3>
+    <p>PSLF is not difficult to qualify for. It is difficult to <em>stay</em> qualified for, and almost all lost progress comes from one of two places.</p>
+    <p><strong>The wrong plan.</strong> RAP, IBR and the standard 10-year plan all count. The <strong>Tiered Standard plan does not</strong> — and it is where you are placed by default if you make no active choice. Borrowers displaced from SAVE who did nothing are the group most at risk here: months pass, payments are made in good faith, and none of them count. Nothing warns you.</p>
+    <p><strong>The wrong employer.</strong> Qualifying employment means full-time work for a federal, state, local or tribal government body, or for a qualifying non-profit. Part-time does not count. Contractor arrangements frequently do not count even when the work is for a qualifying body, because your employer is the staffing firm.</p>
 
-    <h3>Even splits and why they quietly annoy people</h3>
-    <p>Splitting a bill equally is simplest and is usually fine when everyone ordered comparably. It stops being fair the moment one person had a starter, two courses and half the wine while another had a salad and tap water.</p>
-    <p>The practical rule most groups converge on: split evenly when orders are broadly similar, and itemise when they clearly aren't. Deciding which <em>before</em> ordering rather than after avoids the awkward part entirely.</p>
+    <h3>The 2026 rule that didn't happen</h3>
+    <p>A rule scheduled for 1 July 2026 would have given the Department of Education authority to disqualify certain organisations from PSLF eligibility. It was <strong>vacated on 30 June 2026 and never took effect</strong>, so no employer lost eligibility under it.</p>
+    <p>This is worth stating plainly because a great deal of coverage was published in advance of a rule that never arrived, and some of it is still circulating. If you were told your non-profit employer was about to stop qualifying, that did not happen.</p>
 
-    <h3>Tax and service on an itemised split</h3>
-    <p>When splitting by item, tax and service should be allocated <strong>proportionally</strong>, not equally. Someone whose food came to 40% of the bill should carry 40% of the service charge. Dividing the service equally while itemising the food quietly reintroduces the unfairness you were trying to remove.</p>
-    <p>Watch for service already included — adding a tip on top of an included service charge is a common and expensive double-payment, especially on larger tables where it's added automatically.</p>
+    <h3>The count pauses; it does not reset</h3>
+    <p>The 120 payments do not need to be consecutive. Leave public service and the count freezes; come back and it resumes exactly where it stopped. Someone with sixty payments who spends three years in the private sector returns with sixty payments, not zero.</p>
+    <p>That makes PSLF far more compatible with a real career than people assume — the decision is not "ten unbroken years or nothing", it is "ten years in total, whenever they happen".</p>
 
-    <h3>Tipping conventions vary enormously</h3>
+    <h3>When PSLF isn't worth chasing</h3>
+    <p>PSLF only pays off when the balance outlives the payment count. If your payment would clear the loan before you reach 120, there is nothing left to forgive and you have shaped a decade of career decisions around a benefit you never collect.</p>
+    <p>The rough test is the ratio of balance to income. A $95,000 balance on a $55,000 public-sector salary is close to ideal: the income-driven payment is small, the balance grows, and a large sum gets written off. A $25,000 balance on a $90,000 salary is the opposite — you will pay it off well within ten years regardless.</p>
+    <p>A related point that unsettles people: under an income-driven plan a low payment may not cover the monthly interest, so the balance <em>grows</em>. Ordinarily that is a serious problem. Under PSLF it largely isn't, because the balance is written off at the end — and unlike income-driven forgiveness, <strong>PSLF forgiveness is not federally taxable</strong>. Chasing a lower payment is rational here in a way it would not otherwise be.</p>
+
+    <h3>Do this annually</h3>
     <ul>
-      <li><strong>United States</strong> — 15-20% is standard and forms a substantial part of staff income.</li>
-      <li><strong>United Kingdom</strong> — 10-12.5%, and often already added for larger groups.</li>
-      <li><strong>Most of Europe</strong> — service is typically included; rounding up is normal, a percentage is not.</li>
-      <li><strong>Japan</strong> — tipping is not customary and can cause confusion.</li>
+      <li><strong>File the Employment Certification Form every year</strong>, and whenever you change jobs. It is the only way your count gets verified as you go rather than reconstructed a decade later.</li>
+      <li><strong>Check your official count</strong> at studentaid.gov rather than trusting any projection, including this one.</li>
+      <li><strong>Confirm your plan still qualifies</strong> after any servicer transfer or plan change — this is exactly where people land on Tiered Standard without realising.</li>
+      <li><strong>Keep your own records.</strong> Servicer transfers have lost payment counts before, and your paperwork is the only thing that reconstructs them.</li>
     </ul>
-    <p>Calculate the tip on the pre-tax total where the distinction exists. For a single bill without splitting, the <a href="tip-calculator.html">Tip Calculator</a> is the quicker tool.</p>
-
-    <h3>Rounding and settling up</h3>
-    <p>Divide almost any bill by three and you get a repeating decimal, so someone has to absorb a penny or two. Round each share up to a sensible unit — the total will slightly exceed the bill, which simply becomes a marginally larger tip.</p>
-    <p>For groups who eat together regularly, running a tally across several occasions beats settling every bill exactly. Alternating who pays is less arithmetic and, over a few meals, close enough to fair. For shared ongoing costs like rent or utilities, splitting by a proportional share rather than equally is usually the more defensible approach — the <a href="percentage-calculator.html">Percentage Calculator</a> handles the ratios.</p>
   </section>
 
-  <p style="font-size:13px;color:rgba(242,236,221,0.55);margin:0 0 24px;">Ordered about the same amount? The simpler <a href="tip-calculator.html">Tip Calculator</a> splits evenly by headcount instead.</p>
+  <p style="font-size:13px;color:rgba(242,236,221,0.55);margin:0 0 24px;">Your PSLF payment comes from whichever income-driven plan you are on — the <a href="student-loan-repayment-calculator.html">Income-Driven Repayment Calculator</a> computes RAP and IBR side by side, and our <a href="rap-vs-ibr-crossover-study.html">crossover study</a> shows which is cheaper for your household. For the background on the 2026 overhaul read <a href="student-loan-repayment-changes-2026.html">what replaced SAVE, PAYE and ICR</a>. For a plain payoff figure without forgiveness, use the <a href="student-loan-calculator.html">Student Loan Calculator</a>.</p>
 
   <footer>
     <p>TALLYBENCH · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>

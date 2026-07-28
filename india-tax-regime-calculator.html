@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bill Split Calculator — Uneven Shares, Tax &amp; Tip | TallyBench</title>
-<meta name="description" content="Free bill split calculator for uneven amounts. Enter what each person ordered and the tax/tip percentages to see exactly what everyone owes.">
-<link rel="canonical" href="https://tallybench.com/bill-split-calculator.html">
+<title>Old vs New Tax Regime Calculator — India FY 2026-27 | TallyBench</title>
+<meta name="description" content="Enter your actual HRA, 80C, 80D and home loan interest and see which Indian tax regime costs you less — plus the exact deduction total you would need to beat the new regime.">
+<link rel="canonical" href="https://tallybench.com/india-tax-regime-calculator.html">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.svg">
@@ -15,15 +15,15 @@
 <meta name="apple-mobile-web-app-title" content="TallyBench">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TallyBench">
-<meta property="og:title" content="Bill Split Calculator — Uneven Shares, Tax & Tip">
-<meta property="og:description" content="Free bill split calculator for uneven amounts. Enter what each person ordered and the tax/tip percentages to see exactly what everyone owes.">
-<meta property="og:url" content="https://tallybench.com/bill-split-calculator.html">
+<meta property="og:title" content="Old vs New Tax Regime Calculator — India FY 2026-27">
+<meta property="og:description" content="Which Indian tax regime costs you less, given your actual deductions — and the exact deduction total you would need to beat the new regime.">
+<meta property="og:url" content="https://tallybench.com/india-tax-regime-calculator.html">
 <meta property="og:image" content="https://tallybench.com/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Bill Split Calculator — Uneven Shares, Tax & Tip">
-<meta name="twitter:description" content="Free bill split calculator for uneven amounts. Enter what each person ordered and the tax/tip percentages to see exactly what everyone owes.">
+<meta name="twitter:title" content="Old vs New Tax Regime Calculator — India FY 2026-27">
+<meta name="twitter:description" content="Which Indian tax regime costs you less, given your actual deductions — and the deduction total you would need to beat the new regime.">
 <meta name="twitter:image" content="https://tallybench.com/og-image.png">
 <link rel="stylesheet" href="fonts/fonts.css">
 <link rel="stylesheet" href="style.css">
@@ -35,26 +35,42 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "How is this different from a regular tip calculator?",
+      "name": "How much in deductions do I need for the old regime to win?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "A standard tip calculator divides one bill evenly by the number of people — fine when everyone ordered about the same. This tool is for when people ordered different amounts: enter what each person's items actually cost, and tax and tip get distributed proportionally to how much each person spent, not split evenly."
+        "text": "It depends on income, which is why this calculator computes the exact figure for yours rather than quoting a rule of thumb. Broadly, the new regime's ₹75,000 standard deduction and lower rates set a high bar, and most salaried people need a substantial HRA claim plus a full ₹1.5 lakh of Section 80C before the old regime pulls ahead. Below the ₹12 lakh rebate ceiling the new regime is almost impossible to beat, because tax there is zero."
       }
     },
     {
       "@type": "Question",
-      "name": "Why isn't tax and tip just split evenly among everyone?",
+      "name": "Which deductions survive under the new regime?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Splitting tax and tip evenly means someone who ordered a side salad subsidizes someone else's steak and cocktails. Proportional splitting — where each person pays tax and tip based on their own share of the subtotal — is generally considered the fairer approach when orders are uneven, which is why this calculator does it that way rather than dividing everything by headcount."
+        "text": "Only two matter for most salaried people: the ₹75,000 standard deduction, and the employer's NPS contribution under Section 80CCD(2), capped at 14% of salary. Section 80C, 80D, HRA, home loan interest under Section 24(b) and the extra ₹50,000 under 80CCD(1B) are all old-regime only."
       }
     },
     {
       "@type": "Question",
-      "name": "What if we want to split some shared items evenly and other items individually?",
+      "name": "Can I switch regimes each year?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Add the shared item's cost split evenly into each relevant person's amount before entering it here — for example, a $30 appetizer split three ways adds $10 to each of those three people's subtotal. This calculator works from whatever final subtotal you assign each person, however you've already decided to divide shared items."
+        "text": "Salaried people with no business income can choose afresh every year when filing, so the decision is not permanent. Anyone with business or professional income gets one chance to opt out of the new regime and one chance to return, after which the choice is locked. The new regime is the default if you say nothing."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does this handle the surcharge on high incomes?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, including marginal relief. Surcharge is 10% above ₹50 lakh, 15% above ₹1 crore and 25% above ₹2 crore, rising to 37% above ₹5 crore under the old regime while the new regime caps it at 25%. Marginal relief prevents the extra tax from exceeding the extra income just over each threshold, and the 4% health and education cess applies on top of tax plus surcharge."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why is the rebate a cliff rather than a taper?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Section 87A cancels the entire liability up to ₹12 lakh of taxable income under the new regime, and up to ₹5 lakh under the old one. Cross the line and it stops applying altogether rather than phasing out, so a small raise across the threshold can leave you worse off in absolute terms."
       }
     }
   ]
@@ -64,15 +80,11 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "Bill Split Calculator — TallyBench",
-  "applicationCategory": "UtilitiesApplication",
+  "name": "Old vs New Tax Regime Calculator — TallyBench",
+  "applicationCategory": "FinanceApplication",
   "operatingSystem": "Any (runs in browser)",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "url": "https://tallybench.com/bill-split-calculator.html"
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "url": "https://tallybench.com/india-tax-regime-calculator.html"
 }
 </script>
 <!-- TB:BREADCRUMB:START -->
@@ -90,15 +102,15 @@
                             {
                                 "@type":  "ListItem",
                                 "position":  2,
-                                "name":  "Bill Split Calculator",
-                                "item":  "https://tallybench.com/bill-split-calculator.html"
+                                "name":  "Old vs New Tax Regime Calculator",
+                                "item":  "https://tallybench.com/india-tax-regime-calculator.html"
                             }
                         ]
 }
 </script>
 <!-- TB:BREADCRUMB:END -->
 </head>
-<body data-page-cat="everyday">
+<body data-page-cat="finance">
 
 <header>
   <div class="wrap">
@@ -336,83 +348,98 @@
 <div class="nav-backdrop" id="navBackdrop"></div>
 
 <div class="wrap">
-  <div class="crumb"><a href="index.html">TallyBench</a> / Bill Split Calculator</div>
+  <div class="crumb"><a href="index.html">TallyBench</a> / Old vs New Tax Regime Calculator</div>
 
   <section class="hero">
-    <div class="hero-icon-row cat-everyday">
-      <div class="hero-icon"><svg><use href="icons.svg#icon-tip"/></svg></div>
-      <div class="eyebrow">// BILL SPLIT CALCULATOR</div>
+    <div class="hero-icon-row cat-finance">
+      <div class="hero-icon"><svg><use href="icons.svg#icon-tax"/></svg></div>
+      <div class="eyebrow">// INDIA TAX REGIME</div>
     </div>
-    <h1>Nobody ordered the same amount. Split it fairly anyway.</h1>
-    <p>Enter what each person's items cost, plus tax and tip percentage — everyone's share of tax and tip is distributed based on what they actually ordered, not split evenly.</p>
+    <h1>Old regime or new? Not a rule of thumb — your actual numbers.</h1>
+    <p>Enter the deductions you really claim and see which regime costs less for FY 2026-27, plus the exact deduction total you would need for the old regime to win.</p>
   </section>
 
-  <section class="tool" id="billsplit">
+  <section class="tool" id="regimeopt">
+    <div class="disclaimer">
+      Covers salaried income with the common deductions, including surcharge and marginal relief above ₹50 lakh and the 4% cess. Excludes capital gains, which are taxed at their own rates, and senior-citizen slabs. Estimates for comparison, not tax advice — confirm with a professional before filing.
+    </div>
     <div class="card">
       <div>
-        <div class="field"><label>Number of people (1–8)</label><input type="number" id="bsPeopleCount" value="3" min="1" max="8" step="1"></div>
-        <div class="field"><label>Tax (%)</label><input type="number" id="bsTax" value="8" min="0" step="0.5"></div>
-        <div class="field"><label>Tip (%)</label><input type="number" id="bsTip" value="18" min="0" step="1"></div>
-        <div id="bsPeopleRows">
-          <div class="field bs-person-row" data-idx="1"><label>Person 1's subtotal</label><input type="number" class="bs-amt" value="25" min="0" step="0.5"></div>
-          <div class="field bs-person-row" data-idx="2"><label>Person 2's subtotal</label><input type="number" class="bs-amt" value="40" min="0" step="0.5"></div>
-          <div class="field bs-person-row" data-idx="3"><label>Person 3's subtotal</label><input type="number" class="bs-amt" value="15" min="0" step="0.5"></div>
-          <div class="field bs-person-row" data-idx="4"><label>Person 4's subtotal</label><input type="number" class="bs-amt" value="0" min="0" step="0.5"></div>
-          <div class="field bs-person-row" data-idx="5"><label>Person 5's subtotal</label><input type="number" class="bs-amt" value="0" min="0" step="0.5"></div>
-          <div class="field bs-person-row" data-idx="6"><label>Person 6's subtotal</label><input type="number" class="bs-amt" value="0" min="0" step="0.5"></div>
-          <div class="field bs-person-row" data-idx="7"><label>Person 7's subtotal</label><input type="number" class="bs-amt" value="0" min="0" step="0.5"></div>
-          <div class="field bs-person-row" data-idx="8"><label>Person 8's subtotal</label><input type="number" class="bs-amt" value="0" min="0" step="0.5"></div>
+        <div class="row2">
+          <div class="field"><label for="irGross">Gross annual salary (₹)</label><input type="number" id="irGross" value="1800000" step="50000" min="0"></div>
+          <div class="field"><label for="irBasic">Basic + DA (₹)</label><input type="number" id="irBasic" value="900000" step="50000" min="0"></div>
+        </div>
+        <div class="field"><label>City (for HRA)</label>
+          <div class="seg" id="irMetroSeg">
+            <button type="button" class="active" data-metro="metro">Metro (50%)</button>
+            <button type="button" data-metro="nonmetro">Non-metro (40%)</button>
+          </div>
+        </div>
+        <div class="row2">
+          <div class="field"><label for="irHraRecd">HRA received (₹)</label><input type="number" id="irHraRecd" value="450000" step="10000" min="0"></div>
+          <div class="field"><label for="irRent">Rent paid (₹)</label><input type="number" id="irRent" value="360000" step="10000" min="0"></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label for="ir80c">Section 80C (cap ₹1,50,000)</label><input type="number" id="ir80c" value="150000" step="10000" min="0"></div>
+          <div class="field"><label for="ir80d">Section 80D — health cover</label><input type="number" id="ir80d" value="25000" step="5000" min="0"></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label for="irHomeLoan">Home loan interest, 24(b) (cap ₹2,00,000)</label><input type="number" id="irHomeLoan" value="0" step="10000" min="0"></div>
+          <div class="field"><label for="irNps1b">80CCD(1B) — your NPS (cap ₹50,000)</label><input type="number" id="irNps1b" value="0" step="5000" min="0"></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label for="irNps2">80CCD(2) — employer NPS (both regimes)</label><input type="number" id="irNps2" value="0" step="10000" min="0"></div>
+          <div class="field"><label for="irOther">Other old-regime deductions (₹)</label><input type="number" id="irOther" value="0" step="5000" min="0"></div>
         </div>
       </div>
       <div class="readout">
-        <div class="r-row"><span class="r-label">Subtotal</span><span class="r-value" id="bsSubtotal">$0</span></div>
-        <div class="r-row"><span class="r-label">Tax</span><span class="r-value" id="bsTaxAmt">$0</span></div>
-        <div class="r-row"><span class="r-label">Tip</span><span class="r-value" id="bsTipAmt">$0</span></div>
-        <div class="r-row"><span class="r-label">Total bill</span><span class="r-value" id="bsTotal">$0</span></div>
+        <div class="r-row"><span class="r-label">Cheaper regime</span><span class="r-value" id="irWinner">—</span></div>
+        <div class="r-row"><span class="r-label">Old regime — tax</span><span class="r-value" id="irOldTax">—</span></div>
+        <div class="r-row"><span class="r-label">New regime — tax</span><span class="r-value" id="irNewTax">—</span></div>
+        <div class="r-row"><span class="r-label">HRA exemption allowed</span><span class="r-value" id="irHraEx">—</span></div>
+        <div class="r-row"><span class="r-label">Total old-regime deductions</span><span class="r-value" id="irDeductions">—</span></div>
+        <div class="r-row"><span class="r-label">Old regime — taxable income</span><span class="r-value" id="irOldTaxable">—</span></div>
+        <div class="r-row"><span class="r-label">New regime — taxable income</span><span class="r-value" id="irNewTaxable">—</span></div>
       </div>
     </div>
-  </section>
-
-  <section style="padding:32px 0;border-bottom:1px solid rgba(242,236,221,0.1);" id="bsBreakdownWrap">
-    <h2 style="font-family:'Space Grotesk',sans-serif;font-size:20px;margin:0 0 6px;">Who owes what</h2>
-    <p style="color:rgba(242,236,221,0.55);font-size:13px;margin:0 0 16px;">Each person's subtotal plus their proportional share of tax and tip.</p>
-    <div class="table-scroll">
-      <table class="bracket-table"><thead><tr><th>Person</th><th>Subtotal</th><th>Share of tax + tip</th><th>Total owed</th></tr></thead><tbody id="bsBreakdownBody"></tbody></table>
-    </div>
+    <p id="irNote" style="font-size:13px;color:rgba(242,236,221,0.75);margin:14px 0 0;"></p>
   </section>
 
   <section class="article">
-    <h3>How is this different from a regular tip calculator?</h3>
-    <p>A standard tip calculator divides one bill evenly by the number of people — fine when everyone ordered about the same. This tool is for when people ordered different amounts: enter what each person's items actually cost, and tax and tip get distributed proportionally to how much each person spent, not split evenly.</p>
-    <h3>Why isn't tax and tip just split evenly among everyone?</h3>
-    <p>Splitting tax and tip evenly means someone who ordered a side salad subsidizes someone else's steak and cocktails. Proportional splitting — where each person pays tax and tip based on their own share of the subtotal — is generally considered the fairer approach when orders are uneven, which is why this calculator does it that way rather than dividing everything by headcount.</p>
-    <h3>What if we want to split some shared items evenly and other items individually?</h3>
-    <p>Add the shared item's cost split evenly into each relevant person's amount before entering it here — for example, a $30 appetizer split three ways adds $10 to each of those three people's subtotal. This calculator works from whatever final subtotal you assign each person, however you've already decided to divide shared items.</p>
-    <p><strong>Worked example:</strong> three people order $25, $40, and $15 of food (a $80 subtotal), with 8% tax and 18% tip: the total bill is $100.80, and — because tax and tip scale with each person's share — they owe $31.50, $50.40, and $18.90 respectively, in proportion to what they ordered.</p>
+    <h3>Why "the new regime is better for most people" is usually right</h3>
+    <p>The new regime gives you a ₹75,000 standard deduction and lower rates without asking for anything. The old regime makes you earn the difference through deductions — and the bar is higher than it looks, because you are not comparing against zero. You are comparing against a regime that already handed you ₹75,000 and cheaper slabs.</p>
+    <p>Below the ₹12 lakh rebate ceiling the contest is effectively over: the new regime charges nothing, and no quantity of deductions beats nothing. The decision only becomes live above that, and it turns on how much rent you pay and whether you have a home loan.</p>
 
-    <h3>Even splits and why they quietly annoy people</h3>
-    <p>Splitting a bill equally is simplest and is usually fine when everyone ordered comparably. It stops being fair the moment one person had a starter, two courses and half the wine while another had a salad and tap water.</p>
-    <p>The practical rule most groups converge on: split evenly when orders are broadly similar, and itemise when they clearly aren't. Deciding which <em>before</em> ordering rather than after avoids the awkward part entirely.</p>
+    <h3>What survives in each</h3>
+    <div class="table-scroll">
+      <table class="bracket-table">
+        <thead><tr><th scope="col">Deduction</th><th scope="col">Old</th><th scope="col">New</th></tr></thead>
+        <tbody>
+          <tr><td>Standard deduction</td><td>₹50,000</td><td><strong>₹75,000</strong></td></tr>
+          <tr><td>Section 80C — EPF, ELSS, PPF, insurance</td><td>₹1,50,000</td><td>No</td></tr>
+          <tr><td>Section 80D — health insurance</td><td>Up to ₹1,00,000</td><td>No</td></tr>
+          <tr><td>HRA exemption, Section 10(13A)</td><td>Yes</td><td>No</td></tr>
+          <tr><td>Home loan interest, Section 24(b)</td><td>₹2,00,000</td><td>No</td></tr>
+          <tr><td>80CCD(1B) — your own NPS</td><td>₹50,000</td><td>No</td></tr>
+          <tr><td>80CCD(2) — employer NPS</td><td>Yes</td><td><strong>Yes</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>That last row is the one people miss. The employer's NPS contribution — up to 14% of salary — is the only meaningful deduction that survives into the new regime. If you are on the new regime, restructuring your package so more flows through employer NPS is the one lever still available, and it costs your employer nothing because it comes out of the same CTC.</p>
 
-    <h3>Tax and service on an itemised split</h3>
-    <p>When splitting by item, tax and service should be allocated <strong>proportionally</strong>, not equally. Someone whose food came to 40% of the bill should carry 40% of the service charge. Dividing the service equally while itemising the food quietly reintroduces the unfairness you were trying to remove.</p>
-    <p>Watch for service already included — adding a tip on top of an included service charge is a common and expensive double-payment, especially on larger tables where it's added automatically.</p>
+    <h3>The rebate cliff, in both regimes</h3>
+    <p>Section 87A does not taper. Under the new regime it wipes out the entire liability up to <strong>₹12 lakh</strong> of taxable income; a rupee over and the whole bill appears. The old regime has the same structure at <strong>₹5 lakh</strong>.</p>
+    <p>This is worth knowing around appraisal time. A raise that carries you just past either threshold can leave you with less money than before, and the fix — if there is one — is usually to increase a deduction or an employer NPS contribution enough to drop taxable income back under the line.</p>
 
-    <h3>Tipping conventions vary enormously</h3>
-    <ul>
-      <li><strong>United States</strong> — 15-20% is standard and forms a substantial part of staff income.</li>
-      <li><strong>United Kingdom</strong> — 10-12.5%, and often already added for larger groups.</li>
-      <li><strong>Most of Europe</strong> — service is typically included; rounding up is normal, a percentage is not.</li>
-      <li><strong>Japan</strong> — tipping is not customary and can cause confusion.</li>
-    </ul>
-    <p>Calculate the tip on the pre-tax total where the distinction exists. For a single bill without splitting, the <a href="tip-calculator.html">Tip Calculator</a> is the quicker tool.</p>
+    <h3>Surcharge above ₹50 lakh</h3>
+    <p>High earners have a second reason to check both regimes. Surcharge runs at 10% above ₹50 lakh, 15% above ₹1 crore and 25% above ₹2 crore. Above ₹5 crore the old regime charges <strong>37%</strong> while the new regime is <strong>capped at 25%</strong> — a gap large enough to decide the question by itself at that level.</p>
+    <p>Marginal relief exists so that crossing a surcharge threshold never costs you more in tax than the extra income you earned. This calculator applies it; many quick estimators do not, which is why they overstate the bill just above each threshold.</p>
 
-    <h3>Rounding and settling up</h3>
-    <p>Divide almost any bill by three and you get a repeating decimal, so someone has to absorb a penny or two. Round each share up to a sensible unit — the total will slightly exceed the bill, which simply becomes a marginally larger tip.</p>
-    <p>For groups who eat together regularly, running a tally across several occasions beats settling every bill exactly. Alternating who pays is less arithmetic and, over a few meals, close enough to fair. For shared ongoing costs like rent or utilities, splitting by a proportional share rather than equally is usually the more defensible approach — the <a href="percentage-calculator.html">Percentage Calculator</a> handles the ratios.</p>
+    <h3>You can change your mind — mostly</h3>
+    <p>Salaried people without business income choose afresh each year at filing, so nothing here is permanent and it is worth re-running whenever your rent, home loan or investments change. Anyone with business or professional income gets one opt-out and one return, after which the choice is locked — a much more consequential decision that deserves professional advice.</p>
   </section>
 
-  <p style="font-size:13px;color:rgba(242,236,221,0.55);margin:0 0 24px;">Ordered about the same amount? The simpler <a href="tip-calculator.html">Tip Calculator</a> splits evenly by headcount instead.</p>
+  <p style="font-size:13px;color:rgba(242,236,221,0.55);margin:0 0 24px;">HRA is usually the deciding deduction — the <a href="hra-calculator.html">HRA Calculator</a> shows which of the three tests limits yours, and <a href="hra-exemption-8-metro-cities-2026.html">four more cities became metros</a> from April 2026. For the wider rewrite this sits inside, read <a href="india-income-tax-act-2025-changes.html">what the Income Tax Act 2025 changes</a>, and for what lands in your account each month see <a href="ctc-vs-in-hand-salary-india-2026.html">CTC vs in-hand salary</a>. Freelancing instead of salaried? Use the <a href="freelancer-tax-calculator-india.html">Freelancer Tax Calculator</a>. All of it is covered in our India book, <a href="book.html">Paisa Playbook</a>.</p>
 
   <footer>
     <p>TALLYBENCH · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>

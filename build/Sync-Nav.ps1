@@ -274,7 +274,10 @@ foreach ($f in $htmlFiles) {
     # Legitimate exceptions: the Google Search Console verification file is a
     # bare stub with no site chrome (and must never be edited), and index.html
     # is intentionally the one page with no breadcrumb, since it IS the root.
-    $isVerificationFile = $f.Name -like 'google*.html'
+    # tallystock.html is a deliberate redirect stub left behind by the
+    # StockBench rename — bare, no site chrome, and exempt for the same
+    # reason as the verification file.
+    $isVerificationFile = ($f.Name -like 'google*.html') -or ($f.Name -eq 'tallystock.html')
     if (-not $isVerificationFile) {
         foreach ($m in @('NAV', 'COUNT')) {
             if ($content -notmatch "TB:${m}:START") {

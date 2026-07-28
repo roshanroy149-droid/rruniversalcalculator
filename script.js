@@ -10600,3 +10600,257 @@ function tbMoney(n){
 
   render();
 })();
+
+// ---- India: Old vs New Regime Optimiser ----
+(function () {
+  if (!document.getElementById('irGross')) return;
+
+  var g = function (id) { return document.getElementById(id); };
+  var num = function (id) { return Math.max(parseFloat(g(id).value) || 0, 0); };
+  var inr = function (n) { return '₹' + Math.round(n).toLocaleString('en-IN'); };
+
+  function slabTax(taxable, isNew) {
+    var rg = isNew ? taxIndiaRegimes['new'] : taxIndiaRegimes.old;
+    return calcBracketTax(taxable, rg.brackets).tax;
+  }
+
+  // Surcharge bands, FY 2026-27. The new regime caps the top rate at 25%.
+  function surcharge(taxable, baseTax, isNew) {
+    var bands = [[5000000, 0.10], [10000000, 0.15], [20000000, 0.25], [50000000, isNew ? 0.25 : 0.37]];
+    var rate = 0, threshold = 0;
+    for (var i = 0; i < bands.length; i++) {
+      if (taxable > bands[i][0]) { rate = bands[i][1]; threshold = bands[i][0]; }
+    }
+    if (rate === 0) return 0;
+    var sur = baseTax * rate;
+    // Marginal relief: tax plus surcharge must not exceed the liability at the
+    // threshold plus every rupee of income above it.
+    var maxTotal = slabTax(threshold, isNew) + (taxable - threshold);
+    if (baseTax + sur > maxTotal) sur = Math.max(0, maxTotal - baseTax);
+    return sur;
+  }
+
+  function liability(taxable, isNew) {
+    var rg = isNew ? taxIndiaRegimes['new'] : taxIndiaRegimes.old;
+    if (taxable <= rg.rebateThreshold) return { total: 0 };   // Section 87A
+    var base = slabTax(taxable, isNew);
+    var sur = surcharge(taxable, base, isNew);
+    return { total: (base + sur) * 1.04 };                    // + 4% cess
+  }
+
+  function hraExempt(basic, hraRecd, rent, metro) {
+    return Math.max(0, Math.min(hraRecd, Math.max(rent - 0.10 * basic, 0), (metro ? 0.50 : 0.40) * basic));
+  }
+
+  // Smallest total old-regime deduction that makes the old regime match the new.
+  function breakEven(gross, nps2) {
+    var target = liability(Math.max(0, gross - 75000 - nps2), true).total;
+    var lo = 0, hi = gross;
+    for (var i = 0; i < 60; i++) {
+      var mid = (lo + hi) / 2;
+      if (liability(Math.max(0, gross - mid), false).total > target) lo = mid; else hi = mid;
+    }
+    return hi;
+  }
+
+  var metro = true;
+  var seg = g('irMetroSeg');
+
+  function calc() {
+    var gross = num('irGross');
+    var basic = num('irBasic');
+    var nps2 = num('irNps2');                        // 80CCD(2) — allowed in both regimes
+
+    var hraEx = hraExempt(basic, num('irHraRecd'), num('irRent'), metro);
+    var c80 = Math.min(num('ir80c'), 150000);
+    var d80 = Math.min(num('ir80d'), 100000);
+    var home = Math.min(num('irHomeLoan'), 200000);
+    var nps1b = Math.min(num('irNps1b'), 50000);
+    var other = num('irOther');
+    var totalDed = 50000 + hraEx + c80 + d80 + home + nps1b + nps2 + other;
+
+    var oldTaxable = Math.max(0, gross - totalDed);
+    var newTaxable = Math.max(0, gross - 75000 - nps2);
+
+    var o = liability(oldTaxable, false);
+    var n = liability(newTaxable, true);
+
+    g('irOldTaxable').textContent = inr(oldTaxable);
+    g('irNewTaxable').textContent = inr(newTaxable);
+    g('irOldTax').textContent = inr(o.total);
+    g('irNewTax').textContent = inr(n.total);
+    g('irHraEx').textContent = inr(hraEx);
+    g('irDeductions').textContent = inr(totalDed);
+
+    var diff = Math.abs(o.total - n.total);
+    if (Math.round(o.total) === Math.round(n.total)) {
+      g('irWinner').textContent = 'Line ball';
+      g('irNote').textContent = 'Both regimes produce the same bill on these numbers.';
+    } else if (o.total < n.total) {
+      g('irWinner').textContent = 'Old regime';
+      g('irNote').textContent = 'The old regime saves you ' + inr(diff) + ' a year. Your '
+        + inr(totalDed) + ' of deductions is enough to beat the new regime’s lower rates.';
+    } else {
+      g('irWinner').textContent = 'New regime';
+      g('irNote').textContent = 'The new regime saves you ' + inr(diff) + ' a year. To beat it you would need about '
+        + inr(breakEven(gross, nps2)) + ' of total old-regime deductions, including the ₹50,000 standard deduction.';
+    }
+  }
+
+  if (seg) {
+    seg.addEventListener('click', function (e) {
+      var b = e.target.closest('button'); if (!b) return;
+      metro = b.dataset.metro === 'metro';
+      seg.querySelectorAll('button').forEach(function (x) { x.classList.remove('active'); });
+      b.classList.add('active');
+      calc();
+    });
+  }
+  ['irGross', 'irBasic', 'irHraRecd', 'irRent', 'ir80c', 'ir80d', 'irHomeLoan', 'irNps1b', 'irNps2', 'irOther']
+    .forEach(function (id) { g(id).addEventListener('input', calc); });
+  calc();
+})();
+
+// ---- India: Freelancer Tax (44ADA + GST + advance tax) ----
+(function () {
+  if (!document.getElementById('flReceipts')) return;
+
+  var g = function (id) { return document.getElementById(id); };
+  var num = function (id) { return Math.max(parseFloat(g(id).value) || 0, 0); };
+  var inr = function (n) { return '₹' + Math.round(n).toLocaleString('en-IN'); };
+
+  function newRegimeTax(taxable) {
+    var rg = taxIndiaRegimes['new'];
+    if (taxable <= rg.rebateThreshold) return 0;
+    var base = calcBracketTax(taxable, rg.brackets).tax;
+    var sur = 0;
+    if (taxable > 5000000) {
+      var bands = [[5000000, 0.10], [10000000, 0.15], [20000000, 0.25], [50000000, 0.25]];
+      var rate = 0, th = 0;
+      bands.forEach(function (b) { if (taxable > b[0]) { rate = b[1]; th = b[0]; } });
+      sur = base * rate;
+      var atTh = calcBracketTax(th, rg.brackets).tax;
+      if (base + sur > atTh + (taxable - th)) sur = Math.max(0, atTh + (taxable - th) - base);
+    }
+    return (base + sur) * 1.04;
+  }
+
+  function calc() {
+    var receipts = num('flReceipts');
+    var cashPct = num('flCashPct');
+    var expenses = num('flExpenses');
+
+    var limit = cashPct <= 5 ? 7500000 : 5000000;
+    var eligible = receipts <= limit && receipts > 0;
+
+    var presumptive = receipts * 0.50;
+    var actual = Math.max(0, receipts - expenses);
+
+    var taxPresumptive = newRegimeTax(Math.max(0, presumptive - 75000));
+    var taxActual = newRegimeTax(Math.max(0, actual - 75000));
+
+    g('flLimit').textContent = inr(limit);
+    g('flEligible').textContent = eligible
+      ? 'Yes — within the ' + inr(limit) + ' limit'
+      : (receipts > limit ? 'No — receipts exceed the limit, books required' : '—');
+    g('flPresumptive').textContent = inr(presumptive);
+    g('flActual').textContent = inr(actual);
+    g('flTaxPresumptive').textContent = eligible ? inr(taxPresumptive) : '—';
+    g('flTaxActual').textContent = inr(taxActual);
+
+    var better = g('flBetter');
+    if (!eligible) {
+      better.textContent = receipts > limit
+        ? 'Above the 44ADA limit, so books and the usual audit obligations apply.'
+        : 'Enter your gross receipts to compare the two routes.';
+    } else if (Math.round(taxPresumptive) < Math.round(taxActual)) {
+      better.textContent = '44ADA is cheaper by ' + inr(taxActual - taxPresumptive)
+        + '. Your real expenses are below 50% of receipts, so the presumptive deduction is worth more than what you could actually claim — and you avoid keeping books.';
+    } else if (Math.round(taxPresumptive) > Math.round(taxActual)) {
+      better.textContent = 'Keeping books is cheaper by ' + inr(taxPresumptive - taxActual)
+        + '. Your expenses exceed 50% of receipts, so 44ADA would overstate your profit. Weigh that against the bookkeeping and audit burden.';
+    } else {
+      better.textContent = 'Both routes produce the same bill.';
+    }
+
+    var gstTh = g('flGstState').value === 'special' ? 1000000 : 2000000;
+    g('flGst').textContent = receipts > gstTh
+      ? 'Registration required — receipts exceed ' + inr(gstTh)
+      : 'Not required on turnover alone — below ' + inr(gstTh);
+
+    var due = eligible ? taxPresumptive : taxActual;
+    var single = eligible;
+    g('flAdv1').textContent = single ? '—' : inr(due * 0.15);
+    g('flAdv2').textContent = single ? '—' : inr(due * 0.30);
+    g('flAdv3').textContent = single ? '—' : inr(due * 0.30);
+    g('flAdv4').textContent = single ? inr(due) : inr(due * 0.25);
+    g('flAdvNote').textContent = single
+      ? 'Under 44ADA the whole liability falls in a single instalment by 15 March 2027 — one of the scheme’s real advantages.'
+      : 'Four instalments: 15% by 15 June, 45% cumulative by 15 September, 75% by 15 December, 100% by 15 March.';
+  }
+
+  ['flReceipts', 'flCashPct', 'flExpenses', 'flGstState'].forEach(function (id) {
+    g(id).addEventListener('input', calc);
+    g(id).addEventListener('change', calc);
+  });
+  calc();
+})();
+
+// ---- PSLF Progress Tracker ----
+(function () {
+  if (!document.getElementById('psPaid')) return;
+
+  var g = function (id) { return document.getElementById(id); };
+  var num = function (id) { return Math.max(parseFloat(g(id).value) || 0, 0); };
+  var usd = function (n) { return '$' + Math.round(n).toLocaleString('en-US'); };
+
+  function calc() {
+    var paid = Math.min(num('psPaid'), 120);
+    var payment = num('psPayment');
+    var balance = num('psBalance');
+    var rate = num('psRate');
+    var qualifies = g('psEmployer').value === 'yes';
+    var plan = g('psPlan').value;
+
+    var remaining = Math.max(0, 120 - paid);
+    g('psRemaining').textContent = remaining + (remaining === 1 ? ' payment' : ' payments');
+    g('psYears').textContent = (remaining / 12).toFixed(1) + ' years';
+
+    var d = new Date(2026, 6, 1);
+    d.setMonth(d.getMonth() + remaining);
+    g('psDate').textContent = remaining === 0 ? 'Eligible now'
+      : d.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+    g('psStillToPay').textContent = usd(payment * remaining);
+    g('psTotalPaid').textContent = usd(payment * 120);
+
+    // Project the balance forward at the stated rate while paying `payment`.
+    var bal = balance, r = rate / 100 / 12, negAm = false;
+    for (var m = 0; m < remaining; m++) {
+      var interest = bal * r;
+      if (interest > payment) negAm = true;
+      bal = bal + interest - payment;
+      if (bal < 0) { bal = 0; break; }
+    }
+    g('psForgiven').textContent = usd(bal);
+
+    var v = g('psVerdict');
+    if (!qualifies) {
+      v.textContent = 'Payments made while your employer does not qualify do not count. Nothing accrues until you are working full-time for a government body or a qualifying non-profit.';
+    } else if (plan === 'tiered') {
+      v.textContent = 'The Tiered Standard plan does not qualify, so payments made on it never count — however many you make. It is also the plan you are placed on by default if you choose nothing, which makes it the most common way progress is silently lost. Switch to RAP or IBR.';
+    } else if (bal <= 0) {
+      v.textContent = 'On these numbers the loan clears before you reach 120 payments, leaving nothing to forgive. PSLF only helps when the balance outlives the payment count — if you are close to paying it off anyway, the pursuit costs you nothing but gains you nothing either.';
+    } else {
+      v.textContent = 'About ' + usd(bal) + ' would be forgiven after ' + remaining
+        + ' more qualifying payments, having paid ' + usd(payment * 120) + ' across the full 120.'
+        + (negAm ? ' Your payment is below the monthly interest for part of the term, so the balance grows — under PSLF that matters far less than usual, because the balance is written off at the end.' : '');
+    }
+  }
+
+  ['psPaid', 'psPayment', 'psBalance', 'psRate', 'psEmployer', 'psPlan'].forEach(function (id) {
+    g(id).addEventListener('input', calc);
+    g(id).addEventListener('change', calc);
+  });
+  calc();
+})();
