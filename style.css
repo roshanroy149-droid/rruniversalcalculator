@@ -919,6 +919,13 @@ footer a{color:var(--teal-light) !important;}
 .tab-panel.active{display:block;animation:fadeIn .2s ease;}
 @keyframes fadeIn{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
 .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:var(--radius);box-shadow:var(--shadow-sm);}
+/* Inline SVG charts. The chart is drawn on a light surface (same as
+   .bracket-table) because its axis/label colours are dark ink — putting it
+   on the dark page shell would render them invisible. It scrolls inside its
+   own container on narrow screens rather than forcing the page to. */
+.chart-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;background:var(--card-hi);border-radius:var(--radius);box-shadow:var(--shadow-sm);margin-top:14px;padding:8px;}
+.cx-chart{display:block;width:100%;min-width:520px;height:auto;}
+.chart-note{font-size:12px;color:rgba(242,236,221,0.55);margin:8px 0 0;font-style:italic;}
 .bracket-table{width:100%;border-collapse:collapse;margin-top:14px;font-family:'JetBrains Mono',monospace;font-size:12px;background:var(--card-hi);color:var(--ink);min-width:420px;}
 .bracket-table th,.bracket-table td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--paper-line);}
 .bracket-table th{color:var(--graphite);font-weight:500;text-transform:uppercase;font-size:10px;letter-spacing:0.05em;background:rgba(28,26,23,0.04);}
