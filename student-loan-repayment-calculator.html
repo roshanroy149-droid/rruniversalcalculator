@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Student Loan Repayment Calculator — Standard vs. Income-Driven | TallyBench</title>
-<meta name="description" content="Free student loan repayment calculator. Compare your standard 10-year payment to an estimated income-driven repayment (IDR) plan based on your income.">
+<title>Income-Driven Repayment Calculator — RAP vs IBR 2026 | TallyBench</title>
+<meta name="description" content="Free income-driven repayment calculator for 2026. Compare the new RAP plan, IBR, and the standard 10-year payment using current AGI brackets and poverty guidelines.">
 <link rel="canonical" href="https://tallybench.com/student-loan-repayment-calculator.html">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="manifest" href="manifest.json">
@@ -15,15 +15,15 @@
 <meta name="apple-mobile-web-app-title" content="TallyBench">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TallyBench">
-<meta property="og:title" content="Student Loan Repayment Calculator — Standard vs. Income-Driven">
-<meta property="og:description" content="Compare your standard 10-year payment to an estimated income-driven repayment (IDR) plan based on your income.">
+<meta property="og:title" content="Income-Driven Repayment Calculator — RAP vs IBR 2026">
+<meta property="og:description" content="Compare the new RAP plan, IBR, and the standard 10-year payment using 2026 AGI brackets and poverty guidelines.">
 <meta property="og:url" content="https://tallybench.com/student-loan-repayment-calculator.html">
 <meta property="og:image" content="https://tallybench.com/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Student Loan Repayment Calculator — Standard vs. Income-Driven">
-<meta name="twitter:description" content="Compare your standard 10-year payment to an estimated income-driven repayment (IDR) plan based on your income.">
+<meta name="twitter:title" content="Income-Driven Repayment Calculator — RAP vs IBR 2026">
+<meta name="twitter:description" content="Compare the new RAP plan, IBR, and the standard 10-year payment using 2026 AGI brackets and poverty guidelines.">
 <meta name="twitter:image" content="https://tallybench.com/og-image.png">
 <link rel="stylesheet" href="fonts/fonts.css">
 <link rel="stylesheet" href="style.css">
@@ -35,34 +35,50 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "What is income-driven repayment?",
+      "name": "Which income-driven repayment plans still exist in 2026?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Income-driven repayment (IDR) sets your federal student loan payment as a percentage of your discretionary income rather than a fixed amortized amount, so payments rise and fall with your income and family size. Plans include SAVE, PAYE, IBR, and others, each with slightly different formulas."
+        "text": "Two: the Repayment Assistance Plan (RAP), available from July 1, 2026, and Income-Based Repayment (IBR). SAVE is gone — a federal court vacated it on March 10, 2026 and the One Big Beautiful Bill Act ended it by statute. PAYE and ICR are closed to new enrollment and sunset on July 1, 2028, so borrowers on those plans must move to IBR or RAP before then."
       }
     },
     {
       "@type": "Question",
-      "name": "Why might IDR result in a lower payment but more total interest?",
+      "name": "How is a RAP payment calculated?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "A lower monthly payment based on income can extend how long interest accrues on your balance, and in some cases the payment may not even cover the interest that accrues each month, letting the balance grow. The tradeoff is affordability now versus total cost over the life of the loan."
+        "text": "RAP charges a percentage of your total adjusted gross income, not your discretionary income. The rate starts at 1% for AGI between $10,001 and $20,000 and steps up one percentage point per $10,000 of income until it caps at 10% above $100,000. The formula is (AGI x bracket rate / 12) minus $50 for each dependent you claim, and the payment can never fall below $10 a month."
       }
     },
     {
       "@type": "Question",
-      "name": "Do IDR plans lead to loan forgiveness?",
+      "name": "How is an IBR payment calculated?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Many income-driven plans forgive any remaining balance after 20 to 25 years of qualifying payments, though the exact timeline depends on the plan and when you borrowed. These rules are subject to ongoing legislative and legal changes, so confirm current terms directly with your loan servicer or studentaid.gov."
+        "text": "IBR uses discretionary income, defined as your AGI above 150% of the federal poverty guideline for your family size. In 2026 that threshold is $23,940 for a household of one in the 48 contiguous states. Borrowers whose first loan was disbursed on or after July 1, 2014 pay 10% of discretionary income with forgiveness at 20 years; earlier borrowers pay 15% with forgiveness at 25 years."
       }
     },
     {
       "@type": "Question",
-      "name": "How do I actually apply for IDR?",
+      "name": "Is RAP always cheaper than IBR?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "You apply through your loan servicer or directly at studentaid.gov, typically providing income documentation such as a tax return or pay stubs. You can usually switch plans or recertify your income annually as your circumstances change."
+        "text": "No, and the difference is structural rather than a matter of degree. Because RAP charges a share of total AGI while IBR only charges a share of income above the poverty threshold, RAP tends to win at lower incomes and with dependents, while IBR often wins at higher incomes. A borrower earning $120,000 with a family size of two would pay about $1,000 a month under RAP against roughly $729.50 under IBR. Run both before choosing."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "When does the balance get forgiven?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "RAP forgives any remaining balance after 360 qualifying payments, which is 30 years — noticeably longer than the 20 or 25 years IBR offers. RAP does include two protections IBR lacks: unpaid interest is waived rather than added to your balance, and the government covers the shortfall needed to make your principal fall by at least $50 a month."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I still choose IBR if I borrow now?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. IBR is closed to Direct Loans issued or consolidated on or after July 1, 2026, which means RAP is the only income-driven option for new borrowers from that date. If your loans predate that cutoff you can still choose between the two, and the One Big Beautiful Bill Act removed the old partial financial hardship test, so IBR no longer has an income ceiling for eligibility."
       }
     }
   ]
@@ -72,7 +88,7 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "Student Loan Repayment Calculator — TallyBench",
+  "name": "Income-Driven Repayment Calculator — TallyBench",
   "applicationCategory": "UtilitiesApplication",
   "operatingSystem": "Any (runs in browser)",
   "offers": {
@@ -98,7 +114,7 @@
                             {
                                 "@type":  "ListItem",
                                 "position":  2,
-                                "name":  "Student Loan Repayment Calculator",
+                                "name":  "Income-Driven Repayment Calculator",
                                 "item":  "https://tallybench.com/student-loan-repayment-calculator.html"
                             }
                         ]
@@ -346,13 +362,13 @@
       <div class="hero-icon"><svg><use href="icons.svg#icon-loan"/></svg></div>
       <div class="eyebrow">// STUDENT LOAN REPAYMENT CALCULATOR</div>
     </div>
-    <h1>Standard 10-year plan or income-driven repayment?</h1>
-    <p>Enter your loan balance, rate, income, and family size to compare the standard payment against an estimated income-driven repayment amount.</p>
+    <h1>Income-driven repayment in 2026: RAP or IBR?</h1>
+    <p>Two income-driven plans still exist after this year's overhaul. Enter your balance, rate, income and family size to see the new Repayment Assistance Plan and Income-Based Repayment side by side against the standard 10-year payment.</p>
   </section>
 
   <section class="tool" id="slrepayment">
     <div class="disclaimer">
-      Federal income-driven repayment plans (SAVE, PAYE, IBR, etc.) have different formulas and discretionary-income multipliers, and are subject to ongoing legislative/legal changes — this is a simplified illustrative estimate. Check studentaid.gov for actual plan options.
+      Estimates only. This tool applies the published RAP income brackets and the IBR discretionary-income formula against the 2026 HHS poverty guidelines for the 48 contiguous states and DC — Alaska and Hawaii use higher figures. Your servicer's number can differ based on loan type, spousal income and filing status. Confirm your actual options at studentaid.gov.
     </div>
     <div class="card">
       <div>
@@ -362,29 +378,77 @@
           <div class="field"><label>Adjusted Gross Income — AGI ($)</label><input type="number" id="slrAGI" value="45000" step="500" min="0"></div>
           <div class="field"><label>Family size</label><input type="number" id="slrFamily" value="1" step="1" min="1"></div>
         </div>
+        <div class="row2">
+          <div class="field"><label>Dependents claimed (RAP)</label><input type="number" id="slrDependents" value="0" step="1" min="0"></div>
+          <div class="field"><label>IBR tier</label>
+            <select id="slrIbrTier">
+              <option value="0.10">First loan on/after 1 Jul 2014 — 10%</option>
+              <option value="0.15">First loan before 1 Jul 2014 — 15%</option>
+            </select>
+          </div>
+        </div>
       </div>
       <div class="readout">
         <div class="r-row"><span class="r-label">Standard 10-year payment</span><span class="r-value" id="slrStandard">$0</span></div>
-        <div class="r-row"><span class="r-label">Estimated income-driven payment</span><span class="r-value" id="slrIDR">$0</span></div>
-        <div class="r-row"><span class="r-label">Discretionary income used</span><span class="r-value" id="slrDiscretionary">$0</span></div>
-        <div class="r-row"><span class="r-label">Monthly savings under IDR</span><span class="r-value" id="slrSavings">$0</span></div>
+        <div class="r-row"><span class="r-label">RAP payment</span><span class="r-value" id="slrRAP">$0</span></div>
+        <div class="r-row"><span class="r-label">IBR payment</span><span class="r-value" id="slrIBR">$0</span></div>
+        <div class="r-row"><span class="r-label">RAP bracket applied</span><span class="r-value" id="slrRAPRate">—</span></div>
+        <div class="r-row"><span class="r-label">Discretionary income (IBR)</span><span class="r-value" id="slrDiscretionary">$0</span></div>
+        <div class="r-row"><span class="r-label">Saved vs standard (lower plan)</span><span class="r-value" id="slrSavings">$0</span></div>
       </div>
     </div>
   </section>
 
   <section class="article">
-    <h3>What is income-driven repayment?</h3>
-    <p>Income-driven repayment (IDR) sets your federal student loan payment as a percentage of your discretionary income rather than a fixed amortized amount tied strictly to your balance and term — so the payment rises and falls with your income and family size. Current federal plans include SAVE, PAYE, and IBR, among others, each using a slightly different discretionary-income formula and percentage.</p>
-    <h3>Why might IDR result in a lower payment but more total interest?</h3>
-    <p>A lower monthly payment based on income can stretch out how long interest keeps accruing on your balance, and in some cases the IDR payment may not even cover the interest generated that month, allowing the balance to grow rather than shrink. The tradeoff is affordability today versus total cost over the full life of the loan — which is exactly why comparing the two numbers side by side matters.</p>
-    <h3>Do IDR plans lead to loan forgiveness?</h3>
-    <p>Many income-driven plans forgive any remaining balance after 20 to 25 years of qualifying payments, with the exact timeline depending on the specific plan and when the loan was originally borrowed. These rules are subject to ongoing legislative and legal changes, so always confirm the current terms directly with your loan servicer or at studentaid.gov rather than relying on any fixed number.</p>
-    <h3>How do I actually apply for IDR?</h3>
-    <p>You apply through your loan servicer or directly at studentaid.gov, typically by providing income documentation such as a recent tax return or pay stubs. Most borrowers can switch plans or recertify their income annually as their circumstances change, so it's worth revisiting the choice periodically rather than treating it as permanent.</p>
-    <p><strong>Worked example:</strong> a $40,000 loan at 6% has a standard 10-year payment of $444.08 a month. For a single borrower (family size 1) earning $45,000 AGI, the 2024 poverty guideline base is $15,060, so discretionary income is 45,000 − (15,060 × 2.25) = $11,115, and the estimated IDR payment at 10% of discretionary income is $92.63 a month — a savings of $351.46 a month, though likely at the cost of more total interest over a longer repayment period.</p>
+    <h3>What changed in 2026</h3>
+    <p>If you last looked at income-driven repayment a year ago, most of what you learned is now out of date. SAVE — the plan that carried the most borrowers — was vacated by a federal court on 10 March 2026 and separately terminated by statute in the One Big Beautiful Bill Act. PAYE and ICR survive only as legacy plans: closed to new enrollment, and gone entirely on 1 July 2028.</p>
+    <p>That leaves two live options. The Repayment Assistance Plan (RAP) opened on 1 July 2026, and Income-Based Repayment (IBR) continues. They calculate payments in fundamentally different ways, which is why one can be dramatically cheaper than the other for the same borrower.</p>
+
+    <h3>The RAP income brackets</h3>
+    <p>RAP's defining feature is that it charges a percentage of your <strong>total AGI</strong> — there is no poverty-line deduction at all. The rate climbs one percentage point per $10,000 of income:</p>
+    <table class="bracket-table">
+      <thead><tr><th>Adjusted gross income</th><th>Payment rate</th></tr></thead>
+      <tbody>
+      <tr><td>$0 – $10,000</td><td>$10/month floor</td></tr>
+      <tr><td>$10,001 – $20,000</td><td>1% of AGI</td></tr>
+      <tr><td>$20,001 – $30,000</td><td>2% of AGI</td></tr>
+      <tr><td>$30,001 – $40,000</td><td>3% of AGI</td></tr>
+      <tr><td>$40,001 – $50,000</td><td>4% of AGI</td></tr>
+      <tr><td>$50,001 – $60,000</td><td>5% of AGI</td></tr>
+      <tr><td>$60,001 – $70,000</td><td>6% of AGI</td></tr>
+      <tr><td>$70,001 – $80,000</td><td>7% of AGI</td></tr>
+      <tr><td>$80,001 – $90,000</td><td>8% of AGI</td></tr>
+      <tr><td>$90,001 – $100,000</td><td>9% of AGI</td></tr>
+      <tr><td>$100,001 and above</td><td>10% of AGI</td></tr>
+      </tbody>
+    </table>
+    <p>From the resulting monthly figure you subtract <strong>$50 for every dependent</strong> you claim on your federal return, and the answer is floored at $10 — RAP has no $0 payment, however low your income goes.</p>
+
+    <h3>How IBR differs</h3>
+    <p>IBR charges a share of <em>discretionary</em> income, meaning only the portion of your AGI above 150% of the federal poverty guideline for your family size. For 2026 in the 48 contiguous states that threshold is $23,940 for a household of one, rising by $8,520 per additional person. Earn less than the threshold and your IBR payment is genuinely $0.</p>
+    <p>Which rate applies depends on when you first borrowed. If your earliest loan was disbursed on or after 1 July 2014 you pay 10% of discretionary income and reach forgiveness in 20 years; borrowers who predate that cutoff pay 15% and wait 25 years. The One Big Beautiful Bill Act also removed the old partial financial hardship test, so there is no longer an income ceiling on IBR eligibility.</p>
+
+    <h3>Why RAP is not automatically the cheaper option</h3>
+    <p>Because RAP taxes every dollar of AGI while IBR exempts the first 150% of the poverty line, the two formulas cross over as income rises. Three cases, all computed by the calculator above:</p>
+    <table class="bracket-table">
+      <thead><tr><th>Borrower</th><th>Standard</th><th>RAP</th><th>IBR</th></tr></thead>
+      <tbody>
+      <tr><td>$45,000 AGI, single, no dependents</td><td>$444.08</td><td><strong>$150.00</strong></td><td>$175.50</td></tr>
+      <tr><td>$72,000 AGI, family of 4, 2 dependents</td><td>$444.08</td><td>$320.00</td><td><strong>$187.50</strong></td></tr>
+      <tr><td>$120,000 AGI, family of 2, no dependents</td><td>$738.06</td><td>$1,000.00</td><td><strong>$729.50</strong></td></tr>
+      </tbody>
+    </table>
+    <p>All three use a $40,000 balance at 6% except the last, which uses $65,000 at 6.5%. The pattern is consistent: RAP wins at modest incomes, and the advantage grows with dependents at $50 apiece. IBR pulls ahead as income climbs, because the poverty-line exemption keeps shielding income while RAP's percentage applies to the whole amount. In the third case RAP is actually more expensive than the standard 10-year plan — an income-driven plan that costs more than the plan it is supposed to relieve.</p>
+
+    <h3>What RAP gives you in return</h3>
+    <p>RAP's longer 30-year forgiveness clock — 360 qualifying payments, against IBR's 20 or 25 years — is a real cost. Two features partly offset it. Unpaid interest is <strong>waived rather than capitalised</strong>, so a payment that falls short of monthly interest no longer inflates your balance. And the government tops up any shortfall needed to make your principal drop by at least $50 a month, which means a RAP balance always moves down. Under IBR, a low payment on a large balance can leave you owing more years later than you borrowed.</p>
+
+    <h3>Which plan can you actually choose?</h3>
+    <p>Eligibility now depends heavily on dates. Loans issued or consolidated on or after 1 July 2026 can only use RAP — IBR is closed to them. If your loans predate that, both are open and worth comparing. Anyone still sitting on PAYE or ICR has until 1 July 2028 to move, and anyone parked in SAVE forbearance needs to pick something now, because that plan no longer exists to return to.</p>
+    <p>One caveat the calculator cannot capture: if you are married and file jointly, most plans count your spouse's income too. Filing separately can cut the payment substantially but usually costs you elsewhere on your tax return, and which way that nets out is genuinely individual.</p>
   </section>
 
-  <p style="font-size:13px;color:rgba(242,236,221,0.55);margin:0 0 24px;">Just want a straightforward standard payment estimate? See the <a href="student-loan-calculator.html">Student Loan Calculator</a>. New here in 2026? Read <a href="student-loan-repayment-changes-2026.html">what changed when SAVE, PAYE, and ICR were replaced by RAP</a>.</p>
+  <p style="font-size:13px;color:rgba(242,236,221,0.55);margin:0 0 24px;">Want the plain amortised payment without any income adjustment? Use the <a href="student-loan-calculator.html">Student Loan Calculator</a>. For the full background on the 2026 overhaul, read <a href="student-loan-repayment-changes-2026.html">what changed when SAVE, PAYE and ICR gave way to RAP</a>. Still deciding whether the degree pays for itself? Start with the <a href="college-cost-calculator.html">College Cost Calculator</a>, and if you are weighing loan payoff against investing, the <a href="debt-payoff-calculator.html">Debt Payoff Calculator</a> compares the two directly.</p>
 
 
   <footer>

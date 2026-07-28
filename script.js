@@ -7451,10 +7451,19 @@ function tbMoney(n){
   var slrRate = document.getElementById('slrRate');
   var slrAGI = document.getElementById('slrAGI');
   var slrFamily = document.getElementById('slrFamily');
+  var slrDependents = document.getElementById('slrDependents');
+  var slrIbrTier = document.getElementById('slrIbrTier');
   var slrStandard = document.getElementById('slrStandard');
-  var slrIDR = document.getElementById('slrIDR');
+  var slrRAP = document.getElementById('slrRAP');
+  var slrIBR = document.getElementById('slrIBR');
+  var slrRAPRate = document.getElementById('slrRAPRate');
   var slrDiscretionary = document.getElementById('slrDiscretionary');
   var slrSavings = document.getElementById('slrSavings');
+
+  // 2026 HHS poverty guidelines, 48 contiguous states + DC:
+  // $15,960 for a household of 1, plus $5,680 per additional person.
+  var FPL_BASE = 15960;
+  var FPL_STEP = 5680;
 
   function fmt(n) {
     var sign = n < 0 ? '-' : '';
@@ -7468,25 +7477,46 @@ function tbMoney(n){
     return P * i / (1 - Math.pow(1 + i, -months));
   }
 
+  // RAP charges a flat percentage of total AGI, stepping up 1 point per
+  // $10,000 of income: 1% at $10,001-$20,000 through 10% above $100,000.
+  function rapPct(agi) {
+    if (agi <= 10000) return 0;
+    if (agi > 100000) return 0.10;
+    return Math.min(10, Math.ceil((agi - 10000) / 10000)) / 100;
+  }
+
   function calc() {
     var balance = parseFloat(slrBalance.value) || 0;
     var rate = parseFloat(slrRate.value) || 0;
     var agi = parseFloat(slrAGI.value) || 0;
     var familySize = parseFloat(slrFamily.value) || 1;
+    var dependents = parseFloat(slrDependents.value) || 0;
+    var ibrPct = parseFloat(slrIbrTier.value) || 0.10;
 
     var standardPayment = pmt(balance, rate, 120);
-    var povertyGuideline = 15060 + (familySize - 1) * 5380;
-    var discretionary = Math.max(0, agi - povertyGuideline * 2.25);
-    var idrPayment = discretionary * 0.10 / 12;
-    var savings = standardPayment - idrPayment;
+
+    // RAP: (AGI x bracket rate / 12) - $50 per dependent, never below $10.
+    var pct = rapPct(agi);
+    var rapPayment = Math.max(10, agi * pct / 12 - 50 * dependents);
+
+    // IBR: a share of discretionary income, where discretionary income is
+    // AGI above 150% of the poverty guideline for the borrower's family size.
+    var poverty = FPL_BASE + (familySize - 1) * FPL_STEP;
+    var discretionary = Math.max(0, agi - poverty * 1.5);
+    var ibrPayment = discretionary * ibrPct / 12;
+
+    var lowest = Math.min(rapPayment, ibrPayment);
+    var savings = standardPayment - lowest;
 
     slrStandard.textContent = fmt(standardPayment);
-    slrIDR.textContent = fmt(idrPayment);
+    slrRAP.textContent = fmt(rapPayment);
+    slrIBR.textContent = fmt(ibrPayment);
+    slrRAPRate.textContent = agi <= 10000 ? '$10 floor' : (pct * 100).toFixed(0) + '% of AGI';
     slrDiscretionary.textContent = fmt(discretionary);
     slrSavings.textContent = savings > 0 ? fmt(savings) : fmt(0);
   }
 
-  [slrBalance, slrRate, slrAGI, slrFamily].forEach(function (el) {
+  [slrBalance, slrRate, slrAGI, slrFamily, slrDependents, slrIbrTier].forEach(function (el) {
     el.addEventListener('input', calc);
     el.addEventListener('change', calc);
   });
