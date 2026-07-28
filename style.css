@@ -943,6 +943,9 @@ footer a{color:var(--teal-light) !important;}
   padding-left:calc(12px + 3ch);
   text-indent:-3ch;
 }
+/* Region qualifier in a book heading — same line, lighter weight, so
+   "Paisa Playbook — India" reads as one title rather than two. */
+.book-region{color:rgba(242,236,221,0.5);font-weight:400;}
 .bracket-table tbody tr:hover{background:rgba(192,138,52,0.05);}
 .field-warning{
   display:none;
