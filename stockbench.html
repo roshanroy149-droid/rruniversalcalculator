@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Discount Calculator — Sale Price &amp; Savings | TallyBench</title>
-<meta name="description" content="Free discount calculator. Find the sale price and amount saved from a percentage discount, or work backward to find the original price.">
-<link rel="canonical" href="https://tallybench.com/discount-calculator.html">
+<title>StockBench — Offline Inventory Software, One-Time Purchase</title>
+<meta name="description" content="StockBench is desktop inventory software for small businesses: a stock-gauge bar per item, stock in/out logging, low-stock alerts, CSV import/export and backup. Runs offline, your data stays on your computer. One-time purchase, no subscription.">
+<link rel="canonical" href="https://tallybench.com/stockbench.html">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.svg">
@@ -15,15 +15,15 @@
 <meta name="apple-mobile-web-app-title" content="TallyBench">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TallyBench">
-<meta property="og:title" content="Discount Calculator — Sale Price &amp; Savings">
-<meta property="og:description" content="Free discount calculator. Find the sale price and amount saved from a percentage discount, or work backward to find the original price.">
-<meta property="og:url" content="https://tallybench.com/discount-calculator.html">
+<meta property="og:title" content="StockBench — Offline Inventory Software, One-Time Purchase">
+<meta property="og:description" content="Desktop inventory software for small businesses. Stock-gauge bar per item, stock in/out log, low-stock alerts, CSV import/export, backup. Runs offline. One-time purchase, no subscription.">
+<meta property="og:url" content="https://tallybench.com/stockbench.html">
 <meta property="og:image" content="https://tallybench.com/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Discount Calculator — Sale Price &amp; Savings">
-<meta name="twitter:description" content="Free discount calculator. Find the sale price and amount saved from a percentage discount, or work backward to find the original price.">
+<meta name="twitter:title" content="StockBench — Offline Inventory Software, One-Time Purchase">
+<meta name="twitter:description" content="Desktop inventory software for small businesses. Runs offline, data stays on your computer, one-time purchase — no subscription.">
 <meta name="twitter:image" content="https://tallybench.com/og-image.png">
 <link rel="stylesheet" href="fonts/fonts.css">
 <link rel="stylesheet" href="style.css">
@@ -31,64 +31,54 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "How is the sale price calculated?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "The discount percentage is multiplied by the original price to get the amount saved, then subtracted from the original price for the sale price."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How does \"find original price\" work in reverse?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "If a sale price reflects a known discount percentage, the original price is the sale price divided by (1 minus the discount as a decimal) \u2014 this undoes the discount math to recover the starting price."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Does this handle stacked discounts, like 20% off an already-discounted item?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Not automatically \u2014 stacked discounts apply sequentially, not additively (20% off, then another 10% off, is not the same as 30% off). Run the sale price through the calculator twice, once per discount, to get an accurate stacked result."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How do I calculate two discounts applied one after another?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Stacked discounts multiply, not add \u2014 20% off followed by another 10% off is NOT 30% off. Run the first discount through the calculator, take that sale price, then run it through again as the new 'original price' with the second discount percentage."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What's the actual percentage saved when two discounts stack?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Two stacked discounts of 20% and 10% leave you paying 80%\u00d790% = 72% of the original price \u2014 a combined 28% off, not 30%. The gap grows the more discounts are stacked, which is why store 'up to 50% off, plus extra 20% off' promotions save less than the headline number suggests."
-      }
-    }
-  ]
+  "@type": "SoftwareApplication",
+  "name": "StockBench",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Windows",
+  "author": { "@type": "Organization", "name": "Venros" },
+  "publisher": { "@type": "Organization", "name": "Venros" },
+  "description": "Offline desktop inventory software for small businesses. Item register with per-item stock gauges, stock in/out logging, low-stock alerts, CSV import/export and backup/restore. One-time purchase.",
+  "url": "https://tallybench.com/stockbench.html"
 }
 </script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  "name": "Discount Calculator \u2014 TallyBench",
-  "applicationCategory": "UtilitiesApplication",
-  "operatingSystem": "Any (runs in browser)",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "url": "https://tallybench.com/discount-calculator.html"
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What's the difference between StockBench Standard and Pro?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Both have identical features. They differ only in how data is stored. Standard uses a local file that stays instant for years of normal, periodic stock-in/stock-out use. Pro uses a real embedded database built for businesses with many SKUs and very frequent entries over many years, so it stays fast no matter how much history piles up. Most businesses never need Pro — it exists for high-volume operations, not as an upsell on a limited Standard."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this really a one-time purchase?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. You pay once and the licence for that version never expires. There is no recurring fee and no way to be charged again automatically. Bug-fix updates for your version are free. A significantly new major version may one day be sold separately, but it would never remove what you already paid for."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does StockBench work without internet?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Adding items, logging stock, CSV import/export and backups all run entirely on your computer. Only licence activation needs a connection. After that the app re-checks the licence periodically and keeps working offline for up to 14 days between successful checks, so an outage doesn't stop you working."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Where is my inventory data stored?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Only on your own computer. Nothing is uploaded to a server, and we have no access to it. That also means we cannot recover it for you, so use the built-in backup feature regularly and keep a copy somewhere other than that machine."
+      }
+    }
+  ]
 }
 </script>
 <!-- TB:BREADCRUMB:START -->
@@ -106,15 +96,15 @@
                             {
                                 "@type":  "ListItem",
                                 "position":  2,
-                                "name":  "Discount Calculator",
-                                "item":  "https://tallybench.com/discount-calculator.html"
+                                "name":  "StockBench",
+                                "item":  "https://tallybench.com/stockbench.html"
                             }
                         ]
 }
 </script>
 <!-- TB:BREADCRUMB:END -->
 </head>
-<body data-page-cat="finance">
+<body data-page-cat="stockbench">
 
 <header>
   <div class="wrap">
@@ -349,117 +339,101 @@
 <div class="nav-backdrop" id="navBackdrop"></div>
 
 <div class="wrap">
-  <div class="crumb"><a href="index.html">TallyBench</a> / Discount Calculator</div>
+  <div class="crumb"><a href="index.html">TallyBench</a> / StockBench</div>
+</div>
 
-  <section class="hero">
-    <div class="hero-icon-row cat-finance">
-      <div class="hero-icon"><svg><use href="icons.svg#icon-discount"/></svg></div>
-      <div class="eyebrow">// DISCOUNT CALCULATOR</div>
+<section class="article-hero cat-finance">
+  <div class="wrap">
+    <span class="article-tag">// STOCKBENCH — COMING SOON</span>
+    <h1>Inventory software you buy once, that runs on your own computer.</h1>
+    <p class="article-dek">Every item shows a stock-gauge bar with a tick mark at your reorder point — so you see what needs ordering at a glance, not by reading a column of numbers. Works offline. Your data never leaves your machine. No subscription, ever.</p>
+    <div class="article-meta">
+      <span>Venros</span>
+      <span>·</span>
+      <span>Windows desktop app</span>
+      <span>·</span>
+      <span>from $29 one-time</span>
     </div>
-    <h1>What does that percentage off actually save you?</h1>
-    <p>Enter a price and discount to see the sale price, or work backward from a sale price to find the original.</p>
-  </section>
+  </div>
+</section>
 
-  <section class="tool" id="discount">
-    <div class="field" style="max-width:260px;margin-bottom:20px;">
-      <label>Currency</label>
-      <select id="discCur">
-            <option value="$">USD ($)</option>
-            <option value="€">EUR (€)</option>
-            <option value="£">GBP (£)</option>
-            <option value="₹">INR (₹)</option>
-            <option value="¥">JPY (¥)</option>
-            <option value="A$">AUD (A$)</option>
-            <option value="C$">CAD (C$)</option>
-            <option value="CHF ">CHF</option>
-            <option value="CN¥">CNY (CN¥)</option>
-            <option value="S$">SGD (S$)</option>
-            <option value="AED ">AED</option>
-            <option value="NZ$">NZD (NZ$)</option>
-            <option value="R">ZAR (R)</option>
-            <option value="R$">BRL (R$)</option>
-            <option value="MX$">MXN (MX$)</option>
-            <option value="HK$">HKD (HK$)</option>
-            <option value="₩">KRW (₩)</option>
-            <option value="kr">SEK/NOK (kr)</option>
-      </select>
-    </div>
-    <div class="tabs" id="discTabs">
-      <button class="active" data-tab="sale">Find sale price</button>
-      <button data-tab="original">Find original price</button>
-      <button data-tab="stack">Stack two discounts</button>
-    </div>
+<div class="wrap">
+  <section class="article-body">
 
-    <div class="tab-panel active" id="panel-sale">
-      <div class="card">
-        <div>
-          <div class="field"><label>Original price</label><input type="number" id="discOriginal" value="1000" step="0.01"></div>
-          <div class="field"><label>Discount (%)</label><input type="number" id="discPct" value="25" step="1"></div>
-          <div class="field"><label>Sales tax / VAT / GST applied after discount (%, optional)</label><input type="number" id="discTax" value="0" step="0.1" min="0"></div>
-        </div>
-        <div class="readout">
-          <div class="r-row"><span class="r-label">You save</span><span class="r-value" id="discSaved">0</span></div>
-          <div class="r-row"><span class="r-label">Sale price (before tax)</span><span class="r-value" id="discSalePrice">0</span></div>
-          <div class="r-row"><span class="r-label">Final price (with tax)</span><span class="r-sub" id="discFinalWithTax">—</span></div>
-        </div>
-        <div class="field-warning" id="discSaleWarning"></div>
-      </div>
-    </div>
+    <figure class="product-shot">
+      <img src="stockbench-screenshot.png" width="1280" height="620" alt="StockBench item register: each row shows an item name, SKU, category, a horizontal stock-gauge bar with a reorder tick mark, a HEALTHY, LOW or CRITICAL status badge, and the quantity on hand">
+      <figcaption>The actual app, not a mockup — a real screenshot of the item register.</figcaption>
+    </figure>
 
-    <div class="tab-panel" id="panel-original">
-      <div class="card">
-        <div>
-          <div class="field"><label>Sale price (after discount)</label><input type="number" id="discSale" value="750" step="0.01"></div>
-          <div class="field"><label>Discount applied (%)</label><input type="number" id="discPct2" value="25" step="1"></div>
-        </div>
-        <div class="readout">
-          <div class="r-row"><span class="r-label">Original price</span><span class="r-value" id="discOriginalOut">0</span></div>
-          <div class="r-row"><span class="r-label">You saved</span><span class="r-value" id="discSavedOut">0</span></div>
-        </div>
-        <div class="field-warning" id="discOriginalWarning"></div>
-      </div>
+    <p>Almost every inventory tool for small businesses is now a subscription: $30 to $90 a month, your stock list living on someone else's server, and the whole thing stopping the day you stop paying. For a business tracking a few hundred items, that's a strange bargain.</p>
+    <p>StockBench is the older one. You buy it once. It installs on your computer, keeps every item and every movement in a file you own, and carries on working whether or not you're online — and whether or not we're still around in five years.</p>
+    <p>The design borrows deliberately from a paper stock register: a ledger table, tabular figures for quantities and SKUs, and colour used only where it carries meaning — green for healthy, amber for low, red for out. The gauge bar per item is the whole point. You can scan a shelf's worth of stock and know what to reorder without reading a single number.</p>
+
+    <h2>What's included</h2>
+    <ul>
+      <li><strong>Item register</strong> — name, SKU, category, quantity and reorder threshold per item</li>
+      <li><strong>Stock in/out entry</strong> with a running, timestamped movement log</li>
+      <li><strong>Low-stock alerts</strong> — a running count in the header plus gauge colouring, visible everywhere rather than buried in a report</li>
+      <li><strong>CSV import/export</strong> — bring in an existing spreadsheet, matched and updated by SKU</li>
+      <li><strong>Backup and restore</strong>, with an automatic safety copy taken before any restore</li>
+      <li><strong>Works offline</strong> — everything runs on your machine; the licence re-checks online periodically, with up to 14 days of offline use in between</li>
+    </ul>
+
+    <h2>Standard or Pro?</h2>
+    <p>Both editions have identical features. The only difference is how they store data, and it's a difference most businesses will never notice:</p>
+
+    <div class="table-scroll">
+      <table class="bracket-table">
+        <thead><tr><th scope="col"></th><th scope="col">Standard — $29</th><th scope="col">Pro — $49</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Good for</strong></td>
+            <td>The vast majority of businesses — typical periodic stock-in/stock-out entry</td>
+            <td>High-volume operations: many SKUs, very frequent entries, used continuously for years</td>
+          </tr>
+          <tr>
+            <td><strong>Speed as data grows</strong></td>
+            <td>Instant for years of normal use; may gradually slow once tens of thousands of stock entries have accumulated</td>
+            <td>Stays fast regardless of how much history builds up</td>
+          </tr>
+          <tr>
+            <td><strong>Installation</strong></td>
+            <td>No native components — never affected by antivirus or application-control policies</td>
+            <td>Includes a compiled database component; on a small number of machines with strict security software this may need a one-time settings change</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
-    <div class="tab-panel" id="panel-stack">
-      <div class="card">
-        <div>
-          <div class="field"><label>Original price</label><input type="number" id="discStackOriginal" value="1000" step="0.01"></div>
-          <div class="field"><label>First discount (%)</label><input type="number" id="discStack1" value="20" step="1"></div>
-          <div class="field"><label>Second discount (%) — applied after the first</label><input type="number" id="discStack2" value="10" step="1"></div>
-        </div>
-        <div class="readout">
-          <div class="r-row"><span class="r-label">Price after first discount</span><span class="r-value" id="discStackMid">0</span></div>
-          <div class="r-row"><span class="r-label">Final price</span><span class="r-value" id="discStackFinal">0</span></div>
-          <div class="r-row"><span class="r-label">Combined effective discount</span><span class="r-sub" id="discStackCombined">—</span></div>
-        </div>
-        <div class="field-warning" id="discStackWarning"></div>
-      </div>
+    <p>Honestly: if you're unsure, buy Standard. It's the right choice for almost everyone, and it isn't a crippled version of Pro — it's the same app, built to stay fast at the volume a typical business actually generates.</p>
+    <p class="book-meta-note">Prices shown in USD. StockBench is priced regionally, so the amount at checkout is set for your country — in India, for instance, it's ₹699 and ₹999. One licence covers one computer.</p>
+
+    <div class="disclaimer">
+      <strong>StockBench is finishing pre-launch checks.</strong> The app is complete and tested end to end — this page is up so you can see exactly what you'd be buying before checkout opens. Want to know the moment it's available, or have a question first? Email <a href="mailto:helpdesktallybench@gmail.com">helpdesktallybench@gmail.com</a>.
     </div>
+
+    <div class="article-cta-row">
+      <a class="article-cta-btn" href="mailto:helpdesktallybench@gmail.com?subject=Notify%20me%20-%20StockBench">Notify me at launch →</a>
+      <a class="article-cta-btn ghost" href="index.html">Browse the free calculators</a>
+    </div>
+
+    <h2>Free tools that pair with it</h2>
+    <p>Counting stock is half the job; pricing it is the other half. Several free calculators here sit naturally alongside StockBench: <a href="margin-calculator.html">Margin</a> and <a href="break-even-calculator.html">Break-Even</a> for pricing decisions, <a href="sales-tax-calculator.html">Sales Tax</a> and <a href="gst-vat-calculator.html">GST / VAT</a> for invoicing, <a href="business-loan-calculator.html">Business Loan</a> for financing stock purchases, and <a href="commission-calculator.html">Commission</a> if staff are paid on sales.</p>
   </section>
 
   <section class="article">
-    <h3>How is the sale price calculated?</h3>
-    <p>The discount percentage is multiplied by the original price to get the amount saved, then subtracted from the original price for the sale price: <strong>sale price = original × (1 − discount%/100)</strong>.</p>
-    <h3>How does "find original price" work in reverse?</h3>
-    <p>If a sale price reflects a known discount percentage, the original price is the sale price divided by (1 minus the discount as a decimal): <strong>original = sale ÷ (1 − discount%/100)</strong> — this undoes the discount math to recover the starting price. It's the same reverse-percentage logic used for "price before tax" calculations.</p>
-    <h3>How do stacked discounts actually work?</h3>
-    <p>Stacked discounts multiply, not add — 20% off followed by another 10% off is <em>not</em> 30% off. Each discount applies to the already-discounted price, so the combined effect is 1 − (1−0.20)×(1−0.10) = 1 − 0.80×0.90 = 1 − 0.72 = 28% off, not 30%. The Stack tab above computes this directly for any two discounts, and shows the "combined effective discount" so you can see exactly how much the headline percentages actually save. The gap between the naive sum and the real combined discount grows the more discounts are stacked — which is why "up to 50% off, plus an extra 20%" promotions save meaningfully less than the two numbers added together suggest.</p>
-    <h3>Does the order of stacked discounts matter?</h3>
-    <p>No — multiplication is commutative, so 20% then 10% gives exactly the same final price as 10% then 20% (both land at 72% of the original). What does matter is whether a coupon is described as applying to the <em>original</em> price or the <em>already-discounted</em> price — retailers sometimes apply a coupon to the pre-sale price even during a sale, which is more generous than stacking, so check the fine print.</p>
-    <h3>How does sales tax interact with a discount?</h3>
-    <p>In the US, sales tax is calculated on the discounted price, not the original — so a $100 item at 20% off with 8% sales tax comes to $80 × 1.08 = $86.40, not $100 × 1.08 minus 20%. The optional tax field on the "Find sale price" tab applies exactly this order. In most of Europe and in India, prices are more commonly tax-inclusive to begin with (VAT/GST already baked into the shelf price), so a discount there typically reduces the tax-inclusive price directly — if you need to separate the tax component afterward, the <a href="gst-vat-calculator.html">GST / VAT Calculator</a> handles that reverse extraction.</p>
-    <h3>What's the difference between percent-off and dollar-off coupons when stacking?</h3>
-    <p>A flat dollar-off coupon ($20 off) and a percent-off coupon (20% off) only produce the same saving at one specific price point — below that price the dollar coupon saves relatively more, above it the percent coupon does. When both are stackable, applying the percentage discount first (on the larger base) then the flat amount usually saves slightly more than the reverse order, though most retailers fix the order in their system rather than letting you choose.</p>
-    <h3>Why does "50% off" sometimes not feel like half price?</h3>
-    <p>Watch for "up to" language — "up to 50% off" legally requires only that at least one item in the sale carries that discount, not the whole range. Also check whether the discount applies to the lowest previously-advertised price or a recently-inflated "original" price; consumer protection rules on this vary significantly between the US (FTC guidance), the EU (the Omnibus Directive requires showing the lowest price in the last 30 days), and India (Consumer Protection Act rules on misleading MRP claims) — the EU's rule in particular makes pre-sale price inflation harder to get away with legally.</p>
-    <p><strong>Worked example:</strong> a $200 item with 30% off comes to $140 (you save $60); add 8% sales tax on the discounted price and the final total is $151.20. Working backward, a $140 sale price with a known 30% discount recovers the original $200 exactly. Stacking 20% then 10% on that same $200 item lands at $144 (28% combined off), not the $140 that a naive 30%-sum would suggest — try all three tabs above with these numbers to confirm.</p>
+    <h3>What's the difference between StockBench Standard and Pro?</h3>
+    <p>Both have identical features. They differ only in how data is stored. Standard uses a local file that stays instant for years of normal, periodic stock-in/stock-out use. Pro uses a real embedded database built for businesses with many SKUs and very frequent entries over many years, so it stays fast no matter how much history piles up. Most businesses never need Pro — it exists for high-volume operations, not as an upsell on a limited Standard.</p>
+    <h3>Is this really a one-time purchase?</h3>
+    <p>Yes. You pay once and the licence for that version never expires. There is no recurring fee and no way to be charged again automatically. Bug-fix updates for your version are free. A significantly new major version may one day be sold separately, but it would never remove what you already paid for.</p>
+    <h3>Does StockBench work without internet?</h3>
+    <p>Yes. Adding items, logging stock, CSV import/export and backups all run entirely on your computer. Only licence activation needs a connection. After that the app re-checks the licence periodically and keeps working offline for up to 14 days between successful checks, so an outage doesn't stop you working.</p>
+    <h3>Where is my inventory data stored?</h3>
+    <p>Only on your own computer. Nothing is uploaded to a server, and we have no access to it. That also means we cannot recover it for you, so use the built-in backup feature regularly and keep a copy somewhere other than that machine.</p>
   </section>
 
-
-  <p style="font-size:13px;color:rgba(242,236,221,0.55);margin:0 0 24px;">Work out the final till price by adding the <a href="sales-tax-calculator.html">Sales Tax Calculator</a> on top, and use the <a href="percentage-calculator.html">Percentage Calculator</a> for percentage questions that are not discounts.</p>
-
   <footer>
-    <p>TALLYBENCH · built for quick answers · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
+    <p>TALLYBENCH · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
   </footer>
 </div>
 

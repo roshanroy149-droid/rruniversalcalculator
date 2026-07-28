@@ -106,9 +106,9 @@ window.__TB_EMBED__ = new URLSearchParams(window.location.search).get('embed') =
   // same copper "you are here" highlight a calculator page's category tab gets, instead
   // of staying its default muted color while you're reading an article.
   // book.html does the same with data-page-cat="book" and the BOOK link,
-  // and tallystock.html with data-page-cat="tallystock" and the TALLYSTOCK link.
+  // and stockbench.html with data-page-cat="stockbench" and the STOCKBENCH link.
   const pageCat = document.body.dataset.pageCat;
-  const PLAIN_LINKS = { articles: 'articles.html', book: 'book.html', tallystock: 'tallystock.html' };
+  const PLAIN_LINKS = { articles: 'articles.html', book: 'book.html', stockbench: 'stockbench.html' };
   if(PLAIN_LINKS[pageCat]){
     const link = document.querySelector('.tick[href="' + PLAIN_LINKS[pageCat] + '"]');
     if(link) link.classList.add('active');
@@ -5176,7 +5176,7 @@ function amortizationToCSV(years, cur){
 (function(){
   if (window.__TB_EMBED__) return;
   // Gate on the actual article page-cat, not just the presence of these CSS
-  // classes — book.html and tallystock.html reuse .article-cta-row/.article-cta-btn
+  // classes — book.html and stockbench.html reuse .article-cta-row/.article-cta-btn
   // for their own CTA styling but aren't articles, and their first CTA (an
   // Amazon link, a mailto: link) isn't a calculator this widget can embed.
   if (document.body.dataset.pageCat !== 'articles') return;
@@ -10470,4 +10470,133 @@ function tbMoney(n){
   });
 
   show();
+})();
+
+// ---- Cross-Country Take-Home Comparison ----
+// Reuses the shared bracket tables above (taxUsFiling / taxIndiaRegimes /
+// taxFlatSchemes / calcBracketTax) so income tax stays consistent with the
+// main tax calculator. Everything else is scoped to this IIFE.
+(function () {
+  if (!document.getElementById('xcGrossA')) return;
+
+  // Employee-side mandatory contributions, 2026. "savings" marks schemes where
+  // the money stays yours (retirement accounts) rather than being a pure tax —
+  // the distinction most salary comparisons quietly ignore.
+  var CTRY = {
+    us: { name: 'United States', cur: 'USD', sym: '$',
+      social: function (g) { var ss = Math.min(g, 184500) * 0.062, mc = g * 0.0145 + Math.max(0, g - 200000) * 0.009;
+        return { amt: ss + mc, label: 'Social Security + Medicare (FICA)', savings: false }; } },
+    uk: { name: 'United Kingdom', cur: 'GBP', sym: '\u00A3',
+      social: function (g) { var ni = Math.max(0, Math.min(g, 50270) - 12570) * 0.08 + Math.max(0, g - 50270) * 0.02;
+        return { amt: ni, label: 'National Insurance (Class 1)', savings: false }; } },
+    in: { name: 'India', cur: 'INR', sym: '\u20B9',
+      social: function (g) { return { amt: g * 0.50 * 0.12, label: 'EPF (12% of basic, basic taken as 50% of gross)', savings: true }; } },
+    ca: { name: 'Canada', cur: 'CAD', sym: 'C$',
+      social: function (g) { var cpp = Math.max(0, Math.min(g, 74600) - 3500) * 0.0595
+          + Math.max(0, Math.min(g, 85000) - 74600) * 0.04;
+        var ei = Math.min(g, 68900) * 0.0163;
+        return { amt: cpp + ei, label: 'CPP + CPP2 + EI', savings: false }; } },
+    au: { name: 'Australia', cur: 'AUD', sym: 'A$',
+      social: function (g) { return { amt: g * 0.02, label: 'Medicare levy (super is paid by the employer on top)', savings: false }; } },
+    sg: { name: 'Singapore', cur: 'SGD', sym: 'S$',
+      social: function (g) { return { amt: Math.min(g, 96000) * 0.20, label: 'CPF employee share (age 55 and under)', savings: true }; } },
+    de: { name: 'Germany', cur: 'EUR', sym: '\u20AC',
+      social: function (g) { var a = Math.min(g, 101400) * 0.106, b = Math.min(g, 69750) * 0.091;
+        return { amt: a + b, label: 'Pension, unemployment, health and care (employee share)', savings: false }; } },
+    ae: { name: 'United Arab Emirates', cur: 'AED', sym: 'AED ',
+      social: function () { return { amt: 0, label: 'No personal income tax or employee social contribution for expatriates', savings: false }; } }
+  };
+
+  function incomeTax(code, gross) {
+    if (code === 'us') {
+      var fs = taxUsFiling.single;
+      return calcBracketTax(Math.max(0, gross - fs.standardDeduction), fs.brackets).tax;
+    }
+    if (code === 'in') {
+      var rg = taxIndiaRegimes['new'];
+      var ti = Math.max(0, gross - rg.standardDeduction);
+      if (ti <= rg.rebateThreshold) return 0;               // Section 87A
+      return calcBracketTax(ti, rg.brackets).tax * 1.04;     // + 4% cess
+    }
+    return calcBracketTax(gross, taxFlatSchemes[code].brackets).tax;
+  }
+
+  var rates = null, ratesDate = '';
+  var els = {};
+  ['GrossA', 'GrossB', 'CountryA', 'CountryB', 'Base'].forEach(function (k) { els[k] = document.getElementById('xc' + k); });
+  var noteEl = document.getElementById('xcNote');
+  var fxEl = document.getElementById('xcFx');
+
+  function money(sym, n) {
+    return sym + Math.round(n).toLocaleString('en-US');
+  }
+
+  function scenario(code, gross) {
+    var c = CTRY[code];
+    var tax = incomeTax(code, gross);
+    var soc = c.social(gross);
+    var net = Math.max(0, gross - tax - soc.amt);
+    return { c: c, gross: gross, tax: tax, soc: soc, net: net,
+             rate: gross > 0 ? (tax + soc.amt) / gross * 100 : 0 };
+  }
+
+  // Convert an amount in `from` currency into `to`, using USD-based rates.
+  function convert(amt, from, to) {
+    if (!rates || from === to) return from === to ? amt : null;
+    if (!rates[from] || !rates[to]) return null;
+    return amt / rates[from] * rates[to];
+  }
+
+  function render() {
+    var a = scenario(els.CountryA.value, Math.max(0, parseFloat(els.GrossA.value) || 0));
+    var b = scenario(els.CountryB.value, Math.max(0, parseFloat(els.GrossB.value) || 0));
+    var base = els.Base.value;
+    var baseSym = (Object.keys(CTRY).map(function (k) { return CTRY[k]; })
+      .filter(function (c) { return c.cur === base; })[0] || { sym: base + ' ' }).sym;
+
+    [['A', a], ['B', b]].forEach(function (pair) {
+      var k = pair[0], s = pair[1];
+      document.getElementById('xcTax' + k).textContent = money(s.c.sym, s.tax);
+      document.getElementById('xcSoc' + k).textContent = money(s.c.sym, s.soc.amt);
+      document.getElementById('xcNet' + k).textContent = money(s.c.sym, s.net);
+      document.getElementById('xcRate' + k).textContent = s.rate.toFixed(1) + '%';
+      document.getElementById('xcSocLabel' + k).textContent = s.soc.label;
+      var conv = convert(s.net, s.c.cur, base);
+      document.getElementById('xcNetBase' + k).textContent =
+        conv === null ? (rates ? '\u2014' : 'loading\u2026') : money(baseSym, conv);
+    });
+
+    var ca = convert(a.net, a.c.cur, base), cb = convert(b.net, b.c.cur, base);
+    if (ca !== null && cb !== null && ca > 0 && cb > 0) {
+      var diff = cb - ca;
+      var pct = diff / ca * 100;
+      noteEl.textContent = Math.abs(pct) < 0.5
+        ? 'The two are within half a percent of each other once converted to ' + base + '.'
+        : (diff > 0 ? b.c.name : a.c.name) + ' leaves you '
+          + money(baseSym, Math.abs(diff)) + ' more a year — '
+          + Math.abs(pct).toFixed(1) + '% ahead in ' + base + ' terms, before any cost-of-living difference.';
+    } else {
+      noteEl.textContent = rates ? '' : 'Fetching live exchange rates\u2026';
+    }
+  }
+
+  fetch('https://api.frankfurter.dev/v1/latest?base=USD')
+    .then(function (r) { if (!r.ok) throw new Error('bad response'); return r.json(); })
+    .then(function (data) {
+      rates = Object.assign({ USD: 1 }, data.rates);
+      ratesDate = data.date;
+      if (fxEl) fxEl.textContent = 'Live mid-market rates as of ' + ratesDate + '. Conversion is for comparison only — it is not what a bank would give you.';
+      render();
+    })
+    .catch(function () {
+      if (fxEl) fxEl.textContent = 'Could not reach the exchange rate service, so the converted column is unavailable. Local-currency figures below are unaffected.';
+      render();
+    });
+
+  ['GrossA', 'GrossB', 'CountryA', 'CountryB', 'Base'].forEach(function (k) {
+    els[k].addEventListener('input', render);
+    els[k].addEventListener('change', render);
+  });
+
+  render();
 })();

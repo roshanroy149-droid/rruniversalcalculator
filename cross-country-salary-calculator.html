@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Discount Calculator — Sale Price &amp; Savings | TallyBench</title>
-<meta name="description" content="Free discount calculator. Find the sale price and amount saved from a percentage discount, or work backward to find the original price.">
-<link rel="canonical" href="https://tallybench.com/discount-calculator.html">
+<title>Cross-Country Salary Calculator — Compare Take-Home Pay | TallyBench</title>
+<meta name="description" content="Compare what a salary actually pays in the US, UK, India, Canada, Australia, Singapore, Germany and the UAE — income tax, social contributions and net, converted at live rates.">
+<link rel="canonical" href="https://tallybench.com/cross-country-salary-calculator.html">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.svg">
@@ -15,15 +15,15 @@
 <meta name="apple-mobile-web-app-title" content="TallyBench">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TallyBench">
-<meta property="og:title" content="Discount Calculator — Sale Price &amp; Savings">
-<meta property="og:description" content="Free discount calculator. Find the sale price and amount saved from a percentage discount, or work backward to find the original price.">
-<meta property="og:url" content="https://tallybench.com/discount-calculator.html">
+<meta property="og:title" content="Cross-Country Salary Calculator — Compare Take-Home Pay">
+<meta property="og:description" content="What is your salary actually worth in another country? Income tax, social contributions and net pay across eight countries, converted at live rates.">
+<meta property="og:url" content="https://tallybench.com/cross-country-salary-calculator.html">
 <meta property="og:image" content="https://tallybench.com/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Discount Calculator — Sale Price &amp; Savings">
-<meta name="twitter:description" content="Free discount calculator. Find the sale price and amount saved from a percentage discount, or work backward to find the original price.">
+<meta name="twitter:title" content="Cross-Country Salary Calculator — Compare Take-Home Pay">
+<meta name="twitter:description" content="What is your salary actually worth in another country? Income tax, social contributions and net pay across eight countries.">
 <meta name="twitter:image" content="https://tallybench.com/og-image.png">
 <link rel="stylesheet" href="fonts/fonts.css">
 <link rel="stylesheet" href="style.css">
@@ -35,42 +35,42 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "How is the sale price calculated?",
+      "name": "Why is a low-tax country not automatically the better offer?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "The discount percentage is multiplied by the original price to get the amount saved, then subtracted from the original price for the sale price."
+        "text": "Because income tax is only part of what leaves your pay, and net pay is only part of what a place costs. Singapore's headline income tax is low but employees under 55 contribute 20% of wages to CPF; the UAE charges no income tax at all but housing and schooling are typically paid privately. This tool shows tax and social contributions separately so you can see which is doing the work, but it does not adjust for cost of living."
       }
     },
     {
       "@type": "Question",
-      "name": "How does \"find original price\" work in reverse?",
+      "name": "Are pension contributions the same as tax?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "If a sale price reflects a known discount percentage, the original price is the sale price divided by (1 minus the discount as a decimal) \u2014 this undoes the discount math to recover the starting price."
+        "text": "No, and treating them as equivalent is the most common error in salary comparisons. Money going into Singapore's CPF or India's EPF stays yours — it is deferred, not spent. National Insurance in the UK and FICA in the US are transfers that fund current benefits and do not accrue to a personal balance in the same way. This calculator flags which is which rather than lumping them together."
       }
     },
     {
       "@type": "Question",
-      "name": "Does this handle stacked discounts, like 20% off an already-discounted item?",
+      "name": "Which taxes does this include?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Not automatically \u2014 stacked discounts apply sequentially, not additively (20% off, then another 10% off, is not the same as 30% off). Run the sale price through the calculator twice, once per discount, to get an accurate stacked result."
+        "text": "National income tax plus mandatory employee social contributions. It excludes US state and city income tax, Canadian provincial tax, and Germany's church tax and solidarity surcharge — all of which can be substantial. A New York or California figure will be meaningfully lower than the federal-only number shown here."
       }
     },
     {
       "@type": "Question",
-      "name": "How do I calculate two discounts applied one after another?",
+      "name": "How is the currency conversion done?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Stacked discounts multiply, not add \u2014 20% off followed by another 10% off is NOT 30% off. Run the first discount through the calculator, take that sale price, then run it through again as the new 'original price' with the second discount percentage."
+        "text": "Using live mid-market rates from the Frankfurter API, refreshed each time the page loads. Mid-market is the rate you see quoted in the news, not the rate a bank gives you — an actual transfer usually costs 0.5% to 3% more once spread and fees are included."
       }
     },
     {
       "@type": "Question",
-      "name": "What's the actual percentage saved when two discounts stack?",
+      "name": "Does this account for cost of living?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Two stacked discounts of 20% and 10% leave you paying 80%\u00d790% = 72% of the original price \u2014 a combined 28% off, not 30%. The gap grows the more discounts are stacked, which is why store 'up to 50% off, plus extra 20% off' promotions save less than the headline number suggests."
+        "text": "No, deliberately. Converting salaries is arithmetic and can be done precisely; adjusting for cost of living depends on where you live within a country, whether you rent or own, and how you spend, so any single multiplier would be a guess presented as a fact. Use the converted figure as a starting point and price rent, healthcare and schooling separately."
       }
     }
   ]
@@ -80,15 +80,15 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "Discount Calculator \u2014 TallyBench",
-  "applicationCategory": "UtilitiesApplication",
+  "name": "Cross-Country Salary Calculator — TallyBench",
+  "applicationCategory": "FinanceApplication",
   "operatingSystem": "Any (runs in browser)",
   "offers": {
     "@type": "Offer",
     "price": "0",
     "priceCurrency": "USD"
   },
-  "url": "https://tallybench.com/discount-calculator.html"
+  "url": "https://tallybench.com/cross-country-salary-calculator.html"
 }
 </script>
 <!-- TB:BREADCRUMB:START -->
@@ -106,8 +106,8 @@
                             {
                                 "@type":  "ListItem",
                                 "position":  2,
-                                "name":  "Discount Calculator",
-                                "item":  "https://tallybench.com/discount-calculator.html"
+                                "name":  "Cross-Country Salary Calculator",
+                                "item":  "https://tallybench.com/cross-country-salary-calculator.html"
                             }
                         ]
 }
@@ -349,117 +349,113 @@
 <div class="nav-backdrop" id="navBackdrop"></div>
 
 <div class="wrap">
-  <div class="crumb"><a href="index.html">TallyBench</a> / Discount Calculator</div>
+  <div class="crumb"><a href="index.html">TallyBench</a> / Cross-Country Salary Calculator</div>
 
   <section class="hero">
     <div class="hero-icon-row cat-finance">
-      <div class="hero-icon"><svg><use href="icons.svg#icon-discount"/></svg></div>
-      <div class="eyebrow">// DISCOUNT CALCULATOR</div>
+      <div class="hero-icon"><svg><use href="icons.svg#icon-currency"/></svg></div>
+      <div class="eyebrow">// CROSS-COUNTRY SALARY</div>
     </div>
-    <h1>What does that percentage off actually save you?</h1>
-    <p>Enter a price and discount to see the sale price, or work backward from a sale price to find the original.</p>
+    <h1>Is ₹18 lakh in Bangalore better than $120,000 in Austin?</h1>
+    <p>Put two offers side by side and see what each actually pays after income tax and mandatory contributions — in local currency and converted at live rates.</p>
   </section>
 
-  <section class="tool" id="discount">
-    <div class="field" style="max-width:260px;margin-bottom:20px;">
-      <label>Currency</label>
-      <select id="discCur">
-            <option value="$">USD ($)</option>
-            <option value="€">EUR (€)</option>
-            <option value="£">GBP (£)</option>
-            <option value="₹">INR (₹)</option>
-            <option value="¥">JPY (¥)</option>
-            <option value="A$">AUD (A$)</option>
-            <option value="C$">CAD (C$)</option>
-            <option value="CHF ">CHF</option>
-            <option value="CN¥">CNY (CN¥)</option>
-            <option value="S$">SGD (S$)</option>
-            <option value="AED ">AED</option>
-            <option value="NZ$">NZD (NZ$)</option>
-            <option value="R">ZAR (R)</option>
-            <option value="R$">BRL (R$)</option>
-            <option value="MX$">MXN (MX$)</option>
-            <option value="HK$">HKD (HK$)</option>
-            <option value="₩">KRW (₩)</option>
-            <option value="kr">SEK/NOK (kr)</option>
-      </select>
+  <section class="tool" id="crosscountry">
+    <div class="disclaimer">
+      National income tax and employee social contributions only. Excludes US state and city tax, Canadian provincial tax, and German church tax and solidarity surcharge — in high-tax states or provinces the real figure is meaningfully lower. India assumes the new regime with basic pay at 50% of gross. Estimates for comparison, not tax advice.
     </div>
-    <div class="tabs" id="discTabs">
-      <button class="active" data-tab="sale">Find sale price</button>
-      <button data-tab="original">Find original price</button>
-      <button data-tab="stack">Stack two discounts</button>
-    </div>
-
-    <div class="tab-panel active" id="panel-sale">
-      <div class="card">
-        <div>
-          <div class="field"><label>Original price</label><input type="number" id="discOriginal" value="1000" step="0.01"></div>
-          <div class="field"><label>Discount (%)</label><input type="number" id="discPct" value="25" step="1"></div>
-          <div class="field"><label>Sales tax / VAT / GST applied after discount (%, optional)</label><input type="number" id="discTax" value="0" step="0.1" min="0"></div>
+    <div class="card">
+      <div>
+        <div class="row2">
+          <div class="field"><label for="xcCountryA">Country A</label>
+            <select id="xcCountryA">
+              <option value="in" selected>India</option>
+              <option value="us">United States</option>
+              <option value="uk">United Kingdom</option>
+              <option value="ca">Canada</option>
+              <option value="au">Australia</option>
+              <option value="sg">Singapore</option>
+              <option value="de">Germany</option>
+              <option value="ae">United Arab Emirates</option>
+            </select>
+          </div>
+          <div class="field"><label for="xcGrossA">Gross annual salary (A)</label>
+            <input type="number" id="xcGrossA" value="1800000" step="10000" min="0"></div>
         </div>
-        <div class="readout">
-          <div class="r-row"><span class="r-label">You save</span><span class="r-value" id="discSaved">0</span></div>
-          <div class="r-row"><span class="r-label">Sale price (before tax)</span><span class="r-value" id="discSalePrice">0</span></div>
-          <div class="r-row"><span class="r-label">Final price (with tax)</span><span class="r-sub" id="discFinalWithTax">—</span></div>
+        <div class="row2">
+          <div class="field"><label for="xcCountryB">Country B</label>
+            <select id="xcCountryB">
+              <option value="in">India</option>
+              <option value="us" selected>United States</option>
+              <option value="uk">United Kingdom</option>
+              <option value="ca">Canada</option>
+              <option value="au">Australia</option>
+              <option value="sg">Singapore</option>
+              <option value="de">Germany</option>
+              <option value="ae">United Arab Emirates</option>
+            </select>
+          </div>
+          <div class="field"><label for="xcGrossB">Gross annual salary (B)</label>
+            <input type="number" id="xcGrossB" value="120000" step="1000" min="0"></div>
         </div>
-        <div class="field-warning" id="discSaleWarning"></div>
+        <div class="field"><label for="xcBase">Compare both in</label>
+          <select id="xcBase">
+            <option value="USD" selected>US Dollar (USD)</option>
+            <option value="INR">Indian Rupee (INR)</option>
+            <option value="GBP">Pound Sterling (GBP)</option>
+            <option value="EUR">Euro (EUR)</option>
+            <option value="CAD">Canadian Dollar (CAD)</option>
+            <option value="AUD">Australian Dollar (AUD)</option>
+            <option value="SGD">Singapore Dollar (SGD)</option>
+          </select>
+        </div>
+        <p id="xcFx" style="font-size:12px;color:var(--graphite);margin:10px 0 0;">Fetching live exchange rates…</p>
+      </div>
+      <div class="readout">
+        <div class="r-row"><span class="r-label">A — income tax</span><span class="r-value" id="xcTaxA">—</span></div>
+        <div class="r-row"><span class="r-label">A — social contributions</span><span class="r-value" id="xcSocA">—</span></div>
+        <div class="r-row"><span class="r-label">A — net pay</span><span class="r-value" id="xcNetA">—</span></div>
+        <div class="r-row"><span class="r-label">A — net, converted</span><span class="r-value" id="xcNetBaseA">—</span></div>
+        <div class="r-row"><span class="r-label">A — total deducted</span><span class="r-value" id="xcRateA">—</span></div>
+        <div class="r-row"><span class="r-label">B — income tax</span><span class="r-value" id="xcTaxB">—</span></div>
+        <div class="r-row"><span class="r-label">B — social contributions</span><span class="r-value" id="xcSocB">—</span></div>
+        <div class="r-row"><span class="r-label">B — net pay</span><span class="r-value" id="xcNetB">—</span></div>
+        <div class="r-row"><span class="r-label">B — net, converted</span><span class="r-value" id="xcNetBaseB">—</span></div>
+        <div class="r-row"><span class="r-label">B — total deducted</span><span class="r-value" id="xcRateB">—</span></div>
       </div>
     </div>
-
-    <div class="tab-panel" id="panel-original">
-      <div class="card">
-        <div>
-          <div class="field"><label>Sale price (after discount)</label><input type="number" id="discSale" value="750" step="0.01"></div>
-          <div class="field"><label>Discount applied (%)</label><input type="number" id="discPct2" value="25" step="1"></div>
-        </div>
-        <div class="readout">
-          <div class="r-row"><span class="r-label">Original price</span><span class="r-value" id="discOriginalOut">0</span></div>
-          <div class="r-row"><span class="r-label">You saved</span><span class="r-value" id="discSavedOut">0</span></div>
-        </div>
-        <div class="field-warning" id="discOriginalWarning"></div>
-      </div>
-    </div>
-
-    <div class="tab-panel" id="panel-stack">
-      <div class="card">
-        <div>
-          <div class="field"><label>Original price</label><input type="number" id="discStackOriginal" value="1000" step="0.01"></div>
-          <div class="field"><label>First discount (%)</label><input type="number" id="discStack1" value="20" step="1"></div>
-          <div class="field"><label>Second discount (%) — applied after the first</label><input type="number" id="discStack2" value="10" step="1"></div>
-        </div>
-        <div class="readout">
-          <div class="r-row"><span class="r-label">Price after first discount</span><span class="r-value" id="discStackMid">0</span></div>
-          <div class="r-row"><span class="r-label">Final price</span><span class="r-value" id="discStackFinal">0</span></div>
-          <div class="r-row"><span class="r-label">Combined effective discount</span><span class="r-sub" id="discStackCombined">—</span></div>
-        </div>
-        <div class="field-warning" id="discStackWarning"></div>
-      </div>
-    </div>
+    <p id="xcNote" style="font-size:13px;color:rgba(242,236,221,0.75);margin:14px 0 0;"></p>
+    <p style="font-size:12px;color:rgba(242,236,221,0.5);margin:8px 0 0;">A contributions: <span id="xcSocLabelA">—</span><br>B contributions: <span id="xcSocLabelB">—</span></p>
   </section>
 
   <section class="article">
-    <h3>How is the sale price calculated?</h3>
-    <p>The discount percentage is multiplied by the original price to get the amount saved, then subtracted from the original price for the sale price: <strong>sale price = original × (1 − discount%/100)</strong>.</p>
-    <h3>How does "find original price" work in reverse?</h3>
-    <p>If a sale price reflects a known discount percentage, the original price is the sale price divided by (1 minus the discount as a decimal): <strong>original = sale ÷ (1 − discount%/100)</strong> — this undoes the discount math to recover the starting price. It's the same reverse-percentage logic used for "price before tax" calculations.</p>
-    <h3>How do stacked discounts actually work?</h3>
-    <p>Stacked discounts multiply, not add — 20% off followed by another 10% off is <em>not</em> 30% off. Each discount applies to the already-discounted price, so the combined effect is 1 − (1−0.20)×(1−0.10) = 1 − 0.80×0.90 = 1 − 0.72 = 28% off, not 30%. The Stack tab above computes this directly for any two discounts, and shows the "combined effective discount" so you can see exactly how much the headline percentages actually save. The gap between the naive sum and the real combined discount grows the more discounts are stacked — which is why "up to 50% off, plus an extra 20%" promotions save meaningfully less than the two numbers added together suggest.</p>
-    <h3>Does the order of stacked discounts matter?</h3>
-    <p>No — multiplication is commutative, so 20% then 10% gives exactly the same final price as 10% then 20% (both land at 72% of the original). What does matter is whether a coupon is described as applying to the <em>original</em> price or the <em>already-discounted</em> price — retailers sometimes apply a coupon to the pre-sale price even during a sale, which is more generous than stacking, so check the fine print.</p>
-    <h3>How does sales tax interact with a discount?</h3>
-    <p>In the US, sales tax is calculated on the discounted price, not the original — so a $100 item at 20% off with 8% sales tax comes to $80 × 1.08 = $86.40, not $100 × 1.08 minus 20%. The optional tax field on the "Find sale price" tab applies exactly this order. In most of Europe and in India, prices are more commonly tax-inclusive to begin with (VAT/GST already baked into the shelf price), so a discount there typically reduces the tax-inclusive price directly — if you need to separate the tax component afterward, the <a href="gst-vat-calculator.html">GST / VAT Calculator</a> handles that reverse extraction.</p>
-    <h3>What's the difference between percent-off and dollar-off coupons when stacking?</h3>
-    <p>A flat dollar-off coupon ($20 off) and a percent-off coupon (20% off) only produce the same saving at one specific price point — below that price the dollar coupon saves relatively more, above it the percent coupon does. When both are stackable, applying the percentage discount first (on the larger base) then the flat amount usually saves slightly more than the reverse order, though most retailers fix the order in their system rather than letting you choose.</p>
-    <h3>Why does "50% off" sometimes not feel like half price?</h3>
-    <p>Watch for "up to" language — "up to 50% off" legally requires only that at least one item in the sale carries that discount, not the whole range. Also check whether the discount applies to the lowest previously-advertised price or a recently-inflated "original" price; consumer protection rules on this vary significantly between the US (FTC guidance), the EU (the Omnibus Directive requires showing the lowest price in the last 30 days), and India (Consumer Protection Act rules on misleading MRP claims) — the EU's rule in particular makes pre-sale price inflation harder to get away with legally.</p>
-    <p><strong>Worked example:</strong> a $200 item with 30% off comes to $140 (you save $60); add 8% sales tax on the discounted price and the final total is $151.20. Working backward, a $140 sale price with a known 30% discount recovers the original $200 exactly. Stacking 20% then 10% on that same $200 item lands at $144 (28% combined off), not the $140 that a naive 30%-sum would suggest — try all three tabs above with these numbers to confirm.</p>
+    <h3>The mistake almost every salary comparison makes</h3>
+    <p>Pension contributions are not tax, and treating them as the same thing produces badly wrong answers.</p>
+    <p>An employee in Singapore under 55 contributes <strong>20% of wages to CPF</strong>. That looks brutal next to the UAE's zero. But CPF money is <em>yours</em> — it sits in your account, earns interest, and funds your retirement and housing. India's EPF works the same way. UK National Insurance and US FICA do not: they fund current benefits, and while they build entitlement, they don't accrue to a personal balance you can point at.</p>
+    <p>So a country that deducts 30% where 20 points of it are your own retirement savings is in a completely different position from one that deducts 30% in pure tax. This calculator labels which is which underneath each result, rather than summing them into a single misleading "total deductions" number.</p>
+
+    <h3>Why the headline number moves so much</h3>
+    <p>Three things drive most of the gap between countries:</p>
+    <ul>
+      <li><strong>Where the brackets start.</strong> The UK's personal allowance is £12,570 and Australia's tax-free threshold is A$18,200, but India's new regime pays nothing up to ₹12 lakh of taxable income once the Section 87A rebate applies. Thresholds matter more than headline rates at middle incomes.</li>
+      <li><strong>Whether contributions are capped.</strong> US Social Security stops at $184,500 of wages and Canada's CPP at $85,000, so the effective rate <em>falls</em> as high earners cross those ceilings. Germany's ceilings work the same way. The UK is unusual in charging 2% with no upper limit.</li>
+      <li><strong>What the state provides in return.</strong> Germany's ~19.7% employee share includes health insurance. A US figure that looks lighter often isn't, once employer-plan premiums and deductibles are counted — and those don't appear on a payslip as tax.</li>
+    </ul>
+
+    <h3>What this deliberately leaves out</h3>
+    <p><strong>Sub-national tax.</strong> US state income tax ranges from nothing in Texas and Florida to over 13% at the top in California. Canadian provincial tax roughly doubles the federal figure in some provinces. Germany adds church tax where applicable. These are large enough to flip a comparison, so treat the US, Canada and Germany numbers as a federal-level floor.</p>
+    <p><strong>Cost of living.</strong> Converting currency is arithmetic and can be done exactly; adjusting for cost of living cannot. It depends on the city, on whether you rent or own, on schooling, and on how you actually spend. Any single multiplier would be a guess wearing the costume of a fact. Use the converted figure as the starting point, then price rent, healthcare and schooling for the specific city.</p>
+    <p><strong>The things that aren't salary.</strong> Employer pension matching, equity, healthcare, notice periods, visa portability and paid leave routinely outweigh a 10% difference in gross pay. A US offer with a 6% 401(k) match and one without are not the same offer.</p>
+
+    <h3>A note on the exchange rate</h3>
+    <p>Conversion uses live mid-market rates — the rate quoted in the news, and the one you will never quite get. An actual transfer typically costs <strong>0.5% to 3% more</strong> once the spread and fees are included, which the <a href="currency-fee-calculator.html">FX Fee Calculator</a> will quantify for a specific provider. If you are moving money regularly, that gap compounds into real numbers.</p>
+    <p>Rates also move. A comparison that looks close today can look different in six months, which is an argument for weighing the structural differences — the brackets, the ceilings, what healthcare costs you — more heavily than the converted total.</p>
   </section>
 
-
-  <p style="font-size:13px;color:rgba(242,236,221,0.55);margin:0 0 24px;">Work out the final till price by adding the <a href="sales-tax-calculator.html">Sales Tax Calculator</a> on top, and use the <a href="percentage-calculator.html">Percentage Calculator</a> for percentage questions that are not discounts.</p>
+  <p style="font-size:13px;color:rgba(242,236,221,0.55);margin:0 0 24px;">Working in India? <a href="ctc-vs-in-hand-salary-india-2026.html">CTC vs in-hand salary</a> explains why an Indian offer letter overstates what reaches your account, and the <a href="salary-calculator.html">Salary Calculator</a> handles pay-period conversions. For a single country in more detail, use the <a href="tax-calculator.html">Income Tax Calculator</a>. To see what a transfer between the two actually costs, try the <a href="currency-fee-calculator.html">FX Fee Calculator</a> or the <a href="currency-converter.html">Currency Converter</a>.</p>
 
   <footer>
-    <p>TALLYBENCH · built for quick answers · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
+    <p>TALLYBENCH · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
   </footer>
 </div>
 

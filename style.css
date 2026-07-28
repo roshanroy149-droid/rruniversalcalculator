@@ -456,7 +456,7 @@ body.nav-open .nav-backdrop{display:block;}
   .book-cover-col{flex:1 1 auto;width:100%;max-width:260px;margin:0 auto;}
 }
 
-/* PRODUCT SCREENSHOT — a wide landscape app screenshot (tallystock.html).
+/* PRODUCT SCREENSHOT — a wide landscape app screenshot (stockbench.html).
    Deliberately NOT .book-cover-col: that column is flex:0 0 240px, sized for
    a portrait book cover, which shrank a 1583px-wide screenshot of a data
    table to an illegible ~240px thumbnail. This one goes full content width
