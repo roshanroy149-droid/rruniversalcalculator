@@ -907,6 +907,9 @@ footer a{color:var(--teal-light) !important;}
 .sci-grid button.op{background:var(--plum);color:#fff;border-color:var(--plum);}
 .sci-grid button.eq{background:var(--orange);color:#fff;border-color:var(--orange);}
 .sci-grid button.wide{grid-column:span 2;}
+/* Basic calculator reuses the scientific keypad styling on a 4-column grid. */
+.sci-grid.cols-4{grid-template-columns:repeat(4,minmax(0,1fr));}
+.sci-grid.cols-4 button{padding:16px 4px;font-size:15px;}
 
 /* TABS */
 .tabs{display:flex;gap:8px;margin-bottom:22px;flex-wrap:wrap;}

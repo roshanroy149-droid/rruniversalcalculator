@@ -10335,3 +10335,138 @@ function tbMoney(n){
   goalEl.addEventListener('change', calc);
   calc();
 })();
+
+// ---- Basic Calculator ----
+// Everything lives inside this IIFE: no top-level names, so nothing here can
+// collide with another calculator's helpers.
+(function () {
+  var valEl = document.getElementById('bcVal');
+  if (!valEl) return;
+
+  var exprEl = document.getElementById('bcExpr');
+  var grid = document.getElementById('bcGrid');
+
+  var entry = '0';      // what the user is currently typing
+  var acc = null;       // running total
+  var pending = null;   // operator awaiting a right-hand side
+  var fresh = true;     // next digit replaces the entry rather than appending
+  var errored = false;
+
+  var OPS = { '+': function (a, b) { return a + b; },
+              '\u2212': function (a, b) { return a - b; },
+              '\u00D7': function (a, b) { return a * b; },
+              '\u00F7': function (a, b) { return a / b; } };
+
+  // Trim binary-float noise (0.1 + 0.2) without truncating genuine precision.
+  function clean(n) {
+    if (!isFinite(n)) return null;
+    var r = parseFloat(n.toPrecision(12));
+    return Object.is(r, -0) ? 0 : r;
+  }
+
+  function show() {
+    valEl.textContent = errored ? 'Error' : entry;
+    exprEl.textContent = errored ? '\u00A0'
+      : (acc === null ? '\u00A0' : format(acc) + ' ' + pending);
+  }
+
+  function format(n) {
+    if (n === null) return '';
+    var s = String(n);
+    // group the integer part only, leaving any exponent form alone
+    if (/^-?\d+(\.\d+)?$/.test(s)) {
+      var neg = s.charAt(0) === '-';
+      if (neg) s = s.slice(1);
+      var parts = s.split('.');
+      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      s = (neg ? '-' : '') + parts.join('.');
+    }
+    return s;
+  }
+
+  function reset() { entry = '0'; acc = null; pending = null; fresh = true; errored = false; }
+
+  function digit(d) {
+    if (errored) reset();
+    if (fresh) { entry = (d === '.') ? '0.' : d; fresh = false; return; }
+    if (d === '.') { if (entry.indexOf('.') === -1) entry += '.'; return; }
+    if (entry === '0') entry = d; else entry += d;
+  }
+
+  function applyPending() {
+    var rhs = parseFloat(entry);
+    if (pending === null || acc === null) return clean(rhs);
+    var out = clean(OPS[pending](acc, rhs));
+    if (out === null) { errored = true; return null; }
+    return out;
+  }
+
+  function operator(op) {
+    if (errored) return;
+    var out = applyPending();
+    if (errored) { show(); return; }
+    acc = out;
+    pending = op;
+    entry = String(acc);
+    fresh = true;
+  }
+
+  function equals() {
+    if (errored || pending === null) return;
+    var out = applyPending();
+    if (errored) { show(); return; }
+    entry = String(out);
+    acc = null; pending = null; fresh = true;
+  }
+
+  function act(a) {
+    if (a === 'ac') { reset(); return; }
+    if (errored) { reset(); return; }
+    if (a === 'back') {
+      if (fresh) return;
+      entry = entry.length > 1 ? entry.slice(0, -1) : '0';
+      if (entry === '-' || entry === '') entry = '0';
+      return;
+    }
+    if (a === 'sign') {
+      entry = entry.charAt(0) === '-' ? entry.slice(1) : '-' + entry;
+      return;
+    }
+    if (a === 'pct') {
+      var v = clean(parseFloat(entry) / 100);
+      entry = v === null ? '0' : String(v);
+      fresh = false;
+      return;
+    }
+  }
+
+  grid.addEventListener('click', function (e) {
+    var b = e.target.closest('button');
+    if (!b) return;
+    if (b.dataset.num !== undefined) digit(b.dataset.num);
+    else if (b.dataset.op !== undefined) operator(b.dataset.op);
+    else if (b.dataset.act === 'eq') equals();
+    else if (b.dataset.act !== undefined) act(b.dataset.act);
+    show();
+  });
+
+  var KEYOPS = { '+': '+', '-': '\u2212', '*': '\u00D7', '/': '\u00F7' };
+  document.addEventListener('keydown', function (e) {
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    var t = e.target;
+    if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+    var k = e.key;
+    if (k >= '0' && k <= '9') { digit(k); }
+    else if (k === '.' || k === ',') { digit('.'); }
+    else if (KEYOPS[k]) { operator(KEYOPS[k]); }
+    else if (k === 'Enter' || k === '=') { equals(); }
+    else if (k === 'Backspace') { act('back'); }
+    else if (k === 'Escape') { act('ac'); }
+    else if (k === '%') { act('pct'); }
+    else return;
+    e.preventDefault();
+    show();
+  });
+
+  show();
+})();
