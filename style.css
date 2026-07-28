@@ -456,7 +456,21 @@ body.nav-open .nav-backdrop{display:block;}
   .book-cover-col{flex:1 1 auto;width:100%;max-width:260px;margin:0 auto;}
 }
 
-/* PRODUCT SCREENSHOT — a wide landscape app screenshot (stockbench.html).
+/* PRODUCT LOCKUP — brand mark beside the product name, in the hero of a
+   product page (venstock.html). The mark carries its own dark rounded-square
+   background, so it needs no frame of its own. */
+.product-lockup{display:flex;align-items:center;gap:12px;margin:0 0 16px;}
+.product-lockup img{border-radius:11px;display:block;}
+.product-lockup-name{
+  font-family:Georgia,'Times New Roman',serif;font-size:30px;font-weight:700;
+  color:#fff;letter-spacing:-0.01em;
+}
+@media(max-width:640px){
+  .product-lockup img{width:42px;height:42px;}
+  .product-lockup-name{font-size:25px;}
+}
+
+/* PRODUCT SCREENSHOT — a wide landscape app screenshot (venstock.html).
    Deliberately NOT .book-cover-col: that column is flex:0 0 240px, sized for
    a portrait book cover, which shrank a 1583px-wide screenshot of a data
    table to an illegible ~240px thumbnail. This one goes full content width

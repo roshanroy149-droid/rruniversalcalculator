@@ -106,9 +106,9 @@ window.__TB_EMBED__ = new URLSearchParams(window.location.search).get('embed') =
   // same copper "you are here" highlight a calculator page's category tab gets, instead
   // of staying its default muted color while you're reading an article.
   // book.html does the same with data-page-cat="book" and the BOOK link,
-  // and stockbench.html with data-page-cat="stockbench" and the STOCKBENCH link.
+  // and venstock.html with data-page-cat="venstock" and the VENSTOCK link.
   const pageCat = document.body.dataset.pageCat;
-  const PLAIN_LINKS = { articles: 'articles.html', book: 'book.html', stockbench: 'stockbench.html' };
+  const PLAIN_LINKS = { articles: 'articles.html', book: 'book.html', venstock: 'venstock.html' };
   if(PLAIN_LINKS[pageCat]){
     const link = document.querySelector('.tick[href="' + PLAIN_LINKS[pageCat] + '"]');
     if(link) link.classList.add('active');
@@ -5176,7 +5176,7 @@ function amortizationToCSV(years, cur){
 (function(){
   if (window.__TB_EMBED__) return;
   // Gate on the actual article page-cat, not just the presence of these CSS
-  // classes — book.html and stockbench.html reuse .article-cta-row/.article-cta-btn
+  // classes — book.html and venstock.html reuse .article-cta-row/.article-cta-btn
   // for their own CTA styling but aren't articles, and their first CTA (an
   // Amazon link, a mailto: link) isn't a calculator this widget can embed.
   if (document.body.dataset.pageCat !== 'articles') return;
