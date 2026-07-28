@@ -364,6 +364,26 @@
     <h3>How is this related to your Sample Size Calculator?</h3>
     <p>The <a href="sample-size-calculator.html">Sample Size Calculator</a> works backward from a target margin of error to tell you how large a sample you need. This tool works forward from a sample you've already collected to compute the resulting confidence interval.</p>
     <p><strong>Worked example:</strong> a sample mean of 100, standard deviation of 15, n=30, at 95% confidence (z=1.96): margin of error = 1.96×(15/√30) ≈ 5.37, giving a confidence interval of roughly <strong>94.63 – 105.37</strong>.</p>
+
+    <h3>What "95% confident" actually means</h3>
+    <p>It does not mean there is a 95% probability the true value sits in your interval. The true value is fixed; your interval is what varies. The correct reading is procedural: if you repeated this sampling process many times, about 95% of the intervals you produced would contain the true population value.</p>
+    <p>In practice this distinction matters most when an interval is wide. A wide interval is not a weaker claim about the same estimate — it is a statement that your data barely constrains the answer.</p>
+
+    <h3>A worked example</h3>
+    <p>With a sample of 100, a sample mean of 50 and a standard deviation of 10, the standard error is 10/√100 = 1. At 95% confidence the critical z value is 1.96, so the margin of error is 1.96 and the interval is <strong>[48.04, 51.96]</strong>.</p>
+    <p>Note what drives that width: the standard error divides by the <em>square root</em> of the sample size. Quadrupling your sample halves the margin of error — it does not quarter it. Precision gets expensive quickly, which is the single most useful thing to know when planning a study.</p>
+
+    <h3>Choosing a confidence level</h3>
+    <ul>
+      <li><strong>90%</strong> — z = 1.645. Narrower, less certain.</li>
+      <li><strong>95%</strong> — z = 1.96. The near-universal default.</li>
+      <li><strong>99%</strong> — z = 2.576. Wider, more cautious.</li>
+    </ul>
+    <p>Higher confidence always means a wider interval. There is no setting that gives you both precision and certainty; you are choosing where to sit on that trade.</p>
+
+    <h3>Assumptions worth checking</h3>
+    <p>The z-based interval assumes a roughly normal sampling distribution — safe for large samples by the central limit theorem, questionable below about 30, where the t-distribution is the correct choice. It also assumes genuine random sampling. No confidence interval fixes a biased sample; it will report a precise-looking range around the wrong number.</p>
+    <p>To work out the sample size needed for a target margin of error, use the <a href="sample-size-calculator.html">Sample Size Calculator</a>.</p>
   </section>
 
 

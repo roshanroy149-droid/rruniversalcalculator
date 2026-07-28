@@ -376,6 +376,27 @@
     <h3>What is x^0?</h3>
     <p>Any nonzero number raised to the power of 0 equals <strong>1</strong>. This follows directly from the exponent division rule: x^n ÷ x^n = x^(n−n) = x^0, and anything divided by itself is 1. It holds true regardless of how large or small the base is, as long as it isn't zero — 0^0 is a special edge case that different areas of math define differently depending on context.</p>
     <p><strong>Worked example:</strong> base 2, exponent 10: 2^10 = 2×2×2×2×2×2×2×2×2×2 = <strong>1,024</strong>. Switching the exponent to −10 instead gives 2^−10 = 1/1,024 ≈ 0.000977, and an exponent of 0.5 gives 2^0.5 ≈ 1.41421, the square root of 2.</p>
+
+    <h3>The rules, and where they come from</h3>
+    <p>Exponents are repeated multiplication, and every rule follows from that. 2¹⁰ = 1024 because it is 2 multiplied by itself ten times.</p>
+    <ul>
+      <li><strong>aᵐ × aⁿ = a⁽ᵐ⁺ⁿ⁾</strong> — same base, add the exponents</li>
+      <li><strong>aᵐ ÷ aⁿ = a⁽ᵐ⁻ⁿ⁾</strong> — subtract them</li>
+      <li><strong>(aᵐ)ⁿ = a⁽ᵐⁿ⁾</strong> — multiply them</li>
+      <li><strong>a⁰ = 1</strong> for any non-zero a — which follows from aⁿ ÷ aⁿ = a⁰ and also equalling 1</li>
+      <li><strong>a⁻ⁿ = 1/aⁿ</strong> — a negative exponent is a reciprocal, not a negative number</li>
+      <li><strong>a^(1/n) = ⁿ√a</strong> — fractional exponents are roots</li>
+    </ul>
+    <p>Those last two trip people up most. 2⁻³ is 0.125, not −8.</p>
+
+    <h3>How fast exponential growth actually is</h3>
+    <p>2¹⁰ = 1,024. 2²⁰ = 1,048,576. 2³⁰ is over a billion. Doubling ten more times multiplies by a thousand, and this is the intuition that fails almost universally — people reason about exponential processes linearly and are consistently astonished by the result.</p>
+    <p>It is also why compound interest works, why epidemics accelerate, and why a storage figure that seemed generous becomes inadequate so suddenly. The <a href="compound-interest-calculator.html">Compound Interest Calculator</a> is the same arithmetic applied to money.</p>
+
+    <h3>Order of operations</h3>
+    <p>Exponents bind tighter than multiplication and negation. −3² is −9, because the exponent applies to 3 before the minus sign; (−3)² is 9. Stacked exponents evaluate right to left, so 2^3^2 is 2⁹ = 512, not 8² = 64.</p>
+    <p>These are the two most common sources of a wrong answer when transcribing an expression into a calculator. If in doubt, add brackets — they cost nothing and remove the ambiguity entirely.</p>
+    <p>For the inverse, see the <a href="log-calculator.html">Log Calculator</a>.</p>
   </section>
 
 

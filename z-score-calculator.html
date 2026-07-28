@@ -353,6 +353,27 @@
     <h3>How is this different from your Standard Deviation Calculator?</h3>
     <p>The <a href="standard-deviation-calculator.html">Standard Deviation Calculator</a> computes standard deviation FROM a full data set. This tool assumes you already have a mean and standard deviation and uses them to standardize one specific value (or work backward from a z-score to a value).</p>
     <p><strong>Worked example:</strong> a test score of 85, with a class mean of 75 and standard deviation of 10: z = (85−75)/10 = <strong>1.5</strong> — one and a half standard deviations above average. Working backward, a z-score of 1.5 with that same mean and standard deviation maps back to exactly 85.</p>
+
+    <h3>What a z-score actually tells you</h3>
+    <p>A z-score converts a raw value into "how many standard deviations from the mean" — which makes numbers from completely different scales comparable. A test score of 85 where the mean is 70 and the standard deviation is 10 gives <strong>z = 1.5</strong>. That single number says more than the raw score does, because it carries the context of the whole distribution.</p>
+    <p>If the data is normally distributed, z = 1.5 corresponds to roughly the <strong>93.32nd percentile</strong> — about 93% of values fall below it. That translation only holds for a normal distribution, which is the assumption people most often forget they are making.</p>
+
+    <h3>The landmarks worth memorising</h3>
+    <ul>
+      <li><strong>z = 0</strong> — exactly at the mean, the 50th percentile.</li>
+      <li><strong>z = ±1</strong> — about 68% of a normal distribution falls inside this range.</li>
+      <li><strong>z = ±1.96</strong> — 95% falls inside. This is where the 95% confidence interval comes from.</li>
+      <li><strong>z = ±2.58</strong> — 99% falls inside.</li>
+      <li><strong>|z| &gt; 3</strong> — under 0.3% of values. Conventionally treated as an outlier.</li>
+    </ul>
+
+    <h3>Population or sample?</h3>
+    <p>Use the population standard deviation when you genuinely have every member of the group — every student in the class, every item produced. Use the sample standard deviation, which divides by n−1 rather than n, when your data is a subset you are generalising from. The sample version is always slightly larger, which correctly reflects the extra uncertainty of not having measured everything.</p>
+    <p>With small samples the difference is substantial. On eight data points, dividing by 7 instead of 8 changes the result by roughly 7%.</p>
+
+    <h3>Where z-scores mislead</h3>
+    <p>A z-score is only as meaningful as the distribution behind it. On strongly skewed data — income, house prices, waiting times — the mean sits away from the typical value and z-scores stop mapping cleanly onto percentiles. A z of 1.5 on skewed data does not mean the 93rd percentile, and treating it as though it does is a common and consequential error.</p>
+    <p>Check the shape of the distribution before trusting the percentile. The <a href="standard-deviation-calculator.html">Standard Deviation Calculator</a> and <a href="mean-median-mode-calculator.html">Mean, Median and Mode Calculator</a> together will tell you quickly: if the mean and median are far apart, the data is skewed.</p>
   </section>
 
 

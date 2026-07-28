@@ -352,6 +352,22 @@
     <h3>Does higher confidence always mean I need a bigger sample?</h3>
     <p>Yes. Higher confidence levels use a larger z-value (1.645 for 90%, 1.96 for 95%, 2.576 for 99%), and since the required sample size scales with the square of the z-value, moving from 95% to 99% confidence noticeably increases the sample you need for the same margin of error.</p>
     <p><strong>Worked example:</strong> at 95% confidence (z=1.96), a 5% margin of error, and the conservative 50% proportion estimate: n = (1.96² × 0.5 × 0.5) / 0.05² = 0.9604/0.0025 ≈ 384.16, rounded up to <strong>385</strong> — the classic "385 respondents" figure widely cited for a 95%/±5% survey with no known population size.</p>
+
+    <h3>Why 385 keeps appearing</h3>
+    <p>For 95% confidence, a 5% margin of error and an assumed proportion of 0.5, the required sample is <strong>385</strong>. That figure turns up constantly in survey work, and it comes straight from 1.96² × 0.25 ÷ 0.05².</p>
+    <p>The 0.5 matters: p(1−p) is largest at 0.5, so assuming it produces the most conservative — largest — sample size. If you genuinely expect a lopsided proportion, say 0.1, the required sample falls substantially. When you have no prior information, 0.5 is the safe assumption.</p>
+
+    <h3>Precision is expensive</h3>
+    <p>Margin of error scales with the square root of sample size, so improvements cost disproportionately. Halving the margin of error requires <em>quadrupling</em> the sample. Going from 5% to 2.5% takes you from 385 responses to roughly 1,537.</p>
+    <p>This is why most published polling settles around 3-4%: below that, cost rises faster than the usefulness of the extra precision.</p>
+
+    <h3>The population correction</h3>
+    <p>Sample size depends far less on population size than intuition suggests. Sampling a town of 50,000 and a country of 50 million needs almost the same number of responses. The finite population correction only matters when your sample is a large fraction of the whole — roughly above 5% — at which point the required number falls.</p>
+    <p>People routinely over-sample large populations because it feels wrong that 385 could represent millions. Statistically it can.</p>
+
+    <h3>Sample size does not fix bias</h3>
+    <p>This is the important caveat. Sample size controls <em>random</em> error only. A biased sampling method produces a confidently wrong answer, and a bigger biased sample produces a more confidently wrong answer.</p>
+    <p>Non-response is the usual culprit: if the people who reply differ systematically from those who don't, your effective sample is not random however large it is. Plan for the response rate — needing 385 completed responses at a 20% response rate means contacting around 1,925 people. Draw the sample itself with the <a href="random-number-generator.html">Random Number Generator</a>, and turn the results into a range with the <a href="confidence-interval-calculator.html">Confidence Interval Calculator</a>.</p>
   </section>
 
 

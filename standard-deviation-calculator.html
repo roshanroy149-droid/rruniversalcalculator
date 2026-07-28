@@ -352,6 +352,19 @@
     <h3>How is this different from your Statistics Calculator?</h3>
     <p>The <a href="statistics-calculator.html">Statistics Calculator</a> covers mean, median, mode, range, variance, and standard deviation all together. This tool is a focused, standalone version for when you just need standard deviation specifically, with an explicit population-vs-sample toggle front and center.</p>
     <p><strong>Worked example:</strong> for the data set 2, 4, 4, 4, 5, 5, 7, 9 (n=8), the mean is 5. The population variance is 4, giving a population standard deviation of exactly 2. The sample variance (dividing by n−1=7 instead) is 32/7 ≈ 4.57, giving a sample standard deviation of about 2.14 — slightly larger, as Bessel's correction always produces.</p>
+
+    <h3>Population versus sample, and why n−1 exists</h3>
+    <p>The two formulas differ in one place: the population version divides by <strong>n</strong>, the sample version by <strong>n−1</strong>. That adjustment (Bessel's correction) exists because a sample's own mean sits closer to its own data points than the true population mean would, which systematically understates spread. Dividing by a smaller number corrects the bias.</p>
+    <p>Take the dataset 2, 4, 4, 4, 5, 5, 7, 9. The mean is 5. Treated as an entire population the standard deviation is exactly <strong>2</strong>; treated as a sample it is <strong>2.1381</strong>. Same numbers, different question, different answer — and with only eight data points the gap is about 7%.</p>
+    <p>Use population when you have measured everything. Use sample — the safer default — when you are generalising.</p>
+
+    <h3>Reading the result</h3>
+    <p>Standard deviation is in the same units as your data, which makes it directly interpretable in a way variance is not. A standard deviation of 2 on exam marks means 2 marks. For a roughly normal distribution, about 68% of values lie within one standard deviation of the mean, 95% within two, and 99.7% within three.</p>
+    <p>To compare spread across different scales, divide the standard deviation by the mean to get the coefficient of variation. A standard deviation of 5 means something very different on data averaging 10 than on data averaging 10,000.</p>
+
+    <h3>What it hides</h3>
+    <p>Standard deviation assumes spread is symmetric around the mean, so it describes skewed data poorly and is strongly influenced by outliers — squaring the deviations gives extreme values disproportionate weight. One mistyped figure can dominate the result.</p>
+    <p>Before trusting it, check whether the mean and median are close. If they are far apart the distribution is skewed, and the <a href="mean-median-mode-calculator.html">median</a> plus an interquartile range describes the data more honestly.</p>
   </section>
 
 

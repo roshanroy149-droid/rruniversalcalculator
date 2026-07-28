@@ -384,6 +384,26 @@
     <h3>Why is log undefined for zero or negative numbers?</h3>
     <p>Because no real exponent applied to a positive base ever produces zero or a negative result — a positive base raised to any real power always stays positive, no matter how large or small (even negative) the exponent gets. Since a logarithm is simply asking which exponent produces a given value, there's no real answer when that value itself isn't positive. The base must also be positive and not equal to 1, for the same underlying reason.</p>
     <p><strong>Worked example:</strong> log base 10 of 100: ln(100) / ln(10) ≈ 4.60517 / 2.302585 = <strong>2</strong>, confirming 10² = 100. Switching to natural log (base e) of the same value 100 gives ln(100) ≈ <strong>4.60517</strong>, since the change-of-base formula for ln itself is just ln(x)/ln(e) = ln(x)/1 = ln(x).</p>
+
+    <h3>What a logarithm answers</h3>
+    <p>A logarithm asks: what power do I raise the base to, in order to get this number? log₁₀(1000) = 3 because 10³ = 1000. That's the whole idea — a logarithm is an exponent, expressed the other way round.</p>
+    <p>Three bases dominate: <strong>base 10</strong> (common log, written log) for orders of magnitude, <strong>base e</strong> (natural log, written ln) for growth and decay, and <strong>base 2</strong> for anything involving halving or doubling, especially in computing.</p>
+
+    <h3>The rules that make logs useful</h3>
+    <ul>
+      <li><strong>log(ab) = log a + log b</strong> — multiplication becomes addition</li>
+      <li><strong>log(a/b) = log a − log b</strong> — division becomes subtraction</li>
+      <li><strong>log(aⁿ) = n · log a</strong> — powers become multiplication</li>
+      <li><strong>Change of base:</strong> log_b(x) = ln(x) / ln(b) — which is how you compute any base with only ln available</li>
+    </ul>
+    <p>That first rule is why logarithms were invented: before calculators, turning multiplication into addition was the single biggest labour-saving device in computation.</p>
+
+    <h3>Where they show up</h3>
+    <p>Logarithmic scales compress enormous ranges into readable ones. The Richter scale, decibels and pH are all logarithmic, which is why a magnitude 7 earthquake releases roughly 32 times the energy of a magnitude 6 rather than being "one more". In finance, log returns are additive over time in a way percentage returns are not. In computing, an O(log n) algorithm barely slows down as data grows — doubling the input adds one step.</p>
+
+    <h3>Constraints and common errors</h3>
+    <p>You cannot take the log of zero or a negative number in the real numbers, and the base must be positive and not equal to 1. log(a + b) is <em>not</em> log a + log b — that error is common enough to be worth stating explicitly. The addition rule applies to multiplication inside the log, never to addition.</p>
+    <p>For the inverse operation, see the <a href="exponent-calculator.html">Exponent Calculator</a>.</p>
   </section>
 
 

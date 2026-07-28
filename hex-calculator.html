@@ -403,6 +403,27 @@
     <h3>What's the largest single hex digit?</h3>
     <p><strong>F</strong>, representing the decimal value 15 — the largest value a single hex digit can hold, the same way 9 is the largest single decimal digit. Two hex digits together (00-FF) cover the full range of one byte, 0-255 in decimal.</p>
     <p><strong>Worked example:</strong> adding hex 1A (26) and 2F (47): 26 + 47 = 73, which is <strong>49</strong> in hex. Converting FF to decimal: F×16¹ + F×16⁰ = 15×16 + 15×1 = 240 + 15 = <strong>255</strong>, the maximum value a single byte can hold.</p>
+
+    <h3>Why base 16 exists</h3>
+    <p>Hexadecimal uses sixteen digits — 0-9 then A-F, where A is 10 and F is 15. Its value is that <strong>one hex digit maps exactly to four binary digits</strong>, so two hex digits describe one byte precisely. FF is 255, the largest value a byte holds. 2A is 42.</p>
+    <p>That clean mapping is the entire reason hex is used rather than, say, base 12. Converting between binary and hex needs no arithmetic at all, just substitution — whereas converting binary to decimal requires real calculation.</p>
+
+    <h3>Converting by hand</h3>
+    <p>Hex to decimal: multiply each digit by 16 raised to its position, counting from zero on the right. 2A = (2 × 16) + 10 = 42. FF = (15 × 16) + 15 = 255.</p>
+    <p>Decimal to hex: divide repeatedly by 16, and read the remainders bottom to top. It is the same algorithm as any base conversion, and doing it once by hand makes the rest obvious.</p>
+
+    <h3>Where you'll meet it</h3>
+    <ul>
+      <li><strong>Colour codes</strong> — #FF5733 is three bytes: red 255, green 87, blue 51.</li>
+      <li><strong>Memory addresses</strong> — hex keeps long addresses readable and byte-aligned.</li>
+      <li><strong>MAC addresses</strong> — six hex bytes identifying a network interface.</li>
+      <li><strong>Unicode code points</strong> — U+0041 is the letter A.</li>
+      <li><strong>Permissions and bit flags</strong> — each bit is a switch, and hex groups them legibly.</li>
+    </ul>
+
+    <h3>Notation and common mistakes</h3>
+    <p>Prefixes signal the base: <code>0x1F</code> in C, JavaScript and Python; <code>#1F</code> for colours; <code>1Fh</code> in assembly. Without a prefix, a value like "10" is genuinely ambiguous — it is ten in decimal and sixteen in hex.</p>
+    <p>Hex is case-insensitive: FF and ff are the same value. And do not confuse a hex digit with a decimal one — B is 11, not eleven-something. If a converted value looks wildly wrong, this is usually why. For base 2, use the <a href="binary-calculator.html">Binary Calculator</a>.</p>
   </section>
 
 

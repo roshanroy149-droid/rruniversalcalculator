@@ -350,6 +350,25 @@
     <h3>What's a real-world example of each?</h3>
     <p>Permutations: arranging books in a specific order on a shelf, or assigning gold/silver/bronze medals. Combinations: choosing a committee of people from a larger group, or picking lottery numbers, where the order you select them doesn't change the outcome.</p>
     <p><strong>Worked example:</strong> for n=10, r=3: permutations (order matters) = 10×9×8 = <strong>720</strong>. Combinations (order doesn't matter) = 720/3! = 720/6 = <strong>120</strong> — exactly 6 times fewer, since each group of 3 can be arranged in 3! = 6 different orders.</p>
+
+    <h3>Order is the whole distinction</h3>
+    <p>A permutation counts arrangements where order matters; a combination counts selections where it doesn't. From 5 items choosing 3, there are <strong>P(5,3) = 60</strong> permutations but only <strong>C(5,3) = 10</strong> combinations — exactly 6 times fewer, because each group of 3 can be ordered in 3! = 6 ways.</p>
+    <p>That relationship always holds: C(n,r) = P(n,r) ÷ r!. If you are unsure which you need, ask whether swapping two chosen items produces a different outcome. Gold and silver medals: yes, that's a permutation. Three people on a committee: no, that's a combination.</p>
+
+    <h3>Worked distinctions</h3>
+    <ul>
+      <li><strong>A 4-digit PIN</strong> — order matters and repetition is allowed, so it's 10⁴ = 10,000, not a permutation at all.</li>
+      <li><strong>Finishing positions in a race</strong> — permutation.</li>
+      <li><strong>A lottery draw</strong> — combination; the balls' order of appearance is irrelevant.</li>
+      <li><strong>Seating people around a table</strong> — a circular permutation, which is (n−1)! rather than n!, because rotating everyone produces the same arrangement.</li>
+    </ul>
+
+    <h3>With and without repetition</h3>
+    <p>The standard formulas assume each item is used at most once. If repetition is allowed the arithmetic changes completely: arrangements become n^r, and selections become C(n+r−1, r). A combination lock allowing repeated digits is a different calculation from one that doesn't — and, despite the name, a combination lock is a permutation.</p>
+
+    <h3>Why the numbers explode</h3>
+    <p>Factorial growth is faster than exponential growth, and much faster than people expect. 10! is 3,628,800; 20! is over 2.4 × 10¹⁸. This is why exhaustive search becomes impossible so abruptly in scheduling and routing problems — adding one more item multiplies the work rather than adding to it.</p>
+    <p>For counting problems that involve probability rather than raw arrangements, pair this with the <a href="statistics-calculator.html">Statistics Calculator</a>.</p>
   </section>
 
 

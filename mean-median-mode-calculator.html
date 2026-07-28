@@ -347,6 +347,25 @@
     <h3>How is this different from your Statistics Calculator?</h3>
     <p>The <a href="statistics-calculator.html">Statistics Calculator</a> also computes variance and standard deviation alongside central tendency. This tool is a simpler, faster version focused just on mean, median, mode, and range — useful when that's all you need without the extra output.</p>
     <p><strong>Worked example:</strong> for 3, 7, 7, 2, 9, 4, 7 (n=7): mean = 39/7 ≈ 5.57, sorted order is 2, 3, 4, 7, 7, 7, 9 so the median (4th of 7 values) is 7, the mode is 7 (appears three times), and the range is 9−2 = 7.</p>
+
+    <h3>Three answers to "what's typical", and when they disagree</h3>
+    <p>Take 1, 2, 2, 3, 100. The mean is <strong>21.6</strong>, the median is <strong>2</strong>, and the mode is <strong>2</strong>. Four of the five values are below 3, yet the mean says 21.6 — because the mean gives every value equal weight, including one that is 30 times larger than the rest.</p>
+    <p>This is not a curiosity. It is why "average salary" and "median salary" tell different stories about the same workforce, and why the choice between them is sometimes a rhetorical one rather than a statistical one.</p>
+
+    <h3>Which to use</h3>
+    <ul>
+      <li><strong>Mean</strong> — symmetric data with no extreme values. It uses all the information and feeds into standard deviation and most further statistics.</li>
+      <li><strong>Median</strong> — skewed data, or anything with outliers. Income, house prices, response times. It is unaffected by how extreme the extremes are.</li>
+      <li><strong>Mode</strong> — categorical data, where a mean is meaningless. The most common shoe size, the most frequent response.</li>
+    </ul>
+
+    <h3>Distribution shape in one comparison</h3>
+    <p>Comparing the mean and median is the fastest diagnostic you have. Mean noticeably above median means a right-skewed distribution with a long upper tail. Mean below median means left-skewed. Close together suggests roughly symmetric data, which is what most statistical methods assume.</p>
+    <p>Do that check before applying anything that assumes normality — including <a href="standard-deviation-calculator.html">standard deviation</a> and <a href="z-score-calculator.html">z-scores</a>, both of which describe skewed data poorly.</p>
+
+    <h3>Edge cases</h3>
+    <p>A dataset can have no mode, or several. With an even number of values the median is the average of the two middle ones, which means it may not be a value that actually appears in your data. Neither is a problem — but both surprise people who expect a single tidy answer.</p>
+    <p>Range, reported alongside these, is the crudest measure of spread: it uses only two values and ignores everything between them. Two datasets with identical ranges can be shaped completely differently.</p>
   </section>
 
 
