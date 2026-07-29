@@ -66,6 +66,39 @@ jobs:
           echo "Submitting changed URLs to IndexNow:"
           echo "$URLS_JSON"
 
-          curl -s -o /dev/stderr -w "\nIndexNow response status: %{http_code}\n" -X POST "https://api.indexnow.org/indexnow" \
+          # Capture the body and status separately so a rejection is visible and
+          # FAILS the job. This previously used `curl -s` with no status check,
+          # so nine days of HTTP 403 "UserForbiddedToAccessSite" responses were
+          # printed and ignored — the workflow looked green while every single
+          # submission was being rejected. Never let this call fail silently again.
+          BODY=$(mktemp)
+          STATUS=$(curl -s -o "$BODY" -w "%{http_code}" -X POST "https://api.indexnow.org/indexnow" \
             -H "Content-Type: application/json; charset=utf-8" \
-            -d "{\"host\":\"tallybench.com\",\"key\":\"cea41b609d124e96b6b760f3d15617cc\",\"keyLocation\":\"https://tallybench.com/cea41b609d124e96b6b760f3d15617cc.txt\",\"urlList\":$URLS_JSON}"
+            -d "{\"host\":\"tallybench.com\",\"key\":\"cea41b609d124e96b6b760f3d15617cc\",\"keyLocation\":\"https://tallybench.com/cea41b609d124e96b6b760f3d15617cc.txt\",\"urlList\":$URLS_JSON}")
+
+          echo "IndexNow response status: $STATUS"
+          echo "IndexNow response body:"
+          cat "$BODY"; echo
+
+          case "$STATUS" in
+            200|202)
+              echo "✓ IndexNow accepted $KEPT URL(s)."
+              ;;
+            403)
+              echo "::error::IndexNow rejected the key (403). The key file at" \
+                   "https://tallybench.com/cea41b609d124e96b6b760f3d15617cc.txt must be reachable" \
+                   "and tallybench.com must be a verified site in Bing Webmaster Tools." >&2
+              exit 1
+              ;;
+            422)
+              echo "::error::IndexNow rejected the URL list (422) — URLs do not match the declared host." >&2
+              exit 1
+              ;;
+            429)
+              echo "::warning::IndexNow rate-limited this submission (429). Not failing the build."
+              ;;
+            *)
+              echo "::error::Unexpected IndexNow response status $STATUS." >&2
+              exit 1
+              ;;
+          esac
