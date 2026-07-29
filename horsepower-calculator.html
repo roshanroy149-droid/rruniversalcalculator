@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Horsepower Calculator — From Torque, Trap Speed or Quarter-Mile ET | TallyBench</title>
+<meta name="description" content="Calculate horsepower from torque and rpm, or estimate it from quarter-mile trap speed or elapsed time.">
+<link rel="canonical" href="https://tallybench.com/horsepower-calculator.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.svg">
+<meta name="theme-color" content="#1C1A17">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="TallyBench">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TallyBench">
+<meta property="og:title" content="Horsepower Calculator — From Torque, Trap Speed or Quarter-Mile ET">
+<meta property="og:description" content="Calculate horsepower from torque and rpm, or estimate it from quarter-mile trap speed or elapsed time.">
+<meta property="og:url" content="https://tallybench.com/horsepower-calculator.html">
+<meta property="og:image" content="https://tallybench.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Horsepower Calculator — From Torque, Trap Speed or Quarter-Mile ET">
+<meta name="twitter:description" content="Calculate horsepower from torque and rpm, or estimate it from quarter-mile trap speed or elapsed time.">
+<meta name="twitter:image" content="https://tallybench.com/og-image.png">
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="style.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Why is horsepower calculated by dividing by 5252?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Because one horsepower was defined as 33,000 foot-pounds of work per minute, and converting rotation to linear work introduces a factor of 2π. Dividing 33,000 by 2π gives 5252.113. It follows that horsepower and torque curves always intersect at exactly 5252 rpm when plotted in lb-ft and hp — if a dyno graph shows them crossing anywhere else, the two axes have been scaled independently." }
+    },
+    {
+      "@type": "Question",
+      "name": "Is torque or horsepower more important?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Power determines acceleration, because it is the rate at which energy can be added to the vehicle. Torque matters only through the power it produces at a given engine speed. Gearing is what reconciles the two — a gearbox trades speed for torque, so a high-revving engine with modest torque can out-accelerate a low-revving one with much more. A superbike engine making 80 lb-ft beats a truck engine making 400 for exactly this reason." }
+    },
+    {
+      "@type": "Question",
+      "name": "How accurate are quarter-mile horsepower estimates?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Reasonable as ballpark figures, not as measurements. The trap-speed formula is the more reliable of the two, because terminal speed depends mostly on power and weight. Elapsed time is heavily affected by launch quality, traction and gearing — a car that hooks up well shows a better ET than its power justifies. Both estimate flywheel power and both are empirical fits to typical cars, so aerodynamics and drivetrain differences move the answer." }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between hp and PS?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Mechanical horsepower is 745.7 watts; metric horsepower — written PS in Germany, ch in France, pk in the Netherlands — is 735.5 watts, about 1.4% smaller. So 300 PS is roughly 296 hp. The gap is small but it is why the same car appears with slightly different power figures in different markets, and German manufacturers quoting PS is the usual source of the confusion." }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does my dyno reading come in below the factory figure?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Because manufacturers quote power at the flywheel and a chassis dyno measures at the wheels, after drivetrain losses. Expect roughly 10 to 15% loss for a manual rear-wheel-drive car and 15 to 25% for an automatic or all-wheel-drive one. A 300 hp car reading 255 at the wheels is behaving normally. Dyno readings also vary between machines and with temperature, humidity and correction factor, so comparing figures across different dynos is unreliable." }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Horsepower Calculator — TallyBench",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any (runs in browser)",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "url": "https://tallybench.com/horsepower-calculator.html"
+}
+</script>
+<!-- TB:BREADCRUMB:START -->
+<script type="application/ld+json">
+{
+    "@context":  "https://schema.org",
+    "@type":  "BreadcrumbList",
+    "itemListElement":  [
+                            {
+                                "@type":  "ListItem",
+                                "position":  1,
+                                "name":  "TallyBench",
+                                "item":  "https://tallybench.com/"
+                            },
+                            {
+                                "@type":  "ListItem",
+                                "position":  2,
+                                "name":  "Horsepower Calculator",
+                                "item":  "https://tallybench.com/horsepower-calculator.html"
+                            }
+                        ]
+}
+</script>
+<!-- TB:BREADCRUMB:END -->
+</head>
+<body data-page-cat="everyday">
+
+<header>
+  <div class="wrap">
+    <div class="headbar">
+      <a class="logo" href="index.html">TALLYBENCH<span>.</span></a>
+      <div class="tagline"><!-- TB:COUNT:START -->
+196 TOOLS · 0 SIGN-UP
+<!-- TB:COUNT:END --></div>
+<button class="nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <!-- TB:NAV:START -->
+  <div class="nav-drawer" id="navDrawer">
+    <div class="nav-drawer-head">
+      <span>Menu</span>
+      <button class="nav-close" id="navClose" type="button" aria-label="Close menu">&#10005;</button>
+    </div>
+    <nav class="ruler cat-ruler" aria-label="Category">
+      <a class="tick" href="index.html">HOME</a>
+      <a class="tick" href="articles.html">ARTICLES</a>
+      <a class="tick" href="book.html">BOOK</a>
+      <a class="tick" href="venstock.html">VENSTOCK</a>
+      <button class="tick cat-tab" type="button" data-cat="finance">FINANCE</button>
+      <button class="tick cat-tab" type="button" data-cat="health">HEALTH</button>
+      <button class="tick cat-tab" type="button" data-cat="education">EDUCATION</button>
+      <button class="tick cat-tab" type="button" data-cat="everyday">EVERYDAY</button>
+    </nav>
+    <nav class="ruler sub-ruler" id="subRuler" aria-label="Tools">
+      <a class="tick sub-tick" data-cat="finance" href="currency-converter.html">CURRENCY</a>
+      <a class="tick sub-tick" data-cat="finance" href="loan-calculator.html">LOAN / EMI</a>
+      <a class="tick sub-tick" data-cat="finance" href="car-loan-calculator.html">CAR LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="mortgage-calculator.html">MORTGAGE</a>
+      <a class="tick sub-tick" data-cat="finance" href="refinance-calculator.html">REFINANCE</a>
+      <a class="tick sub-tick" data-cat="finance" href="rent-vs-buy-calculator.html">RENT VS BUY</a>
+      <a class="tick sub-tick" data-cat="finance" href="tax-calculator.html">TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="paycheck-calculator.html">PAYCHECK</a>
+      <a class="tick sub-tick" data-cat="finance" href="freelancer-tax-calculator-india.html">FREELANCER TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="gst-vat-calculator.html">GST / VAT</a>
+      <a class="tick sub-tick" data-cat="finance" href="investment-calculator.html">INVESTMENT</a>
+      <a class="tick sub-tick" data-cat="finance" href="sip-calculator.html">SIP</a>
+      <a class="tick sub-tick" data-cat="finance" href="compound-interest-calculator.html">COMPOUND INT.</a>
+      <a class="tick sub-tick" data-cat="finance" href="savings-goal-calculator.html">SAVINGS GOAL</a>
+      <a class="tick sub-tick" data-cat="finance" href="retirement-calculator.html">RETIREMENT</a>
+      <a class="tick sub-tick" data-cat="finance" href="net-worth-calculator.html">NET WORTH</a>
+      <a class="tick sub-tick" data-cat="finance" href="discount-calculator.html">DISCOUNT</a>
+      <a class="tick sub-tick" data-cat="finance" href="tip-calculator.html">TIP</a>
+      <a class="tick sub-tick" data-cat="finance" href="fd-calculator.html">FD</a>
+      <a class="tick sub-tick" data-cat="finance" href="rd-calculator.html">RD</a>
+      <a class="tick sub-tick" data-cat="finance" href="ppf-calculator.html">PPF</a>
+      <a class="tick sub-tick" data-cat="finance" href="india-tax-regime-calculator.html">OLD VS NEW REGIME</a>
+      <a class="tick sub-tick" data-cat="finance" href="hra-calculator.html">HRA</a>
+      <a class="tick sub-tick" data-cat="finance" href="gratuity-calculator.html">GRATUITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="epf-calculator.html">EPF</a>
+      <a class="tick sub-tick" data-cat="finance" href="fire-calculator.html">FIRE NUMBER</a>
+      <a class="tick sub-tick" data-cat="finance" href="rsu-vesting-calculator.html">RSU VESTING</a>
+      <a class="tick sub-tick" data-cat="finance" href="cross-country-salary-calculator.html">SALARY BY COUNTRY</a>
+      <a class="tick sub-tick" data-cat="finance" href="currency-fee-calculator.html">FX FEES</a>
+      <a class="tick sub-tick" data-cat="finance" href="zakat-calculator.html">ZAKAT</a>
+      <a class="tick sub-tick" data-cat="finance" href="break-even-calculator.html">BREAK-EVEN</a>
+      <a class="tick sub-tick" data-cat="finance" href="debt-payoff-calculator.html">DEBT PAYOFF</a>
+      <a class="tick sub-tick" data-cat="finance" href="salary-calculator.html">SALARY</a>
+      <a class="tick sub-tick" data-cat="finance" href="sales-tax-calculator.html">SALES TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="cd-calculator.html">CD</a>
+      <a class="tick sub-tick" data-cat="finance" href="amortization-schedule-calculator.html">AMORTIZATION</a>
+      <a class="tick sub-tick" data-cat="finance" href="401k-calculator.html">401(K)</a>
+      <a class="tick sub-tick" data-cat="finance" href="ira-calculator.html">IRA / ROTH</a>
+      <a class="tick sub-tick" data-cat="finance" href="house-affordability-calculator.html">AFFORDABILITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="down-payment-calculator.html">DOWN PAYMENT</a>
+      <a class="tick sub-tick" data-cat="finance" href="debt-to-income-calculator.html">DTI RATIO</a>
+      <a class="tick sub-tick" data-cat="finance" href="simple-interest-calculator.html">SIMPLE INT.</a>
+      <a class="tick sub-tick" data-cat="finance" href="roi-calculator.html">ROI</a>
+      <a class="tick sub-tick" data-cat="finance" href="credit-card-payoff-calculator.html">CC PAYOFF</a>
+      <a class="tick sub-tick" data-cat="finance" href="mortgage-payoff-calculator.html">MTG PAYOFF</a>
+      <a class="tick sub-tick" data-cat="finance" href="rent-affordability-calculator.html">RENT AFFORD</a>
+      <a class="tick sub-tick" data-cat="finance" href="real-estate-investment-calculator.html">REAL ESTATE</a>
+      <a class="tick sub-tick" data-cat="finance" href="rental-property-calculator.html">RENTAL PROPERTY</a>
+      <a class="tick sub-tick" data-cat="finance" href="apr-calculator.html">APR</a>
+      <a class="tick sub-tick" data-cat="finance" href="fha-loan-calculator.html">FHA LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="va-mortgage-calculator.html">VA LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="home-equity-loan-calculator.html">HOME EQUITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="heloc-calculator.html">HELOC</a>
+      <a class="tick sub-tick" data-cat="finance" href="cash-back-or-low-interest-calculator.html">CASH BACK/APR</a>
+      <a class="tick sub-tick" data-cat="finance" href="auto-lease-calculator.html">AUTO LEASE</a>
+      <a class="tick sub-tick" data-cat="finance" href="finance-calculator.html">TVM SOLVER</a>
+      <a class="tick sub-tick" data-cat="finance" href="interest-rate-calculator.html">INT. RATE</a>
+      <a class="tick sub-tick" data-cat="finance" href="bond-calculator.html">BOND</a>
+      <a class="tick sub-tick" data-cat="finance" href="mutual-fund-calculator.html">MUTUAL FUND</a>
+      <a class="tick sub-tick" data-cat="finance" href="average-return-calculator.html">AVG RETURN</a>
+      <a class="tick sub-tick" data-cat="finance" href="irr-calculator.html">IRR</a>
+      <a class="tick sub-tick" data-cat="finance" href="payback-period-calculator.html">PAYBACK PERIOD</a>
+      <a class="tick sub-tick" data-cat="finance" href="present-value-calculator.html">PRESENT VALUE</a>
+      <a class="tick sub-tick" data-cat="finance" href="future-value-calculator.html">FUTURE VALUE</a>
+      <a class="tick sub-tick" data-cat="finance" href="savings-calculator.html">SAVINGS</a>
+      <a class="tick sub-tick" data-cat="finance" href="pension-calculator.html">PENSION</a>
+      <a class="tick sub-tick" data-cat="finance" href="social-security-calculator.html">SOCIAL SECURITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="annuity-calculator.html">ANNUITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="annuity-payout-calculator.html">ANNUITY PAYOUT</a>
+      <a class="tick sub-tick" data-cat="finance" href="rmd-calculator.html">RMD</a>
+      <a class="tick sub-tick" data-cat="finance" href="marriage-tax-calculator.html">MARRIAGE TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="estate-tax-calculator.html">ESTATE TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="inflation-calculator.html">INFLATION</a>
+      <a class="tick sub-tick" data-cat="finance" href="debt-consolidation-calculator.html">DEBT CONSOLIDATION</a>
+      <a class="tick sub-tick" data-cat="finance" href="student-loan-repayment-calculator.html">REPAYMENT PLAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="pslf-calculator.html">PSLF</a>
+      <a class="tick sub-tick" data-cat="finance" href="student-loan-calculator.html">STUDENT LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="college-cost-calculator.html">COLLEGE COST</a>
+      <a class="tick sub-tick" data-cat="finance" href="depreciation-calculator.html">DEPRECIATION</a>
+      <a class="tick sub-tick" data-cat="finance" href="margin-calculator.html">MARGIN</a>
+      <a class="tick sub-tick" data-cat="finance" href="business-loan-calculator.html">BUSINESS LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="personal-loan-calculator.html">PERSONAL LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="boat-loan-calculator.html">BOAT LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="lease-calculator.html">LEASE</a>
+      <a class="tick sub-tick" data-cat="finance" href="budget-calculator.html">BUDGET</a>
+      <a class="tick sub-tick" data-cat="finance" href="commission-calculator.html">COMMISSION</a>
+      <a class="tick sub-tick" data-cat="health" href="bmi-calculator.html">BMI</a>
+      <a class="tick sub-tick" data-cat="health" href="calorie-calculator.html">CALORIE</a>
+      <a class="tick sub-tick" data-cat="health" href="macro-calculator.html">MACROS</a>
+      <a class="tick sub-tick" data-cat="health" href="pregnancy-calculator.html">PREGNANCY</a>
+      <a class="tick sub-tick" data-cat="health" href="ovulation-calculator.html">OVULATION</a>
+      <a class="tick sub-tick" data-cat="health" href="ideal-weight-calculator.html">IDEAL WEIGHT</a>
+      <a class="tick sub-tick" data-cat="health" href="body-fat-calculator.html">BODY FAT</a>
+      <a class="tick sub-tick" data-cat="health" href="army-body-fat-calculator.html">ARMY BODY FAT</a>
+      <a class="tick sub-tick" data-cat="health" href="lean-body-mass-calculator.html">LEAN MASS</a>
+      <a class="tick sub-tick" data-cat="health" href="healthy-weight-calculator.html">HEALTHY WEIGHT</a>
+      <a class="tick sub-tick" data-cat="health" href="calories-burned-calculator.html">CAL BURNED</a>
+      <a class="tick sub-tick" data-cat="health" href="one-rep-max-calculator.html">1RM</a>
+      <a class="tick sub-tick" data-cat="health" href="target-heart-rate-calculator.html">HEART RATE</a>
+      <a class="tick sub-tick" data-cat="health" href="pregnancy-week-calculator.html">PREGNANCY WEEKS</a>
+      <a class="tick sub-tick" data-cat="health" href="pregnancy-weight-gain-calculator.html">PREG. WEIGHT GAIN</a>
+      <a class="tick sub-tick" data-cat="health" href="conception-calculator.html">CONCEPTION</a>
+      <a class="tick sub-tick" data-cat="health" href="sleep-cycle-calculator.html">SLEEP CYCLE</a>
+      <a class="tick sub-tick" data-cat="health" href="water-intake-calculator.html">WATER INTAKE</a>
+      <a class="tick sub-tick" data-cat="health" href="tdee-calculator.html">TDEE</a>
+      <a class="tick sub-tick" data-cat="health" href="protein-calculator.html">PROTEIN</a>
+      <a class="tick sub-tick" data-cat="education" href="gcf-calculator.html">GCF</a>
+      <a class="tick sub-tick" data-cat="education" href="lcm-calculator.html">LCM</a>
+      <a class="tick sub-tick" data-cat="education" href="factor-calculator.html">FACTORS</a>
+      <a class="tick sub-tick" data-cat="education" href="rounding-calculator.html">ROUNDING</a>
+      <a class="tick sub-tick" data-cat="education" href="scientific-notation-calculator.html">SCI. NOTATION</a>
+      <a class="tick sub-tick" data-cat="education" href="big-number-calculator.html">BIG NUMBERS</a>
+      <a class="tick sub-tick" data-cat="education" href="number-sequence-calculator.html">SEQUENCES</a>
+      <a class="tick sub-tick" data-cat="education" href="probability-calculator.html">PROBABILITY</a>
+      <a class="tick sub-tick" data-cat="education" href="matrix-calculator.html">MATRIX</a>
+      <a class="tick sub-tick" data-cat="education" href="circle-calculator.html">CIRCLE</a>
+      <a class="tick sub-tick" data-cat="education" href="area-calculator.html">AREA</a>
+      <a class="tick sub-tick" data-cat="education" href="volume-calculator.html">VOLUME</a>
+      <a class="tick sub-tick" data-cat="education" href="surface-area-calculator.html">SURFACE AREA</a>
+      <a class="tick sub-tick" data-cat="education" href="slope-calculator.html">SLOPE</a>
+      <a class="tick sub-tick" data-cat="education" href="coordinate-distance-calculator.html">COORDINATE DISTANCE</a>
+      <a class="tick sub-tick" data-cat="education" href="pythagorean-theorem-calculator.html">PYTHAGOREAN THEOREM</a>
+      <a class="tick sub-tick" data-cat="education" href="right-triangle-calculator.html">RIGHT TRIANGLE</a>
+      <a class="tick sub-tick" data-cat="education" href="triangle-calculator.html">TRIANGLE</a>
+      <a class="tick sub-tick" data-cat="education" href="gpa-calculator.html">GPA</a>
+      <a class="tick sub-tick" data-cat="education" href="grade-calculator.html">GRADE</a>
+      <a class="tick sub-tick" data-cat="education" href="scientific-calculator.html">SCIENTIFIC</a>
+      <a class="tick sub-tick" data-cat="education" href="fraction-calculator.html">FRACTION</a>
+      <a class="tick sub-tick" data-cat="education" href="statistics-calculator.html">STATISTICS</a>
+      <a class="tick sub-tick" data-cat="education" href="percent-error-calculator.html">% ERROR</a>
+      <a class="tick sub-tick" data-cat="education" href="exponent-calculator.html">EXPONENT</a>
+      <a class="tick sub-tick" data-cat="education" href="binary-calculator.html">BINARY</a>
+      <a class="tick sub-tick" data-cat="education" href="hex-calculator.html">HEX</a>
+      <a class="tick sub-tick" data-cat="education" href="half-life-calculator.html">HALF-LIFE</a>
+      <a class="tick sub-tick" data-cat="education" href="quadratic-formula-calculator.html">QUADRATIC</a>
+      <a class="tick sub-tick" data-cat="education" href="log-calculator.html">LOG</a>
+      <a class="tick sub-tick" data-cat="education" href="ratio-calculator.html">RATIO</a>
+      <a class="tick sub-tick" data-cat="education" href="root-calculator.html">ROOT</a>
+      <a class="tick sub-tick" data-cat="education" href="standard-deviation-calculator.html">STD DEVIATION</a>
+      <a class="tick sub-tick" data-cat="education" href="sample-size-calculator.html">SAMPLE SIZE</a>
+      <a class="tick sub-tick" data-cat="education" href="mean-median-mode-calculator.html">MEAN/MEDIAN/MODE</a>
+      <a class="tick sub-tick" data-cat="education" href="permutation-combination-calculator.html">PERM/COMBO</a>
+      <a class="tick sub-tick" data-cat="education" href="z-score-calculator.html">Z-SCORE</a>
+      <a class="tick sub-tick" data-cat="education" href="confidence-interval-calculator.html">CONFIDENCE INT.</a>
+      <a class="tick sub-tick" data-cat="everyday" href="basic-calculator.html">CALCULATOR</a>
+      <a class="tick sub-tick" data-cat="everyday" href="percentage-calculator.html">PERCENT</a>
+      <a class="tick sub-tick" data-cat="everyday" href="age-calculator.html">AGE</a>
+      <a class="tick sub-tick" data-cat="everyday" href="days-calculator.html">DAYS</a>
+      <a class="tick sub-tick" data-cat="everyday" href="time-calculator.html">TIME</a>
+      <a class="tick sub-tick" data-cat="everyday" href="unit-converter.html">UNITS</a>
+      <a class="tick sub-tick" data-cat="everyday" href="week-number-calculator.html">WEEK #</a>
+      <a class="tick sub-tick" data-cat="everyday" href="cm-to-inches.html">CM→IN</a>
+      <a class="tick sub-tick" data-cat="everyday" href="kg-to-pounds.html">KG→LB</a>
+      <a class="tick sub-tick" data-cat="everyday" href="celsius-to-fahrenheit.html">°C→°F</a>
+      <a class="tick sub-tick" data-cat="everyday" href="password-generator.html">PASSWORD</a>
+      <a class="tick sub-tick" data-cat="everyday" href="random-number-generator.html">RANDOM #</a>
+      <a class="tick sub-tick" data-cat="everyday" href="word-counter.html">WORD COUNT</a>
+      <a class="tick sub-tick" data-cat="everyday" href="pace-calculator.html">PACE</a>
+      <a class="tick sub-tick" data-cat="everyday" href="bill-split-calculator.html">BILL SPLIT</a>
+      <a class="tick sub-tick" data-cat="everyday" href="fuel-cost-calculator.html">FUEL COST</a>
+      <a class="tick sub-tick" data-cat="education" href="ohms-law-calculator.html">OHM’S LAW</a>
+      <a class="tick sub-tick" data-cat="education" href="resistor-color-code-calculator.html">RESISTOR CODE</a>
+      <a class="tick sub-tick" data-cat="education" href="roman-numeral-converter.html">ROMAN NUMERALS</a>
+      <a class="tick sub-tick" data-cat="everyday" href="voltage-drop-calculator.html">VOLTAGE DROP</a>
+      <a class="tick sub-tick" data-cat="everyday" href="electricity-cost-calculator.html">ELECTRICITY COST</a>
+      <a class="tick sub-tick" data-cat="everyday" href="ip-subnet-calculator.html">IP SUBNET</a>
+      <a class="tick sub-tick" data-cat="everyday" href="bandwidth-calculator.html">BANDWIDTH</a>
+      <a class="tick sub-tick" data-cat="everyday" href="base64-converter.html">BASE64</a>
+      <a class="tick sub-tick" data-cat="everyday" href="url-encoder.html">URL ENCODER</a>
+      <a class="tick sub-tick" data-cat="education" href="molecular-weight-calculator.html">MOLECULAR WEIGHT</a>
+      <a class="tick sub-tick" data-cat="education" href="molarity-calculator.html">MOLARITY</a>
+      <a class="tick sub-tick" data-cat="education" href="density-calculator.html">DENSITY</a>
+      <a class="tick sub-tick" data-cat="education" href="weight-on-planets-calculator.html">WEIGHT ON PLANETS</a>
+      <a class="tick sub-tick" data-cat="everyday" href="speed-calculator.html">SPEED</a>
+      <a class="tick sub-tick" data-cat="health" href="child-height-calculator.html">CHILD HEIGHT</a>
+      <a class="tick sub-tick" data-cat="health" href="gfr-calculator.html">eGFR</a>
+      <a class="tick sub-tick" data-cat="health" href="body-surface-area-calculator.html">BODY SURFACE AREA</a>
+      <a class="tick sub-tick" data-cat="health" href="bac-calculator.html">BLOOD ALCOHOL</a>
+      <a class="tick sub-tick" data-cat="health" href="fat-intake-calculator.html">FAT INTAKE</a>
+      <a class="tick sub-tick" data-cat="health" href="period-calculator.html">PERIOD</a>
+      <a class="tick sub-tick" data-cat="everyday" href="concrete-calculator.html">CONCRETE</a>
+      <a class="tick sub-tick" data-cat="everyday" href="square-footage-calculator.html">SQUARE FOOTAGE</a>
+      <a class="tick sub-tick" data-cat="everyday" href="btu-calculator.html">BTU / AC SIZE</a>
+      <a class="tick sub-tick" data-cat="everyday" href="stair-calculator.html">STAIRS</a>
+      <a class="tick sub-tick" data-cat="everyday" href="roofing-calculator.html">ROOFING</a>
+      <a class="tick sub-tick" data-cat="everyday" href="tile-calculator.html">TILE</a>
+      <a class="tick sub-tick" data-cat="everyday" href="mulch-calculator.html">MULCH</a>
+      <a class="tick sub-tick" data-cat="everyday" href="gravel-calculator.html">GRAVEL</a>
+      <a class="tick sub-tick" data-cat="everyday" href="wind-chill-calculator.html">WIND CHILL</a>
+      <a class="tick sub-tick" data-cat="everyday" href="heat-index-calculator.html">HEAT INDEX</a>
+      <a class="tick sub-tick" data-cat="everyday" href="dew-point-calculator.html">DEW POINT</a>
+      <a class="tick sub-tick" data-cat="everyday" href="gas-mileage-calculator.html">GAS MILEAGE</a>
+      <a class="tick sub-tick" data-cat="everyday" href="horsepower-calculator.html">HORSEPOWER</a>
+      <a class="tick sub-tick" data-cat="everyday" href="tire-size-calculator.html">TIRE SIZE</a>
+      <a class="tick sub-tick" data-cat="everyday" href="time-card-calculator.html">TIME CARD</a>
+      <a class="tick sub-tick" data-cat="everyday" href="time-zone-calculator.html">TIME ZONES</a>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+    </nav>
+  </div>
+  <!-- TB:NAV:END -->
+</header>
+<div class="nav-backdrop" id="navBackdrop"></div>
+
+<div class="wrap">
+  <div class="crumb"><a href="index.html">TallyBench</a> / Horsepower Calculator</div>
+
+  <section class="hero">
+    <div class="hero-icon-row cat-everyday">
+      <div class="hero-icon"><svg><use href="icons.svg#icon-units"/></svg></div>
+      <div class="eyebrow">// HORSEPOWER CALCULATOR</div>
+    </div>
+    <h1>Horsepower Calculator</h1>
+    <p>Horsepower from torque and rpm, or estimated from quarter-mile trap speed or elapsed time, with kW and PS alongside.</p>
+  </section>
+
+  <section class="tool" id="horsepower">
+    <div class="card">
+      <div>
+        <div class="field"><label>Calculate from</label>
+          <select id="hpMode">
+            <option value="torque">Torque and rpm</option>
+            <option value="trap">Quarter-mile trap speed</option>
+            <option value="et">Quarter-mile elapsed time</option>
+          </select>
+        </div>
+        <div id="hpTorqueRow">
+          <div class="field"><label>Torque</label>
+            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+              <input type="number" id="hpTorque" value="300" min="0" step="1" style="flex:1;min-width:100px;">
+              <select id="hpTorqueUnit" style="width:auto;"><option value="lbft">lb-ft</option><option value="nm">Nm</option></select>
+            </div>
+          </div>
+          <div class="field"><label>Engine speed (rpm)</label><input type="number" id="hpRpm" value="6000" min="0" step="100"></div>
+        </div>
+        <div id="hpTrapRow" style="display:none;">
+          <div class="field"><label>Vehicle weight (with driver)</label>
+            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+              <input type="number" id="hpWeight" value="3400" min="0" step="10" style="flex:1;min-width:100px;">
+              <select id="hpWeightUnit" style="width:auto;"><option value="lb">lb</option><option value="kg">kg</option></select>
+            </div>
+          </div>
+          <div class="field"><label>Trap speed</label>
+            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+              <input type="number" id="hpTrap" value="110" min="0" step="0.1" style="flex:1;min-width:100px;">
+              <select id="hpTrapUnit" style="width:auto;"><option value="mph">mph</option><option value="kph">km/h</option></select>
+            </div>
+          </div>
+        </div>
+        <div id="hpEtRow" style="display:none;">
+          <div class="field"><label>Vehicle weight (with driver)</label>
+            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+              <input type="number" id="hpWeight2" value="3400" min="0" step="10" style="flex:1;min-width:100px;">
+              <select id="hpWeightUnit2" style="width:auto;"><option value="lb">lb</option><option value="kg">kg</option></select>
+            </div>
+          </div>
+          <div class="field"><label>Quarter-mile elapsed time (seconds)</label><input type="number" id="hpEt" value="13.5" min="0" step="0.01"></div>
+        </div>
+      </div>
+      <div class="readout">
+        <div class="r-row"><span class="r-label">Horsepower</span><span class="r-value" id="hpResult">—</span></div>
+        <div class="r-row"><span class="r-label">Kilowatts</span><span class="r-value" id="hpKw">—</span></div>
+        <div class="r-row"><span class="r-label">Metric horsepower</span><span class="r-value" id="hpPs">—</span></div>
+        <div class="r-row"><span class="r-label">Torque</span><span class="r-value" id="hpTorqueOut">—</span></div>
+        <p class="r-note" id="hpFormula"></p>
+      </div>
+    </div>
+
+  </section>
+
+  <section class="article">
+    <h2>Torque, power, and where 5252 comes from</h2>
+    <p><strong>Torque</strong> is rotational force — how hard the crankshaft twists. <strong>Power</strong> is the rate of doing work, which is torque multiplied by how fast that twisting is happening. The relationship is:</p>
+    <p style="font-family:var(--mono,monospace);font-size:14px;line-height:1.8;">hp = torque (lb-ft) × rpm ÷ 5252</p>
+    <p>The 5252 is not arbitrary. One horsepower was defined by James Watt as 33,000 foot-pounds per minute. Converting rotational work to linear gives a factor of 2π, and 33,000 ÷ (2π) = 5252.113. That is the whole derivation.</p>
+    <p>It has a consequence you can see on any dyno chart: <strong>the horsepower and torque curves always cross at exactly 5252 rpm</strong>, when both are plotted in these units. Below 5252 the torque figure is higher; above it, horsepower is. If a published dyno graph shows them crossing anywhere else, the axes have been scaled independently.</p>
+
+    <h2>Which one matters</h2>
+    <p>The old line is that torque gets you moving and horsepower keeps you going, which is roughly right but hides the real answer: <em>power is what determines acceleration</em>, because power is the rate at which energy can be added to the vehicle. Torque only matters through the power it produces at a given engine speed.</p>
+    <p>Gearing is what makes this concrete. A gearbox trades speed for torque, so a high-revving engine with modest torque can multiply it through gearing and out-accelerate a low-revving engine with more torque but less power. This is why a superbike engine producing 80 lb-ft outperforms a truck engine producing 400 — it does so at 12,000 rpm rather than 1,800, and gearing does the rest.</p>
+
+    <h2>Estimating from the drag strip</h2>
+    <p>Two long-standing empirical formulas, attributed to Roger Huntington, estimate power from quarter-mile performance:</p>
+    <p style="font-family:var(--mono,monospace);font-size:14px;line-height:1.8;">hp = weight × (mph ÷ 234)³<br>hp = weight ÷ (ET ÷ 5.825)³</p>
+    <p>The trap-speed version is the more reliable of the two, because terminal speed depends mostly on power and weight. Elapsed time is heavily influenced by launch quality, traction and gearing, so a car that hooks up well will show a better ET than its power justifies, and a powerful car that spins its tyres will show worse.</p>
+    <p>Both estimate <strong>flywheel</strong> horsepower, and both are approximations fitted to typical cars — aerodynamics, drivetrain losses and track conditions all move the answer. Treat them as ballpark figures, not measurements.</p>
+
+    <h2>The three horsepowers</h2>
+    <table class="data-table">
+      <thead><tr><th>Unit</th><th>Equals</th><th>Used in</th></tr></thead>
+      <tbody>
+        <tr><td>Mechanical hp</td><td>745.7 W</td><td>US, UK</td></tr>
+        <tr><td>Metric hp (PS, ch, pk)</td><td>735.5 W</td><td>Europe, Japan, Korea</td></tr>
+        <tr><td>Kilowatt</td><td>1000 W</td><td>Official SI, Australia, South Africa</td></tr>
+      </tbody>
+    </table>
+    <p>Metric horsepower is about 1.4% smaller than mechanical, so a car quoted at 300 PS is roughly 296 hp. It is a small difference but it explains why the same car is advertised with slightly different numbers in different markets. German manufacturers quoting PS is the usual source of confusion.</p>
+
+    <h2>Flywheel versus wheel horsepower</h2>
+    <p>Manufacturers quote power at the flywheel. A chassis dyno measures at the wheels, after the drivetrain has taken its cut. Losses run roughly 10 to 15% for a manual rear-wheel-drive car and 15 to 25% for an automatic or all-wheel-drive one.</p>
+    <p>So a car rated 300 hp at the crank might read 255 at the wheels, and that is normal rather than a sign of underperformance. Comparing a wheel figure to a manufacturer's flywheel figure without accounting for this is the most common error in interpreting dyno results.</p>
+    <h3>Why is horsepower calculated by dividing by 5252?</h3>
+    <p>Because one horsepower was defined as 33,000 foot-pounds of work per minute, and converting rotation to linear work introduces a factor of 2π. Dividing 33,000 by 2π gives 5252.113. It follows that horsepower and torque curves always intersect at exactly 5252 rpm when plotted in lb-ft and hp — if a dyno graph shows them crossing anywhere else, the two axes have been scaled independently.</p>
+    <h3>Is torque or horsepower more important?</h3>
+    <p>Power determines acceleration, because it is the rate at which energy can be added to the vehicle. Torque matters only through the power it produces at a given engine speed. Gearing is what reconciles the two — a gearbox trades speed for torque, so a high-revving engine with modest torque can out-accelerate a low-revving one with much more. A superbike engine making 80 lb-ft beats a truck engine making 400 for exactly this reason.</p>
+    <h3>How accurate are quarter-mile horsepower estimates?</h3>
+    <p>Reasonable as ballpark figures, not as measurements. The trap-speed formula is the more reliable of the two, because terminal speed depends mostly on power and weight. Elapsed time is heavily affected by launch quality, traction and gearing — a car that hooks up well shows a better ET than its power justifies. Both estimate flywheel power and both are empirical fits to typical cars, so aerodynamics and drivetrain differences move the answer.</p>
+    <h3>What is the difference between hp and PS?</h3>
+    <p>Mechanical horsepower is 745.7 watts; metric horsepower — written PS in Germany, ch in France, pk in the Netherlands — is 735.5 watts, about 1.4% smaller. So 300 PS is roughly 296 hp. The gap is small but it is why the same car appears with slightly different power figures in different markets, and German manufacturers quoting PS is the usual source of the confusion.</p>
+    <h3>Why does my dyno reading come in below the factory figure?</h3>
+    <p>Because manufacturers quote power at the flywheel and a chassis dyno measures at the wheels, after drivetrain losses. Expect roughly 10 to 15% loss for a manual rear-wheel-drive car and 15 to 25% for an automatic or all-wheel-drive one. A 300 hp car reading 255 at the wheels is behaving normally. Dyno readings also vary between machines and with temperature, humidity and correction factor, so comparing figures across different dynos is unreliable.</p>
+  </section>
+
+  <p style="font-size:13px;color:rgba(242,236,221,0.55);margin:0 0 24px;">Related: <a href="speed-calculator.html">Speed Calculator</a> · <a href="tire-size-calculator.html">Tire Size Calculator</a> · <a href="gas-mileage-calculator.html">Gas Mileage Calculator</a> · <a href="unit-converter.html">Unit Converter</a></p>
+
+  <footer>
+    <p>TALLYBENCH · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
+  </footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

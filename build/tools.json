@@ -1713,6 +1713,78 @@
       "title": "Gravel Calculator",
       "icon": "icon-units",
       "blurb": "Cubic yards and tons of gravel, stone, sand or topsoil."
+    },
+    {
+      "id": "wind-chill-calculator",
+      "file": "wind-chill-calculator.html",
+      "category": "everyday",
+      "navLabel": "WIND CHILL",
+      "title": "Wind Chill Calculator",
+      "icon": "icon-units",
+      "blurb": "NWS wind chill with frostbite exposure times."
+    },
+    {
+      "id": "heat-index-calculator",
+      "file": "heat-index-calculator.html",
+      "category": "everyday",
+      "navLabel": "HEAT INDEX",
+      "title": "Heat Index Calculator",
+      "icon": "icon-units",
+      "blurb": "Full NWS Rothfusz regression, adjustments included."
+    },
+    {
+      "id": "dew-point-calculator",
+      "file": "dew-point-calculator.html",
+      "category": "everyday",
+      "navLabel": "DEW POINT",
+      "title": "Dew Point Calculator",
+      "icon": "icon-units",
+      "blurb": "Magnus formula with the meteorologists’ comfort scale."
+    },
+    {
+      "id": "gas-mileage-calculator",
+      "file": "gas-mileage-calculator.html",
+      "category": "everyday",
+      "navLabel": "GAS MILEAGE",
+      "title": "Gas Mileage Calculator",
+      "icon": "icon-units",
+      "blurb": "Real fuel economy in MPG, L/100km and km/L."
+    },
+    {
+      "id": "horsepower-calculator",
+      "file": "horsepower-calculator.html",
+      "category": "everyday",
+      "navLabel": "HORSEPOWER",
+      "title": "Horsepower Calculator",
+      "icon": "icon-units",
+      "blurb": "From torque and rpm, or quarter-mile trap speed or ET."
+    },
+    {
+      "id": "tire-size-calculator",
+      "file": "tire-size-calculator.html",
+      "category": "everyday",
+      "navLabel": "TIRE SIZE",
+      "title": "Tire Size Calculator",
+      "icon": "icon-units",
+      "blurb": "Compare sizes and see the speedometer error."
+    },
+    {
+      "id": "time-card-calculator",
+      "file": "time-card-calculator.html",
+      "category": "everyday",
+      "navLabel": "TIME CARD",
+      "title": "Time Card Calculator",
+      "icon": "icon-days",
+      "blurb": "Weekly timesheet with breaks, overtime and pay."
+    },
+    {
+      "id": "time-zone-calculator",
+      "file": "time-zone-calculator.html",
+      "category": "everyday",
+      "navLabel": "TIME ZONES",
+      "title": "Time Zone Converter",
+      "icon": "icon-days",
+      "blurb": "One time across 33 cities, with daylight saving resolved."
     }
   ]
 }

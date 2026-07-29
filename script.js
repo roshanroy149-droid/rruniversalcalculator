@@ -12720,3 +12720,448 @@ function sciParseFormula(raw) {
   });
   calc();
 })();
+
+// ================= Weather & transport cluster =================
+
+// ---- Wind Chill Calculator ----
+(function () {
+  if (!document.getElementById('wcTemp')) return;
+  var g = function (id) { return document.getElementById(id); };
+  function calc() {
+    var metric = g('wcUnit').value === 'metric';
+    var t = parseFloat(g('wcTemp').value);
+    var v = parseFloat(g('wcWind').value);
+    if (!isFinite(t) || !isFinite(v)) { ['wcResult', 'wcAlt', 'wcDrop', 'wcFrostbite'].forEach(function (i) { g(i).textContent = '—'; }); return; }
+
+    var tF = metric ? t * 9 / 5 + 32 : t;
+    var vMph = metric ? v / 1.609344 : v;      // kph → mph
+
+    var note = g('wcNote');
+    if (tF > 50 || vMph < 3) {
+      ['wcResult', 'wcAlt', 'wcDrop', 'wcFrostbite'].forEach(function (i) { g(i).textContent = '—'; });
+      note.textContent = 'The NWS wind chill formula is only defined at or below 50 °F (10 °C) with wind of at least 3 mph (4.8 kph). Outside that range wind chill is not meaningful — moving air still cools you, but the equation was not fitted there.';
+      return;
+    }
+    // NWS / Environment Canada 2001 revision.
+    var p = Math.pow(vMph, 0.16);
+    var wcF = 35.74 + 0.6215 * tF - 35.75 * p + 0.4275 * tF * p;
+    var wcC = (wcF - 32) * 5 / 9;
+
+    g('wcResult').textContent = metric ? (Math.round(wcC * 10) / 10) + ' °C' : (Math.round(wcF * 10) / 10) + ' °F';
+    g('wcAlt').textContent = metric ? (Math.round(wcF * 10) / 10) + ' °F' : (Math.round(wcC * 10) / 10) + ' °C';
+    var drop = metric ? t - wcC : tF - wcF;
+    g('wcDrop').textContent = (Math.round(drop * 10) / 10) + (metric ? ' °C' : ' °F') + ' colder than the air temperature';
+
+    // Exposure times to frostbite on exposed skin, per the NWS chart bands.
+    var fb;
+    if (wcF > -18) fb = 'Low risk with normal precautions.';
+    else if (wcF > -32) fb = 'Frostbite possible on exposed skin in about 30 minutes.';
+    else if (wcF > -48) fb = 'Frostbite possible on exposed skin in about 10 minutes.';
+    else fb = 'Frostbite possible on exposed skin in about 5 minutes. Cover all skin.';
+    g('wcFrostbite').textContent = fb;
+    note.textContent = '';
+  }
+  ['wcUnit', 'wcTemp', 'wcWind'].forEach(function (id) { g(id).addEventListener('input', calc); g(id).addEventListener('change', calc); });
+  calc();
+})();
+
+// ---- Heat Index Calculator ----
+(function () {
+  if (!document.getElementById('hiTemp')) return;
+  var g = function (id) { return document.getElementById(id); };
+  function calc() {
+    var metric = g('hiUnit').value === 'metric';
+    var t = parseFloat(g('hiTemp').value);
+    var rh = parseFloat(g('hiHumidity').value);
+    if (!isFinite(t) || !isFinite(rh)) { ['hiResult', 'hiAlt', 'hiRise', 'hiCategory'].forEach(function (i) { g(i).textContent = '—'; }); return; }
+    rh = Math.max(0, Math.min(100, rh));
+    var T = metric ? t * 9 / 5 + 32 : t;
+
+    // NWS: compute the simple form first; only use Rothfusz if it lands at 80+.
+    var simple = 0.5 * (T + 61.0 + ((T - 68.0) * 1.2) + (rh * 0.094));
+    var hiF = (simple + T) / 2;
+    if (hiF >= 80) {
+      hiF = -42.379 + 2.04901523 * T + 10.14333127 * rh - 0.22475541 * T * rh
+        - 0.00683783 * T * T - 0.05481717 * rh * rh + 0.00122874 * T * T * rh
+        + 0.00085282 * T * rh * rh - 0.00000199 * T * T * rh * rh;
+      if (rh < 13 && T >= 80 && T <= 112) {
+        hiF -= ((13 - rh) / 4) * Math.sqrt((17 - Math.abs(T - 95)) / 17);
+      } else if (rh > 85 && T >= 80 && T <= 87) {
+        hiF += ((rh - 85) / 10) * ((87 - T) / 5);
+      }
+    }
+    var hiC = (hiF - 32) * 5 / 9;
+    g('hiResult').textContent = metric ? (Math.round(hiC * 10) / 10) + ' °C' : (Math.round(hiF * 10) / 10) + ' °F';
+    g('hiAlt').textContent = metric ? (Math.round(hiF * 10) / 10) + ' °F' : (Math.round(hiC * 10) / 10) + ' °C';
+    var rise = metric ? hiC - t : hiF - T;
+    g('hiRise').textContent = (rise >= 0 ? '+' : '') + (Math.round(rise * 10) / 10) + (metric ? ' °C' : ' °F') + ' against the air temperature';
+
+    var cat;
+    if (hiF < 80) cat = 'No significant heat stress expected.';
+    else if (hiF < 91) cat = 'Caution — fatigue possible with prolonged exposure or activity.';
+    else if (hiF < 104) cat = 'Extreme caution — heat cramps and heat exhaustion possible with prolonged exposure or activity.';
+    else if (hiF < 126) cat = 'Danger — heat cramps and heat exhaustion likely; heat stroke possible with prolonged exposure or activity.';
+    else cat = 'Extreme danger — heat stroke highly likely. This is a life-threatening level.';
+    g('hiCategory').textContent = cat;
+    g('hiNote').textContent = 'Heat index assumes shade and light wind. Direct sun can add as much as 8 °C (15 °F) to the effective figure.';
+  }
+  ['hiUnit', 'hiTemp', 'hiHumidity'].forEach(function (id) { g(id).addEventListener('input', calc); g(id).addEventListener('change', calc); });
+  calc();
+})();
+
+// ---- Dew Point Calculator ----
+(function () {
+  if (!document.getElementById('dpTemp')) return;
+  var g = function (id) { return document.getElementById(id); };
+  var B = 17.625, C = 243.04;    // Alduchov-Eskridge coefficients for the Magnus formula
+  function calc() {
+    var metric = g('dpUnit').value === 'metric';
+    var t = parseFloat(g('dpTemp').value);
+    var rh = parseFloat(g('dpHumidity').value);
+    if (!isFinite(t) || !isFinite(rh) || rh <= 0) {
+      ['dpResult', 'dpAlt', 'dpComfort', 'dpSpread'].forEach(function (i) { g(i).textContent = '—'; });
+      return;
+    }
+    rh = Math.max(0.01, Math.min(100, rh));
+    var tC = metric ? t : (t - 32) * 5 / 9;
+    var gamma = Math.log(rh / 100) + (B * tC) / (C + tC);
+    var dpC = (C * gamma) / (B - gamma);
+    var dpF = dpC * 9 / 5 + 32;
+
+    g('dpResult').textContent = metric ? (Math.round(dpC * 10) / 10) + ' °C' : (Math.round(dpF * 10) / 10) + ' °F';
+    g('dpAlt').textContent = metric ? (Math.round(dpF * 10) / 10) + ' °F' : (Math.round(dpC * 10) / 10) + ' °C';
+    g('dpSpread').textContent = (Math.round((tC - dpC) * 10) / 10) + ' °C  (' +
+      (Math.round((tC - dpC) * 9 / 5 * 10) / 10) + ' °F) below the air temperature';
+
+    // Dew point, not relative humidity, is what actually tracks how muggy it feels.
+    var c;
+    if (dpC < 10) c = 'Dry and comfortable.';
+    else if (dpC < 13) c = 'Comfortable.';
+    else if (dpC < 16) c = 'Becoming noticeable but still pleasant for most people.';
+    else if (dpC < 18) c = 'Slightly humid — noticeable to most people.';
+    else if (dpC < 21) c = 'Humid and uncomfortable.';
+    else if (dpC < 24) c = 'Very humid — quite oppressive.';
+    else c = 'Extremely oppressive. Sweat evaporates poorly, so heat stress risk is high.';
+    g('dpComfort').textContent = c;
+    g('dpNote').textContent = dpC >= 0
+      ? 'Air cooled to ' + (Math.round(dpC * 10) / 10) + ' °C will reach saturation and begin forming dew, fog or condensation.'
+      : 'Below freezing, this is technically the frost point — water vapour deposits directly as frost rather than condensing first.';
+  }
+  ['dpUnit', 'dpTemp', 'dpHumidity'].forEach(function (id) { g(id).addEventListener('input', calc); g(id).addEventListener('change', calc); });
+  calc();
+})();
+
+// ---- Gas Mileage Calculator ----
+(function () {
+  if (!document.getElementById('gmMode')) return;
+  var g = function (id) { return document.getElementById(id); };
+  function calc() {
+    var mode = g('gmMode').value;
+    g('gmOdoRow').style.display = mode === 'odometer' ? '' : 'none';
+    g('gmDirectRow').style.display = mode === 'direct' ? '' : 'none';
+
+    var miles, gallons;
+    if (mode === 'odometer') {
+      var start = parseFloat(g('gmStart').value) || 0;
+      var end = parseFloat(g('gmEnd').value) || 0;
+      var dist = Math.max(0, end - start);
+      miles = g('gmDistUnit').value === 'km' ? dist / 1.609344 : dist;
+      var fuel = parseFloat(g('gmFuel').value) || 0;
+      gallons = g('gmFuelUnit').value === 'l' ? fuel / 3.785411784 : fuel;
+    } else {
+      var d2 = parseFloat(g('gmDistance').value) || 0;
+      miles = g('gmDistUnit2').value === 'km' ? d2 / 1.609344 : d2;
+      var f2 = parseFloat(g('gmFuel2').value) || 0;
+      gallons = g('gmFuelUnit2').value === 'l' ? f2 / 3.785411784 : f2;
+    }
+    if (miles <= 0 || gallons <= 0) {
+      ['gmMpgUs', 'gmMpgUk', 'gmL100', 'gmKmL', 'gmCostPer'].forEach(function (i) { g(i).textContent = '—'; });
+      return;
+    }
+    var mpgUs = miles / gallons;
+    var km = miles * 1.609344, litres = gallons * 3.785411784;
+    var l100 = litres / km * 100;
+    var kmL = km / litres;
+    var mpgUk = mpgUs * 1.201;                   // an imperial gallon is 1.201 US gallons
+
+    var f = function (v) { return Math.round(v * 100) / 100; };
+    g('gmMpgUs').textContent = f(mpgUs) + ' MPG (US)';
+    g('gmMpgUk').textContent = f(mpgUk) + ' MPG (imperial)';
+    g('gmL100').textContent = f(l100) + ' L/100 km';
+    g('gmKmL').textContent = f(kmL) + ' km/L';
+
+    var price = parseFloat(g('gmPrice').value) || 0;
+    var sym = g('gmCur').value;
+    if (price > 0) {
+      var perUnit = g('gmPriceUnit').value === 'l' ? price * litres / km : price * gallons / miles;
+      g('gmCostPer').textContent = g('gmPriceUnit').value === 'l'
+        ? sym + f(perUnit) + ' per km  ·  ' + sym + f(perUnit * 100) + ' per 100 km'
+        : sym + f(perUnit) + ' per mile  ·  ' + sym + f(perUnit * 100) + ' per 100 miles';
+    } else g('gmCostPer').textContent = '—';
+  }
+  ['gmMode', 'gmStart', 'gmEnd', 'gmDistUnit', 'gmFuel', 'gmFuelUnit', 'gmDistance', 'gmDistUnit2',
+    'gmFuel2', 'gmFuelUnit2', 'gmPrice', 'gmPriceUnit', 'gmCur'].forEach(function (id) {
+      g(id).addEventListener('input', calc); g(id).addEventListener('change', calc);
+    });
+  calc();
+})();
+
+// ---- Horsepower Calculator ----
+(function () {
+  if (!document.getElementById('hpMode')) return;
+  var g = function (id) { return document.getElementById(id); };
+  function calc() {
+    var mode = g('hpMode').value;
+    g('hpTorqueRow').style.display = mode === 'torque' ? '' : 'none';
+    g('hpTrapRow').style.display = mode === 'trap' ? '' : 'none';
+    g('hpEtRow').style.display = mode === 'et' ? '' : 'none';
+
+    var hp = NaN, explain = '';
+    if (mode === 'torque') {
+      var tq = parseFloat(g('hpTorque').value) || 0;
+      var rpm = parseFloat(g('hpRpm').value) || 0;
+      var lbft = g('hpTorqueUnit').value === 'nm' ? tq / 1.355817948 : tq;
+      hp = lbft * rpm / 5252;
+      explain = 'hp = torque (lb-ft) × rpm ÷ 5252';
+    } else if (mode === 'trap') {
+      var wt = parseFloat(g('hpWeight').value) || 0;
+      var lb = g('hpWeightUnit').value === 'kg' ? wt / 0.45359237 : wt;
+      var mph = parseFloat(g('hpTrap').value) || 0;
+      if (g('hpTrapUnit').value === 'kph') mph = mph / 1.609344;
+      hp = lb * Math.pow(mph / 234, 3);
+      explain = 'Huntington trap-speed estimate: hp = weight × (mph ÷ 234)³';
+    } else {
+      var wt2 = parseFloat(g('hpWeight2').value) || 0;
+      var lb2 = g('hpWeightUnit2').value === 'kg' ? wt2 / 0.45359237 : wt2;
+      var et = parseFloat(g('hpEt').value) || 0;
+      if (et > 0) { hp = lb2 / Math.pow(et / 5.825, 3); }
+      explain = 'Huntington elapsed-time estimate: hp = weight ÷ (ET ÷ 5.825)³';
+    }
+    if (!isFinite(hp) || hp <= 0) {
+      ['hpResult', 'hpKw', 'hpPs', 'hpTorqueOut'].forEach(function (i) { g(i).textContent = '—'; });
+      g('hpFormula').textContent = explain; return;
+    }
+    g('hpResult').textContent = (Math.round(hp * 10) / 10).toLocaleString('en-US') + ' hp';
+    g('hpKw').textContent = (Math.round(hp * 0.745699872 * 10) / 10) + ' kW';
+    g('hpPs').textContent = (Math.round(hp * 1.01387 * 10) / 10) + ' PS (metric horsepower)';
+    if (mode === 'torque') {
+      var r = parseFloat(g('hpRpm').value) || 0;
+      g('hpTorqueOut').textContent = r > 0 ? (Math.round(hp * 5252 / r * 10) / 10) + ' lb-ft  ·  ' +
+        (Math.round(hp * 5252 / r * 1.355817948 * 10) / 10) + ' Nm' : '—';
+    } else g('hpTorqueOut').textContent = 'Not derivable from this method';
+    g('hpFormula').textContent = explain;
+  }
+  ['hpMode', 'hpTorque', 'hpTorqueUnit', 'hpRpm', 'hpWeight', 'hpWeightUnit', 'hpTrap', 'hpTrapUnit',
+    'hpWeight2', 'hpWeightUnit2', 'hpEt'].forEach(function (id) {
+      g(id).addEventListener('input', calc); g(id).addEventListener('change', calc);
+    });
+  calc();
+})();
+
+// ---- Tire Size Calculator ----
+(function () {
+  if (!document.getElementById('tsWidth1')) return;
+  var g = function (id) { return document.getElementById(id); };
+  function spec(w, a, r) {
+    var sidewall = w * (a / 100);            // mm
+    var diaMm = r * 25.4 + 2 * sidewall;
+    var diaIn = diaMm / 25.4;
+    return {
+      sidewall: sidewall, diaMm: diaMm, diaIn: diaIn,
+      circIn: Math.PI * diaIn,
+      revsPerMile: 63360 / (Math.PI * diaIn)
+    };
+  }
+  function calc() {
+    var a = spec(parseFloat(g('tsWidth1').value) || 0, parseFloat(g('tsAspect1').value) || 0, parseFloat(g('tsRim1').value) || 0);
+    var b = spec(parseFloat(g('tsWidth2').value) || 0, parseFloat(g('tsAspect2').value) || 0, parseFloat(g('tsRim2').value) || 0);
+    var f = function (v, d) { return Math.round(v * Math.pow(10, d)) / Math.pow(10, d); };
+
+    g('tsDia1').textContent = f(a.diaIn, 2) + ' in  ·  ' + f(a.diaMm, 1) + ' mm';
+    g('tsSide1').textContent = f(a.sidewall, 1) + ' mm  ·  ' + f(a.sidewall / 25.4, 2) + ' in';
+    g('tsCirc1').textContent = f(a.circIn, 2) + ' in  ·  ' + f(a.revsPerMile, 0) + ' revs/mile';
+    g('tsDia2').textContent = f(b.diaIn, 2) + ' in  ·  ' + f(b.diaMm, 1) + ' mm';
+    g('tsSide2').textContent = f(b.sidewall, 1) + ' mm  ·  ' + f(b.sidewall / 25.4, 2) + ' in';
+    g('tsCirc2').textContent = f(b.circIn, 2) + ' in  ·  ' + f(b.revsPerMile, 0) + ' revs/mile';
+
+    if (a.diaIn <= 0 || b.diaIn <= 0) { g('tsDiff').textContent = '—'; g('tsSpeedo').textContent = '—'; return; }
+    var pct = (b.diaIn - a.diaIn) / a.diaIn * 100;
+    g('tsDiff').textContent = (pct >= 0 ? '+' : '') + f(pct, 2) + '%  (' + (pct >= 0 ? '+' : '') + f(b.diaIn - a.diaIn, 2) + ' in diameter)';
+
+    // A bigger tyre travels further per revolution, so the speedometer under-reads.
+    var indicated = 60;
+    var actual = indicated * (b.diaIn / a.diaIn);
+    g('tsSpeedo').textContent = Math.abs(actual - indicated) < 0.05
+      ? 'No change — the two sizes roll the same distance per revolution.'
+      : 'At an indicated 60, you would actually be doing ' + f(actual, 1) +
+        ' — the speedometer reads ' + (actual > indicated ? f(actual - indicated, 1) + ' low' : f(indicated - actual, 1) + ' high');
+    var note = g('tsNote');
+    note.textContent = Math.abs(pct) > 3
+      ? 'A difference over 3% is generally considered too much — it affects speedometer and odometer accuracy, ABS and traction control calibration, and on some vehicles the transmission shift points. Most fitment guides keep replacements within 3%.'
+      : 'Within the 3% tolerance normally recommended for a replacement size.';
+  }
+  ['tsWidth1', 'tsAspect1', 'tsRim1', 'tsWidth2', 'tsAspect2', 'tsRim2'].forEach(function (id) {
+    g(id).addEventListener('input', calc); g(id).addEventListener('change', calc);
+  });
+  calc();
+})();
+
+// ================= Date & time cluster =================
+
+// ---- Time Card Calculator ----
+(function () {
+  if (!document.getElementById('tcBody')) return;
+  var g = function (id) { return document.getElementById(id); };
+  var DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
+  // Build the week's rows once, then wire them up.
+  var rows = DAYS.map(function (d, i) {
+    return '<tr>' +
+      '<td>' + d + '</td>' +
+      '<td><input type="time" id="tcIn' + i + '" style="width:100%;"></td>' +
+      '<td><input type="time" id="tcOut' + i + '" style="width:100%;"></td>' +
+      '<td><input type="number" id="tcBrk' + i + '" value="0" min="0" step="5" style="width:100%;"></td>' +
+      '<td id="tcDay' + i + '">—</td></tr>';
+  }).join('');
+  g('tcBody').innerHTML = rows;
+
+  function minutes(v) {
+    if (!v) return null;
+    var p = v.split(':');
+    return parseInt(p[0], 10) * 60 + parseInt(p[1], 10);
+  }
+  function hm(mins) {
+    var h = Math.floor(mins / 60), m = Math.round(mins % 60);
+    return h + 'h ' + String(m).padStart(2, '0') + 'm';
+  }
+  function calc() {
+    var totalMins = 0, anyOvernight = false;
+    DAYS.forEach(function (d, i) {
+      var a = minutes(g('tcIn' + i).value), b = minutes(g('tcOut' + i).value);
+      var brk = parseFloat(g('tcBrk' + i).value) || 0;
+      if (a === null || b === null) { g('tcDay' + i).textContent = '—'; return; }
+      // An end time before the start time means the shift crossed midnight.
+      if (b < a) { b += 1440; anyOvernight = true; }
+      var mins = Math.max(0, b - a - brk);
+      totalMins += mins;
+      g('tcDay' + i).textContent = hm(mins) + '  (' + (Math.round(mins / 60 * 100) / 100) + ')';
+    });
+    var totalHours = totalMins / 60;
+    var otThreshold = parseFloat(g('tcOtAfter').value);
+    if (!isFinite(otThreshold) || otThreshold <= 0) otThreshold = 40;
+    var regular = Math.min(totalHours, otThreshold);
+    var overtime = Math.max(0, totalHours - otThreshold);
+
+    g('tcTotal').textContent = hm(totalMins) + '  (' + (Math.round(totalHours * 100) / 100) + ' decimal hours)';
+    g('tcRegular').textContent = (Math.round(regular * 100) / 100) + ' hours';
+    g('tcOvertime').textContent = (Math.round(overtime * 100) / 100) + ' hours';
+
+    var rate = parseFloat(g('tcRate').value) || 0;
+    var mult = parseFloat(g('tcOtMult').value) || 1.5;
+    var sym = g('tcCur').value;
+    var money = function (n) { return sym + (Math.round(n * 100) / 100).toLocaleString('en-US', { minimumFractionDigits: 2 }); };
+    if (rate > 0) {
+      g('tcRegularPay').textContent = money(regular * rate);
+      g('tcOtPay').textContent = money(overtime * rate * mult);
+      g('tcTotalPay').textContent = money(regular * rate + overtime * rate * mult);
+    } else {
+      ['tcRegularPay', 'tcOtPay', 'tcTotalPay'].forEach(function (i) { g(i).textContent = '—'; });
+    }
+    g('tcNote').textContent = anyOvernight
+      ? 'One or more shifts end earlier than they start, so those have been treated as crossing midnight.'
+      : '';
+  }
+  DAYS.forEach(function (d, i) {
+    ['tcIn' + i, 'tcOut' + i, 'tcBrk' + i].forEach(function (id) {
+      g(id).addEventListener('input', calc); g(id).addEventListener('change', calc);
+    });
+  });
+  ['tcRate', 'tcOtAfter', 'tcOtMult', 'tcCur'].forEach(function (id) {
+    g(id).addEventListener('input', calc); g(id).addEventListener('change', calc);
+  });
+  calc();
+})();
+
+// ---- Time Zone Converter ----
+(function () {
+  if (!document.getElementById('tzFrom')) return;
+  var g = function (id) { return document.getElementById(id); };
+  var ZONES = [
+    ['Pacific/Auckland', 'Auckland'], ['Australia/Sydney', 'Sydney'], ['Australia/Perth', 'Perth'],
+    ['Asia/Tokyo', 'Tokyo'], ['Asia/Seoul', 'Seoul'], ['Asia/Shanghai', 'Shanghai'],
+    ['Asia/Singapore', 'Singapore'], ['Asia/Hong_Kong', 'Hong Kong'], ['Asia/Jakarta', 'Jakarta'],
+    ['Asia/Bangkok', 'Bangkok'], ['Asia/Kathmandu', 'Kathmandu'], ['Asia/Kolkata', 'India (IST)'], ['Asia/Karachi', 'Karachi'],
+    ['Asia/Dubai', 'Dubai'], ['Africa/Nairobi', 'Nairobi'], ['Europe/Moscow', 'Moscow'],
+    ['Africa/Johannesburg', 'Johannesburg'], ['Africa/Lagos', 'Lagos'], ['Europe/Berlin', 'Berlin'],
+    ['Europe/Paris', 'Paris'], ['Europe/Madrid', 'Madrid'], ['Europe/London', 'London'],
+    ['Europe/Lisbon', 'Lisbon'], ['Atlantic/Reykjavik', 'Reykjavik'], ['America/Sao_Paulo', 'Sao Paulo'],
+    ['America/New_York', 'New York'], ['America/Toronto', 'Toronto'], ['America/Chicago', 'Chicago'],
+    ['America/Mexico_City', 'Mexico City'], ['America/Denver', 'Denver'], ['America/Los_Angeles', 'Los Angeles'],
+    ['America/Anchorage', 'Anchorage'], ['Pacific/Honolulu', 'Honolulu'], ['UTC', 'UTC']
+  ];
+
+  // Milliseconds between what a zone's wall clock reads and the real UTC instant.
+  function zoneOffset(tz, date) {
+    var dtf = new Intl.DateTimeFormat('en-US', {
+      timeZone: tz, hour12: false, year: 'numeric', month: '2-digit',
+      day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'
+    });
+    var p = {};
+    dtf.formatToParts(date).forEach(function (x) { if (x.type !== 'literal') p[x.type] = x.value; });
+    var asUTC = Date.UTC(+p.year, +p.month - 1, +p.day, (+p.hour) % 24, +p.minute, +p.second);
+    return asUTC - date.getTime();
+  }
+  // Turn a wall-clock time in a given zone into a real UTC instant. Run twice so
+  // a time that sits near a DST transition resolves against the correct offset.
+  function toInstant(y, mo, d, h, mi, tz) {
+    var wall = Date.UTC(y, mo - 1, d, h, mi);
+    var ts = wall - zoneOffset(tz, new Date(wall));
+    ts = wall - zoneOffset(tz, new Date(ts));
+    return ts;
+  }
+  function fmt(ts, tz) {
+    return new Intl.DateTimeFormat('en-GB', {
+      timeZone: tz, weekday: 'short', day: 'numeric', month: 'short',
+      hour: '2-digit', minute: '2-digit', hour12: true
+    }).format(new Date(ts));
+  }
+  function abbrev(ts, tz) {
+    var parts = new Intl.DateTimeFormat('en-US', { timeZone: tz, timeZoneName: 'short' }).formatToParts(new Date(ts));
+    var n = parts.find(function (p) { return p.type === 'timeZoneName'; });
+    return n ? n.value : '';
+  }
+
+  var opts = ZONES.map(function (z) { return '<option value="' + z[0] + '">' + z[1] + '</option>'; }).join('');
+  g('tzFrom').innerHTML = opts;
+  g('tzFrom').value = 'Europe/London';
+
+  function calc() {
+    var dateStr = g('tzDate').value, timeStr = g('tzTime').value;
+    var from = g('tzFrom').value;
+    var tbody = g('tzTable');
+    if (!dateStr || !timeStr) { tbody.innerHTML = ''; g('tzNote').textContent = 'Pick a date and a time.'; return; }
+    var dp = dateStr.split('-'), tp = timeStr.split(':');
+    var ts = toInstant(+dp[0], +dp[1], +dp[2], +tp[0], +tp[1], from);
+    if (!isFinite(ts)) { tbody.innerHTML = ''; return; }
+
+    var sourceDay = new Intl.DateTimeFormat('en-GB', { timeZone: from, day: 'numeric' }).format(new Date(ts));
+    tbody.innerHTML = ZONES.map(function (z) {
+      var thisDay = new Intl.DateTimeFormat('en-GB', { timeZone: z[0], day: 'numeric' }).format(new Date(ts));
+      var offset = zoneOffset(z[0], new Date(ts)) / 3600000;
+      var sign = offset >= 0 ? '+' : '−';
+      var abs = Math.abs(offset);
+      var offStr = 'UTC' + sign + Math.floor(abs) + (abs % 1 ? ':' + String(Math.round((abs % 1) * 60)).padStart(2, '0') : '');
+      var same = thisDay === sourceDay;
+      return '<tr' + (z[0] === from ? ' style="background:rgba(212,163,115,0.08);"' : '') + '><td>' + z[1] +
+        '</td><td>' + fmt(ts, z[0]) + '</td><td>' + abbrev(ts, z[0]) + '</td><td>' + offStr +
+        '</td><td>' + (same ? 'same day' : 'different day') + '</td></tr>';
+    }).join('');
+    g('tzNote').textContent = 'Offsets shown are those in effect on the selected date, so daylight saving is already accounted for.';
+  }
+  ['tzDate', 'tzTime', 'tzFrom'].forEach(function (id) { g(id).addEventListener('input', calc); g(id).addEventListener('change', calc); });
+  // Default to today at 09:00 local.
+  var now = new Date();
+  g('tzDate').value = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
+  if (!g('tzTime').value) g('tzTime').value = '09:00';
+  calc();
+})();

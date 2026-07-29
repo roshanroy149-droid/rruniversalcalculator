@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gas Mileage Calculator — MPG, L/100km and km/L from Real Fill-Ups | TallyBench</title>
+<meta name="description" content="Measure your car’s actual fuel economy from odometer readings and fuel added, in MPG, L/100km and km/L.">
+<link rel="canonical" href="https://tallybench.com/gas-mileage-calculator.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.svg">
+<meta name="theme-color" content="#1C1A17">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="TallyBench">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TallyBench">
+<meta property="og:title" content="Gas Mileage Calculator — MPG, L/100km and km/L from Real Fill-Ups">
+<meta property="og:description" content="Measure your car’s actual fuel economy from odometer readings and fuel added, in MPG, L/100km and km/L.">
+<meta property="og:url" content="https://tallybench.com/gas-mileage-calculator.html">
+<meta property="og:image" content="https://tallybench.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Gas Mileage Calculator — MPG, L/100km and km/L from Real Fill-Ups">
+<meta name="twitter:description" content="Measure your car’s actual fuel economy from odometer readings and fuel added, in MPG, L/100km and km/L.">
+<meta name="twitter:image" content="https://tallybench.com/og-image.png">
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="style.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How do I measure my real fuel economy?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Fill the tank completely and note the odometer. Drive normally. Fill completely again, and record both the distance since the last fill and the fuel it took. The fuel added is exactly what the drive used. Fill to the same point each time — the first click of the nozzle, on level ground — because any variation in how full \"full\" is goes straight into the result. Average three or four tanks for a figure you can trust." }
+    },
+    {
+      "@type": "Question",
+      "name": "Why is imperial MPG higher than US MPG?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Because the gallons differ. A US gallon is 3.785 litres; an imperial gallon is 4.546 — about 20% larger. So the same car returns roughly 20% more miles per imperial gallon than per US gallon. A 30 US MPG car is 36 imperial MPG. This catches people constantly when comparing British and American figures, which are often quoted side by side with no indication of which gallon is meant." }
+    },
+    {
+      "@type": "Question",
+      "name": "Is L/100 km better than MPG?",
+      "acceptedAnswer": { "@type": "Answer", "text": "As a measure of fuel consumed, yes. MPG is a reciprocal, which distorts comparisons: improving from 10 to 15 MPG saves far more fuel than improving from 30 to 35 MPG, despite both looking like a 5 MPG gain. Over 10,000 miles the first saves 333 gallons and the second 48. L/100 km is linear in fuel used, so the difference is immediately visible. This is known as the MPG illusion." }
+    },
+    {
+      "@type": "Question",
+      "name": "Why is my mileage worse than the official rating?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Official figures come from standardised laboratory test cycles rather than real roads. Short trips where the engine never warms up can cut economy by a third. Cold weather, air conditioning, roof racks, under-inflated tyres and heavy traffic all reduce it further. The largest single factor you control is driving style — smooth acceleration and anticipation typically returns 10 to 20% better than the same car driven aggressively." }
+    },
+    {
+      "@type": "Question",
+      "name": "Does driving slower actually save fuel?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Above about 90 km/h, considerably. Aerodynamic drag rises with the square of speed, so the power needed to overcome it rises steeply. Dropping from 120 to 100 km/h typically cuts consumption 10 to 15%. Below that speed the relationship is weaker and very slow driving in a high gear can actually be less efficient. Steady speed matters as much as the number — repeated acceleration and braking wastes far more than cruising a little faster." }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Gas Mileage Calculator — TallyBench",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any (runs in browser)",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "url": "https://tallybench.com/gas-mileage-calculator.html"
+}
+</script>
+<!-- TB:BREADCRUMB:START -->
+<script type="application/ld+json">
+{
+    "@context":  "https://schema.org",
+    "@type":  "BreadcrumbList",
+    "itemListElement":  [
+                            {
+                                "@type":  "ListItem",
+                                "position":  1,
+                                "name":  "TallyBench",
+                                "item":  "https://tallybench.com/"
+                            },
+                            {
+                                "@type":  "ListItem",
+                                "position":  2,
+                                "name":  "Gas Mileage Calculator",
+                                "item":  "https://tallybench.com/gas-mileage-calculator.html"
+                            }
+                        ]
+}
+</script>
+<!-- TB:BREADCRUMB:END -->
+</head>
+<body data-page-cat="everyday">
+
+<header>
+  <div class="wrap">
+    <div class="headbar">
+      <a class="logo" href="index.html">TALLYBENCH<span>.</span></a>
+      <div class="tagline"><!-- TB:COUNT:START -->
+196 TOOLS · 0 SIGN-UP
+<!-- TB:COUNT:END --></div>
+<button class="nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <!-- TB:NAV:START -->
+  <div class="nav-drawer" id="navDrawer">
+    <div class="nav-drawer-head">
+      <span>Menu</span>
+      <button class="nav-close" id="navClose" type="button" aria-label="Close menu">&#10005;</button>
+    </div>
+    <nav class="ruler cat-ruler" aria-label="Category">
+      <a class="tick" href="index.html">HOME</a>
+      <a class="tick" href="articles.html">ARTICLES</a>
+      <a class="tick" href="book.html">BOOK</a>
+      <a class="tick" href="venstock.html">VENSTOCK</a>
+      <button class="tick cat-tab" type="button" data-cat="finance">FINANCE</button>
+      <button class="tick cat-tab" type="button" data-cat="health">HEALTH</button>
+      <button class="tick cat-tab" type="button" data-cat="education">EDUCATION</button>
+      <button class="tick cat-tab" type="button" data-cat="everyday">EVERYDAY</button>
+    </nav>
+    <nav class="ruler sub-ruler" id="subRuler" aria-label="Tools">
+      <a class="tick sub-tick" data-cat="finance" href="currency-converter.html">CURRENCY</a>
+      <a class="tick sub-tick" data-cat="finance" href="loan-calculator.html">LOAN / EMI</a>
+      <a class="tick sub-tick" data-cat="finance" href="car-loan-calculator.html">CAR LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="mortgage-calculator.html">MORTGAGE</a>
+      <a class="tick sub-tick" data-cat="finance" href="refinance-calculator.html">REFINANCE</a>
+      <a class="tick sub-tick" data-cat="finance" href="rent-vs-buy-calculator.html">RENT VS BUY</a>
+      <a class="tick sub-tick" data-cat="finance" href="tax-calculator.html">TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="paycheck-calculator.html">PAYCHECK</a>
+      <a class="tick sub-tick" data-cat="finance" href="freelancer-tax-calculator-india.html">FREELANCER TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="gst-vat-calculator.html">GST / VAT</a>
+      <a class="tick sub-tick" data-cat="finance" href="investment-calculator.html">INVESTMENT</a>
+      <a class="tick sub-tick" data-cat="finance" href="sip-calculator.html">SIP</a>
+      <a class="tick sub-tick" data-cat="finance" href="compound-interest-calculator.html">COMPOUND INT.</a>
+      <a class="tick sub-tick" data-cat="finance" href="savings-goal-calculator.html">SAVINGS GOAL</a>
+      <a class="tick sub-tick" data-cat="finance" href="retirement-calculator.html">RETIREMENT</a>
+      <a class="tick sub-tick" data-cat="finance" href="net-worth-calculator.html">NET WORTH</a>
+      <a class="tick sub-tick" data-cat="finance" href="discount-calculator.html">DISCOUNT</a>
+      <a class="tick sub-tick" data-cat="finance" href="tip-calculator.html">TIP</a>
+      <a class="tick sub-tick" data-cat="finance" href="fd-calculator.html">FD</a>
+      <a class="tick sub-tick" data-cat="finance" href="rd-calculator.html">RD</a>
+      <a class="tick sub-tick" data-cat="finance" href="ppf-calculator.html">PPF</a>
+      <a class="tick sub-tick" data-cat="finance" href="india-tax-regime-calculator.html">OLD VS NEW REGIME</a>
+      <a class="tick sub-tick" data-cat="finance" href="hra-calculator.html">HRA</a>
+      <a class="tick sub-tick" data-cat="finance" href="gratuity-calculator.html">GRATUITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="epf-calculator.html">EPF</a>
+      <a class="tick sub-tick" data-cat="finance" href="fire-calculator.html">FIRE NUMBER</a>
+      <a class="tick sub-tick" data-cat="finance" href="rsu-vesting-calculator.html">RSU VESTING</a>
+      <a class="tick sub-tick" data-cat="finance" href="cross-country-salary-calculator.html">SALARY BY COUNTRY</a>
+      <a class="tick sub-tick" data-cat="finance" href="currency-fee-calculator.html">FX FEES</a>
+      <a class="tick sub-tick" data-cat="finance" href="zakat-calculator.html">ZAKAT</a>
+      <a class="tick sub-tick" data-cat="finance" href="break-even-calculator.html">BREAK-EVEN</a>
+      <a class="tick sub-tick" data-cat="finance" href="debt-payoff-calculator.html">DEBT PAYOFF</a>
+      <a class="tick sub-tick" data-cat="finance" href="salary-calculator.html">SALARY</a>
+      <a class="tick sub-tick" data-cat="finance" href="sales-tax-calculator.html">SALES TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="cd-calculator.html">CD</a>
+      <a class="tick sub-tick" data-cat="finance" href="amortization-schedule-calculator.html">AMORTIZATION</a>
+      <a class="tick sub-tick" data-cat="finance" href="401k-calculator.html">401(K)</a>
+      <a class="tick sub-tick" data-cat="finance" href="ira-calculator.html">IRA / ROTH</a>
+      <a class="tick sub-tick" data-cat="finance" href="house-affordability-calculator.html">AFFORDABILITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="down-payment-calculator.html">DOWN PAYMENT</a>
+      <a class="tick sub-tick" data-cat="finance" href="debt-to-income-calculator.html">DTI RATIO</a>
+      <a class="tick sub-tick" data-cat="finance" href="simple-interest-calculator.html">SIMPLE INT.</a>
+      <a class="tick sub-tick" data-cat="finance" href="roi-calculator.html">ROI</a>
+      <a class="tick sub-tick" data-cat="finance" href="credit-card-payoff-calculator.html">CC PAYOFF</a>
+      <a class="tick sub-tick" data-cat="finance" href="mortgage-payoff-calculator.html">MTG PAYOFF</a>
+      <a class="tick sub-tick" data-cat="finance" href="rent-affordability-calculator.html">RENT AFFORD</a>
+      <a class="tick sub-tick" data-cat="finance" href="real-estate-investment-calculator.html">REAL ESTATE</a>
+      <a class="tick sub-tick" data-cat="finance" href="rental-property-calculator.html">RENTAL PROPERTY</a>
+      <a class="tick sub-tick" data-cat="finance" href="apr-calculator.html">APR</a>
+      <a class="tick sub-tick" data-cat="finance" href="fha-loan-calculator.html">FHA LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="va-mortgage-calculator.html">VA LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="home-equity-loan-calculator.html">HOME EQUITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="heloc-calculator.html">HELOC</a>
+      <a class="tick sub-tick" data-cat="finance" href="cash-back-or-low-interest-calculator.html">CASH BACK/APR</a>
+      <a class="tick sub-tick" data-cat="finance" href="auto-lease-calculator.html">AUTO LEASE</a>
+      <a class="tick sub-tick" data-cat="finance" href="finance-calculator.html">TVM SOLVER</a>
+      <a class="tick sub-tick" data-cat="finance" href="interest-rate-calculator.html">INT. RATE</a>
+      <a class="tick sub-tick" data-cat="finance" href="bond-calculator.html">BOND</a>
+      <a class="tick sub-tick" data-cat="finance" href="mutual-fund-calculator.html">MUTUAL FUND</a>
+      <a class="tick sub-tick" data-cat="finance" href="average-return-calculator.html">AVG RETURN</a>
+      <a class="tick sub-tick" data-cat="finance" href="irr-calculator.html">IRR</a>
+      <a class="tick sub-tick" data-cat="finance" href="payback-period-calculator.html">PAYBACK PERIOD</a>
+      <a class="tick sub-tick" data-cat="finance" href="present-value-calculator.html">PRESENT VALUE</a>
+      <a class="tick sub-tick" data-cat="finance" href="future-value-calculator.html">FUTURE VALUE</a>
+      <a class="tick sub-tick" data-cat="finance" href="savings-calculator.html">SAVINGS</a>
+      <a class="tick sub-tick" data-cat="finance" href="pension-calculator.html">PENSION</a>
+      <a class="tick sub-tick" data-cat="finance" href="social-security-calculator.html">SOCIAL SECURITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="annuity-calculator.html">ANNUITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="annuity-payout-calculator.html">ANNUITY PAYOUT</a>
+      <a class="tick sub-tick" data-cat="finance" href="rmd-calculator.html">RMD</a>
+      <a class="tick sub-tick" data-cat="finance" href="marriage-tax-calculator.html">MARRIAGE TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="estate-tax-calculator.html">ESTATE TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="inflation-calculator.html">INFLATION</a>
+      <a class="tick sub-tick" data-cat="finance" href="debt-consolidation-calculator.html">DEBT CONSOLIDATION</a>
+      <a class="tick sub-tick" data-cat="finance" href="student-loan-repayment-calculator.html">REPAYMENT PLAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="pslf-calculator.html">PSLF</a>
+      <a class="tick sub-tick" data-cat="finance" href="student-loan-calculator.html">STUDENT LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="college-cost-calculator.html">COLLEGE COST</a>
+      <a class="tick sub-tick" data-cat="finance" href="depreciation-calculator.html">DEPRECIATION</a>
+      <a class="tick sub-tick" data-cat="finance" href="margin-calculator.html">MARGIN</a>
+      <a class="tick sub-tick" data-cat="finance" href="business-loan-calculator.html">BUSINESS LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="personal-loan-calculator.html">PERSONAL LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="boat-loan-calculator.html">BOAT LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="lease-calculator.html">LEASE</a>
+      <a class="tick sub-tick" data-cat="finance" href="budget-calculator.html">BUDGET</a>
+      <a class="tick sub-tick" data-cat="finance" href="commission-calculator.html">COMMISSION</a>
+      <a class="tick sub-tick" data-cat="health" href="bmi-calculator.html">BMI</a>
+      <a class="tick sub-tick" data-cat="health" href="calorie-calculator.html">CALORIE</a>
+      <a class="tick sub-tick" data-cat="health" href="macro-calculator.html">MACROS</a>
+      <a class="tick sub-tick" data-cat="health" href="pregnancy-calculator.html">PREGNANCY</a>
+      <a class="tick sub-tick" data-cat="health" href="ovulation-calculator.html">OVULATION</a>
+      <a class="tick sub-tick" data-cat="health" href="ideal-weight-calculator.html">IDEAL WEIGHT</a>
+      <a class="tick sub-tick" data-cat="health" href="body-fat-calculator.html">BODY FAT</a>
+      <a class="tick sub-tick" data-cat="health" href="army-body-fat-calculator.html">ARMY BODY FAT</a>
+      <a class="tick sub-tick" data-cat="health" href="lean-body-mass-calculator.html">LEAN MASS</a>
+      <a class="tick sub-tick" data-cat="health" href="healthy-weight-calculator.html">HEALTHY WEIGHT</a>
+      <a class="tick sub-tick" data-cat="health" href="calories-burned-calculator.html">CAL BURNED</a>
+      <a class="tick sub-tick" data-cat="health" href="one-rep-max-calculator.html">1RM</a>
+      <a class="tick sub-tick" data-cat="health" href="target-heart-rate-calculator.html">HEART RATE</a>
+      <a class="tick sub-tick" data-cat="health" href="pregnancy-week-calculator.html">PREGNANCY WEEKS</a>
+      <a class="tick sub-tick" data-cat="health" href="pregnancy-weight-gain-calculator.html">PREG. WEIGHT GAIN</a>
+      <a class="tick sub-tick" data-cat="health" href="conception-calculator.html">CONCEPTION</a>
+      <a class="tick sub-tick" data-cat="health" href="sleep-cycle-calculator.html">SLEEP CYCLE</a>
+      <a class="tick sub-tick" data-cat="health" href="water-intake-calculator.html">WATER INTAKE</a>
+      <a class="tick sub-tick" data-cat="health" href="tdee-calculator.html">TDEE</a>
+      <a class="tick sub-tick" data-cat="health" href="protein-calculator.html">PROTEIN</a>
+      <a class="tick sub-tick" data-cat="education" href="gcf-calculator.html">GCF</a>
+      <a class="tick sub-tick" data-cat="education" href="lcm-calculator.html">LCM</a>
+      <a class="tick sub-tick" data-cat="education" href="factor-calculator.html">FACTORS</a>
+      <a class="tick sub-tick" data-cat="education" href="rounding-calculator.html">ROUNDING</a>
+      <a class="tick sub-tick" data-cat="education" href="scientific-notation-calculator.html">SCI. NOTATION</a>
+      <a class="tick sub-tick" data-cat="education" href="big-number-calculator.html">BIG NUMBERS</a>
+      <a class="tick sub-tick" data-cat="education" href="number-sequence-calculator.html">SEQUENCES</a>
+      <a class="tick sub-tick" data-cat="education" href="probability-calculator.html">PROBABILITY</a>
+      <a class="tick sub-tick" data-cat="education" href="matrix-calculator.html">MATRIX</a>
+      <a class="tick sub-tick" data-cat="education" href="circle-calculator.html">CIRCLE</a>
+      <a class="tick sub-tick" data-cat="education" href="area-calculator.html">AREA</a>
+      <a class="tick sub-tick" data-cat="education" href="volume-calculator.html">VOLUME</a>
+      <a class="tick sub-tick" data-cat="education" href="surface-area-calculator.html">SURFACE AREA</a>
+      <a class="tick sub-tick" data-cat="education" href="slope-calculator.html">SLOPE</a>
+      <a class="tick sub-tick" data-cat="education" href="coordinate-distance-calculator.html">COORDINATE DISTANCE</a>
+      <a class="tick sub-tick" data-cat="education" href="pythagorean-theorem-calculator.html">PYTHAGOREAN THEOREM</a>
+      <a class="tick sub-tick" data-cat="education" href="right-triangle-calculator.html">RIGHT TRIANGLE</a>
+      <a class="tick sub-tick" data-cat="education" href="triangle-calculator.html">TRIANGLE</a>
+      <a class="tick sub-tick" data-cat="education" href="gpa-calculator.html">GPA</a>
+      <a class="tick sub-tick" data-cat="education" href="grade-calculator.html">GRADE</a>
+      <a class="tick sub-tick" data-cat="education" href="scientific-calculator.html">SCIENTIFIC</a>
+      <a class="tick sub-tick" data-cat="education" href="fraction-calculator.html">FRACTION</a>
+      <a class="tick sub-tick" data-cat="education" href="statistics-calculator.html">STATISTICS</a>
+      <a class="tick sub-tick" data-cat="education" href="percent-error-calculator.html">% ERROR</a>
+      <a class="tick sub-tick" data-cat="education" href="exponent-calculator.html">EXPONENT</a>
+      <a class="tick sub-tick" data-cat="education" href="binary-calculator.html">BINARY</a>
+      <a class="tick sub-tick" data-cat="education" href="hex-calculator.html">HEX</a>
+      <a class="tick sub-tick" data-cat="education" href="half-life-calculator.html">HALF-LIFE</a>
+      <a class="tick sub-tick" data-cat="education" href="quadratic-formula-calculator.html">QUADRATIC</a>
+      <a class="tick sub-tick" data-cat="education" href="log-calculator.html">LOG</a>
+      <a class="tick sub-tick" data-cat="education" href="ratio-calculator.html">RATIO</a>
+      <a class="tick sub-tick" data-cat="education" href="root-calculator.html">ROOT</a>
+      <a class="tick sub-tick" data-cat="education" href="standard-deviation-calculator.html">STD DEVIATION</a>
+      <a class="tick sub-tick" data-cat="education" href="sample-size-calculator.html">SAMPLE SIZE</a>
+      <a class="tick sub-tick" data-cat="education" href="mean-median-mode-calculator.html">MEAN/MEDIAN/MODE</a>
+      <a class="tick sub-tick" data-cat="education" href="permutation-combination-calculator.html">PERM/COMBO</a>
+      <a class="tick sub-tick" data-cat="education" href="z-score-calculator.html">Z-SCORE</a>
+      <a class="tick sub-tick" data-cat="education" href="confidence-interval-calculator.html">CONFIDENCE INT.</a>
+      <a class="tick sub-tick" data-cat="everyday" href="basic-calculator.html">CALCULATOR</a>
+      <a class="tick sub-tick" data-cat="everyday" href="percentage-calculator.html">PERCENT</a>
+      <a class="tick sub-tick" data-cat="everyday" href="age-calculator.html">AGE</a>
+      <a class="tick sub-tick" data-cat="everyday" href="days-calculator.html">DAYS</a>
+      <a class="tick sub-tick" data-cat="everyday" href="time-calculator.html">TIME</a>
+      <a class="tick sub-tick" data-cat="everyday" href="unit-converter.html">UNITS</a>
+      <a class="tick sub-tick" data-cat="everyday" href="week-number-calculator.html">WEEK #</a>
+      <a class="tick sub-tick" data-cat="everyday" href="cm-to-inches.html">CM→IN</a>
+      <a class="tick sub-tick" data-cat="everyday" href="kg-to-pounds.html">KG→LB</a>
+      <a class="tick sub-tick" data-cat="everyday" href="celsius-to-fahrenheit.html">°C→°F</a>
+      <a class="tick sub-tick" data-cat="everyday" href="password-generator.html">PASSWORD</a>
+      <a class="tick sub-tick" data-cat="everyday" href="random-number-generator.html">RANDOM #</a>
+      <a class="tick sub-tick" data-cat="everyday" href="word-counter.html">WORD COUNT</a>
+      <a class="tick sub-tick" data-cat="everyday" href="pace-calculator.html">PACE</a>
+      <a class="tick sub-tick" data-cat="everyday" href="bill-split-calculator.html">BILL SPLIT</a>
+      <a class="tick sub-tick" data-cat="everyday" href="fuel-cost-calculator.html">FUEL COST</a>
+      <a class="tick sub-tick" data-cat="education" href="ohms-law-calculator.html">OHM’S LAW</a>
+      <a class="tick sub-tick" data-cat="education" href="resistor-color-code-calculator.html">RESISTOR CODE</a>
+      <a class="tick sub-tick" data-cat="education" href="roman-numeral-converter.html">ROMAN NUMERALS</a>
+      <a class="tick sub-tick" data-cat="everyday" href="voltage-drop-calculator.html">VOLTAGE DROP</a>
+      <a class="tick sub-tick" data-cat="everyday" href="electricity-cost-calculator.html">ELECTRICITY COST</a>
+      <a class="tick sub-tick" data-cat="everyday" href="ip-subnet-calculator.html">IP SUBNET</a>
+      <a class="tick sub-tick" data-cat="everyday" href="bandwidth-calculator.html">BANDWIDTH</a>
+      <a class="tick sub-tick" data-cat="everyday" href="base64-converter.html">BASE64</a>
+      <a class="tick sub-tick" data-cat="everyday" href="url-encoder.html">URL ENCODER</a>
+      <a class="tick sub-tick" data-cat="education" href="molecular-weight-calculator.html">MOLECULAR WEIGHT</a>
+      <a class="tick sub-tick" data-cat="education" href="molarity-calculator.html">MOLARITY</a>
+      <a class="tick sub-tick" data-cat="education" href="density-calculator.html">DENSITY</a>
+      <a class="tick sub-tick" data-cat="education" href="weight-on-planets-calculator.html">WEIGHT ON PLANETS</a>
+      <a class="tick sub-tick" data-cat="everyday" href="speed-calculator.html">SPEED</a>
+      <a class="tick sub-tick" data-cat="health" href="child-height-calculator.html">CHILD HEIGHT</a>
+      <a class="tick sub-tick" data-cat="health" href="gfr-calculator.html">eGFR</a>
+      <a class="tick sub-tick" data-cat="health" href="body-surface-area-calculator.html">BODY SURFACE AREA</a>
+      <a class="tick sub-tick" data-cat="health" href="bac-calculator.html">BLOOD ALCOHOL</a>
+      <a class="tick sub-tick" data-cat="health" href="fat-intake-calculator.html">FAT INTAKE</a>
+      <a class="tick sub-tick" data-cat="health" href="period-calculator.html">PERIOD</a>
+      <a class="tick sub-tick" data-cat="everyday" href="concrete-calculator.html">CONCRETE</a>
+      <a class="tick sub-tick" data-cat="everyday" href="square-footage-calculator.html">SQUARE FOOTAGE</a>
+      <a class="tick sub-tick" data-cat="everyday" href="btu-calculator.html">BTU / AC SIZE</a>
+      <a class="tick sub-tick" data-cat="everyday" href="stair-calculator.html">STAIRS</a>
+      <a class="tick sub-tick" data-cat="everyday" href="roofing-calculator.html">ROOFING</a>
+      <a class="tick sub-tick" data-cat="everyday" href="tile-calculator.html">TILE</a>
+      <a class="tick sub-tick" data-cat="everyday" href="mulch-calculator.html">MULCH</a>
+      <a class="tick sub-tick" data-cat="everyday" href="gravel-calculator.html">GRAVEL</a>
+      <a class="tick sub-tick" data-cat="everyday" href="wind-chill-calculator.html">WIND CHILL</a>
+      <a class="tick sub-tick" data-cat="everyday" href="heat-index-calculator.html">HEAT INDEX</a>
+      <a class="tick sub-tick" data-cat="everyday" href="dew-point-calculator.html">DEW POINT</a>
+      <a class="tick sub-tick" data-cat="everyday" href="gas-mileage-calculator.html">GAS MILEAGE</a>
+      <a class="tick sub-tick" data-cat="everyday" href="horsepower-calculator.html">HORSEPOWER</a>
+      <a class="tick sub-tick" data-cat="everyday" href="tire-size-calculator.html">TIRE SIZE</a>
+      <a class="tick sub-tick" data-cat="everyday" href="time-card-calculator.html">TIME CARD</a>
+      <a class="tick sub-tick" data-cat="everyday" href="time-zone-calculator.html">TIME ZONES</a>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+    </nav>
+  </div>
+  <!-- TB:NAV:END -->
+</header>
+<div class="nav-backdrop" id="navBackdrop"></div>
+
+<div class="wrap">
+  <div class="crumb"><a href="index.html">TallyBench</a> / Gas Mileage Calculator</div>
+
+  <section class="hero">
+    <div class="hero-icon-row cat-everyday">
+      <div class="hero-icon"><svg><use href="icons.svg#icon-units"/></svg></div>
+      <div class="eyebrow">// GAS MILEAGE CALCULATOR</div>
+    </div>
+    <h1>Gas Mileage Calculator</h1>
+    <p>Work out what your car really returns from two odometer readings and a fill-up — in US MPG, imperial MPG, L/100 km and km/L at once.</p>
+  </section>
+
+  <section class="tool" id="gasmileage">
+    <div class="card">
+      <div>
+        <div class="field"><label>How do you want to enter it?</label>
+          <select id="gmMode">
+            <option value="odometer">Two odometer readings</option>
+            <option value="direct">Distance travelled directly</option>
+          </select>
+        </div>
+        <div id="gmOdoRow">
+          <div class="field"><label>Odometer at last fill-up</label><input type="number" id="gmStart" value="12000" min="0" step="1"></div>
+          <div class="field"><label>Odometer now</label><input type="number" id="gmEnd" value="12350" min="0" step="1"></div>
+          <div class="field"><label>Distance unit</label>
+            <select id="gmDistUnit"><option value="mi">miles</option><option value="km">kilometres</option></select>
+          </div>
+          <div class="field"><label>Fuel added to fill it</label>
+            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+              <input type="number" id="gmFuel" value="12" min="0" step="0.1" style="flex:1;min-width:100px;">
+              <select id="gmFuelUnit" style="width:auto;"><option value="gal">US gallons</option><option value="l">litres</option></select>
+            </div>
+          </div>
+        </div>
+        <div id="gmDirectRow" style="display:none;">
+          <div class="field"><label>Distance travelled</label>
+            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+              <input type="number" id="gmDistance" value="350" min="0" step="1" style="flex:1;min-width:100px;">
+              <select id="gmDistUnit2" style="width:auto;"><option value="mi">miles</option><option value="km">kilometres</option></select>
+            </div>
+          </div>
+          <div class="field"><label>Fuel used</label>
+            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+              <input type="number" id="gmFuel2" value="12" min="0" step="0.1" style="flex:1;min-width:100px;">
+              <select id="gmFuelUnit2" style="width:auto;"><option value="gal">US gallons</option><option value="l">litres</option></select>
+            </div>
+          </div>
+        </div>
+        <div class="field"><label>Currency</label>
+          <select id="gmCur">
+            <option value="$">USD ($)</option>
+            <option value="€">EUR (€)</option>
+            <option value="£">GBP (£)</option>
+            <option value="₹">INR (₹)</option>
+            <option value="¥">JPY (¥)</option>
+            <option value="A$">AUD (A$)</option>
+            <option value="C$">CAD (C$)</option>
+            <option value="CHF"> CHF</option>
+            <option value="CN¥">CNY (CN¥)</option>
+            <option value="S$">SGD (S$)</option>
+            <option value="AED"> AED</option>
+            <option value="NZ$">NZD (NZ$)</option>
+            <option value="R">ZAR (R)</option>
+            <option value="R$">BRL (R$)</option>
+            <option value="MX$">MXN (MX$)</option>
+            <option value="HK$">HKD (HK$)</option>
+            <option value="₩">KRW (₩)</option>
+            <option value="kr">SEK/NOK (kr)</option>
+          </select>
+        </div>
+        <div class="field"><label>Fuel price</label>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+            <input type="number" id="gmPrice" value="3.50" min="0" step="0.01" style="flex:1;min-width:100px;">
+            <select id="gmPriceUnit" style="width:auto;"><option value="gal">per gallon</option><option value="l">per litre</option></select>
+          </div>
+        </div>
+      </div>
+      <div class="readout">
+        <div class="r-row"><span class="r-label">US MPG</span><span class="r-value" id="gmMpgUs">—</span></div>
+        <div class="r-row"><span class="r-label">Imperial MPG</span><span class="r-value" id="gmMpgUk">—</span></div>
+        <div class="r-row"><span class="r-label">L/100 km</span><span class="r-value" id="gmL100">—</span></div>
+        <div class="r-row"><span class="r-label">km/L</span><span class="r-value" id="gmKmL">—</span></div>
+        <div class="r-row"><span class="r-label">Running cost</span><span class="r-value" id="gmCostPer">—</span></div>
+      </div>
+    </div>
+
+  </section>
+
+  <section class="article">
+    <h2>Measuring it properly</h2>
+    <p>This calculator measures what your car <em>actually</em> returns, which is usually not what the manufacturer claims. The method is the tank-to-tank one: fill the tank completely, note the odometer, drive normally, then fill completely again and record both the distance covered and the fuel it took.</p>
+    <p>The critical detail is filling to the same point both times — to the first click of the pump nozzle, on level ground, at the same station if you can. The fuel you put in at the second fill-up is exactly what the drive consumed, so any inconsistency in how full "full" is goes straight into the answer. A single tank is also a small sample; averaging across three or four fill-ups gives a much more trustworthy figure.</p>
+    <p>If you want the cost of a specific journey rather than your car's economy, the <a href="fuel-cost-calculator.html">Fuel Cost Calculator</a> is the tool for that — it takes a known efficiency and a distance and returns a trip cost.</p>
+
+    <h2>The units, and why they disagree</h2>
+    <p>Three systems are in common use and they are not interchangeable.</p>
+    <p><strong>MPG</strong> is distance per unit of fuel — higher is better. The trap is that a US gallon is 3.785 litres and an imperial gallon is 4.546, so <strong>imperial MPG figures are about 20% higher than US ones for the identical car</strong>. A 30 US MPG car is 36 imperial MPG. British and American figures quoted side by side are frequently compared without this being noticed.</p>
+    <p><strong>L/100 km</strong> is fuel per unit of distance — lower is better. It is the standard across Europe and much of the world, and it is arguably the more sensible unit, for a reason worth understanding.</p>
+    <p><strong>km/L</strong> is used in India, Japan and parts of Latin America, and works like MPG.</p>
+
+    <h2>Why L/100 km is the better measure</h2>
+    <p>MPG is a reciprocal, and reciprocals distort comparisons. Consider improving a car from 10 to 15 MPG, and another from 30 to 35 MPG. The second looks like the same 5 MPG gain, but over 10,000 miles the first saves 333 gallons and the second saves 48. The low-efficiency improvement is worth seven times as much.</p>
+    <p>In L/100 km this is immediately obvious, because the unit is linear in fuel consumed. This is sometimes called the "MPG illusion", and it has real consequences — it makes replacing an inefficient vehicle look less valuable than it is, and upgrading an already-efficient one look better than it is.</p>
+
+    <h2>Conversions</h2>
+    <table class="data-table">
+      <thead><tr><th>From</th><th>To</th><th>Do this</th></tr></thead>
+      <tbody>
+        <tr><td>US MPG</td><td>Imperial MPG</td><td>× 1.201</td></tr>
+        <tr><td>US MPG</td><td>L/100 km</td><td>235.215 ÷ MPG</td></tr>
+        <tr><td>Imperial MPG</td><td>L/100 km</td><td>282.481 ÷ MPG</td></tr>
+        <tr><td>km/L</td><td>L/100 km</td><td>100 ÷ km/L</td></tr>
+        <tr><td>US MPG</td><td>km/L</td><td>× 0.425</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Why your figure is below the official one</h2>
+    <p>Official economy figures come from standardised laboratory cycles, not from roads. Real driving differs in almost every respect that matters: short trips where the engine never reaches operating temperature can cut economy by a third or more; cold weather thickens oil, increases idling and runs the heater; air conditioning costs a few percent; roof boxes and bike racks add substantial aerodynamic drag at speed.</p>
+    <p>Under-inflated tyres are the most commonly overlooked factor and one of the easiest to fix. Aggressive acceleration and braking is the largest behavioural one — smooth driving genuinely returns 10 to 20% better economy than the same car driven hard, which is a bigger effect than most fuel-saving gadgets claim and it costs nothing.</p>
+    <p>Speed matters more than people expect above about 90 km/h, because aerodynamic drag rises with the square of speed. The difference between 100 and 120 km/h on a motorway is typically 10 to 15% in consumption.</p>
+    <h3>How do I measure my real fuel economy?</h3>
+    <p>Fill the tank completely and note the odometer. Drive normally. Fill completely again, and record both the distance since the last fill and the fuel it took. The fuel added is exactly what the drive used. Fill to the same point each time — the first click of the nozzle, on level ground — because any variation in how full "full" is goes straight into the result. Average three or four tanks for a figure you can trust.</p>
+    <h3>Why is imperial MPG higher than US MPG?</h3>
+    <p>Because the gallons differ. A US gallon is 3.785 litres; an imperial gallon is 4.546 — about 20% larger. So the same car returns roughly 20% more miles per imperial gallon than per US gallon. A 30 US MPG car is 36 imperial MPG. This catches people constantly when comparing British and American figures, which are often quoted side by side with no indication of which gallon is meant.</p>
+    <h3>Is L/100 km better than MPG?</h3>
+    <p>As a measure of fuel consumed, yes. MPG is a reciprocal, which distorts comparisons: improving from 10 to 15 MPG saves far more fuel than improving from 30 to 35 MPG, despite both looking like a 5 MPG gain. Over 10,000 miles the first saves 333 gallons and the second 48. L/100 km is linear in fuel used, so the difference is immediately visible. This is known as the MPG illusion.</p>
+    <h3>Why is my mileage worse than the official rating?</h3>
+    <p>Official figures come from standardised laboratory test cycles rather than real roads. Short trips where the engine never warms up can cut economy by a third. Cold weather, air conditioning, roof racks, under-inflated tyres and heavy traffic all reduce it further. The largest single factor you control is driving style — smooth acceleration and anticipation typically returns 10 to 20% better than the same car driven aggressively.</p>
+    <h3>Does driving slower actually save fuel?</h3>
+    <p>Above about 90 km/h, considerably. Aerodynamic drag rises with the square of speed, so the power needed to overcome it rises steeply. Dropping from 120 to 100 km/h typically cuts consumption 10 to 15%. Below that speed the relationship is weaker and very slow driving in a high gear can actually be less efficient. Steady speed matters as much as the number — repeated acceleration and braking wastes far more than cruising a little faster.</p>
+  </section>
+
+  <p style="font-size:13px;color:rgba(242,236,221,0.55);margin:0 0 24px;">Related: <a href="fuel-cost-calculator.html">Fuel Cost Calculator</a> · <a href="speed-calculator.html">Speed Calculator</a> · <a href="tire-size-calculator.html">Tire Size Calculator</a> · <a href="unit-converter.html">Unit Converter</a> Interested in output rather than consumption? The <a href="horsepower-calculator.html">Horsepower Calculator</a> works from torque and rpm, or from quarter-mile figures.</p>
+
+  <footer>
+    <p>TALLYBENCH · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
+  </footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
