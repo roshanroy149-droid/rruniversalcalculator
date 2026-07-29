@@ -74,7 +74,7 @@ jobs:
           BODY=$(mktemp)
           STATUS=$(curl -s -o "$BODY" -w "%{http_code}" -X POST "https://api.indexnow.org/indexnow" \
             -H "Content-Type: application/json; charset=utf-8" \
-            -d "{\"host\":\"tallybench.com\",\"key\":\"cea41b609d124e96b6b760f3d15617cc\",\"keyLocation\":\"https://tallybench.com/cea41b609d124e96b6b760f3d15617cc.txt\",\"urlList\":$URLS_JSON}")
+            -d "{\"host\":\"tallybench.com\",\"key\":\"46a0b132c8604b83aaa2f70b99ab89ad\",\"keyLocation\":\"https://tallybench.com/46a0b132c8604b83aaa2f70b99ab89ad.txt\",\"urlList\":$URLS_JSON}")
 
           echo "IndexNow response status: $STATUS"
           echo "IndexNow response body:"
@@ -86,7 +86,7 @@ jobs:
               ;;
             403)
               echo "::error::IndexNow rejected the key (403). The key file at" \
-                   "https://tallybench.com/cea41b609d124e96b6b760f3d15617cc.txt must be reachable" \
+                   "https://tallybench.com/46a0b132c8604b83aaa2f70b99ab89ad.txt must be reachable" \
                    "and tallybench.com must be a verified site in Bing Webmaster Tools." >&2
               exit 1
               ;;
