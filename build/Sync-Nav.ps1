@@ -148,21 +148,58 @@ function New-SearchDataBlock($indent) {
     return "$indent<script>window.TB_SEARCH_DATA = $json;</script>"
 }
 
+# Articles render grouped by topic rather than as one flat reverse-chronological
+# list. Every article stays in the DOM — this is grouping, not JS filtering — so
+# the whole archive remains crawlable and each topic heading gives the section
+# real structure. Topic order comes from articles.json, newest-first within each.
 function New-ArticleListBlock($indent) {
     $lines = New-Object System.Collections.Generic.List[string]
     $innerIndent = "$indent  "
-    $sorted = @($articleData.articles | Sort-Object -Property date -Descending)
-    foreach ($art in $sorted) {
-        $cssClass = $catCssClass[$art.category]
-        $niceDate = ([datetime]$art.date).ToString('MMMM d, yyyy')
-        $lines.Add("$indent<a class=`"article-card $cssClass`" href=`"$($art.file)`">")
-        $lines.Add("$innerIndent<span class=`"article-card-tag`">$($art.tag)</span>")
-        $lines.Add("$innerIndent<h3>$($art.title)</h3>")
-        $lines.Add("$innerIndent<p>$($art.dek)</p>")
-        $lines.Add("$innerIndent<div class=`"article-card-meta`"><span>$niceDate</span><span>&middot;</span><span>$($art.readTime)</span></div>")
-        $lines.Add("$indent</a>")
+
+    # A "latest" strip first, so the newest work is visible without scrolling
+    # past six topic headings to find it.
+    $latest = @($articleData.articles | Sort-Object -Property date -Descending | Select-Object -First 3)
+    $lines.Add("$indent<div class=`"topic-block`" id=`"latest`">")
+    $lines.Add("$innerIndent<div class=`"zone-head`"><div class=`"zone-head-left`">")
+    $lines.Add("$innerIndent  <span class=`"zone-chip`">LATEST</span>")
+    $lines.Add("$innerIndent  <span class=`"zone-count`">$($articleData.articles.Count) articles in total</span>")
+    $lines.Add("$innerIndent</div></div>")
+    foreach ($art in $latest) {
+        $lines.Add((New-ArticleCard $innerIndent $art))
+    }
+    $lines.Add("$indent</div>")
+
+    foreach ($topic in $articleData.topics) {
+        $inTopic = @($articleData.articles | Where-Object { $_.topic -eq $topic.id } | Sort-Object -Property date -Descending)
+        if ($inTopic.Count -eq 0) { continue }
+        $noun = if ($inTopic.Count -eq 1) { 'article' } else { 'articles' }
+        $lines.Add("$indent<div class=`"topic-block`" id=`"topic-$($topic.id)`">")
+        $lines.Add("$innerIndent<div class=`"zone-head`"><div class=`"zone-head-left`">")
+        $lines.Add("$innerIndent  <span class=`"zone-chip`">$($topic.label)</span>")
+        $lines.Add("$innerIndent  <span class=`"zone-count`">$($inTopic.Count) $noun</span>")
+        $lines.Add("$innerIndent</div></div>")
+        $lines.Add("$innerIndent<h2 class=`"zone-title`">$($topic.title)</h2>")
+        $lines.Add("$innerIndent<p class=`"zone-blurb`">$($topic.blurb)</p>")
+        foreach ($art in $inTopic) {
+            $lines.Add((New-ArticleCard $innerIndent $art))
+        }
+        $lines.Add("$indent</div>")
     }
     return ($lines -join $nl)
+}
+
+function New-ArticleCard($indent, $art) {
+    $inner = "$indent  "
+    $cssClass = $catCssClass[$art.category]
+    $niceDate = ([datetime]$art.date).ToString('MMMM d, yyyy')
+    $card = New-Object System.Collections.Generic.List[string]
+    $card.Add("$indent<a class=`"article-card $cssClass`" href=`"$($art.file)`">")
+    $card.Add("$inner<span class=`"article-card-tag`">$($art.tag)</span>")
+    $card.Add("$inner<h3>$($art.title)</h3>")
+    $card.Add("$inner<p>$($art.dek)</p>")
+    $card.Add("$inner<div class=`"article-card-meta`"><span>$niceDate</span><span>&middot;</span><span>$($art.readTime)</span></div>")
+    $card.Add("$indent</a>")
+    return ($card -join $nl)
 }
 
 # Generates a page's BreadcrumbList JSON-LD purely from tools.json/

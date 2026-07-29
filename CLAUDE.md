@@ -14,16 +14,42 @@ This file is a checklist of rules earned the hard way across this project's buil
 - **Non-finance products do not live on TallyBench.** VenStock was moved to venrostech.com on 2026-07-29 for this reason; `venstock.html` is now a redirect stub. The books stay, because they are finance content on the same subject as the site — that is the test. Anything topically finance stays; anything else goes on the studio site.
 - **Articles are finance-primary by the same logic.** Health and education trend articles are fine when a genuinely strong, well-sourced news hook exists (a real policy or curriculum change, not just "there's a health calculator on the site so let's write about health") — but don't put them on a fixed rotation alongside finance. Finance has the highest and steadiest supply of "real news" (rate decisions, tax law, regulatory changes happen constantly); health is much higher-scrutiny YMYL territory that needs more care per article; education has far fewer genuine breaking-news moments to hang articles on. Default to finance; branch out opportunistically, not on a schedule.
 
+## 0.5 Editorial cadence — event-driven, never clock-driven
+
+**The rule: articles are scheduled against events that are already on a published calendar, not against a publishing frequency.** This is a deliberate replacement for the "daily/weekly recap" model, which was tried and failed here — five stock-market recaps were published on 2026-07-24 for "week of July 20", and the week-of-July-27 edition never appeared. That is one edition before it lapsed.
+
+**Do not start a daily or weekly market summary.** Four reasons, all still true: it is the most commoditised content in finance (Reuters, Bloomberg, Moneycontrol publish within minutes of the close); the site is static on GitHub Pages with no market data feed and no scheduled job, so every edition is manual; a recap is stale in 24 hours and a year of them is ~250 thin dated pages that dilute site quality; and a section that visibly lapses is worse than one that never existed. If asked for one, say this rather than agreeing.
+
+### The calendar (verify dates before relying on them — these were confirmed 2026-07-29)
+
+**RBI MPC, FY 2026-27** — announced 23 March 2026, six meetings:
+`6–8 Apr 2026` · `3–5 Jun 2026` · `3–5 Aug 2026` · `5–7 Oct 2026` · `2–4 Dec 2026` · `3–5 Feb 2027`
+
+**India tax dates, AY 2026-27:**
+`31 Jul 2026` ITR-1/ITR-2 · `31 Aug 2026` ITR-3/ITR-4 non-audit · `31 Oct 2026` audit cases · `30 Nov 2026` transfer pricing · `31 Dec 2026` belated · `31 Mar 2027` revised
+
+**US student loans:** `1 Jul 2027` new PAYE enrolments close · `1 Jul 2028` PAYE and ICR sunset, default placement is RAP
+
+**Not yet verified — confirm the published schedule before diarising:** Fed FOMC (8/year), ECB (8/year), BoE MPC (8/year), UK Budget, US tax season dates. Don't write these from memory.
+
+That is roughly 30–40 diarisable pieces a year without inventing a single obligation.
+
+### How to work it
+
+- **Prefer evergreen-with-updates over dated recaps.** One URL — "RBI repo rate: what each change does to your EMI" — updated after every decision accumulates authority. Six dated pages each start from zero. `rbi-mpc-august-2026-preview.html` is written to be *updated* on the decision day, not replaced.
+- **Write the framework piece before the event, update it after.** The analysis of why a decision is hard does not depend on the outcome.
+- **A missed event costs nothing.** No promise was made to a reader, no section looks abandoned. That is the entire advantage of this model over a cadence.
+
 ## 1. Single source of truth — never hand-edit generated content
 
 - `build/tools.json` is the ONLY place the tool list lives. Every tool needs: `id`, `file`, `category`, `navLabel`, `title`, `icon`, `blurb`.
-- `build/articles.json` is the equivalent single source of truth for the **articles/guides** content type (long-form editorial pages, separate from the 125 calculator tools) — each entry needs `id`, `file`, `category`, `tag`, `title`, `dek`, `date` (`YYYY-MM-DD`), `readTime`.
+- `build/articles.json` is the equivalent single source of truth for the **articles/guides** content type (long-form editorial pages, separate from the calculator tools) — each entry needs `id`, `file`, `category`, `topic`, `tag`, `title`, `dek`, `date` (`YYYY-MM-DD`), `readTime`. `category` is `finance` or `health` and drives the card accent colour; **`topic` is separate and drives which cluster the article is grouped under on articles.html** — one of `tax`, `rates`, `borrowing`, `studentloans`, `retirement`, `markets`, `health`, defined in the file's `topics` array. An article with no `topic` silently disappears from the grouped list, so it is not optional.
 - `build/Sync-Nav.ps1` generates, from `tools.json`/`articles.json`, these things across every HTML page via marker comments:
   - `<!-- TB:NAV:START/END -->` — header category tabs + tool list (desktop ruler / mobile drawer), plus a plain "ARTICLES" link to `articles.html`
   - `<!-- TB:COUNT:START/END -->` — the "N TOOLS · 0 SIGN-UP" header tagline count
   - `<!-- TB:COUNTINLINE:START/END -->` — the bare tool count for **prose** that cites it mid-sentence (optional; currently only `index.html` and `book.html`). Added 2026-07-29 because hand-written body copy citing the count went stale at 49, 60, 125, 137 *and* 196 — the generated header was right every time while the sentence under it was wrong. **If you ever write the tool count into visible copy, wrap it in these markers rather than typing the number.**
   - `<!-- TB:HOMEGRID:START/END -->` — homepage category tool grids (index.html only)
-  - `<!-- TB:ARTICLELIST:START/END -->` — the article list, newest-first (articles.html only)
+  - `<!-- TB:ARTICLELIST:START/END -->` — the article list, **grouped by topic** (articles.html only). A "Latest" strip of the three newest comes first, then one block per topic in the order given by `articles.json`'s `topics` array, newest-first within each. Every article stays in the DOM — this is grouping, not JS filtering, so the whole archive stays crawlable and each topic heading adds real structure. The `.topic-nav` jump links at the top of `articles.html` are hand-written but derive their anchors (`#topic-<id>`) from the same list; if you add a topic, add its link there too.
   - `<!-- TB:BREADCRUMB:START/END -->` — BreadcrumbList JSON-LD, derived purely from which list (if any) the filename appears in — every page except index.html
 - **Adding, removing, or renaming a tool = edit `tools.json`; adding an article = edit `articles.json` and give the new article page a `<!-- TB:NAV:START/END -->`/`<!-- TB:COUNT:START/END -->`/`<!-- TB:BREADCRUMB:START/END -->` marker set (all three, right before `</head>` for the last one). Either way, then run `powershell -File build/Sync-Nav.ps1` (or `npm run sync-nav`). Never hand-edit content between those markers.**
 - This was violated twice before the templating covered everything: the header tool count went stale after two rounds of new tools ("27 TOOLS" shown when there were 40), and the homepage grid silently missed 13 newly-added tools because it was still hand-written HTML. Both are now auto-generated — keep it that way. If a future feature needs "for every tool/article, render X," extend `Sync-Nav.ps1` with a new marker rather than hand-editing every page.

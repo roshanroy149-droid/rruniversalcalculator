@@ -1318,3 +1318,23 @@ body.nav-open .tb-chat-panel{display:none;}
 .data-table tbody tr:nth-child(even){background:rgba(28,26,23,0.02);}
 .data-table tbody tr:hover{background:rgba(192,138,52,0.06);}
 .data-table tbody tr:last-child td{border-bottom:none;}
+
+/* ---------- Article topic clusters ---------- */
+/* Groups the article archive by subject. The cards keep their existing style;
+   this only adds the per-topic heading block and spacing between groups. */
+.topic-block{display:flex;flex-direction:column;gap:14px;margin:0 0 44px;}
+.topic-block .zone-head{margin-bottom:2px;}
+.topic-block .zone-title{margin:0;}
+.topic-block .zone-blurb{margin:0 0 6px;}
+.topic-nav{
+  display:flex;flex-wrap:wrap;gap:8px;
+  margin:0 0 34px;padding:0 0 22px;
+  border-bottom:1px solid rgba(242,236,221,0.1);
+}
+.topic-nav a{
+  font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:0.06em;
+  text-decoration:none;color:rgba(242,236,221,0.62);
+  border:1px solid rgba(242,236,221,0.16);border-radius:999px;
+  padding:6px 13px;transition:color .15s,border-color .15s,background .15s;
+}
+.topic-nav a:hover{color:var(--copper);border-color:var(--copper);background:rgba(212,163,115,0.07);}
