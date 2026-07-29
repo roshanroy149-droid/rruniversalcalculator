@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Body Surface Area Calculator — Mosteller, Du Bois, Haycock and Gehan-George | TallyBench</title>
+<meta name="description" content="Calculate body surface area by four published formulas and see how much they disagree.">
+<link rel="canonical" href="https://tallybench.com/body-surface-area-calculator.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.svg">
+<meta name="theme-color" content="#1C1A17">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="TallyBench">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TallyBench">
+<meta property="og:title" content="Body Surface Area Calculator — Mosteller, Du Bois, Haycock and Gehan-George">
+<meta property="og:description" content="Calculate body surface area by four published formulas and see how much they disagree.">
+<meta property="og:url" content="https://tallybench.com/body-surface-area-calculator.html">
+<meta property="og:image" content="https://tallybench.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Body Surface Area Calculator — Mosteller, Du Bois, Haycock and Gehan-George">
+<meta name="twitter:description" content="Calculate body surface area by four published formulas and see how much they disagree.">
+<meta name="twitter:image" content="https://tallybench.com/og-image.png">
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="style.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Which BSA formula should I use?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Mosteller is the most widely used in clinical practice, largely because it is simple enough to compute without a calculator and agrees closely with the others for average-sized adults. What actually matters is consistency: an institution or protocol should specify one formula and use it throughout, because switching between formulas mid-treatment changes the dose slightly for no clinical reason. If a protocol names a formula, use that one." }
+    },
+    {
+      "@type": "Question",
+      "name": "How much do the formulas actually disagree?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Very little for average adults — typically under 1% between the four. The disagreement grows at the extremes of size, particularly in small children and in patients with obesity, where the underlying datasets each formula was fitted to differ most. This page shows all four and reports the spread precisely so you can see when the choice matters and when it does not." }
+    },
+    {
+      "@type": "Question",
+      "name": "Why is eGFR reported per 1.73 m²?",
+      "acceptedAnswer": { "@type": "Answer", "text": "It normalises kidney function to a standard body size so results can be compared between people. The 1.73 m² figure comes from a 1927 estimate of average adult body surface area in the United States — it has no physiological meaning and no longer matches any actual population average. It survives as a convention because comparability across patients and across decades of published data is worth more than an updated constant would be." }
+    },
+    {
+      "@type": "Question",
+      "name": "Is BSA better than weight for drug dosing?",
+      "acceptedAnswer": { "@type": "Answer", "text": "For some drugs, and less clearly than the practice implies. BSA dosing was adopted for cytotoxic chemotherapy in the 1950s and remains standard, but studies since have repeatedly questioned how much it actually reduces variability in drug exposure. For many agents the dominant source of variation is liver enzyme activity or renal clearance, neither of which BSA captures. Many newer targeted therapies are given at flat doses instead." }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I use BSA to work out my own medication dose?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No. Dose calculation is a clinical task with checks built around it, and the formula used, the rounding convention, dose capping in obesity, and adjustments for organ function all vary by protocol and by drug. A BSA figure from a website is missing all of that context. Use this page to understand what the measure is, and leave the arithmetic that determines what goes into a patient to the prescribing and pharmacy team." }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Body Surface Area Calculator — TallyBench",
+  "applicationCategory": "HealthApplication",
+  "operatingSystem": "Any (runs in browser)",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "url": "https://tallybench.com/body-surface-area-calculator.html"
+}
+</script>
+<!-- TB:BREADCRUMB:START -->
+<script type="application/ld+json">
+{
+    "@context":  "https://schema.org",
+    "@type":  "BreadcrumbList",
+    "itemListElement":  [
+                            {
+                                "@type":  "ListItem",
+                                "position":  1,
+                                "name":  "TallyBench",
+                                "item":  "https://tallybench.com/"
+                            },
+                            {
+                                "@type":  "ListItem",
+                                "position":  2,
+                                "name":  "Body Surface Area Calculator",
+                                "item":  "https://tallybench.com/body-surface-area-calculator.html"
+                            }
+                        ]
+}
+</script>
+<!-- TB:BREADCRUMB:END -->
+</head>
+<body data-page-cat="health">
+
+<header>
+  <div class="wrap">
+    <div class="headbar">
+      <a class="logo" href="index.html">TALLYBENCH<span>.</span></a>
+      <div class="tagline"><!-- TB:COUNT:START -->
+180 TOOLS · 0 SIGN-UP
+<!-- TB:COUNT:END --></div>
+<button class="nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <!-- TB:NAV:START -->
+  <div class="nav-drawer" id="navDrawer">
+    <div class="nav-drawer-head">
+      <span>Menu</span>
+      <button class="nav-close" id="navClose" type="button" aria-label="Close menu">&#10005;</button>
+    </div>
+    <nav class="ruler cat-ruler" aria-label="Category">
+      <a class="tick" href="index.html">HOME</a>
+      <a class="tick" href="articles.html">ARTICLES</a>
+      <a class="tick" href="book.html">BOOK</a>
+      <a class="tick" href="venstock.html">VENSTOCK</a>
+      <button class="tick cat-tab" type="button" data-cat="finance">FINANCE</button>
+      <button class="tick cat-tab" type="button" data-cat="health">HEALTH</button>
+      <button class="tick cat-tab" type="button" data-cat="education">EDUCATION</button>
+      <button class="tick cat-tab" type="button" data-cat="everyday">EVERYDAY</button>
+    </nav>
+    <nav class="ruler sub-ruler" id="subRuler" aria-label="Tools">
+      <a class="tick sub-tick" data-cat="finance" href="currency-converter.html">CURRENCY</a>
+      <a class="tick sub-tick" data-cat="finance" href="loan-calculator.html">LOAN / EMI</a>
+      <a class="tick sub-tick" data-cat="finance" href="car-loan-calculator.html">CAR LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="mortgage-calculator.html">MORTGAGE</a>
+      <a class="tick sub-tick" data-cat="finance" href="refinance-calculator.html">REFINANCE</a>
+      <a class="tick sub-tick" data-cat="finance" href="rent-vs-buy-calculator.html">RENT VS BUY</a>
+      <a class="tick sub-tick" data-cat="finance" href="tax-calculator.html">TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="paycheck-calculator.html">PAYCHECK</a>
+      <a class="tick sub-tick" data-cat="finance" href="freelancer-tax-calculator-india.html">FREELANCER TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="gst-vat-calculator.html">GST / VAT</a>
+      <a class="tick sub-tick" data-cat="finance" href="investment-calculator.html">INVESTMENT</a>
+      <a class="tick sub-tick" data-cat="finance" href="sip-calculator.html">SIP</a>
+      <a class="tick sub-tick" data-cat="finance" href="compound-interest-calculator.html">COMPOUND INT.</a>
+      <a class="tick sub-tick" data-cat="finance" href="savings-goal-calculator.html">SAVINGS GOAL</a>
+      <a class="tick sub-tick" data-cat="finance" href="retirement-calculator.html">RETIREMENT</a>
+      <a class="tick sub-tick" data-cat="finance" href="net-worth-calculator.html">NET WORTH</a>
+      <a class="tick sub-tick" data-cat="finance" href="discount-calculator.html">DISCOUNT</a>
+      <a class="tick sub-tick" data-cat="finance" href="tip-calculator.html">TIP</a>
+      <a class="tick sub-tick" data-cat="finance" href="fd-calculator.html">FD</a>
+      <a class="tick sub-tick" data-cat="finance" href="rd-calculator.html">RD</a>
+      <a class="tick sub-tick" data-cat="finance" href="ppf-calculator.html">PPF</a>
+      <a class="tick sub-tick" data-cat="finance" href="india-tax-regime-calculator.html">OLD VS NEW REGIME</a>
+      <a class="tick sub-tick" data-cat="finance" href="hra-calculator.html">HRA</a>
+      <a class="tick sub-tick" data-cat="finance" href="gratuity-calculator.html">GRATUITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="epf-calculator.html">EPF</a>
+      <a class="tick sub-tick" data-cat="finance" href="fire-calculator.html">FIRE NUMBER</a>
+      <a class="tick sub-tick" data-cat="finance" href="rsu-vesting-calculator.html">RSU VESTING</a>
+      <a class="tick sub-tick" data-cat="finance" href="cross-country-salary-calculator.html">SALARY BY COUNTRY</a>
+      <a class="tick sub-tick" data-cat="finance" href="currency-fee-calculator.html">FX FEES</a>
+      <a class="tick sub-tick" data-cat="finance" href="zakat-calculator.html">ZAKAT</a>
+      <a class="tick sub-tick" data-cat="finance" href="break-even-calculator.html">BREAK-EVEN</a>
+      <a class="tick sub-tick" data-cat="finance" href="debt-payoff-calculator.html">DEBT PAYOFF</a>
+      <a class="tick sub-tick" data-cat="finance" href="salary-calculator.html">SALARY</a>
+      <a class="tick sub-tick" data-cat="finance" href="sales-tax-calculator.html">SALES TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="cd-calculator.html">CD</a>
+      <a class="tick sub-tick" data-cat="finance" href="amortization-schedule-calculator.html">AMORTIZATION</a>
+      <a class="tick sub-tick" data-cat="finance" href="401k-calculator.html">401(K)</a>
+      <a class="tick sub-tick" data-cat="finance" href="ira-calculator.html">IRA / ROTH</a>
+      <a class="tick sub-tick" data-cat="finance" href="house-affordability-calculator.html">AFFORDABILITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="down-payment-calculator.html">DOWN PAYMENT</a>
+      <a class="tick sub-tick" data-cat="finance" href="debt-to-income-calculator.html">DTI RATIO</a>
+      <a class="tick sub-tick" data-cat="finance" href="simple-interest-calculator.html">SIMPLE INT.</a>
+      <a class="tick sub-tick" data-cat="finance" href="roi-calculator.html">ROI</a>
+      <a class="tick sub-tick" data-cat="finance" href="credit-card-payoff-calculator.html">CC PAYOFF</a>
+      <a class="tick sub-tick" data-cat="finance" href="mortgage-payoff-calculator.html">MTG PAYOFF</a>
+      <a class="tick sub-tick" data-cat="finance" href="rent-affordability-calculator.html">RENT AFFORD</a>
+      <a class="tick sub-tick" data-cat="finance" href="real-estate-investment-calculator.html">REAL ESTATE</a>
+      <a class="tick sub-tick" data-cat="finance" href="rental-property-calculator.html">RENTAL PROPERTY</a>
+      <a class="tick sub-tick" data-cat="finance" href="apr-calculator.html">APR</a>
+      <a class="tick sub-tick" data-cat="finance" href="fha-loan-calculator.html">FHA LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="va-mortgage-calculator.html">VA LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="home-equity-loan-calculator.html">HOME EQUITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="heloc-calculator.html">HELOC</a>
+      <a class="tick sub-tick" data-cat="finance" href="cash-back-or-low-interest-calculator.html">CASH BACK/APR</a>
+      <a class="tick sub-tick" data-cat="finance" href="auto-lease-calculator.html">AUTO LEASE</a>
+      <a class="tick sub-tick" data-cat="finance" href="finance-calculator.html">TVM SOLVER</a>
+      <a class="tick sub-tick" data-cat="finance" href="interest-rate-calculator.html">INT. RATE</a>
+      <a class="tick sub-tick" data-cat="finance" href="bond-calculator.html">BOND</a>
+      <a class="tick sub-tick" data-cat="finance" href="mutual-fund-calculator.html">MUTUAL FUND</a>
+      <a class="tick sub-tick" data-cat="finance" href="average-return-calculator.html">AVG RETURN</a>
+      <a class="tick sub-tick" data-cat="finance" href="irr-calculator.html">IRR</a>
+      <a class="tick sub-tick" data-cat="finance" href="payback-period-calculator.html">PAYBACK PERIOD</a>
+      <a class="tick sub-tick" data-cat="finance" href="present-value-calculator.html">PRESENT VALUE</a>
+      <a class="tick sub-tick" data-cat="finance" href="future-value-calculator.html">FUTURE VALUE</a>
+      <a class="tick sub-tick" data-cat="finance" href="savings-calculator.html">SAVINGS</a>
+      <a class="tick sub-tick" data-cat="finance" href="pension-calculator.html">PENSION</a>
+      <a class="tick sub-tick" data-cat="finance" href="social-security-calculator.html">SOCIAL SECURITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="annuity-calculator.html">ANNUITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="annuity-payout-calculator.html">ANNUITY PAYOUT</a>
+      <a class="tick sub-tick" data-cat="finance" href="rmd-calculator.html">RMD</a>
+      <a class="tick sub-tick" data-cat="finance" href="marriage-tax-calculator.html">MARRIAGE TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="estate-tax-calculator.html">ESTATE TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="inflation-calculator.html">INFLATION</a>
+      <a class="tick sub-tick" data-cat="finance" href="debt-consolidation-calculator.html">DEBT CONSOLIDATION</a>
+      <a class="tick sub-tick" data-cat="finance" href="student-loan-repayment-calculator.html">REPAYMENT PLAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="pslf-calculator.html">PSLF</a>
+      <a class="tick sub-tick" data-cat="finance" href="student-loan-calculator.html">STUDENT LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="college-cost-calculator.html">COLLEGE COST</a>
+      <a class="tick sub-tick" data-cat="finance" href="depreciation-calculator.html">DEPRECIATION</a>
+      <a class="tick sub-tick" data-cat="finance" href="margin-calculator.html">MARGIN</a>
+      <a class="tick sub-tick" data-cat="finance" href="business-loan-calculator.html">BUSINESS LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="personal-loan-calculator.html">PERSONAL LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="boat-loan-calculator.html">BOAT LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="lease-calculator.html">LEASE</a>
+      <a class="tick sub-tick" data-cat="finance" href="budget-calculator.html">BUDGET</a>
+      <a class="tick sub-tick" data-cat="finance" href="commission-calculator.html">COMMISSION</a>
+      <a class="tick sub-tick" data-cat="health" href="bmi-calculator.html">BMI</a>
+      <a class="tick sub-tick" data-cat="health" href="calorie-calculator.html">CALORIE</a>
+      <a class="tick sub-tick" data-cat="health" href="macro-calculator.html">MACROS</a>
+      <a class="tick sub-tick" data-cat="health" href="pregnancy-calculator.html">PREGNANCY</a>
+      <a class="tick sub-tick" data-cat="health" href="ovulation-calculator.html">OVULATION</a>
+      <a class="tick sub-tick" data-cat="health" href="ideal-weight-calculator.html">IDEAL WEIGHT</a>
+      <a class="tick sub-tick" data-cat="health" href="body-fat-calculator.html">BODY FAT</a>
+      <a class="tick sub-tick" data-cat="health" href="army-body-fat-calculator.html">ARMY BODY FAT</a>
+      <a class="tick sub-tick" data-cat="health" href="lean-body-mass-calculator.html">LEAN MASS</a>
+      <a class="tick sub-tick" data-cat="health" href="healthy-weight-calculator.html">HEALTHY WEIGHT</a>
+      <a class="tick sub-tick" data-cat="health" href="calories-burned-calculator.html">CAL BURNED</a>
+      <a class="tick sub-tick" data-cat="health" href="one-rep-max-calculator.html">1RM</a>
+      <a class="tick sub-tick" data-cat="health" href="target-heart-rate-calculator.html">HEART RATE</a>
+      <a class="tick sub-tick" data-cat="health" href="pregnancy-week-calculator.html">PREGNANCY WEEKS</a>
+      <a class="tick sub-tick" data-cat="health" href="pregnancy-weight-gain-calculator.html">PREG. WEIGHT GAIN</a>
+      <a class="tick sub-tick" data-cat="health" href="conception-calculator.html">CONCEPTION</a>
+      <a class="tick sub-tick" data-cat="health" href="sleep-cycle-calculator.html">SLEEP CYCLE</a>
+      <a class="tick sub-tick" data-cat="health" href="water-intake-calculator.html">WATER INTAKE</a>
+      <a class="tick sub-tick" data-cat="health" href="tdee-calculator.html">TDEE</a>
+      <a class="tick sub-tick" data-cat="health" href="protein-calculator.html">PROTEIN</a>
+      <a class="tick sub-tick" data-cat="education" href="gcf-calculator.html">GCF</a>
+      <a class="tick sub-tick" data-cat="education" href="lcm-calculator.html">LCM</a>
+      <a class="tick sub-tick" data-cat="education" href="factor-calculator.html">FACTORS</a>
+      <a class="tick sub-tick" data-cat="education" href="rounding-calculator.html">ROUNDING</a>
+      <a class="tick sub-tick" data-cat="education" href="scientific-notation-calculator.html">SCI. NOTATION</a>
+      <a class="tick sub-tick" data-cat="education" href="big-number-calculator.html">BIG NUMBERS</a>
+      <a class="tick sub-tick" data-cat="education" href="number-sequence-calculator.html">SEQUENCES</a>
+      <a class="tick sub-tick" data-cat="education" href="probability-calculator.html">PROBABILITY</a>
+      <a class="tick sub-tick" data-cat="education" href="matrix-calculator.html">MATRIX</a>
+      <a class="tick sub-tick" data-cat="education" href="circle-calculator.html">CIRCLE</a>
+      <a class="tick sub-tick" data-cat="education" href="area-calculator.html">AREA</a>
+      <a class="tick sub-tick" data-cat="education" href="volume-calculator.html">VOLUME</a>
+      <a class="tick sub-tick" data-cat="education" href="surface-area-calculator.html">SURFACE AREA</a>
+      <a class="tick sub-tick" data-cat="education" href="slope-calculator.html">SLOPE</a>
+      <a class="tick sub-tick" data-cat="education" href="coordinate-distance-calculator.html">COORDINATE DISTANCE</a>
+      <a class="tick sub-tick" data-cat="education" href="pythagorean-theorem-calculator.html">PYTHAGOREAN THEOREM</a>
+      <a class="tick sub-tick" data-cat="education" href="right-triangle-calculator.html">RIGHT TRIANGLE</a>
+      <a class="tick sub-tick" data-cat="education" href="triangle-calculator.html">TRIANGLE</a>
+      <a class="tick sub-tick" data-cat="education" href="gpa-calculator.html">GPA</a>
+      <a class="tick sub-tick" data-cat="education" href="grade-calculator.html">GRADE</a>
+      <a class="tick sub-tick" data-cat="education" href="scientific-calculator.html">SCIENTIFIC</a>
+      <a class="tick sub-tick" data-cat="education" href="fraction-calculator.html">FRACTION</a>
+      <a class="tick sub-tick" data-cat="education" href="statistics-calculator.html">STATISTICS</a>
+      <a class="tick sub-tick" data-cat="education" href="percent-error-calculator.html">% ERROR</a>
+      <a class="tick sub-tick" data-cat="education" href="exponent-calculator.html">EXPONENT</a>
+      <a class="tick sub-tick" data-cat="education" href="binary-calculator.html">BINARY</a>
+      <a class="tick sub-tick" data-cat="education" href="hex-calculator.html">HEX</a>
+      <a class="tick sub-tick" data-cat="education" href="half-life-calculator.html">HALF-LIFE</a>
+      <a class="tick sub-tick" data-cat="education" href="quadratic-formula-calculator.html">QUADRATIC</a>
+      <a class="tick sub-tick" data-cat="education" href="log-calculator.html">LOG</a>
+      <a class="tick sub-tick" data-cat="education" href="ratio-calculator.html">RATIO</a>
+      <a class="tick sub-tick" data-cat="education" href="root-calculator.html">ROOT</a>
+      <a class="tick sub-tick" data-cat="education" href="standard-deviation-calculator.html">STD DEVIATION</a>
+      <a class="tick sub-tick" data-cat="education" href="sample-size-calculator.html">SAMPLE SIZE</a>
+      <a class="tick sub-tick" data-cat="education" href="mean-median-mode-calculator.html">MEAN/MEDIAN/MODE</a>
+      <a class="tick sub-tick" data-cat="education" href="permutation-combination-calculator.html">PERM/COMBO</a>
+      <a class="tick sub-tick" data-cat="education" href="z-score-calculator.html">Z-SCORE</a>
+      <a class="tick sub-tick" data-cat="education" href="confidence-interval-calculator.html">CONFIDENCE INT.</a>
+      <a class="tick sub-tick" data-cat="everyday" href="basic-calculator.html">CALCULATOR</a>
+      <a class="tick sub-tick" data-cat="everyday" href="percentage-calculator.html">PERCENT</a>
+      <a class="tick sub-tick" data-cat="everyday" href="age-calculator.html">AGE</a>
+      <a class="tick sub-tick" data-cat="everyday" href="days-calculator.html">DAYS</a>
+      <a class="tick sub-tick" data-cat="everyday" href="time-calculator.html">TIME</a>
+      <a class="tick sub-tick" data-cat="everyday" href="unit-converter.html">UNITS</a>
+      <a class="tick sub-tick" data-cat="everyday" href="week-number-calculator.html">WEEK #</a>
+      <a class="tick sub-tick" data-cat="everyday" href="cm-to-inches.html">CM→IN</a>
+      <a class="tick sub-tick" data-cat="everyday" href="kg-to-pounds.html">KG→LB</a>
+      <a class="tick sub-tick" data-cat="everyday" href="celsius-to-fahrenheit.html">°C→°F</a>
+      <a class="tick sub-tick" data-cat="everyday" href="password-generator.html">PASSWORD</a>
+      <a class="tick sub-tick" data-cat="everyday" href="random-number-generator.html">RANDOM #</a>
+      <a class="tick sub-tick" data-cat="everyday" href="word-counter.html">WORD COUNT</a>
+      <a class="tick sub-tick" data-cat="everyday" href="pace-calculator.html">PACE</a>
+      <a class="tick sub-tick" data-cat="everyday" href="bill-split-calculator.html">BILL SPLIT</a>
+      <a class="tick sub-tick" data-cat="everyday" href="fuel-cost-calculator.html">FUEL COST</a>
+      <a class="tick sub-tick" data-cat="education" href="ohms-law-calculator.html">OHM’S LAW</a>
+      <a class="tick sub-tick" data-cat="education" href="resistor-color-code-calculator.html">RESISTOR CODE</a>
+      <a class="tick sub-tick" data-cat="education" href="roman-numeral-converter.html">ROMAN NUMERALS</a>
+      <a class="tick sub-tick" data-cat="everyday" href="voltage-drop-calculator.html">VOLTAGE DROP</a>
+      <a class="tick sub-tick" data-cat="everyday" href="electricity-cost-calculator.html">ELECTRICITY COST</a>
+      <a class="tick sub-tick" data-cat="everyday" href="ip-subnet-calculator.html">IP SUBNET</a>
+      <a class="tick sub-tick" data-cat="everyday" href="bandwidth-calculator.html">BANDWIDTH</a>
+      <a class="tick sub-tick" data-cat="everyday" href="base64-converter.html">BASE64</a>
+      <a class="tick sub-tick" data-cat="everyday" href="url-encoder.html">URL ENCODER</a>
+      <a class="tick sub-tick" data-cat="education" href="molecular-weight-calculator.html">MOLECULAR WEIGHT</a>
+      <a class="tick sub-tick" data-cat="education" href="molarity-calculator.html">MOLARITY</a>
+      <a class="tick sub-tick" data-cat="education" href="density-calculator.html">DENSITY</a>
+      <a class="tick sub-tick" data-cat="education" href="weight-on-planets-calculator.html">WEIGHT ON PLANETS</a>
+      <a class="tick sub-tick" data-cat="everyday" href="speed-calculator.html">SPEED</a>
+      <a class="tick sub-tick" data-cat="health" href="child-height-calculator.html">CHILD HEIGHT</a>
+      <a class="tick sub-tick" data-cat="health" href="gfr-calculator.html">eGFR</a>
+      <a class="tick sub-tick" data-cat="health" href="body-surface-area-calculator.html">BODY SURFACE AREA</a>
+      <a class="tick sub-tick" data-cat="health" href="bac-calculator.html">BLOOD ALCOHOL</a>
+      <a class="tick sub-tick" data-cat="health" href="fat-intake-calculator.html">FAT INTAKE</a>
+      <a class="tick sub-tick" data-cat="health" href="period-calculator.html">PERIOD</a>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+    </nav>
+  </div>
+  <!-- TB:NAV:END -->
+</header>
+<div class="nav-backdrop" id="navBackdrop"></div>
+
+<div class="wrap">
+  <div class="crumb"><a href="index.html">TallyBench</a> / Body Surface Area Calculator</div>
+
+  <section class="hero">
+    <div class="hero-icon-row cat-health">
+      <div class="hero-icon"><svg><use href="icons.svg#icon-bmi"/></svg></div>
+      <div class="eyebrow">// BODY SURFACE AREA</div>
+    </div>
+    <h1>Body Surface Area Calculator</h1>
+    <p>Four published BSA formulas side by side, with the spread between them shown — because which one a clinician uses genuinely changes the answer.</p>
+  </section>
+
+  <section class="tool" id="bsacalc">
+    <div class="card">
+      <div>
+        <div class="field"><label>Units</label>
+          <select id="bsaUnit">
+            <option value="metric">Metric (cm, kg)</option>
+            <option value="imperial">Imperial (ft/in, lb)</option>
+          </select>
+        </div>
+        <div id="bsaMetricRow">
+          <div class="field"><label>Height (cm)</label><input type="number" id="bsaHeight" value="180" min="0" step="0.5"></div>
+          <div class="field"><label>Weight (kg)</label><input type="number" id="bsaWeight" value="75" min="0" step="0.5"></div>
+        </div>
+        <div id="bsaImperialRow" style="display:none;">
+          <div class="field"><label>Height</label>
+            <div style="display:flex;gap:10px;align-items:center;">
+              <input type="number" id="bsaFt" value="5" min="0" step="1" style="flex:1;" placeholder="ft">
+              <input type="number" id="bsaIn" value="11" min="0" step="0.5" style="flex:1;" placeholder="in">
+            </div>
+          </div>
+          <div class="field"><label>Weight (lb)</label><input type="number" id="bsaLb" value="165" min="0" step="1"></div>
+        </div>
+      </div>
+      <div class="readout">
+        <div class="r-row"><span class="r-label">Mosteller</span><span class="r-value" id="bsaMosteller">—</span></div>
+        <div class="r-row"><span class="r-label">Du Bois</span><span class="r-value" id="bsaDuBois">—</span></div>
+        <div class="r-row"><span class="r-label">Haycock</span><span class="r-value" id="bsaHaycock">—</span></div>
+        <div class="r-row"><span class="r-label">Gehan-George</span><span class="r-value" id="bsaGehan">—</span></div>
+        <div class="r-row"><span class="r-label">Average</span><span class="r-value" id="bsaAverage">—</span></div>
+        <p class="r-note" id="bsaNote"></p>
+      </div>
+    </div>
+
+  </section>
+  <div class="disclaimer">
+      <strong>Reference tool, not a dosing tool.</strong> BSA is used clinically to calculate doses of chemotherapy and other narrow-therapeutic-index drugs. Never use a figure from this page — or any website — to determine, check or adjust a medication dose. That calculation belongs to the prescribing team, working from the specific formula their protocol requires.
+    </div>
+
+  <section class="article">
+    <h2>What BSA is for</h2>
+    <p>Body surface area is the total external area of the body, in square metres. It matters clinically because a great many physiological quantities scale better with surface area than with weight — cardiac output, metabolic rate, glomerular filtration, and the distribution and clearance of many drugs.</p>
+    <p>The everyday consequence is dosing. Chemotherapy agents are almost universally prescribed in mg/m² rather than mg/kg, on the reasoning that surface area tracks metabolic capacity more closely than mass does. Renal function is reported normalised to 1.73 m², the surface area of a notional average adult, so that results are comparable between a large adult and a small one.</p>
+
+    <h2>The four formulas</h2>
+    <table class="data-table">
+      <thead><tr><th>Formula</th><th>Year</th><th>Expression</th></tr></thead>
+      <tbody>
+        <tr><td>Du Bois</td><td>1916</td><td>0.007184 × W<sup>0.425</sup> × H<sup>0.725</sup></td></tr>
+        <tr><td>Gehan &amp; George</td><td>1970</td><td>0.0235 × H<sup>0.42246</sup> × W<sup>0.51456</sup></td></tr>
+        <tr><td>Haycock</td><td>1978</td><td>0.024265 × H<sup>0.3964</sup> × W<sup>0.5378</sup></td></tr>
+        <tr><td>Mosteller</td><td>1987</td><td>√(H × W / 3600)</td></tr>
+      </tbody>
+    </table>
+    <p>Height is in centimetres and weight in kilograms throughout. Du Bois is the original and was derived from just nine subjects, one of whom was a child with a growth disorder — a fact that gets mentioned whenever the formula's continued dominance is questioned. Mosteller, published as a one-paragraph letter to the New England Journal of Medicine, is by far the easiest to compute mentally and has become the most widely used in practice for exactly that reason.</p>
+
+    <h2>A worked example</h2>
+    <p>For an adult 180 cm and 75 kg, the four formulas give <strong>1.936, 1.942, 1.938 and 1.944 m²</strong>. That spread is under half a percent, which is why arguments about which formula to use are usually academic for average-sized adults.</p>
+    <p>They diverge more at the extremes — in small children, and in patients with obesity — which is where the choice starts to matter and where institutional protocols specify one formula rather than leaving it open. That is also why this page shows all four rather than picking one: the spread is information.</p>
+
+    <h2>Why 1.73 m²</h2>
+    <p>The figure comes from a 1927 study reporting the average body surface area of American adults. It has no particular physiological significance and it no longer matches the average of any real population. It survives purely as a normalising constant — it lets eGFR results be compared across people and across decades, which is the entire point. There have been periodic proposals to update it and none have been adopted, because the disruption to comparability would outweigh the benefit.</p>
+
+    <h2>Where BSA dosing breaks down</h2>
+    <p>The practice is entrenched but the evidence behind it is thinner than its ubiquity suggests. BSA-based dosing was adopted for cytotoxic chemotherapy in the 1950s, partly from animal-to-human dose scaling, and its ability to reduce variability in drug exposure has been repeatedly questioned since. For many agents, the between-patient variation in clearance is driven by liver enzyme activity or renal function rather than by size, and normalising to BSA does not capture either.</p>
+    <p>It remains standard nonetheless, because it is what the trial evidence was generated with and because changing dosing conventions for narrow-therapeutic-index drugs is not a small undertaking. Newer targeted therapies are increasingly given at flat doses, which is a quiet acknowledgement of the point.</p>
+    <h3>Which BSA formula should I use?</h3>
+    <p>Mosteller is the most widely used in clinical practice, largely because it is simple enough to compute without a calculator and agrees closely with the others for average-sized adults. What actually matters is consistency: an institution or protocol should specify one formula and use it throughout, because switching between formulas mid-treatment changes the dose slightly for no clinical reason. If a protocol names a formula, use that one.</p>
+    <h3>How much do the formulas actually disagree?</h3>
+    <p>Very little for average adults — typically under 1% between the four. The disagreement grows at the extremes of size, particularly in small children and in patients with obesity, where the underlying datasets each formula was fitted to differ most. This page shows all four and reports the spread precisely so you can see when the choice matters and when it does not.</p>
+    <h3>Why is eGFR reported per 1.73 m²?</h3>
+    <p>It normalises kidney function to a standard body size so results can be compared between people. The 1.73 m² figure comes from a 1927 estimate of average adult body surface area in the United States — it has no physiological meaning and no longer matches any actual population average. It survives as a convention because comparability across patients and across decades of published data is worth more than an updated constant would be.</p>
+    <h3>Is BSA better than weight for drug dosing?</h3>
+    <p>For some drugs, and less clearly than the practice implies. BSA dosing was adopted for cytotoxic chemotherapy in the 1950s and remains standard, but studies since have repeatedly questioned how much it actually reduces variability in drug exposure. For many agents the dominant source of variation is liver enzyme activity or renal clearance, neither of which BSA captures. Many newer targeted therapies are given at flat doses instead.</p>
+    <h3>Can I use BSA to work out my own medication dose?</h3>
+    <p>No. Dose calculation is a clinical task with checks built around it, and the formula used, the rounding convention, dose capping in obesity, and adjustments for organ function all vary by protocol and by drug. A BSA figure from a website is missing all of that context. Use this page to understand what the measure is, and leave the arithmetic that determines what goes into a patient to the prescribing and pharmacy team.</p>
+  </section>
+
+  <p style="font-size:13px;color:rgba(242,236,221,0.55);margin:0 0 24px;">Related: <a href="gfr-calculator.html">eGFR Calculator</a> · <a href="bmi-calculator.html">BMI Calculator</a> · <a href="lean-body-mass-calculator.html">Lean Body Mass Calculator</a> · <a href="ideal-weight-calculator.html">Ideal Weight Calculator</a></p>
+
+  <footer>
+    <p>TALLYBENCH · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
+  </footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

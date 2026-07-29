@@ -1596,6 +1596,51 @@
       "title": "Child Height Predictor",
       "icon": "icon-bmi",
       "blurb": "Mid-parental target height, with the real prediction range."
+    },
+    {
+      "id": "gfr-calculator",
+      "file": "gfr-calculator.html",
+      "category": "health",
+      "navLabel": "eGFR",
+      "title": "eGFR Calculator",
+      "icon": "icon-bmi",
+      "blurb": "Kidney function from creatinine, using the 2021 race-free CKD-EPI equation."
+    },
+    {
+      "id": "body-surface-area-calculator",
+      "file": "body-surface-area-calculator.html",
+      "category": "health",
+      "navLabel": "BODY SURFACE AREA",
+      "title": "Body Surface Area Calculator",
+      "icon": "icon-bmi",
+      "blurb": "Four published BSA formulas side by side, with the spread shown."
+    },
+    {
+      "id": "bac-calculator",
+      "file": "bac-calculator.html",
+      "category": "health",
+      "navLabel": "BLOOD ALCOHOL",
+      "title": "Blood Alcohol Calculator",
+      "icon": "icon-calorie",
+      "blurb": "Widmark BAC estimate from drinks, weight and time."
+    },
+    {
+      "id": "fat-intake-calculator",
+      "file": "fat-intake-calculator.html",
+      "category": "health",
+      "navLabel": "FAT INTAKE",
+      "title": "Fat Intake Calculator",
+      "icon": "icon-calorie",
+      "blurb": "Daily grams of fat from a calorie target, with saturated fat limits."
+    },
+    {
+      "id": "period-calculator",
+      "file": "period-calculator.html",
+      "category": "health",
+      "navLabel": "PERIOD",
+      "title": "Period Calculator",
+      "icon": "icon-age",
+      "blurb": "Six-cycle forecast with ovulation and PMS windows."
     }
   ]
 }

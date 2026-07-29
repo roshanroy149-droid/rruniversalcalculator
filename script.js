@@ -12170,3 +12170,209 @@ function sciParseFormula(raw) {
   });
   calc();
 })();
+
+// ================= Health cluster 2 =================
+
+// ---- eGFR Calculator (CKD-EPI 2021, race-free) ----
+(function () {
+  if (!document.getElementById('gfrCreat')) return;
+  var g = function (id) { return document.getElementById(id); };
+  // CKD-EPI 2021 creatinine equation — NIDDK / NKF-ASN Task Force.
+  // eGFR = 142 × min(Scr/κ,1)^α × max(Scr/κ,1)^-1.200 × 0.9938^age × 1.012 [if female]
+  var STAGES = [
+    [90, 'G1', 'Normal or high'],
+    [60, 'G2', 'Mildly decreased'],
+    [45, 'G3a', 'Mildly to moderately decreased'],
+    [30, 'G3b', 'Moderately to severely decreased'],
+    [15, 'G4', 'Severely decreased'],
+    [0, 'G5', 'Kidney failure']
+  ];
+  function calc() {
+    var scr = parseFloat(g('gfrCreat').value) || 0;
+    if (g('gfrUnit').value === 'umol') scr = scr / 88.4;   // µmol/L → mg/dL
+    var age = parseFloat(g('gfrAge').value) || 0;
+    var female = g('gfrSex').value === 'female';
+
+    if (scr <= 0 || age < 18) {
+      ['gfrResult', 'gfrStage', 'gfrMeaning'].forEach(function (i) { g(i).textContent = '—'; });
+      g('gfrNote').textContent = age && age < 18
+        ? 'This equation is validated for adults aged 18 and over. Children need a paediatric equation such as the CKiD U25 or Schwartz formula.'
+        : 'Enter a serum creatinine result and an age of 18 or over.';
+      return;
+    }
+    var k = female ? 0.7 : 0.9;
+    var a = female ? -0.241 : -0.302;
+    var egfr = 142 * Math.pow(Math.min(scr / k, 1), a) * Math.pow(Math.max(scr / k, 1), -1.200) *
+      Math.pow(0.9938, age) * (female ? 1.012 : 1);
+
+    var val = Math.round(egfr);
+    g('gfrResult').textContent = val + ' mL/min/1.73m²';
+    var st = STAGES.find(function (s) { return egfr >= s[0]; });
+    g('gfrStage').textContent = st[1];
+    g('gfrMeaning').textContent = st[2];
+    g('gfrNote').textContent = egfr >= 60
+      ? 'A single eGFR at or above 60 does not by itself rule out kidney disease — albuminuria can be present with a normal eGFR, which is why urine testing is done alongside.'
+      : 'A result below 60 needs to persist for at least three months before chronic kidney disease is diagnosed. One low reading is not a diagnosis.';
+  }
+  ['gfrCreat', 'gfrUnit', 'gfrAge', 'gfrSex'].forEach(function (id) {
+    g(id).addEventListener('input', calc); g(id).addEventListener('change', calc);
+  });
+  calc();
+})();
+
+// ---- Body Surface Area Calculator ----
+(function () {
+  if (!document.getElementById('bsaHeight')) return;
+  var g = function (id) { return document.getElementById(id); };
+  function calc() {
+    var metric = g('bsaUnit').value === 'metric';
+    g('bsaMetricRow').style.display = metric ? '' : 'none';
+    g('bsaImperialRow').style.display = metric ? 'none' : '';
+
+    var cm, kg;
+    if (metric) {
+      cm = parseFloat(g('bsaHeight').value) || 0;
+      kg = parseFloat(g('bsaWeight').value) || 0;
+    } else {
+      var ft = parseFloat(g('bsaFt').value) || 0, inch = parseFloat(g('bsaIn').value) || 0;
+      cm = (ft * 12 + inch) * 2.54;
+      kg = (parseFloat(g('bsaLb').value) || 0) * 0.45359237;
+    }
+    if (cm <= 0 || kg <= 0) {
+      ['bsaMosteller', 'bsaDuBois', 'bsaHaycock', 'bsaGehan', 'bsaAverage'].forEach(function (i) { g(i).textContent = '—'; });
+      g('bsaNote').textContent = 'Enter a height and a weight.';
+      return;
+    }
+    var mos = Math.sqrt(cm * kg / 3600);
+    var du = 0.007184 * Math.pow(kg, 0.425) * Math.pow(cm, 0.725);
+    var hay = 0.024265 * Math.pow(cm, 0.3964) * Math.pow(kg, 0.5378);
+    var geh = 0.0235 * Math.pow(cm, 0.42246) * Math.pow(kg, 0.51456);
+    var avg = (mos + du + hay + geh) / 4;
+    var f = function (v) { return (Math.round(v * 1000) / 1000) + ' m²'; };
+    g('bsaMosteller').textContent = f(mos);
+    g('bsaDuBois').textContent = f(du);
+    g('bsaHaycock').textContent = f(hay);
+    g('bsaGehan').textContent = f(geh);
+    g('bsaAverage').textContent = f(avg);
+    var spread = Math.max(mos, du, hay, geh) - Math.min(mos, du, hay, geh);
+    g('bsaNote').textContent = 'Spread across the four formulas: ' + (Math.round(spread * 1000) / 1000) +
+      ' m² (' + (Math.round(spread / avg * 1000) / 10) + '%). Mosteller is the one most commonly used for drug dosing.';
+  }
+  ['bsaUnit', 'bsaHeight', 'bsaWeight', 'bsaFt', 'bsaIn', 'bsaLb'].forEach(function (id) {
+    g(id).addEventListener('input', calc); g(id).addEventListener('change', calc);
+  });
+  calc();
+})();
+
+// ---- Blood Alcohol Concentration (Widmark) ----
+(function () {
+  if (!document.getElementById('bacWeight')) return;
+  var g = function (id) { return document.getElementById(id); };
+  function calc() {
+    var w = parseFloat(g('bacWeight').value) || 0;
+    if (g('bacWeightUnit').value === 'lb') w = w * 0.45359237;   // → kg
+    var r = g('bacSex').value === 'female' ? 0.55 : 0.68;        // Widmark distribution ratio
+    var drinks = parseFloat(g('bacDrinks').value) || 0;
+    var gramsPerDrink = parseFloat(g('bacStandard').value) || 14;
+    var hours = parseFloat(g('bacHours').value) || 0;
+
+    if (w <= 0) {
+      ['bacResult', 'bacPeak', 'bacSober', 'bacEffect'].forEach(function (i) { g(i).textContent = '—'; });
+      return;
+    }
+    var alcoholG = drinks * gramsPerDrink;
+    // Widmark: BAC% = grams alcohol / (body mass in grams × r) × 100, less elimination.
+    var peak = alcoholG / (w * 1000 * r) * 100;
+    var bac = Math.max(0, peak - 0.015 * hours);
+    var toZero = peak / 0.015;                                   // hours from first drink
+
+    g('bacPeak').textContent = peak.toFixed(3) + '%';
+    g('bacResult').textContent = bac.toFixed(3) + '%';
+    var remaining = Math.max(0, toZero - hours);
+    var hh = Math.floor(remaining), mm = Math.round((remaining - hh) * 60);
+    g('bacSober').textContent = bac <= 0 ? 'Already below measurable' : hh + 'h ' + mm + 'm from now';
+
+    var eff;
+    if (bac === 0) eff = 'No measurable alcohol remaining on this estimate.';
+    else if (bac < 0.02) eff = 'Little measurable effect for most people.';
+    else if (bac < 0.05) eff = 'Relaxation, mild euphoria. Judgement and reaction time already measurably affected. Over the legal driving limit in much of Europe, India, Australia and Japan.';
+    else if (bac < 0.08) eff = 'Impaired coordination and judgement. Over the driving limit almost everywhere in the world.';
+    else if (bac < 0.12) eff = 'Over the legal limit in every jurisdiction. Balance, vision and reaction time are clearly affected.';
+    else if (bac < 0.20) eff = 'Poor muscle control, slurred speech and impaired judgement. Nausea is common at the upper end.';
+    else if (bac < 0.30) eff = 'Severe impairment. Vomiting, confusion and blackouts are common at this level.';
+    else eff = 'Potentially life-threatening. Risk of unconsciousness, respiratory depression and alcohol poisoning — this is a medical emergency.';
+    g('bacEffect').textContent = eff;
+  }
+  ['bacWeight', 'bacWeightUnit', 'bacSex', 'bacDrinks', 'bacStandard', 'bacHours'].forEach(function (id) {
+    g(id).addEventListener('input', calc); g(id).addEventListener('change', calc);
+  });
+  calc();
+})();
+
+// ---- Fat Intake Calculator ----
+(function () {
+  if (!document.getElementById('fatCalories')) return;
+  var g = function (id) { return document.getElementById(id); };
+  function calc() {
+    var cals = parseFloat(g('fatCalories').value) || 0;
+    var pct = parseFloat(g('fatPercent').value) || 0;
+    g('fatPercentLabel').textContent = pct + '%';
+    if (cals <= 0) {
+      ['fatGrams', 'fatRange', 'fatSat', 'fatUnsat', 'fatCalsFrom'].forEach(function (i) { g(i).textContent = '—'; });
+      return;
+    }
+    // Fat provides 9 kcal per gram. AMDR for adults is 20–35% of energy.
+    var grams = cals * (pct / 100) / 9;
+    g('fatGrams').textContent = Math.round(grams) + ' g per day';
+    g('fatCalsFrom').textContent = Math.round(cals * pct / 100) + ' kcal from fat';
+    g('fatRange').textContent = Math.round(cals * 0.20 / 9) + ' g  to  ' + Math.round(cals * 0.35 / 9) + ' g';
+    g('fatSat').textContent = 'under ' + Math.round(cals * 0.10 / 9) + ' g  (AHA target: under ' + Math.round(cals * 0.06 / 9) + ' g)';
+    g('fatUnsat').textContent = 'about ' + Math.round(grams - cals * 0.10 / 9) + ' g should be unsaturated';
+    var note = g('fatNote');
+    note.textContent = pct < 20 ? 'Below the 20% floor — very low fat intake can impair absorption of vitamins A, D, E and K, which need dietary fat to be taken up.'
+      : pct > 35 ? 'Above the 35% ceiling of the accepted range. Not inherently harmful, but it leaves less room for carbohydrate and protein at the same calorie total.'
+        : 'Within the 20–35% range recommended for adults.';
+  }
+  ['fatCalories', 'fatPercent'].forEach(function (id) { g(id).addEventListener('input', calc); g(id).addEventListener('change', calc); });
+  calc();
+})();
+
+// ---- Period / Cycle Calendar ----
+(function () {
+  if (!document.getElementById('perLast')) return;
+  var g = function (id) { return document.getElementById(id); };
+  var MS = 86400000;
+  function fmt(d) {
+    return d.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+  }
+  function calc() {
+    var raw = g('perLast').value;
+    var cycle = parseInt(g('perCycle').value, 10) || 28;
+    var bleed = parseInt(g('perBleed').value, 10) || 5;
+    var tbody = g('perTable');
+    if (!raw) { tbody.innerHTML = ''; g('perNext').textContent = '—'; g('perNote').textContent = 'Pick the first day of your last period.'; return; }
+    var start = new Date(raw + 'T00:00:00');
+    if (isNaN(start.getTime())) { tbody.innerHTML = ''; g('perNext').textContent = '—'; return; }
+
+    var rows = [], today = new Date(); today.setHours(0, 0, 0, 0);
+    for (var i = 1; i <= 6; i++) {
+      var s = new Date(start.getTime() + cycle * i * MS);
+      var e = new Date(s.getTime() + (bleed - 1) * MS);
+      // Ovulation is set by the luteal phase, which is far more consistent than
+      // the follicular one — so count back from the next period, not forward.
+      var ov = new Date(s.getTime() - 14 * MS);
+      var pmsFrom = new Date(s.getTime() - 7 * MS);
+      rows.push('<tr><td>' + i + '</td><td>' + fmt(s) + '</td><td>' + fmt(e) +
+        '</td><td>' + fmt(ov) + '</td><td>' + fmt(pmsFrom) + '</td></tr>');
+      if (i === 1) {
+        g('perNext').textContent = fmt(s);
+        var days = Math.round((s - today) / MS);
+        g('perNote').textContent = days > 0 ? days + ' days away.' :
+          days === 0 ? 'Expected today.' : Math.abs(days) + ' days later than expected — cycles vary, but if it is more than a week late a test is worth doing.';
+      }
+    }
+    tbody.innerHTML = rows.join('');
+  }
+  ['perLast', 'perCycle', 'perBleed'].forEach(function (id) { g(id).addEventListener('input', calc); g(id).addEventListener('change', calc); });
+  calc();
+})();
