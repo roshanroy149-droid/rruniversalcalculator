@@ -36,7 +36,33 @@ jobs:
             exit 0
           fi
 
-          URLS_JSON=$(echo "$CHANGED" | sed 's#^#https://tallybench.com/#' | jq -R -s -c 'split("\n") | map(select(length > 0))')
+          # Sync-Nav rewrites the nav and tool-count block on every page whenever
+          # a tool is added, so a one-tool push shows ~190 files as "changed"
+          # while only a handful differ in actual content. Submitting all of them
+          # tells Bing the whole site changed, every time. Compare each file with
+          # the generated marker blocks stripped out, and keep only the ones whose
+          # real content moved.
+          STRIP='s/<!-- TB:(NAV|COUNT|HOMEGRID|ARTICLELIST|SEARCHDATA|BREADCRUMB):START -->.*?<!-- TB:\1:END -->//gs'
+          REAL=""
+          for f in $CHANGED; do
+            if ! git cat-file -e "${BEFORE_SHA}:${f}" 2>/dev/null; then
+              REAL="${REAL}${f}"$'\n'; continue          # brand new page
+            fi
+            a=$(git show "${BEFORE_SHA}:${f}" | perl -0777 -pe "$STRIP" | md5sum)
+            b=$(git show "${AFTER_SHA}:${f}"  | perl -0777 -pe "$STRIP" | md5sum)
+            if [ "$a" != "$b" ]; then REAL="${REAL}${f}"$'\n'; fi
+          done
+
+          TOTAL=$(echo "$CHANGED" | grep -c . || true)
+          KEPT=$(echo "$REAL" | grep -c . || true)
+          echo "Changed files: $TOTAL — of which real content changes: $KEPT (nav-only skipped: $((TOTAL - KEPT)))"
+
+          if [ -z "$(echo "$REAL" | tr -d '[:space:]')" ]; then
+            echo "Only generated nav/count blocks changed. Nothing worth re-submitting."
+            exit 0
+          fi
+
+          URLS_JSON=$(echo "$REAL" | sed 's#^#https://tallybench.com/#' | jq -R -s -c 'split("\n") | map(select(length > 0))')
           echo "Submitting changed URLs to IndexNow:"
           echo "$URLS_JSON"
 
