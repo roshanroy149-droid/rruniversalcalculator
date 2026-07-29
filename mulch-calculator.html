@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mulch Calculator — Cubic Yards and Bags for a Garden Bed | TallyBench</title>
+<meta name="description" content="Work out how much mulch a bed needs in cubic yards, cubic metres and bags, at any depth.">
+<link rel="canonical" href="https://tallybench.com/mulch-calculator.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.svg">
+<meta name="theme-color" content="#1C1A17">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="TallyBench">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TallyBench">
+<meta property="og:title" content="Mulch Calculator — Cubic Yards and Bags for a Garden Bed">
+<meta property="og:description" content="Work out how much mulch a bed needs in cubic yards, cubic metres and bags, at any depth.">
+<meta property="og:url" content="https://tallybench.com/mulch-calculator.html">
+<meta property="og:image" content="https://tallybench.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Mulch Calculator — Cubic Yards and Bags for a Garden Bed">
+<meta name="twitter:description" content="Work out how much mulch a bed needs in cubic yards, cubic metres and bags, at any depth.">
+<meta name="twitter:image" content="https://tallybench.com/og-image.png">
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="style.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How much does a cubic yard of mulch cover?",
+      "acceptedAnswer": { "@type": "Answer", "text": "108 square feet at 3 inches deep, which is the most common depth. At 2 inches it covers 162 sq ft and at 4 inches, 81 sq ft. The arithmetic is simply 27 cubic feet divided by the depth in feet. A cubic yard equals 13.5 bags at 2 cubic feet each, or 9 bags at 3 cubic feet." }
+    },
+    {
+      "@type": "Question",
+      "name": "How deep should mulch be?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Two to three inches for general beds, three to four around trees and shrubs, and one to two around annuals. Below two inches weeds push through and the moisture benefit largely disappears. Above four inches you start creating problems — thick mulch can turn hydrophobic and shed water instead of admitting it, and it restricts oxygen reaching the roots." }
+    },
+    {
+      "@type": "Question",
+      "name": "Should I remove old mulch before adding new?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Usually not, if it is an organic mulch — it breaks down and improves the soil, which is part of the point. Measure what is left, and top up to your target depth rather than adding a full fresh layer over the top. If the existing layer has matted into a water-shedding crust, break it up with a rake first. Do remove it if there is visible fungal problem or it has built up well past four inches." }
+    },
+    {
+      "@type": "Question",
+      "name": "Why should mulch not touch the tree trunk?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Because bark is not adapted to constant moisture. Piled against the trunk it holds damp, softens the bark, and invites rot, boring insects and rodents that shelter in it. It also encourages roots to grow upward into the mulch and circle the trunk, eventually girdling the tree. Keep it three to six inches clear of the trunk and spread it outward to the drip line instead." }
+    },
+    {
+      "@type": "Question",
+      "name": "Is it cheaper to buy mulch in bags or bulk?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Bulk is almost always cheaper per cubic yard, and the crossover point is typically around two to three cubic yards. Below that, delivery fees and minimum order quantities cancel the saving. Above it the difference grows quickly — and so does the number of bags you would be carrying, since a cubic yard is 13.5 two-cubic-foot bags. The trade-off is that bulk arrives as a pile you have to barrow into place." }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Mulch Calculator — TallyBench",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any (runs in browser)",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "url": "https://tallybench.com/mulch-calculator.html"
+}
+</script>
+<!-- TB:BREADCRUMB:START -->
+<script type="application/ld+json">
+{
+    "@context":  "https://schema.org",
+    "@type":  "BreadcrumbList",
+    "itemListElement":  [
+                            {
+                                "@type":  "ListItem",
+                                "position":  1,
+                                "name":  "TallyBench",
+                                "item":  "https://tallybench.com/"
+                            },
+                            {
+                                "@type":  "ListItem",
+                                "position":  2,
+                                "name":  "Mulch Calculator",
+                                "item":  "https://tallybench.com/mulch-calculator.html"
+                            }
+                        ]
+}
+</script>
+<!-- TB:BREADCRUMB:END -->
+</head>
+<body data-page-cat="everyday">
+
+<header>
+  <div class="wrap">
+    <div class="headbar">
+      <a class="logo" href="index.html">TALLYBENCH<span>.</span></a>
+      <div class="tagline"><!-- TB:COUNT:START -->
+188 TOOLS · 0 SIGN-UP
+<!-- TB:COUNT:END --></div>
+<button class="nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <!-- TB:NAV:START -->
+  <div class="nav-drawer" id="navDrawer">
+    <div class="nav-drawer-head">
+      <span>Menu</span>
+      <button class="nav-close" id="navClose" type="button" aria-label="Close menu">&#10005;</button>
+    </div>
+    <nav class="ruler cat-ruler" aria-label="Category">
+      <a class="tick" href="index.html">HOME</a>
+      <a class="tick" href="articles.html">ARTICLES</a>
+      <a class="tick" href="book.html">BOOK</a>
+      <a class="tick" href="venstock.html">VENSTOCK</a>
+      <button class="tick cat-tab" type="button" data-cat="finance">FINANCE</button>
+      <button class="tick cat-tab" type="button" data-cat="health">HEALTH</button>
+      <button class="tick cat-tab" type="button" data-cat="education">EDUCATION</button>
+      <button class="tick cat-tab" type="button" data-cat="everyday">EVERYDAY</button>
+    </nav>
+    <nav class="ruler sub-ruler" id="subRuler" aria-label="Tools">
+      <a class="tick sub-tick" data-cat="finance" href="currency-converter.html">CURRENCY</a>
+      <a class="tick sub-tick" data-cat="finance" href="loan-calculator.html">LOAN / EMI</a>
+      <a class="tick sub-tick" data-cat="finance" href="car-loan-calculator.html">CAR LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="mortgage-calculator.html">MORTGAGE</a>
+      <a class="tick sub-tick" data-cat="finance" href="refinance-calculator.html">REFINANCE</a>
+      <a class="tick sub-tick" data-cat="finance" href="rent-vs-buy-calculator.html">RENT VS BUY</a>
+      <a class="tick sub-tick" data-cat="finance" href="tax-calculator.html">TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="paycheck-calculator.html">PAYCHECK</a>
+      <a class="tick sub-tick" data-cat="finance" href="freelancer-tax-calculator-india.html">FREELANCER TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="gst-vat-calculator.html">GST / VAT</a>
+      <a class="tick sub-tick" data-cat="finance" href="investment-calculator.html">INVESTMENT</a>
+      <a class="tick sub-tick" data-cat="finance" href="sip-calculator.html">SIP</a>
+      <a class="tick sub-tick" data-cat="finance" href="compound-interest-calculator.html">COMPOUND INT.</a>
+      <a class="tick sub-tick" data-cat="finance" href="savings-goal-calculator.html">SAVINGS GOAL</a>
+      <a class="tick sub-tick" data-cat="finance" href="retirement-calculator.html">RETIREMENT</a>
+      <a class="tick sub-tick" data-cat="finance" href="net-worth-calculator.html">NET WORTH</a>
+      <a class="tick sub-tick" data-cat="finance" href="discount-calculator.html">DISCOUNT</a>
+      <a class="tick sub-tick" data-cat="finance" href="tip-calculator.html">TIP</a>
+      <a class="tick sub-tick" data-cat="finance" href="fd-calculator.html">FD</a>
+      <a class="tick sub-tick" data-cat="finance" href="rd-calculator.html">RD</a>
+      <a class="tick sub-tick" data-cat="finance" href="ppf-calculator.html">PPF</a>
+      <a class="tick sub-tick" data-cat="finance" href="india-tax-regime-calculator.html">OLD VS NEW REGIME</a>
+      <a class="tick sub-tick" data-cat="finance" href="hra-calculator.html">HRA</a>
+      <a class="tick sub-tick" data-cat="finance" href="gratuity-calculator.html">GRATUITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="epf-calculator.html">EPF</a>
+      <a class="tick sub-tick" data-cat="finance" href="fire-calculator.html">FIRE NUMBER</a>
+      <a class="tick sub-tick" data-cat="finance" href="rsu-vesting-calculator.html">RSU VESTING</a>
+      <a class="tick sub-tick" data-cat="finance" href="cross-country-salary-calculator.html">SALARY BY COUNTRY</a>
+      <a class="tick sub-tick" data-cat="finance" href="currency-fee-calculator.html">FX FEES</a>
+      <a class="tick sub-tick" data-cat="finance" href="zakat-calculator.html">ZAKAT</a>
+      <a class="tick sub-tick" data-cat="finance" href="break-even-calculator.html">BREAK-EVEN</a>
+      <a class="tick sub-tick" data-cat="finance" href="debt-payoff-calculator.html">DEBT PAYOFF</a>
+      <a class="tick sub-tick" data-cat="finance" href="salary-calculator.html">SALARY</a>
+      <a class="tick sub-tick" data-cat="finance" href="sales-tax-calculator.html">SALES TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="cd-calculator.html">CD</a>
+      <a class="tick sub-tick" data-cat="finance" href="amortization-schedule-calculator.html">AMORTIZATION</a>
+      <a class="tick sub-tick" data-cat="finance" href="401k-calculator.html">401(K)</a>
+      <a class="tick sub-tick" data-cat="finance" href="ira-calculator.html">IRA / ROTH</a>
+      <a class="tick sub-tick" data-cat="finance" href="house-affordability-calculator.html">AFFORDABILITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="down-payment-calculator.html">DOWN PAYMENT</a>
+      <a class="tick sub-tick" data-cat="finance" href="debt-to-income-calculator.html">DTI RATIO</a>
+      <a class="tick sub-tick" data-cat="finance" href="simple-interest-calculator.html">SIMPLE INT.</a>
+      <a class="tick sub-tick" data-cat="finance" href="roi-calculator.html">ROI</a>
+      <a class="tick sub-tick" data-cat="finance" href="credit-card-payoff-calculator.html">CC PAYOFF</a>
+      <a class="tick sub-tick" data-cat="finance" href="mortgage-payoff-calculator.html">MTG PAYOFF</a>
+      <a class="tick sub-tick" data-cat="finance" href="rent-affordability-calculator.html">RENT AFFORD</a>
+      <a class="tick sub-tick" data-cat="finance" href="real-estate-investment-calculator.html">REAL ESTATE</a>
+      <a class="tick sub-tick" data-cat="finance" href="rental-property-calculator.html">RENTAL PROPERTY</a>
+      <a class="tick sub-tick" data-cat="finance" href="apr-calculator.html">APR</a>
+      <a class="tick sub-tick" data-cat="finance" href="fha-loan-calculator.html">FHA LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="va-mortgage-calculator.html">VA LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="home-equity-loan-calculator.html">HOME EQUITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="heloc-calculator.html">HELOC</a>
+      <a class="tick sub-tick" data-cat="finance" href="cash-back-or-low-interest-calculator.html">CASH BACK/APR</a>
+      <a class="tick sub-tick" data-cat="finance" href="auto-lease-calculator.html">AUTO LEASE</a>
+      <a class="tick sub-tick" data-cat="finance" href="finance-calculator.html">TVM SOLVER</a>
+      <a class="tick sub-tick" data-cat="finance" href="interest-rate-calculator.html">INT. RATE</a>
+      <a class="tick sub-tick" data-cat="finance" href="bond-calculator.html">BOND</a>
+      <a class="tick sub-tick" data-cat="finance" href="mutual-fund-calculator.html">MUTUAL FUND</a>
+      <a class="tick sub-tick" data-cat="finance" href="average-return-calculator.html">AVG RETURN</a>
+      <a class="tick sub-tick" data-cat="finance" href="irr-calculator.html">IRR</a>
+      <a class="tick sub-tick" data-cat="finance" href="payback-period-calculator.html">PAYBACK PERIOD</a>
+      <a class="tick sub-tick" data-cat="finance" href="present-value-calculator.html">PRESENT VALUE</a>
+      <a class="tick sub-tick" data-cat="finance" href="future-value-calculator.html">FUTURE VALUE</a>
+      <a class="tick sub-tick" data-cat="finance" href="savings-calculator.html">SAVINGS</a>
+      <a class="tick sub-tick" data-cat="finance" href="pension-calculator.html">PENSION</a>
+      <a class="tick sub-tick" data-cat="finance" href="social-security-calculator.html">SOCIAL SECURITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="annuity-calculator.html">ANNUITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="annuity-payout-calculator.html">ANNUITY PAYOUT</a>
+      <a class="tick sub-tick" data-cat="finance" href="rmd-calculator.html">RMD</a>
+      <a class="tick sub-tick" data-cat="finance" href="marriage-tax-calculator.html">MARRIAGE TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="estate-tax-calculator.html">ESTATE TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="inflation-calculator.html">INFLATION</a>
+      <a class="tick sub-tick" data-cat="finance" href="debt-consolidation-calculator.html">DEBT CONSOLIDATION</a>
+      <a class="tick sub-tick" data-cat="finance" href="student-loan-repayment-calculator.html">REPAYMENT PLAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="pslf-calculator.html">PSLF</a>
+      <a class="tick sub-tick" data-cat="finance" href="student-loan-calculator.html">STUDENT LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="college-cost-calculator.html">COLLEGE COST</a>
+      <a class="tick sub-tick" data-cat="finance" href="depreciation-calculator.html">DEPRECIATION</a>
+      <a class="tick sub-tick" data-cat="finance" href="margin-calculator.html">MARGIN</a>
+      <a class="tick sub-tick" data-cat="finance" href="business-loan-calculator.html">BUSINESS LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="personal-loan-calculator.html">PERSONAL LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="boat-loan-calculator.html">BOAT LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="lease-calculator.html">LEASE</a>
+      <a class="tick sub-tick" data-cat="finance" href="budget-calculator.html">BUDGET</a>
+      <a class="tick sub-tick" data-cat="finance" href="commission-calculator.html">COMMISSION</a>
+      <a class="tick sub-tick" data-cat="health" href="bmi-calculator.html">BMI</a>
+      <a class="tick sub-tick" data-cat="health" href="calorie-calculator.html">CALORIE</a>
+      <a class="tick sub-tick" data-cat="health" href="macro-calculator.html">MACROS</a>
+      <a class="tick sub-tick" data-cat="health" href="pregnancy-calculator.html">PREGNANCY</a>
+      <a class="tick sub-tick" data-cat="health" href="ovulation-calculator.html">OVULATION</a>
+      <a class="tick sub-tick" data-cat="health" href="ideal-weight-calculator.html">IDEAL WEIGHT</a>
+      <a class="tick sub-tick" data-cat="health" href="body-fat-calculator.html">BODY FAT</a>
+      <a class="tick sub-tick" data-cat="health" href="army-body-fat-calculator.html">ARMY BODY FAT</a>
+      <a class="tick sub-tick" data-cat="health" href="lean-body-mass-calculator.html">LEAN MASS</a>
+      <a class="tick sub-tick" data-cat="health" href="healthy-weight-calculator.html">HEALTHY WEIGHT</a>
+      <a class="tick sub-tick" data-cat="health" href="calories-burned-calculator.html">CAL BURNED</a>
+      <a class="tick sub-tick" data-cat="health" href="one-rep-max-calculator.html">1RM</a>
+      <a class="tick sub-tick" data-cat="health" href="target-heart-rate-calculator.html">HEART RATE</a>
+      <a class="tick sub-tick" data-cat="health" href="pregnancy-week-calculator.html">PREGNANCY WEEKS</a>
+      <a class="tick sub-tick" data-cat="health" href="pregnancy-weight-gain-calculator.html">PREG. WEIGHT GAIN</a>
+      <a class="tick sub-tick" data-cat="health" href="conception-calculator.html">CONCEPTION</a>
+      <a class="tick sub-tick" data-cat="health" href="sleep-cycle-calculator.html">SLEEP CYCLE</a>
+      <a class="tick sub-tick" data-cat="health" href="water-intake-calculator.html">WATER INTAKE</a>
+      <a class="tick sub-tick" data-cat="health" href="tdee-calculator.html">TDEE</a>
+      <a class="tick sub-tick" data-cat="health" href="protein-calculator.html">PROTEIN</a>
+      <a class="tick sub-tick" data-cat="education" href="gcf-calculator.html">GCF</a>
+      <a class="tick sub-tick" data-cat="education" href="lcm-calculator.html">LCM</a>
+      <a class="tick sub-tick" data-cat="education" href="factor-calculator.html">FACTORS</a>
+      <a class="tick sub-tick" data-cat="education" href="rounding-calculator.html">ROUNDING</a>
+      <a class="tick sub-tick" data-cat="education" href="scientific-notation-calculator.html">SCI. NOTATION</a>
+      <a class="tick sub-tick" data-cat="education" href="big-number-calculator.html">BIG NUMBERS</a>
+      <a class="tick sub-tick" data-cat="education" href="number-sequence-calculator.html">SEQUENCES</a>
+      <a class="tick sub-tick" data-cat="education" href="probability-calculator.html">PROBABILITY</a>
+      <a class="tick sub-tick" data-cat="education" href="matrix-calculator.html">MATRIX</a>
+      <a class="tick sub-tick" data-cat="education" href="circle-calculator.html">CIRCLE</a>
+      <a class="tick sub-tick" data-cat="education" href="area-calculator.html">AREA</a>
+      <a class="tick sub-tick" data-cat="education" href="volume-calculator.html">VOLUME</a>
+      <a class="tick sub-tick" data-cat="education" href="surface-area-calculator.html">SURFACE AREA</a>
+      <a class="tick sub-tick" data-cat="education" href="slope-calculator.html">SLOPE</a>
+      <a class="tick sub-tick" data-cat="education" href="coordinate-distance-calculator.html">COORDINATE DISTANCE</a>
+      <a class="tick sub-tick" data-cat="education" href="pythagorean-theorem-calculator.html">PYTHAGOREAN THEOREM</a>
+      <a class="tick sub-tick" data-cat="education" href="right-triangle-calculator.html">RIGHT TRIANGLE</a>
+      <a class="tick sub-tick" data-cat="education" href="triangle-calculator.html">TRIANGLE</a>
+      <a class="tick sub-tick" data-cat="education" href="gpa-calculator.html">GPA</a>
+      <a class="tick sub-tick" data-cat="education" href="grade-calculator.html">GRADE</a>
+      <a class="tick sub-tick" data-cat="education" href="scientific-calculator.html">SCIENTIFIC</a>
+      <a class="tick sub-tick" data-cat="education" href="fraction-calculator.html">FRACTION</a>
+      <a class="tick sub-tick" data-cat="education" href="statistics-calculator.html">STATISTICS</a>
+      <a class="tick sub-tick" data-cat="education" href="percent-error-calculator.html">% ERROR</a>
+      <a class="tick sub-tick" data-cat="education" href="exponent-calculator.html">EXPONENT</a>
+      <a class="tick sub-tick" data-cat="education" href="binary-calculator.html">BINARY</a>
+      <a class="tick sub-tick" data-cat="education" href="hex-calculator.html">HEX</a>
+      <a class="tick sub-tick" data-cat="education" href="half-life-calculator.html">HALF-LIFE</a>
+      <a class="tick sub-tick" data-cat="education" href="quadratic-formula-calculator.html">QUADRATIC</a>
+      <a class="tick sub-tick" data-cat="education" href="log-calculator.html">LOG</a>
+      <a class="tick sub-tick" data-cat="education" href="ratio-calculator.html">RATIO</a>
+      <a class="tick sub-tick" data-cat="education" href="root-calculator.html">ROOT</a>
+      <a class="tick sub-tick" data-cat="education" href="standard-deviation-calculator.html">STD DEVIATION</a>
+      <a class="tick sub-tick" data-cat="education" href="sample-size-calculator.html">SAMPLE SIZE</a>
+      <a class="tick sub-tick" data-cat="education" href="mean-median-mode-calculator.html">MEAN/MEDIAN/MODE</a>
+      <a class="tick sub-tick" data-cat="education" href="permutation-combination-calculator.html">PERM/COMBO</a>
+      <a class="tick sub-tick" data-cat="education" href="z-score-calculator.html">Z-SCORE</a>
+      <a class="tick sub-tick" data-cat="education" href="confidence-interval-calculator.html">CONFIDENCE INT.</a>
+      <a class="tick sub-tick" data-cat="everyday" href="basic-calculator.html">CALCULATOR</a>
+      <a class="tick sub-tick" data-cat="everyday" href="percentage-calculator.html">PERCENT</a>
+      <a class="tick sub-tick" data-cat="everyday" href="age-calculator.html">AGE</a>
+      <a class="tick sub-tick" data-cat="everyday" href="days-calculator.html">DAYS</a>
+      <a class="tick sub-tick" data-cat="everyday" href="time-calculator.html">TIME</a>
+      <a class="tick sub-tick" data-cat="everyday" href="unit-converter.html">UNITS</a>
+      <a class="tick sub-tick" data-cat="everyday" href="week-number-calculator.html">WEEK #</a>
+      <a class="tick sub-tick" data-cat="everyday" href="cm-to-inches.html">CM→IN</a>
+      <a class="tick sub-tick" data-cat="everyday" href="kg-to-pounds.html">KG→LB</a>
+      <a class="tick sub-tick" data-cat="everyday" href="celsius-to-fahrenheit.html">°C→°F</a>
+      <a class="tick sub-tick" data-cat="everyday" href="password-generator.html">PASSWORD</a>
+      <a class="tick sub-tick" data-cat="everyday" href="random-number-generator.html">RANDOM #</a>
+      <a class="tick sub-tick" data-cat="everyday" href="word-counter.html">WORD COUNT</a>
+      <a class="tick sub-tick" data-cat="everyday" href="pace-calculator.html">PACE</a>
+      <a class="tick sub-tick" data-cat="everyday" href="bill-split-calculator.html">BILL SPLIT</a>
+      <a class="tick sub-tick" data-cat="everyday" href="fuel-cost-calculator.html">FUEL COST</a>
+      <a class="tick sub-tick" data-cat="education" href="ohms-law-calculator.html">OHM’S LAW</a>
+      <a class="tick sub-tick" data-cat="education" href="resistor-color-code-calculator.html">RESISTOR CODE</a>
+      <a class="tick sub-tick" data-cat="education" href="roman-numeral-converter.html">ROMAN NUMERALS</a>
+      <a class="tick sub-tick" data-cat="everyday" href="voltage-drop-calculator.html">VOLTAGE DROP</a>
+      <a class="tick sub-tick" data-cat="everyday" href="electricity-cost-calculator.html">ELECTRICITY COST</a>
+      <a class="tick sub-tick" data-cat="everyday" href="ip-subnet-calculator.html">IP SUBNET</a>
+      <a class="tick sub-tick" data-cat="everyday" href="bandwidth-calculator.html">BANDWIDTH</a>
+      <a class="tick sub-tick" data-cat="everyday" href="base64-converter.html">BASE64</a>
+      <a class="tick sub-tick" data-cat="everyday" href="url-encoder.html">URL ENCODER</a>
+      <a class="tick sub-tick" data-cat="education" href="molecular-weight-calculator.html">MOLECULAR WEIGHT</a>
+      <a class="tick sub-tick" data-cat="education" href="molarity-calculator.html">MOLARITY</a>
+      <a class="tick sub-tick" data-cat="education" href="density-calculator.html">DENSITY</a>
+      <a class="tick sub-tick" data-cat="education" href="weight-on-planets-calculator.html">WEIGHT ON PLANETS</a>
+      <a class="tick sub-tick" data-cat="everyday" href="speed-calculator.html">SPEED</a>
+      <a class="tick sub-tick" data-cat="health" href="child-height-calculator.html">CHILD HEIGHT</a>
+      <a class="tick sub-tick" data-cat="health" href="gfr-calculator.html">eGFR</a>
+      <a class="tick sub-tick" data-cat="health" href="body-surface-area-calculator.html">BODY SURFACE AREA</a>
+      <a class="tick sub-tick" data-cat="health" href="bac-calculator.html">BLOOD ALCOHOL</a>
+      <a class="tick sub-tick" data-cat="health" href="fat-intake-calculator.html">FAT INTAKE</a>
+      <a class="tick sub-tick" data-cat="health" href="period-calculator.html">PERIOD</a>
+      <a class="tick sub-tick" data-cat="everyday" href="concrete-calculator.html">CONCRETE</a>
+      <a class="tick sub-tick" data-cat="everyday" href="square-footage-calculator.html">SQUARE FOOTAGE</a>
+      <a class="tick sub-tick" data-cat="everyday" href="btu-calculator.html">BTU / AC SIZE</a>
+      <a class="tick sub-tick" data-cat="everyday" href="stair-calculator.html">STAIRS</a>
+      <a class="tick sub-tick" data-cat="everyday" href="roofing-calculator.html">ROOFING</a>
+      <a class="tick sub-tick" data-cat="everyday" href="tile-calculator.html">TILE</a>
+      <a class="tick sub-tick" data-cat="everyday" href="mulch-calculator.html">MULCH</a>
+      <a class="tick sub-tick" data-cat="everyday" href="gravel-calculator.html">GRAVEL</a>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+    </nav>
+  </div>
+  <!-- TB:NAV:END -->
+</header>
+<div class="nav-backdrop" id="navBackdrop"></div>
+
+<div class="wrap">
+  <div class="crumb"><a href="index.html">TallyBench</a> / Mulch Calculator</div>
+
+  <section class="hero">
+    <div class="hero-icon-row cat-everyday">
+      <div class="hero-icon"><svg><use href="icons.svg#icon-units"/></svg></div>
+      <div class="eyebrow">// MULCH CALCULATOR</div>
+    </div>
+    <h1>Mulch Calculator</h1>
+    <p>Bed size and depth to cubic yards and bag counts, with the point at which bulk delivery becomes the cheaper option.</p>
+  </section>
+
+  <section class="tool" id="mulchcalc">
+    <div class="card">
+      <div>
+        <div class="field"><label>Units</label>
+          <select id="mulchUnit">
+            <option value="imperial">Feet and inches</option>
+            <option value="metric">Metres and centimetres</option>
+          </select>
+        </div>
+        <div class="field"><label>Bed length</label><input type="number" id="mulchLength" value="25" min="0" step="0.5"></div>
+        <div class="field"><label>Bed width</label><input type="number" id="mulchWidth" value="20" min="0" step="0.5"></div>
+        <div class="field"><label>Depth (inches or cm)</label><input type="number" id="mulchDepth" value="3" min="0" step="0.5"></div>
+      </div>
+      <div class="readout">
+        <div class="r-row"><span class="r-label">Area</span><span class="r-value" id="mulchArea">—</span></div>
+        <div class="r-row"><span class="r-label">Volume</span><span class="r-value" id="mulchVolume">—</span></div>
+        <div class="r-row"><span class="r-label">Cubic yards</span><span class="r-value" id="mulchYards">—</span></div>
+        <div class="r-row"><span class="r-label">2 cu ft bags</span><span class="r-value" id="mulchBags2">—</span></div>
+        <div class="r-row"><span class="r-label">3 cu ft bags</span><span class="r-value" id="mulchBags3">—</span></div>
+        <div class="r-row"><span class="r-label">Coverage</span><span class="r-value" id="mulchCoverage">—</span></div>
+        <p class="r-note" id="mulchNote"></p>
+      </div>
+    </div>
+
+  </section>
+
+  <section class="article">
+    <h2>The arithmetic</h2>
+    <p>Volume is area × depth, with depth converted to the same units. A cubic yard is 27 cubic feet, and that single figure drives everything: <strong>one cubic yard covers 108 sq ft at 3 inches deep</strong>, or 162 sq ft at 2 inches, or 81 sq ft at 4 inches.</p>
+    <p>A 25 × 20 ft bed is 500 sq ft. At 3 inches that is 125 cubic feet, or <strong>4.63 cubic yards</strong> — which is 63 of the standard 2 cubic foot bags.</p>
+
+    <h2>Bags or bulk</h2>
+    <p>Bagged mulch is typically sold in 2 or 3 cubic foot bags, so a cubic yard is 13.5 or 9 bags respectively. Bulk delivery is almost always cheaper per unit, and the crossover is usually around <strong>2 to 3 cubic yards</strong> — below that, delivery fees and minimum orders eat the saving; above it, the difference becomes substantial, and so does the number of bags you would otherwise be lifting.</p>
+    <p>Bulk also means a pile on your driveway that needs moving with a wheelbarrow, so factor in the labour honestly.</p>
+
+    <h2>How deep</h2>
+    <table class="data-table">
+      <thead><tr><th>Use</th><th>Depth</th></tr></thead>
+      <tbody>
+        <tr><td>Around annuals and shallow-rooted plants</td><td>1–2 in (25–50 mm)</td></tr>
+        <tr><td>General beds and borders</td><td>2–3 in (50–75 mm)</td></tr>
+        <tr><td>Around trees and shrubs</td><td>3–4 in (75–100 mm)</td></tr>
+        <tr><td>Paths and heavy weed suppression</td><td>4 in (100 mm)</td></tr>
+      </tbody>
+    </table>
+    <p>Three inches is the general answer. Below two, weeds come straight through and the moisture benefit largely disappears. Above four, you start causing problems rather than solving them: thick mulch can become hydrophobic and shed water rather than letting it through, and it restricts oxygen to the roots.</p>
+
+    <h2>Never pile it against the trunk</h2>
+    <p>The cone of mulch heaped around a tree trunk — a "mulch volcano" — is one of the most common and most damaging landscaping mistakes. Bark is not adapted to constant moisture. Held against the trunk it stays wet, softens, and invites rot, boring insects and rodents. It also encourages roots to grow up into the mulch and circle the trunk, eventually girdling the tree.</p>
+    <p>Keep mulch three to six inches clear of the trunk and spread it out to the drip line instead. A wide, flat ring does everything a volcano does not.</p>
+
+    <h2>What mulch is actually for</h2>
+    <p>Suppressing weeds is the reason most people apply it, but the moisture retention matters more. Bare soil loses water rapidly to evaporation; a mulched bed can need substantially less watering through a dry summer. Mulch also moderates soil temperature, keeping roots cooler in summer and insulating them in winter, and organic types slowly break down and feed the soil as they go.</p>
+    <p>That decomposition is why organic mulch needs topping up — typically an inch a year. Measure what is already there before ordering, and top up to the target depth rather than adding a full new layer on top of the old one.</p>
+
+    <h2>Types</h2>
+    <p><strong>Shredded hardwood</strong> knits together and stays put on slopes. <strong>Bark chips</strong> last longer but wash away more easily. <strong>Pine straw</strong> is light, easy to spread and slightly acidifying. <strong>Compost</strong> feeds the soil best but breaks down fastest and suppresses weeds least. <strong>Rubber and stone</strong> do not decompose, which sounds like an advantage until you want to change the planting — they add nothing to the soil and stone can raise soil temperature considerably.</p>
+    <p>Avoid fresh wood chips directly against plants; as they decompose they temporarily draw nitrogen from the top layer of soil. Aged or composted chips do not have this problem.</p>
+    <h3>How much does a cubic yard of mulch cover?</h3>
+    <p>108 square feet at 3 inches deep, which is the most common depth. At 2 inches it covers 162 sq ft and at 4 inches, 81 sq ft. The arithmetic is simply 27 cubic feet divided by the depth in feet. A cubic yard equals 13.5 bags at 2 cubic feet each, or 9 bags at 3 cubic feet.</p>
+    <h3>How deep should mulch be?</h3>
+    <p>Two to three inches for general beds, three to four around trees and shrubs, and one to two around annuals. Below two inches weeds push through and the moisture benefit largely disappears. Above four inches you start creating problems — thick mulch can turn hydrophobic and shed water instead of admitting it, and it restricts oxygen reaching the roots.</p>
+    <h3>Should I remove old mulch before adding new?</h3>
+    <p>Usually not, if it is an organic mulch — it breaks down and improves the soil, which is part of the point. Measure what is left, and top up to your target depth rather than adding a full fresh layer over the top. If the existing layer has matted into a water-shedding crust, break it up with a rake first. Do remove it if there is visible fungal problem or it has built up well past four inches.</p>
+    <h3>Why should mulch not touch the tree trunk?</h3>
+    <p>Because bark is not adapted to constant moisture. Piled against the trunk it holds damp, softens the bark, and invites rot, boring insects and rodents that shelter in it. It also encourages roots to grow upward into the mulch and circle the trunk, eventually girdling the tree. Keep it three to six inches clear of the trunk and spread it outward to the drip line instead.</p>
+    <h3>Is it cheaper to buy mulch in bags or bulk?</h3>
+    <p>Bulk is almost always cheaper per cubic yard, and the crossover point is typically around two to three cubic yards. Below that, delivery fees and minimum order quantities cancel the saving. Above it the difference grows quickly — and so does the number of bags you would be carrying, since a cubic yard is 13.5 two-cubic-foot bags. The trade-off is that bulk arrives as a pile you have to barrow into place.</p>
+  </section>
+
+  <p style="font-size:13px;color:rgba(242,236,221,0.55);margin:0 0 24px;">Related: <a href="gravel-calculator.html">Gravel Calculator</a> · <a href="square-footage-calculator.html">Square Footage Calculator</a> · <a href="volume-calculator.html">Volume Calculator</a> · <a href="concrete-calculator.html">Concrete Calculator</a></p>
+
+  <footer>
+    <p>TALLYBENCH · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
+  </footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

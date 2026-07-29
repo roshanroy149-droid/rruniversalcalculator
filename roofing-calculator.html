@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roofing Calculator — Roof Area, Squares and Shingle Bundles | TallyBench</title>
+<meta name="description" content="Convert a roof footprint and pitch into actual roof area, roofing squares and shingle bundles.">
+<link rel="canonical" href="https://tallybench.com/roofing-calculator.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.svg">
+<meta name="theme-color" content="#1C1A17">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="TallyBench">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TallyBench">
+<meta property="og:title" content="Roofing Calculator — Roof Area, Squares and Shingle Bundles">
+<meta property="og:description" content="Convert a roof footprint and pitch into actual roof area, roofing squares and shingle bundles.">
+<meta property="og:url" content="https://tallybench.com/roofing-calculator.html">
+<meta property="og:image" content="https://tallybench.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Roofing Calculator — Roof Area, Squares and Shingle Bundles">
+<meta name="twitter:description" content="Convert a roof footprint and pitch into actual roof area, roofing squares and shingle bundles.">
+<meta name="twitter:image" content="https://tallybench.com/og-image.png">
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="style.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is a roofing square?",
+      "acceptedAnswer": { "@type": "Answer", "text": "One hundred square feet of roof surface. It is the unit roofing material is sold and quoted in, and it exists because it makes estimating arithmetic straightforward — a 2,000 sq ft roof is simply 20 squares. Asphalt shingles usually come three bundles to a square, though some heavier architectural shingles are packaged four to a square, so check the wrapper before ordering." }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I find my roof pitch without climbing on it?",
+      "acceptedAnswer": { "@type": "Answer", "text": "From inside the attic, hold a level horizontally against a rafter, mark 12 inches along it, and measure vertically from that mark up to the rafter — that measurement is the rise per 12 of run. A 6 inch measurement means a 6/12 pitch. There are also phone apps that use the accelerometer against a rafter or the gable end, which get close enough for estimating." }
+    },
+    {
+      "@type": "Question",
+      "name": "How much extra roofing material should I order?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Ten percent for a simple gable roof. Fifteen to twenty percent for anything with hips, valleys, dormers or an irregular outline, because cut waste rises sharply with complexity. Remember that starter courses, ridge caps and the overlap at hips and valleys all consume material that a pure area calculation does not capture." }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the minimum pitch for asphalt shingles?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Generally 2/12. Below that, water drains too slowly and wind-driven rain can work under the courses. Between 2/12 and 4/12 manufacturers require a doubled underlayment and the warranty usually depends on it being installed. For anything below 2/12 you need a different system entirely — rolled roofing, modified bitumen, or a single-ply membrane such as EPDM or TPO." }
+    },
+    {
+      "@type": "Question",
+      "name": "Does a steeper roof cost more?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes, on both counts. It needs more material because the surface area grows with the pitch multiplier — a 12/12 roof has 41% more surface than its footprint against 12% for a 6/12. It also costs more in labour, because anything above about 7/12 cannot be walked safely without roof jacks or staging, and steep work is slower. The labour difference is usually the larger of the two." }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Roofing Calculator — TallyBench",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any (runs in browser)",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "url": "https://tallybench.com/roofing-calculator.html"
+}
+</script>
+<!-- TB:BREADCRUMB:START -->
+<script type="application/ld+json">
+{
+    "@context":  "https://schema.org",
+    "@type":  "BreadcrumbList",
+    "itemListElement":  [
+                            {
+                                "@type":  "ListItem",
+                                "position":  1,
+                                "name":  "TallyBench",
+                                "item":  "https://tallybench.com/"
+                            },
+                            {
+                                "@type":  "ListItem",
+                                "position":  2,
+                                "name":  "Roofing Calculator",
+                                "item":  "https://tallybench.com/roofing-calculator.html"
+                            }
+                        ]
+}
+</script>
+<!-- TB:BREADCRUMB:END -->
+</head>
+<body data-page-cat="everyday">
+
+<header>
+  <div class="wrap">
+    <div class="headbar">
+      <a class="logo" href="index.html">TALLYBENCH<span>.</span></a>
+      <div class="tagline"><!-- TB:COUNT:START -->
+188 TOOLS · 0 SIGN-UP
+<!-- TB:COUNT:END --></div>
+<button class="nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <!-- TB:NAV:START -->
+  <div class="nav-drawer" id="navDrawer">
+    <div class="nav-drawer-head">
+      <span>Menu</span>
+      <button class="nav-close" id="navClose" type="button" aria-label="Close menu">&#10005;</button>
+    </div>
+    <nav class="ruler cat-ruler" aria-label="Category">
+      <a class="tick" href="index.html">HOME</a>
+      <a class="tick" href="articles.html">ARTICLES</a>
+      <a class="tick" href="book.html">BOOK</a>
+      <a class="tick" href="venstock.html">VENSTOCK</a>
+      <button class="tick cat-tab" type="button" data-cat="finance">FINANCE</button>
+      <button class="tick cat-tab" type="button" data-cat="health">HEALTH</button>
+      <button class="tick cat-tab" type="button" data-cat="education">EDUCATION</button>
+      <button class="tick cat-tab" type="button" data-cat="everyday">EVERYDAY</button>
+    </nav>
+    <nav class="ruler sub-ruler" id="subRuler" aria-label="Tools">
+      <a class="tick sub-tick" data-cat="finance" href="currency-converter.html">CURRENCY</a>
+      <a class="tick sub-tick" data-cat="finance" href="loan-calculator.html">LOAN / EMI</a>
+      <a class="tick sub-tick" data-cat="finance" href="car-loan-calculator.html">CAR LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="mortgage-calculator.html">MORTGAGE</a>
+      <a class="tick sub-tick" data-cat="finance" href="refinance-calculator.html">REFINANCE</a>
+      <a class="tick sub-tick" data-cat="finance" href="rent-vs-buy-calculator.html">RENT VS BUY</a>
+      <a class="tick sub-tick" data-cat="finance" href="tax-calculator.html">TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="paycheck-calculator.html">PAYCHECK</a>
+      <a class="tick sub-tick" data-cat="finance" href="freelancer-tax-calculator-india.html">FREELANCER TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="gst-vat-calculator.html">GST / VAT</a>
+      <a class="tick sub-tick" data-cat="finance" href="investment-calculator.html">INVESTMENT</a>
+      <a class="tick sub-tick" data-cat="finance" href="sip-calculator.html">SIP</a>
+      <a class="tick sub-tick" data-cat="finance" href="compound-interest-calculator.html">COMPOUND INT.</a>
+      <a class="tick sub-tick" data-cat="finance" href="savings-goal-calculator.html">SAVINGS GOAL</a>
+      <a class="tick sub-tick" data-cat="finance" href="retirement-calculator.html">RETIREMENT</a>
+      <a class="tick sub-tick" data-cat="finance" href="net-worth-calculator.html">NET WORTH</a>
+      <a class="tick sub-tick" data-cat="finance" href="discount-calculator.html">DISCOUNT</a>
+      <a class="tick sub-tick" data-cat="finance" href="tip-calculator.html">TIP</a>
+      <a class="tick sub-tick" data-cat="finance" href="fd-calculator.html">FD</a>
+      <a class="tick sub-tick" data-cat="finance" href="rd-calculator.html">RD</a>
+      <a class="tick sub-tick" data-cat="finance" href="ppf-calculator.html">PPF</a>
+      <a class="tick sub-tick" data-cat="finance" href="india-tax-regime-calculator.html">OLD VS NEW REGIME</a>
+      <a class="tick sub-tick" data-cat="finance" href="hra-calculator.html">HRA</a>
+      <a class="tick sub-tick" data-cat="finance" href="gratuity-calculator.html">GRATUITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="epf-calculator.html">EPF</a>
+      <a class="tick sub-tick" data-cat="finance" href="fire-calculator.html">FIRE NUMBER</a>
+      <a class="tick sub-tick" data-cat="finance" href="rsu-vesting-calculator.html">RSU VESTING</a>
+      <a class="tick sub-tick" data-cat="finance" href="cross-country-salary-calculator.html">SALARY BY COUNTRY</a>
+      <a class="tick sub-tick" data-cat="finance" href="currency-fee-calculator.html">FX FEES</a>
+      <a class="tick sub-tick" data-cat="finance" href="zakat-calculator.html">ZAKAT</a>
+      <a class="tick sub-tick" data-cat="finance" href="break-even-calculator.html">BREAK-EVEN</a>
+      <a class="tick sub-tick" data-cat="finance" href="debt-payoff-calculator.html">DEBT PAYOFF</a>
+      <a class="tick sub-tick" data-cat="finance" href="salary-calculator.html">SALARY</a>
+      <a class="tick sub-tick" data-cat="finance" href="sales-tax-calculator.html">SALES TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="cd-calculator.html">CD</a>
+      <a class="tick sub-tick" data-cat="finance" href="amortization-schedule-calculator.html">AMORTIZATION</a>
+      <a class="tick sub-tick" data-cat="finance" href="401k-calculator.html">401(K)</a>
+      <a class="tick sub-tick" data-cat="finance" href="ira-calculator.html">IRA / ROTH</a>
+      <a class="tick sub-tick" data-cat="finance" href="house-affordability-calculator.html">AFFORDABILITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="down-payment-calculator.html">DOWN PAYMENT</a>
+      <a class="tick sub-tick" data-cat="finance" href="debt-to-income-calculator.html">DTI RATIO</a>
+      <a class="tick sub-tick" data-cat="finance" href="simple-interest-calculator.html">SIMPLE INT.</a>
+      <a class="tick sub-tick" data-cat="finance" href="roi-calculator.html">ROI</a>
+      <a class="tick sub-tick" data-cat="finance" href="credit-card-payoff-calculator.html">CC PAYOFF</a>
+      <a class="tick sub-tick" data-cat="finance" href="mortgage-payoff-calculator.html">MTG PAYOFF</a>
+      <a class="tick sub-tick" data-cat="finance" href="rent-affordability-calculator.html">RENT AFFORD</a>
+      <a class="tick sub-tick" data-cat="finance" href="real-estate-investment-calculator.html">REAL ESTATE</a>
+      <a class="tick sub-tick" data-cat="finance" href="rental-property-calculator.html">RENTAL PROPERTY</a>
+      <a class="tick sub-tick" data-cat="finance" href="apr-calculator.html">APR</a>
+      <a class="tick sub-tick" data-cat="finance" href="fha-loan-calculator.html">FHA LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="va-mortgage-calculator.html">VA LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="home-equity-loan-calculator.html">HOME EQUITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="heloc-calculator.html">HELOC</a>
+      <a class="tick sub-tick" data-cat="finance" href="cash-back-or-low-interest-calculator.html">CASH BACK/APR</a>
+      <a class="tick sub-tick" data-cat="finance" href="auto-lease-calculator.html">AUTO LEASE</a>
+      <a class="tick sub-tick" data-cat="finance" href="finance-calculator.html">TVM SOLVER</a>
+      <a class="tick sub-tick" data-cat="finance" href="interest-rate-calculator.html">INT. RATE</a>
+      <a class="tick sub-tick" data-cat="finance" href="bond-calculator.html">BOND</a>
+      <a class="tick sub-tick" data-cat="finance" href="mutual-fund-calculator.html">MUTUAL FUND</a>
+      <a class="tick sub-tick" data-cat="finance" href="average-return-calculator.html">AVG RETURN</a>
+      <a class="tick sub-tick" data-cat="finance" href="irr-calculator.html">IRR</a>
+      <a class="tick sub-tick" data-cat="finance" href="payback-period-calculator.html">PAYBACK PERIOD</a>
+      <a class="tick sub-tick" data-cat="finance" href="present-value-calculator.html">PRESENT VALUE</a>
+      <a class="tick sub-tick" data-cat="finance" href="future-value-calculator.html">FUTURE VALUE</a>
+      <a class="tick sub-tick" data-cat="finance" href="savings-calculator.html">SAVINGS</a>
+      <a class="tick sub-tick" data-cat="finance" href="pension-calculator.html">PENSION</a>
+      <a class="tick sub-tick" data-cat="finance" href="social-security-calculator.html">SOCIAL SECURITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="annuity-calculator.html">ANNUITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="annuity-payout-calculator.html">ANNUITY PAYOUT</a>
+      <a class="tick sub-tick" data-cat="finance" href="rmd-calculator.html">RMD</a>
+      <a class="tick sub-tick" data-cat="finance" href="marriage-tax-calculator.html">MARRIAGE TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="estate-tax-calculator.html">ESTATE TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="inflation-calculator.html">INFLATION</a>
+      <a class="tick sub-tick" data-cat="finance" href="debt-consolidation-calculator.html">DEBT CONSOLIDATION</a>
+      <a class="tick sub-tick" data-cat="finance" href="student-loan-repayment-calculator.html">REPAYMENT PLAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="pslf-calculator.html">PSLF</a>
+      <a class="tick sub-tick" data-cat="finance" href="student-loan-calculator.html">STUDENT LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="college-cost-calculator.html">COLLEGE COST</a>
+      <a class="tick sub-tick" data-cat="finance" href="depreciation-calculator.html">DEPRECIATION</a>
+      <a class="tick sub-tick" data-cat="finance" href="margin-calculator.html">MARGIN</a>
+      <a class="tick sub-tick" data-cat="finance" href="business-loan-calculator.html">BUSINESS LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="personal-loan-calculator.html">PERSONAL LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="boat-loan-calculator.html">BOAT LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="lease-calculator.html">LEASE</a>
+      <a class="tick sub-tick" data-cat="finance" href="budget-calculator.html">BUDGET</a>
+      <a class="tick sub-tick" data-cat="finance" href="commission-calculator.html">COMMISSION</a>
+      <a class="tick sub-tick" data-cat="health" href="bmi-calculator.html">BMI</a>
+      <a class="tick sub-tick" data-cat="health" href="calorie-calculator.html">CALORIE</a>
+      <a class="tick sub-tick" data-cat="health" href="macro-calculator.html">MACROS</a>
+      <a class="tick sub-tick" data-cat="health" href="pregnancy-calculator.html">PREGNANCY</a>
+      <a class="tick sub-tick" data-cat="health" href="ovulation-calculator.html">OVULATION</a>
+      <a class="tick sub-tick" data-cat="health" href="ideal-weight-calculator.html">IDEAL WEIGHT</a>
+      <a class="tick sub-tick" data-cat="health" href="body-fat-calculator.html">BODY FAT</a>
+      <a class="tick sub-tick" data-cat="health" href="army-body-fat-calculator.html">ARMY BODY FAT</a>
+      <a class="tick sub-tick" data-cat="health" href="lean-body-mass-calculator.html">LEAN MASS</a>
+      <a class="tick sub-tick" data-cat="health" href="healthy-weight-calculator.html">HEALTHY WEIGHT</a>
+      <a class="tick sub-tick" data-cat="health" href="calories-burned-calculator.html">CAL BURNED</a>
+      <a class="tick sub-tick" data-cat="health" href="one-rep-max-calculator.html">1RM</a>
+      <a class="tick sub-tick" data-cat="health" href="target-heart-rate-calculator.html">HEART RATE</a>
+      <a class="tick sub-tick" data-cat="health" href="pregnancy-week-calculator.html">PREGNANCY WEEKS</a>
+      <a class="tick sub-tick" data-cat="health" href="pregnancy-weight-gain-calculator.html">PREG. WEIGHT GAIN</a>
+      <a class="tick sub-tick" data-cat="health" href="conception-calculator.html">CONCEPTION</a>
+      <a class="tick sub-tick" data-cat="health" href="sleep-cycle-calculator.html">SLEEP CYCLE</a>
+      <a class="tick sub-tick" data-cat="health" href="water-intake-calculator.html">WATER INTAKE</a>
+      <a class="tick sub-tick" data-cat="health" href="tdee-calculator.html">TDEE</a>
+      <a class="tick sub-tick" data-cat="health" href="protein-calculator.html">PROTEIN</a>
+      <a class="tick sub-tick" data-cat="education" href="gcf-calculator.html">GCF</a>
+      <a class="tick sub-tick" data-cat="education" href="lcm-calculator.html">LCM</a>
+      <a class="tick sub-tick" data-cat="education" href="factor-calculator.html">FACTORS</a>
+      <a class="tick sub-tick" data-cat="education" href="rounding-calculator.html">ROUNDING</a>
+      <a class="tick sub-tick" data-cat="education" href="scientific-notation-calculator.html">SCI. NOTATION</a>
+      <a class="tick sub-tick" data-cat="education" href="big-number-calculator.html">BIG NUMBERS</a>
+      <a class="tick sub-tick" data-cat="education" href="number-sequence-calculator.html">SEQUENCES</a>
+      <a class="tick sub-tick" data-cat="education" href="probability-calculator.html">PROBABILITY</a>
+      <a class="tick sub-tick" data-cat="education" href="matrix-calculator.html">MATRIX</a>
+      <a class="tick sub-tick" data-cat="education" href="circle-calculator.html">CIRCLE</a>
+      <a class="tick sub-tick" data-cat="education" href="area-calculator.html">AREA</a>
+      <a class="tick sub-tick" data-cat="education" href="volume-calculator.html">VOLUME</a>
+      <a class="tick sub-tick" data-cat="education" href="surface-area-calculator.html">SURFACE AREA</a>
+      <a class="tick sub-tick" data-cat="education" href="slope-calculator.html">SLOPE</a>
+      <a class="tick sub-tick" data-cat="education" href="coordinate-distance-calculator.html">COORDINATE DISTANCE</a>
+      <a class="tick sub-tick" data-cat="education" href="pythagorean-theorem-calculator.html">PYTHAGOREAN THEOREM</a>
+      <a class="tick sub-tick" data-cat="education" href="right-triangle-calculator.html">RIGHT TRIANGLE</a>
+      <a class="tick sub-tick" data-cat="education" href="triangle-calculator.html">TRIANGLE</a>
+      <a class="tick sub-tick" data-cat="education" href="gpa-calculator.html">GPA</a>
+      <a class="tick sub-tick" data-cat="education" href="grade-calculator.html">GRADE</a>
+      <a class="tick sub-tick" data-cat="education" href="scientific-calculator.html">SCIENTIFIC</a>
+      <a class="tick sub-tick" data-cat="education" href="fraction-calculator.html">FRACTION</a>
+      <a class="tick sub-tick" data-cat="education" href="statistics-calculator.html">STATISTICS</a>
+      <a class="tick sub-tick" data-cat="education" href="percent-error-calculator.html">% ERROR</a>
+      <a class="tick sub-tick" data-cat="education" href="exponent-calculator.html">EXPONENT</a>
+      <a class="tick sub-tick" data-cat="education" href="binary-calculator.html">BINARY</a>
+      <a class="tick sub-tick" data-cat="education" href="hex-calculator.html">HEX</a>
+      <a class="tick sub-tick" data-cat="education" href="half-life-calculator.html">HALF-LIFE</a>
+      <a class="tick sub-tick" data-cat="education" href="quadratic-formula-calculator.html">QUADRATIC</a>
+      <a class="tick sub-tick" data-cat="education" href="log-calculator.html">LOG</a>
+      <a class="tick sub-tick" data-cat="education" href="ratio-calculator.html">RATIO</a>
+      <a class="tick sub-tick" data-cat="education" href="root-calculator.html">ROOT</a>
+      <a class="tick sub-tick" data-cat="education" href="standard-deviation-calculator.html">STD DEVIATION</a>
+      <a class="tick sub-tick" data-cat="education" href="sample-size-calculator.html">SAMPLE SIZE</a>
+      <a class="tick sub-tick" data-cat="education" href="mean-median-mode-calculator.html">MEAN/MEDIAN/MODE</a>
+      <a class="tick sub-tick" data-cat="education" href="permutation-combination-calculator.html">PERM/COMBO</a>
+      <a class="tick sub-tick" data-cat="education" href="z-score-calculator.html">Z-SCORE</a>
+      <a class="tick sub-tick" data-cat="education" href="confidence-interval-calculator.html">CONFIDENCE INT.</a>
+      <a class="tick sub-tick" data-cat="everyday" href="basic-calculator.html">CALCULATOR</a>
+      <a class="tick sub-tick" data-cat="everyday" href="percentage-calculator.html">PERCENT</a>
+      <a class="tick sub-tick" data-cat="everyday" href="age-calculator.html">AGE</a>
+      <a class="tick sub-tick" data-cat="everyday" href="days-calculator.html">DAYS</a>
+      <a class="tick sub-tick" data-cat="everyday" href="time-calculator.html">TIME</a>
+      <a class="tick sub-tick" data-cat="everyday" href="unit-converter.html">UNITS</a>
+      <a class="tick sub-tick" data-cat="everyday" href="week-number-calculator.html">WEEK #</a>
+      <a class="tick sub-tick" data-cat="everyday" href="cm-to-inches.html">CM→IN</a>
+      <a class="tick sub-tick" data-cat="everyday" href="kg-to-pounds.html">KG→LB</a>
+      <a class="tick sub-tick" data-cat="everyday" href="celsius-to-fahrenheit.html">°C→°F</a>
+      <a class="tick sub-tick" data-cat="everyday" href="password-generator.html">PASSWORD</a>
+      <a class="tick sub-tick" data-cat="everyday" href="random-number-generator.html">RANDOM #</a>
+      <a class="tick sub-tick" data-cat="everyday" href="word-counter.html">WORD COUNT</a>
+      <a class="tick sub-tick" data-cat="everyday" href="pace-calculator.html">PACE</a>
+      <a class="tick sub-tick" data-cat="everyday" href="bill-split-calculator.html">BILL SPLIT</a>
+      <a class="tick sub-tick" data-cat="everyday" href="fuel-cost-calculator.html">FUEL COST</a>
+      <a class="tick sub-tick" data-cat="education" href="ohms-law-calculator.html">OHM’S LAW</a>
+      <a class="tick sub-tick" data-cat="education" href="resistor-color-code-calculator.html">RESISTOR CODE</a>
+      <a class="tick sub-tick" data-cat="education" href="roman-numeral-converter.html">ROMAN NUMERALS</a>
+      <a class="tick sub-tick" data-cat="everyday" href="voltage-drop-calculator.html">VOLTAGE DROP</a>
+      <a class="tick sub-tick" data-cat="everyday" href="electricity-cost-calculator.html">ELECTRICITY COST</a>
+      <a class="tick sub-tick" data-cat="everyday" href="ip-subnet-calculator.html">IP SUBNET</a>
+      <a class="tick sub-tick" data-cat="everyday" href="bandwidth-calculator.html">BANDWIDTH</a>
+      <a class="tick sub-tick" data-cat="everyday" href="base64-converter.html">BASE64</a>
+      <a class="tick sub-tick" data-cat="everyday" href="url-encoder.html">URL ENCODER</a>
+      <a class="tick sub-tick" data-cat="education" href="molecular-weight-calculator.html">MOLECULAR WEIGHT</a>
+      <a class="tick sub-tick" data-cat="education" href="molarity-calculator.html">MOLARITY</a>
+      <a class="tick sub-tick" data-cat="education" href="density-calculator.html">DENSITY</a>
+      <a class="tick sub-tick" data-cat="education" href="weight-on-planets-calculator.html">WEIGHT ON PLANETS</a>
+      <a class="tick sub-tick" data-cat="everyday" href="speed-calculator.html">SPEED</a>
+      <a class="tick sub-tick" data-cat="health" href="child-height-calculator.html">CHILD HEIGHT</a>
+      <a class="tick sub-tick" data-cat="health" href="gfr-calculator.html">eGFR</a>
+      <a class="tick sub-tick" data-cat="health" href="body-surface-area-calculator.html">BODY SURFACE AREA</a>
+      <a class="tick sub-tick" data-cat="health" href="bac-calculator.html">BLOOD ALCOHOL</a>
+      <a class="tick sub-tick" data-cat="health" href="fat-intake-calculator.html">FAT INTAKE</a>
+      <a class="tick sub-tick" data-cat="health" href="period-calculator.html">PERIOD</a>
+      <a class="tick sub-tick" data-cat="everyday" href="concrete-calculator.html">CONCRETE</a>
+      <a class="tick sub-tick" data-cat="everyday" href="square-footage-calculator.html">SQUARE FOOTAGE</a>
+      <a class="tick sub-tick" data-cat="everyday" href="btu-calculator.html">BTU / AC SIZE</a>
+      <a class="tick sub-tick" data-cat="everyday" href="stair-calculator.html">STAIRS</a>
+      <a class="tick sub-tick" data-cat="everyday" href="roofing-calculator.html">ROOFING</a>
+      <a class="tick sub-tick" data-cat="everyday" href="tile-calculator.html">TILE</a>
+      <a class="tick sub-tick" data-cat="everyday" href="mulch-calculator.html">MULCH</a>
+      <a class="tick sub-tick" data-cat="everyday" href="gravel-calculator.html">GRAVEL</a>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+    </nav>
+  </div>
+  <!-- TB:NAV:END -->
+</header>
+<div class="nav-backdrop" id="navBackdrop"></div>
+
+<div class="wrap">
+  <div class="crumb"><a href="index.html">TallyBench</a> / Roofing Calculator</div>
+
+  <section class="hero">
+    <div class="hero-icon-row cat-everyday">
+      <div class="hero-icon"><svg><use href="icons.svg#icon-units"/></svg></div>
+      <div class="eyebrow">// ROOFING CALCULATOR</div>
+    </div>
+    <h1>Roofing Calculator</h1>
+    <p>Footprint plus pitch gives the real roof area — always larger than the ground it covers — in squares and bundles.</p>
+  </section>
+
+  <section class="tool" id="roofingcalc">
+    <div class="card">
+      <div>
+        <div class="field"><label>Units</label>
+          <select id="roofUnit">
+            <option value="imperial">Feet</option>
+            <option value="metric">Metres</option>
+          </select>
+        </div>
+        <div class="field"><label>Building length</label><input type="number" id="roofLength" value="40" min="0" step="0.5"></div>
+        <div class="field"><label>Building width</label><input type="number" id="roofWidth" value="30" min="0" step="0.5"></div>
+        <div class="field"><label>Roof pitch (rise per 12 of run)</label>
+          <select id="roofPitch">
+            <option value="1">1/12 — nearly flat</option>
+            <option value="2">2/12 — low slope</option>
+            <option value="3">3/12</option>
+            <option value="4">4/12 — common minimum</option>
+            <option value="5">5/12</option>
+            <option value="6" selected>6/12 — typical</option>
+            <option value="7">7/12</option>
+            <option value="8">8/12</option>
+            <option value="9">9/12 — steep</option>
+            <option value="10">10/12</option>
+            <option value="12">12/12 — 45°</option>
+          </select>
+        </div>
+        <div class="field"><label>Waste allowance (%)</label><input type="number" id="roofWaste" value="10" min="0" max="30" step="1"></div>
+      </div>
+      <div class="readout">
+        <div class="r-row"><span class="r-label">Footprint</span><span class="r-value" id="roofFootprint">—</span></div>
+        <div class="r-row"><span class="r-label">Pitch multiplier</span><span class="r-value" id="roofMultiplier">—</span></div>
+        <div class="r-row"><span class="r-label">Actual roof area</span><span class="r-value" id="roofArea">—</span></div>
+        <div class="r-row"><span class="r-label">Roofing squares</span><span class="r-value" id="roofSquares">—</span></div>
+        <div class="r-row"><span class="r-label">Shingle bundles</span><span class="r-value" id="roofBundles">—</span></div>
+        <p class="r-note" id="roofNote"></p>
+      </div>
+    </div>
+
+  </section>
+
+  <section class="article">
+    <h2>Why roof area is not floor area</h2>
+    <p>A pitched roof covers more surface than the ground beneath it, because the sloping planes are longer than their horizontal projection. The factor is the <strong>pitch multiplier</strong>, and it comes straight from Pythagoras: for a roof rising R inches per 12 inches of run, the multiplier is √(R² + 12²) ÷ 12.</p>
+    <p>For a 6/12 pitch that is √(36 + 144) ÷ 12 = √180 ÷ 12 = <strong>1.118</strong>. So a 40 × 30 ft building with a 1,200 sq ft footprint has about 1,342 sq ft of roof — nearly 12% more material than the footprint suggests.</p>
+
+    <h2>Pitch multipliers</h2>
+    <table class="data-table">
+      <thead><tr><th>Pitch</th><th>Angle</th><th>Multiplier</th></tr></thead>
+      <tbody>
+        <tr><td>2/12</td><td>9.5°</td><td>1.014</td></tr>
+        <tr><td>4/12</td><td>18.4°</td><td>1.054</td></tr>
+        <tr><td>6/12</td><td>26.6°</td><td>1.118</td></tr>
+        <tr><td>8/12</td><td>33.7°</td><td>1.202</td></tr>
+        <tr><td>10/12</td><td>39.8°</td><td>1.302</td></tr>
+        <tr><td>12/12</td><td>45.0°</td><td>1.414</td></tr>
+      </tbody>
+    </table>
+    <p>Note how the penalty accelerates. Going from 4/12 to 6/12 adds 6% to the material; going from 10/12 to 12/12 adds another 9% on top of an already large multiplier. Steep roofs cost more twice over — more material, and slower, more dangerous labour.</p>
+
+    <h2>Squares and bundles</h2>
+    <p>Roofing is sold and quoted by the <strong>square</strong>, which is 100 square feet. It is an old convention and it persists because it makes estimating arithmetic simple. Asphalt shingles typically come three bundles to the square, though heavier architectural shingles are sometimes four — check the packaging rather than assuming.</p>
+    <p>Our 1,342 sq ft roof with 10% waste is 14.76 squares, so about <strong>45 bundles</strong> of standard three-tab.</p>
+
+    <h2>What the waste allowance covers</h2>
+    <p>Ten percent is the usual figure for a simple gable roof. Increase it for complexity: hips and valleys generate a lot of cut waste, and a roof with dormers, multiple valleys or an irregular outline can need 15 to 20%. Starter courses along the eaves, ridge caps, and the overlap at hips and valleys all consume material that is not accounted for by area alone.</p>
+
+    <h2>Slope limits</h2>
+    <p>Asphalt shingles are generally not rated below a <strong>2/12</strong> pitch — water moves too slowly and wind-driven rain can get under the courses. Between 2/12 and 4/12, manufacturers require a doubled underlayment, and the warranty depends on it. Below 2/12 you need a genuinely different system: rolled roofing, modified bitumen, EPDM or TPO membrane.</p>
+    <p>At the other end, anything from about 7/12 upward is difficult to walk safely and needs roof jacks or staging. From 9/12 it is specialist work. Factor labour cost accordingly — the material difference between a 6/12 and a 10/12 roof is modest next to the difference in how long it takes and what access equipment it needs.</p>
+
+    <h2>What this calculator does not include</h2>
+    <p>It works from a simple rectangular footprint with a single pitch. Hips, valleys, dormers, overhangs and separate roof sections at different pitches all change the answer, and complicated roofs are worth measuring plane by plane and adding up. Underlayment, drip edge, flashing, ridge vent and fasteners are separate line items — the shingle count is not the whole material list, and on a real job it is rarely more than half the cost.</p>
+    <h3>What is a roofing square?</h3>
+    <p>One hundred square feet of roof surface. It is the unit roofing material is sold and quoted in, and it exists because it makes estimating arithmetic straightforward — a 2,000 sq ft roof is simply 20 squares. Asphalt shingles usually come three bundles to a square, though some heavier architectural shingles are packaged four to a square, so check the wrapper before ordering.</p>
+    <h3>How do I find my roof pitch without climbing on it?</h3>
+    <p>From inside the attic, hold a level horizontally against a rafter, mark 12 inches along it, and measure vertically from that mark up to the rafter — that measurement is the rise per 12 of run. A 6 inch measurement means a 6/12 pitch. There are also phone apps that use the accelerometer against a rafter or the gable end, which get close enough for estimating.</p>
+    <h3>How much extra roofing material should I order?</h3>
+    <p>Ten percent for a simple gable roof. Fifteen to twenty percent for anything with hips, valleys, dormers or an irregular outline, because cut waste rises sharply with complexity. Remember that starter courses, ridge caps and the overlap at hips and valleys all consume material that a pure area calculation does not capture.</p>
+    <h3>What is the minimum pitch for asphalt shingles?</h3>
+    <p>Generally 2/12. Below that, water drains too slowly and wind-driven rain can work under the courses. Between 2/12 and 4/12 manufacturers require a doubled underlayment and the warranty usually depends on it being installed. For anything below 2/12 you need a different system entirely — rolled roofing, modified bitumen, or a single-ply membrane such as EPDM or TPO.</p>
+    <h3>Does a steeper roof cost more?</h3>
+    <p>Yes, on both counts. It needs more material because the surface area grows with the pitch multiplier — a 12/12 roof has 41% more surface than its footprint against 12% for a 6/12. It also costs more in labour, because anything above about 7/12 cannot be walked safely without roof jacks or staging, and steep work is slower. The labour difference is usually the larger of the two.</p>
+  </section>
+
+  <p style="font-size:13px;color:rgba(242,236,221,0.55);margin:0 0 24px;">Related: <a href="square-footage-calculator.html">Square Footage Calculator</a> · <a href="pythagorean-theorem-calculator.html">Pythagorean Theorem Calculator</a> · <a href="slope-calculator.html">Slope Calculator</a> · <a href="concrete-calculator.html">Concrete Calculator</a></p>
+
+  <footer>
+    <p>TALLYBENCH · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
+  </footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

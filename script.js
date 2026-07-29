@@ -12376,3 +12376,347 @@ function sciParseFormula(raw) {
   ['perLast', 'perCycle', 'perBleed'].forEach(function (id) { g(id).addEventListener('input', calc); g(id).addEventListener('change', calc); });
   calc();
 })();
+
+// ================= Construction cluster =================
+
+// ---- Concrete Calculator ----
+(function () {
+  if (!document.getElementById('concShape')) return;
+  var g = function (id) { return document.getElementById(id); };
+  function calc() {
+    var shape = g('concShape').value;
+    var imperial = g('concUnit').value === 'imperial';
+    g('concSlabRow').style.display = shape === 'slab' ? '' : 'none';
+    g('concFootRow').style.display = shape === 'footing' ? '' : 'none';
+    g('concColRow').style.display = shape === 'column' ? '' : 'none';
+
+    // Everything is normalised to cubic feet.
+    var ft3 = 0, n = parseFloat(g('concQty').value) || 1;
+    var toFt = imperial ? 1 : 3.280839895;          // metres → feet
+    var inToFt = imperial ? 1 / 12 : 1 / 30.48;     // inches or cm → feet
+
+    if (shape === 'slab') {
+      var L = (parseFloat(g('concLength').value) || 0) * toFt;
+      var W = (parseFloat(g('concWidth').value) || 0) * toFt;
+      var T = (parseFloat(g('concThick').value) || 0) * inToFt;
+      ft3 = L * W * T;
+    } else if (shape === 'footing') {
+      var fl = (parseFloat(g('concFootLen').value) || 0) * toFt;
+      var fw = (parseFloat(g('concFootWidth').value) || 0) * inToFt;
+      var fd = (parseFloat(g('concFootDepth').value) || 0) * inToFt;
+      ft3 = fl * fw * fd;
+    } else {
+      var dia = (parseFloat(g('concDia').value) || 0) * inToFt;
+      var h = (parseFloat(g('concHeight').value) || 0) * toFt;
+      ft3 = Math.PI * Math.pow(dia / 2, 2) * h;
+    }
+    ft3 = ft3 * n;
+
+    var yd3 = ft3 / 27, m3 = ft3 * 0.028316846592;
+    var waste = parseFloat(g('concWaste').value) || 0;
+    var ft3w = ft3 * (1 + waste / 100);
+
+    var f = function (v, d) { return (Math.round(v * Math.pow(10, d)) / Math.pow(10, d)).toLocaleString('en-US', { maximumFractionDigits: d }); };
+    g('concVolume').textContent = f(ft3, 2) + ' ft³  ·  ' + f(m3, 3) + ' m³';
+    g('concYards').textContent = f(yd3, 2) + ' cubic yards';
+    g('concWithWaste').textContent = f(ft3w, 2) + ' ft³  (' + f(ft3w / 27, 2) + ' yd³) including ' + waste + '% waste';
+    // Bag yields from the manufacturer TDS, governed by ASTM C387.
+    g('concBags80').textContent = Math.ceil(ft3w / 0.60) + ' bags';
+    g('concBags60').textContent = Math.ceil(ft3w / 0.45) + ' bags';
+    g('concBags40').textContent = Math.ceil(ft3w / 0.30) + ' bags';
+    g('concWeight').textContent = f(ft3 * 150, 0) + ' lb  (' + f(ft3 * 150 * 0.45359237, 0) + ' kg)';
+    g('concNote').textContent = yd3 >= 1
+      ? 'At ' + f(yd3, 2) + ' cubic yards, ready-mix delivery is almost certainly cheaper and far less work than mixing bags. Most suppliers have a minimum order of around 1 yd³.'
+      : 'Under a cubic yard — bagged mix is usually the practical choice at this size.';
+  }
+  ['concShape', 'concUnit', 'concLength', 'concWidth', 'concThick', 'concFootLen', 'concFootWidth',
+    'concFootDepth', 'concDia', 'concHeight', 'concQty', 'concWaste'].forEach(function (id) {
+      g(id).addEventListener('input', calc); g(id).addEventListener('change', calc);
+    });
+  calc();
+})();
+
+// ---- Square Footage Calculator ----
+(function () {
+  if (!document.getElementById('sqShape')) return;
+  var g = function (id) { return document.getElementById(id); };
+  function calc() {
+    var shape = g('sqShape').value;
+    var imperial = g('sqUnit').value === 'imperial';
+    ['sqRect', 'sqCircleRow', 'sqTriRow'].forEach(function (id) { g(id).style.display = 'none'; });
+    g(shape === 'circle' ? 'sqCircleRow' : shape === 'triangle' ? 'sqTriRow' : 'sqRect').style.display = '';
+
+    var toFt = imperial ? 1 : 3.280839895;
+    var area = 0;   // square feet
+    if (shape === 'rectangle') {
+      area = (parseFloat(g('sqLength').value) || 0) * toFt * (parseFloat(g('sqWidth').value) || 0) * toFt;
+    } else if (shape === 'circle') {
+      var r = (parseFloat(g('sqDiameter').value) || 0) * toFt / 2;
+      area = Math.PI * r * r;
+    } else {
+      area = 0.5 * (parseFloat(g('sqBase').value) || 0) * toFt * (parseFloat(g('sqHeight').value) || 0) * toFt;
+    }
+    var n = parseFloat(g('sqQty').value) || 1;
+    area = area * n;
+    var m2 = area * 0.09290304;
+
+    // toLocaleString caps fraction digits at 3 by default, which silently
+    // rounds small acreages to "0" — so the precision has to be stated.
+    var f = function (v, d) {
+      return (Math.round(v * Math.pow(10, d)) / Math.pow(10, d))
+        .toLocaleString('en-US', { maximumFractionDigits: d });
+    };
+    g('sqFeet').textContent = f(area, 2) + ' sq ft';
+    g('sqMetres').textContent = f(m2, 3) + ' m²';
+    g('sqYards').textContent = f(area / 9, 2) + ' sq yd';
+    g('sqAcres').textContent = f(area / 43560, 5) + ' acres  ·  ' + f(m2 / 10000, 5) + ' hectares';
+    g('sqPerimeter').textContent = shape === 'rectangle'
+      ? f(2 * ((parseFloat(g('sqLength').value) || 0) * toFt + (parseFloat(g('sqWidth').value) || 0) * toFt), 2) + ' ft (one shape)'
+      : shape === 'circle' ? f(Math.PI * (parseFloat(g('sqDiameter').value) || 0) * toFt, 2) + ' ft circumference' : '—';
+  }
+  ['sqShape', 'sqUnit', 'sqLength', 'sqWidth', 'sqDiameter', 'sqBase', 'sqHeight', 'sqQty'].forEach(function (id) {
+    g(id).addEventListener('input', calc); g(id).addEventListener('change', calc);
+  });
+  calc();
+})();
+
+// ---- BTU Calculator ----
+(function () {
+  if (!document.getElementById('btuArea')) return;
+  var g = function (id) { return document.getElementById(id); };
+  // Heating load rules of thumb, BTU per square foot, by climate severity.
+  var ZONE = { hot: [30, 35], warm: [35, 40], mod: [40, 45], cool: [45, 50], cold: [50, 60] };
+  function calc() {
+    var imperial = g('btuUnit').value === 'imperial';
+    var area = parseFloat(g('btuArea').value) || 0;
+    var sqft = imperial ? area : area * 10.7639104;
+    var ceiling = parseFloat(g('btuCeiling').value) || 8;   // feet, or metres if metric
+    var ceilFt = imperial ? ceiling : ceiling * 3.280839895;
+    var zone = g('btuZone').value;
+    var insul = parseFloat(g('btuInsulation').value) || 1;
+    var sun = parseFloat(g('btuSun').value) || 1;
+    var people = parseFloat(g('btuPeople').value) || 0;
+
+    if (sqft <= 0) { ['btuCool', 'btuHeat', 'btuTons'].forEach(function (i) { g(i).textContent = '—'; }); return; }
+
+    // Cooling: ~20 BTU/sq ft baseline, scaled for ceiling height above the 8 ft assumption.
+    var heightFactor = ceilFt / 8;
+    var cool = sqft * 20 * heightFactor * insul * sun;
+    cool += Math.max(0, people - 2) * 600;                  // extra occupants beyond two
+    if (g('btuKitchen').checked) cool += 4000;
+
+    var z = ZONE[zone];
+    var heatLo = sqft * z[0] * heightFactor * insul;
+    var heatHi = sqft * z[1] * heightFactor * insul;
+
+    var f = function (v) { return Math.round(v / 100) * 100; };
+    g('btuCool').textContent = f(cool).toLocaleString('en-US') + ' BTU/hr';
+    var tons = Math.round(cool / 12000 * 100) / 100;
+    g('btuTons').textContent = tons + (tons === 1 ? ' ton' : ' tons') + ' of cooling';
+    g('btuHeat').textContent = f(heatLo).toLocaleString('en-US') + ' – ' + f(heatHi).toLocaleString('en-US') + ' BTU/hr';
+    g('btuKw').textContent = (Math.round(cool / 3412.14 * 100) / 100) + ' kW cooling  ·  ' +
+      (Math.round(heatHi / 3412.14 * 100) / 100) + ' kW heating';
+    g('btuNote').textContent = 'These are sizing rules of thumb, not a load calculation. An oversized air conditioner cools fast, short-cycles, and never runs long enough to remove humidity — which is why bigger is not better here.';
+  }
+  ['btuUnit', 'btuArea', 'btuCeiling', 'btuZone', 'btuInsulation', 'btuSun', 'btuPeople', 'btuKitchen'].forEach(function (id) {
+    g(id).addEventListener('input', calc); g(id).addEventListener('change', calc);
+  });
+  calc();
+})();
+
+// ---- Stair Calculator ----
+(function () {
+  if (!document.getElementById('stairRise')) return;
+  var g = function (id) { return document.getElementById(id); };
+  function calc() {
+    var imperial = g('stairUnit').value === 'imperial';
+    var rise = parseFloat(g('stairRise').value) || 0;      // inches or cm
+    var riseIn = imperial ? rise : rise / 2.54;
+    var tread = parseFloat(g('stairTread').value) || 10;
+    var treadIn = imperial ? tread : tread / 2.54;
+
+    if (riseIn <= 0) {
+      ['stairRisers', 'stairRiserH', 'stairTreads', 'stairRun', 'stairAngle', 'stairCode'].forEach(function (i) { g(i).textContent = '—'; });
+      return;
+    }
+    // IRC caps riser height at 7.75 in, so that sets the minimum number of risers.
+    var minRisers = Math.ceil(riseIn / 7.75);
+    var risers = parseInt(g('stairRisers').value, 10);
+    if (!risers || risers < minRisers) { risers = minRisers; g('stairRisers').value = risers; }
+    var riserH = riseIn / risers;
+    var treads = risers - 1;                                 // last riser lands on the floor above
+    var run = treads * treadIn;
+    var angle = Math.atan(riserH / treadIn) * 180 / Math.PI;
+
+    var u = function (v) { return imperial ? (Math.round(v * 1000) / 1000) + ' in' : (Math.round(v * 2.54 * 10) / 10) + ' cm'; };
+    g('stairRiserH').textContent = u(riserH);
+    g('stairTreads').textContent = treads + ' treads';
+    g('stairRun').textContent = u(run) + (imperial ? '  (' + (Math.round(run / 12 * 100) / 100) + ' ft)' : '');
+    g('stairAngle').textContent = (Math.round(angle * 10) / 10) + '°';
+    g('stairStringer').textContent = u(Math.sqrt(run * run + riseIn * riseIn));
+
+    var issues = [];
+    if (riserH > 7.75) issues.push('riser height exceeds the IRC maximum of 7¾ in');
+    if (treadIn < 10) issues.push('tread depth is under the IRC minimum of 10 in');
+    if (riserH < 4) issues.push('riser height is unusually shallow');
+    // 2R + T between 24 and 25 inches is the long-standing comfort rule.
+    var rule = 2 * riserH + treadIn;
+    var code = g('stairCode');
+    if (issues.length) code.textContent = 'Does not meet IRC residential limits: ' + issues.join('; ') + '.';
+    else if (rule < 24 || rule > 25) code.textContent = 'Within IRC limits. The 2×riser + tread comfort rule gives ' +
+      (Math.round(rule * 10) / 10) + ' in — outside the usual 24–25 in, so the stair will feel slightly off underfoot.';
+    else code.textContent = 'Within IRC limits, and the 2×riser + tread rule gives ' + (Math.round(rule * 10) / 10) + ' in — comfortable.';
+  }
+  ['stairUnit', 'stairRise', 'stairTread', 'stairRisers'].forEach(function (id) {
+    g(id).addEventListener('input', calc); g(id).addEventListener('change', calc);
+  });
+  calc();
+})();
+
+// ---- Roofing Calculator ----
+(function () {
+  if (!document.getElementById('roofLength')) return;
+  var g = function (id) { return document.getElementById(id); };
+  function calc() {
+    var imperial = g('roofUnit').value === 'imperial';
+    var toFt = imperial ? 1 : 3.280839895;
+    var L = (parseFloat(g('roofLength').value) || 0) * toFt;
+    var W = (parseFloat(g('roofWidth').value) || 0) * toFt;
+    var pitch = parseFloat(g('roofPitch').value) || 0;       // rise per 12 of run
+    var waste = parseFloat(g('roofWaste').value) || 10;
+
+    var footprint = L * W;
+    // A pitched roof's area is the footprint times sqrt(rise² + 12²)/12.
+    var mult = Math.sqrt(pitch * pitch + 144) / 12;
+    var area = footprint * mult;
+    var areaW = area * (1 + waste / 100);
+    var squares = areaW / 100;
+
+    var f = function (v, d) { return (Math.round(v * Math.pow(10, d)) / Math.pow(10, d)).toLocaleString('en-US', { maximumFractionDigits: d }); };
+    g('roofFootprint').textContent = f(footprint, 1) + ' sq ft  ·  ' + f(footprint * 0.09290304, 1) + ' m²';
+    g('roofMultiplier').textContent = f(mult, 4) + '×  (' + pitch + '/12 pitch, ' +
+      f(Math.atan(pitch / 12) * 180 / Math.PI, 1) + '°)';
+    g('roofArea').textContent = f(area, 1) + ' sq ft  ·  ' + f(area * 0.09290304, 1) + ' m²';
+    g('roofSquares').textContent = f(squares, 2) + ' squares (including ' + waste + '% waste)';
+    g('roofBundles').textContent = Math.ceil(squares * 3) + ' bundles at 3 per square';
+    g('roofNote').textContent = pitch >= 9
+      ? 'At ' + pitch + '/12 this is a steep roof — walking it safely needs staging or a roof jack setup, and waste allowance usually runs higher than 10%.'
+      : pitch <= 2
+        ? 'At ' + pitch + '/12 this is a low-slope roof. Standard asphalt shingles are generally not rated below 2/12, and 2/12 to 4/12 requires a doubled underlayment.'
+        : 'A conventional walkable slope for asphalt shingles.';
+  }
+  ['roofUnit', 'roofLength', 'roofWidth', 'roofPitch', 'roofWaste'].forEach(function (id) {
+    g(id).addEventListener('input', calc); g(id).addEventListener('change', calc);
+  });
+  calc();
+})();
+
+// ---- Tile Calculator ----
+(function () {
+  if (!document.getElementById('tileAreaL')) return;
+  var g = function (id) { return document.getElementById(id); };
+  function calc() {
+    var imperial = g('tileUnit').value === 'imperial';
+    var toFt = imperial ? 1 : 3.280839895;
+    var L = (parseFloat(g('tileAreaL').value) || 0) * toFt;
+    var W = (parseFloat(g('tileAreaW').value) || 0) * toFt;
+    var area = L * W;
+
+    var tl = parseFloat(g('tileLength').value) || 0;         // inches or cm
+    var tw = parseFloat(g('tileWidth').value) || 0;
+    var gap = parseFloat(g('tileGap').value) || 0;           // mm
+    var gapIn = gap / 25.4;
+    var tlIn = imperial ? tl : tl / 2.54;
+    var twIn = imperial ? tw : tw / 2.54;
+    var waste = parseFloat(g('tileWaste').value) || 10;
+
+    if (area <= 0 || tlIn <= 0 || twIn <= 0) {
+      ['tileArea', 'tileCount', 'tileWithWaste', 'tileBoxes', 'tileGrout'].forEach(function (i) { g(i).textContent = '—'; });
+      return;
+    }
+    // Grout lines make each tile occupy slightly more floor than its own size.
+    var effective = ((tlIn + gapIn) * (twIn + gapIn)) / 144;   // sq ft per tile including its share of grout
+    var count = area / effective;
+    var withWaste = Math.ceil(count * (1 + waste / 100));
+    var perBox = parseFloat(g('tilePerBox').value) || 0;
+
+    var f = function (v, d) { return (Math.round(v * Math.pow(10, d)) / Math.pow(10, d)).toLocaleString('en-US', { maximumFractionDigits: d }); };
+    g('tileArea').textContent = f(area, 2) + ' sq ft  ·  ' + f(area * 0.09290304, 2) + ' m²';
+    g('tileCount').textContent = Math.ceil(count) + ' tiles (exact fit)';
+    g('tileWithWaste').textContent = withWaste + ' tiles including ' + waste + '% waste';
+    g('tileBoxes').textContent = perBox > 0 ? Math.ceil(withWaste / perBox) + ' boxes at ' + perBox + ' per box' : 'Enter tiles per box';
+    g('tilePerTile').textContent = f(effective, 4) + ' sq ft each including grout line';
+    g('tileNote').textContent = waste < 10
+      ? 'Under 10% waste is optimistic. Allow 10% for a straight lay, 15% for a diagonal or herringbone pattern, and more for a room with many cuts.'
+      : '';
+  }
+  ['tileUnit', 'tileAreaL', 'tileAreaW', 'tileLength', 'tileWidth', 'tileGap', 'tileWaste', 'tilePerBox'].forEach(function (id) {
+    g(id).addEventListener('input', calc); g(id).addEventListener('change', calc);
+  });
+  calc();
+})();
+
+// ---- Mulch Calculator ----
+(function () {
+  if (!document.getElementById('mulchLength')) return;
+  var g = function (id) { return document.getElementById(id); };
+  function calc() {
+    var imperial = g('mulchUnit').value === 'imperial';
+    var toFt = imperial ? 1 : 3.280839895;
+    var L = (parseFloat(g('mulchLength').value) || 0) * toFt;
+    var W = (parseFloat(g('mulchWidth').value) || 0) * toFt;
+    var depth = parseFloat(g('mulchDepth').value) || 0;
+    var depthFt = imperial ? depth / 12 : depth / 30.48;
+    var area = L * W;
+    var ft3 = area * depthFt;
+    var yd3 = ft3 / 27;
+
+    var f = function (v, d) { return (Math.round(v * Math.pow(10, d)) / Math.pow(10, d)).toLocaleString('en-US', { maximumFractionDigits: d }); };
+    g('mulchArea').textContent = f(area, 1) + ' sq ft  ·  ' + f(area * 0.09290304, 1) + ' m²';
+    g('mulchVolume').textContent = f(ft3, 2) + ' ft³  ·  ' + f(ft3 * 0.028316846592, 3) + ' m³';
+    g('mulchYards').textContent = f(yd3, 2) + ' cubic yards';
+    g('mulchBags2').textContent = Math.ceil(ft3 / 2) + ' bags';
+    g('mulchBags3').textContent = Math.ceil(ft3 / 3) + ' bags';
+    g('mulchCoverage').textContent = 'One cubic yard covers ' + f(27 / depthFt, 0) + ' sq ft at this depth';
+    g('mulchNote').textContent = yd3 >= 2
+      ? 'At ' + f(yd3, 1) + ' cubic yards, bulk delivery is usually cheaper than bags — the crossover is typically around 2 to 3 yards.'
+      : 'At this size bagged mulch is usually simpler; bulk delivery tends to pay off from about 2 to 3 cubic yards.';
+  }
+  ['mulchUnit', 'mulchLength', 'mulchWidth', 'mulchDepth'].forEach(function (id) {
+    g(id).addEventListener('input', calc); g(id).addEventListener('change', calc);
+  });
+  calc();
+})();
+
+// ---- Gravel Calculator ----
+(function () {
+  if (!document.getElementById('gravLength')) return;
+  var g = function (id) { return document.getElementById(id); };
+  // Approximate bulk densities in lb per cubic foot, loose.
+  var MATERIAL = { gravel: 105, crushed: 100, sand: 100, topsoil: 80, riverrock: 100, limestone: 105 };
+  function calc() {
+    var imperial = g('gravUnit').value === 'imperial';
+    var toFt = imperial ? 1 : 3.280839895;
+    var L = (parseFloat(g('gravLength').value) || 0) * toFt;
+    var W = (parseFloat(g('gravWidth').value) || 0) * toFt;
+    var depth = parseFloat(g('gravDepth').value) || 0;
+    var depthFt = imperial ? depth / 12 : depth / 30.48;
+    var area = L * W;
+    var ft3 = area * depthFt;
+    var yd3 = ft3 / 27;
+    var lbPerFt3 = MATERIAL[g('gravMaterial').value] || 105;
+    var lb = ft3 * lbPerFt3;
+
+    var f = function (v, d) { return (Math.round(v * Math.pow(10, d)) / Math.pow(10, d)).toLocaleString('en-US', { maximumFractionDigits: d }); };
+    g('gravArea').textContent = f(area, 1) + ' sq ft  ·  ' + f(area * 0.09290304, 1) + ' m²';
+    g('gravVolume').textContent = f(ft3, 2) + ' ft³  ·  ' + f(ft3 * 0.028316846592, 3) + ' m³';
+    g('gravYards').textContent = f(yd3, 2) + ' cubic yards';
+    g('gravTons').textContent = f(lb / 2000, 2) + ' US tons  ·  ' + f(lb * 0.45359237 / 1000, 2) + ' tonnes';
+    g('gravWeight').textContent = f(lb, 0) + ' lb  ·  ' + f(lb * 0.45359237, 0) + ' kg';
+    g('gravNote').textContent = 'Bulk density varies with stone size, moisture and how well compacted the load is — treat the tonnage as ±10% and order to the yardage where you can.';
+  }
+  ['gravUnit', 'gravLength', 'gravWidth', 'gravDepth', 'gravMaterial'].forEach(function (id) {
+    g(id).addEventListener('input', calc); g(id).addEventListener('change', calc);
+  });
+  calc();
+})();

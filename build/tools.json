@@ -1641,6 +1641,78 @@
       "title": "Period Calculator",
       "icon": "icon-age",
       "blurb": "Six-cycle forecast with ovulation and PMS windows."
+    },
+    {
+      "id": "concrete-calculator",
+      "file": "concrete-calculator.html",
+      "category": "everyday",
+      "navLabel": "CONCRETE",
+      "title": "Concrete Calculator",
+      "icon": "icon-units",
+      "blurb": "Slab, footing or column volume in yards, metres and bags."
+    },
+    {
+      "id": "square-footage-calculator",
+      "file": "square-footage-calculator.html",
+      "category": "everyday",
+      "navLabel": "SQUARE FOOTAGE",
+      "title": "Square Footage Calculator",
+      "icon": "icon-units",
+      "blurb": "Area in sq ft, m², yards, acres and hectares."
+    },
+    {
+      "id": "btu-calculator",
+      "file": "btu-calculator.html",
+      "category": "everyday",
+      "navLabel": "BTU / AC SIZE",
+      "title": "BTU Calculator",
+      "icon": "icon-units",
+      "blurb": "Air conditioner and heating size for a room."
+    },
+    {
+      "id": "stair-calculator",
+      "file": "stair-calculator.html",
+      "category": "everyday",
+      "navLabel": "STAIRS",
+      "title": "Stair Calculator",
+      "icon": "icon-units",
+      "blurb": "Riser, tread, run and stringer, checked against IRC limits."
+    },
+    {
+      "id": "roofing-calculator",
+      "file": "roofing-calculator.html",
+      "category": "everyday",
+      "navLabel": "ROOFING",
+      "title": "Roofing Calculator",
+      "icon": "icon-units",
+      "blurb": "Roof area from footprint and pitch, in squares and bundles."
+    },
+    {
+      "id": "tile-calculator",
+      "file": "tile-calculator.html",
+      "category": "everyday",
+      "navLabel": "TILE",
+      "title": "Tile Calculator",
+      "icon": "icon-units",
+      "blurb": "Tile and box counts, with grout lines actually accounted for."
+    },
+    {
+      "id": "mulch-calculator",
+      "file": "mulch-calculator.html",
+      "category": "everyday",
+      "navLabel": "MULCH",
+      "title": "Mulch Calculator",
+      "icon": "icon-units",
+      "blurb": "Cubic yards and bags for a garden bed at any depth."
+    },
+    {
+      "id": "gravel-calculator",
+      "file": "gravel-calculator.html",
+      "category": "everyday",
+      "navLabel": "GRAVEL",
+      "title": "Gravel Calculator",
+      "icon": "icon-units",
+      "blurb": "Cubic yards and tons of gravel, stone, sand or topsoil."
     }
   ]
 }
