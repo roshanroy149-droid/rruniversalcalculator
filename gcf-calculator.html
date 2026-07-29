@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GCF Calculator — Greatest Common Factor of Any Numbers | TallyBench</title>
+<meta name="description" content="Find the greatest common factor of two or more numbers, with the prime factorisation of each and the LCM alongside it.">
+<link rel="canonical" href="https://tallybench.com/gcf-calculator.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.svg">
+<meta name="theme-color" content="#1C1A17">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="TallyBench">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TallyBench">
+<meta property="og:title" content="GCF Calculator — Greatest Common Factor of Any Numbers">
+<meta property="og:description" content="Find the greatest common factor of two or more numbers, with the prime factorisation of each and the LCM alongside it.">
+<meta property="og:url" content="https://tallybench.com/gcf-calculator.html">
+<meta property="og:image" content="https://tallybench.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="GCF Calculator — Greatest Common Factor of Any Numbers">
+<meta name="twitter:description" content="Find the greatest common factor of two or more numbers, with the prime factorisation of each and the LCM alongside it.">
+<meta name="twitter:image" content="https://tallybench.com/og-image.png">
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="style.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is the difference between GCF, GCD and HCF?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Nothing — they are three names for the same thing. Greatest Common Factor, Greatest Common Divisor and Highest Common Factor all mean the largest number that divides every input exactly. Different countries and textbooks favour different names." }
+    },
+    {
+      "@type": "Question",
+      "name": "Can the GCF be larger than the smallest number?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No, never. Any common factor must divide the smallest number, so it cannot exceed it. If one number divides the other exactly, the GCF is the smaller number itself — the GCF of 12 and 36 is 12." }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the GCF used for?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Reducing fractions to lowest terms is the everyday use: divide numerator and denominator by their GCF and the fraction is fully simplified in one step. It also appears in scheduling, in splitting quantities into equal groups, and throughout cryptography." }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I find the GCF of three or more numbers?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Take it pairwise: find the GCF of the first two, then the GCF of that result with the third, and so on. The order does not matter. This calculator does exactly that." }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "GCF Calculator — TallyBench",
+  "applicationCategory": "EducationalApplication",
+  "operatingSystem": "Any (runs in browser)",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "url": "https://tallybench.com/gcf-calculator.html"
+}
+</script>
+<!-- TB:BREADCRUMB:START -->
+<script type="application/ld+json">
+{
+    "@context":  "https://schema.org",
+    "@type":  "BreadcrumbList",
+    "itemListElement":  [
+                            {
+                                "@type":  "ListItem",
+                                "position":  1,
+                                "name":  "TallyBench",
+                                "item":  "https://tallybench.com/"
+                            },
+                            {
+                                "@type":  "ListItem",
+                                "position":  2,
+                                "name":  "GCF Calculator",
+                                "item":  "https://tallybench.com/gcf-calculator.html"
+                            }
+                        ]
+}
+</script>
+<!-- TB:BREADCRUMB:END -->
+</head>
+<body data-page-cat="education">
+
+<header>
+  <div class="wrap">
+    <div class="headbar">
+      <a class="logo" href="index.html">TALLYBENCH<span>.</span></a>
+      <div class="tagline"><!-- TB:COUNT:START -->
+160 TOOLS · 0 SIGN-UP
+<!-- TB:COUNT:END --></div>
+<button class="nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <!-- TB:NAV:START -->
+  <div class="nav-drawer" id="navDrawer">
+    <div class="nav-drawer-head">
+      <span>Menu</span>
+      <button class="nav-close" id="navClose" type="button" aria-label="Close menu">&#10005;</button>
+    </div>
+    <nav class="ruler cat-ruler" aria-label="Category">
+      <a class="tick" href="index.html">HOME</a>
+      <a class="tick" href="articles.html">ARTICLES</a>
+      <a class="tick" href="book.html">BOOK</a>
+      <a class="tick" href="venstock.html">VENSTOCK</a>
+      <button class="tick cat-tab" type="button" data-cat="finance">FINANCE</button>
+      <button class="tick cat-tab" type="button" data-cat="health">HEALTH</button>
+      <button class="tick cat-tab" type="button" data-cat="education">EDUCATION</button>
+      <button class="tick cat-tab" type="button" data-cat="everyday">EVERYDAY</button>
+    </nav>
+    <nav class="ruler sub-ruler" id="subRuler" aria-label="Tools">
+      <a class="tick sub-tick" data-cat="finance" href="currency-converter.html">CURRENCY</a>
+      <a class="tick sub-tick" data-cat="finance" href="loan-calculator.html">LOAN / EMI</a>
+      <a class="tick sub-tick" data-cat="finance" href="car-loan-calculator.html">CAR LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="mortgage-calculator.html">MORTGAGE</a>
+      <a class="tick sub-tick" data-cat="finance" href="refinance-calculator.html">REFINANCE</a>
+      <a class="tick sub-tick" data-cat="finance" href="rent-vs-buy-calculator.html">RENT VS BUY</a>
+      <a class="tick sub-tick" data-cat="finance" href="tax-calculator.html">TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="paycheck-calculator.html">PAYCHECK</a>
+      <a class="tick sub-tick" data-cat="finance" href="freelancer-tax-calculator-india.html">FREELANCER TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="gst-vat-calculator.html">GST / VAT</a>
+      <a class="tick sub-tick" data-cat="finance" href="investment-calculator.html">INVESTMENT</a>
+      <a class="tick sub-tick" data-cat="finance" href="sip-calculator.html">SIP</a>
+      <a class="tick sub-tick" data-cat="finance" href="compound-interest-calculator.html">COMPOUND INT.</a>
+      <a class="tick sub-tick" data-cat="finance" href="savings-goal-calculator.html">SAVINGS GOAL</a>
+      <a class="tick sub-tick" data-cat="finance" href="retirement-calculator.html">RETIREMENT</a>
+      <a class="tick sub-tick" data-cat="finance" href="net-worth-calculator.html">NET WORTH</a>
+      <a class="tick sub-tick" data-cat="finance" href="discount-calculator.html">DISCOUNT</a>
+      <a class="tick sub-tick" data-cat="finance" href="tip-calculator.html">TIP</a>
+      <a class="tick sub-tick" data-cat="finance" href="fd-calculator.html">FD</a>
+      <a class="tick sub-tick" data-cat="finance" href="rd-calculator.html">RD</a>
+      <a class="tick sub-tick" data-cat="finance" href="ppf-calculator.html">PPF</a>
+      <a class="tick sub-tick" data-cat="finance" href="india-tax-regime-calculator.html">OLD VS NEW REGIME</a>
+      <a class="tick sub-tick" data-cat="finance" href="hra-calculator.html">HRA</a>
+      <a class="tick sub-tick" data-cat="finance" href="gratuity-calculator.html">GRATUITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="epf-calculator.html">EPF</a>
+      <a class="tick sub-tick" data-cat="finance" href="fire-calculator.html">FIRE NUMBER</a>
+      <a class="tick sub-tick" data-cat="finance" href="rsu-vesting-calculator.html">RSU VESTING</a>
+      <a class="tick sub-tick" data-cat="finance" href="cross-country-salary-calculator.html">SALARY BY COUNTRY</a>
+      <a class="tick sub-tick" data-cat="finance" href="currency-fee-calculator.html">FX FEES</a>
+      <a class="tick sub-tick" data-cat="finance" href="zakat-calculator.html">ZAKAT</a>
+      <a class="tick sub-tick" data-cat="finance" href="break-even-calculator.html">BREAK-EVEN</a>
+      <a class="tick sub-tick" data-cat="finance" href="debt-payoff-calculator.html">DEBT PAYOFF</a>
+      <a class="tick sub-tick" data-cat="finance" href="salary-calculator.html">SALARY</a>
+      <a class="tick sub-tick" data-cat="finance" href="sales-tax-calculator.html">SALES TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="cd-calculator.html">CD</a>
+      <a class="tick sub-tick" data-cat="finance" href="amortization-schedule-calculator.html">AMORTIZATION</a>
+      <a class="tick sub-tick" data-cat="finance" href="401k-calculator.html">401(K)</a>
+      <a class="tick sub-tick" data-cat="finance" href="ira-calculator.html">IRA / ROTH</a>
+      <a class="tick sub-tick" data-cat="finance" href="house-affordability-calculator.html">AFFORDABILITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="down-payment-calculator.html">DOWN PAYMENT</a>
+      <a class="tick sub-tick" data-cat="finance" href="debt-to-income-calculator.html">DTI RATIO</a>
+      <a class="tick sub-tick" data-cat="finance" href="simple-interest-calculator.html">SIMPLE INT.</a>
+      <a class="tick sub-tick" data-cat="finance" href="roi-calculator.html">ROI</a>
+      <a class="tick sub-tick" data-cat="finance" href="credit-card-payoff-calculator.html">CC PAYOFF</a>
+      <a class="tick sub-tick" data-cat="finance" href="mortgage-payoff-calculator.html">MTG PAYOFF</a>
+      <a class="tick sub-tick" data-cat="finance" href="rent-affordability-calculator.html">RENT AFFORD</a>
+      <a class="tick sub-tick" data-cat="finance" href="real-estate-investment-calculator.html">REAL ESTATE</a>
+      <a class="tick sub-tick" data-cat="finance" href="rental-property-calculator.html">RENTAL PROPERTY</a>
+      <a class="tick sub-tick" data-cat="finance" href="apr-calculator.html">APR</a>
+      <a class="tick sub-tick" data-cat="finance" href="fha-loan-calculator.html">FHA LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="va-mortgage-calculator.html">VA LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="home-equity-loan-calculator.html">HOME EQUITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="heloc-calculator.html">HELOC</a>
+      <a class="tick sub-tick" data-cat="finance" href="cash-back-or-low-interest-calculator.html">CASH BACK/APR</a>
+      <a class="tick sub-tick" data-cat="finance" href="auto-lease-calculator.html">AUTO LEASE</a>
+      <a class="tick sub-tick" data-cat="finance" href="finance-calculator.html">TVM SOLVER</a>
+      <a class="tick sub-tick" data-cat="finance" href="interest-rate-calculator.html">INT. RATE</a>
+      <a class="tick sub-tick" data-cat="finance" href="bond-calculator.html">BOND</a>
+      <a class="tick sub-tick" data-cat="finance" href="mutual-fund-calculator.html">MUTUAL FUND</a>
+      <a class="tick sub-tick" data-cat="finance" href="average-return-calculator.html">AVG RETURN</a>
+      <a class="tick sub-tick" data-cat="finance" href="irr-calculator.html">IRR</a>
+      <a class="tick sub-tick" data-cat="finance" href="payback-period-calculator.html">PAYBACK PERIOD</a>
+      <a class="tick sub-tick" data-cat="finance" href="present-value-calculator.html">PRESENT VALUE</a>
+      <a class="tick sub-tick" data-cat="finance" href="future-value-calculator.html">FUTURE VALUE</a>
+      <a class="tick sub-tick" data-cat="finance" href="savings-calculator.html">SAVINGS</a>
+      <a class="tick sub-tick" data-cat="finance" href="pension-calculator.html">PENSION</a>
+      <a class="tick sub-tick" data-cat="finance" href="social-security-calculator.html">SOCIAL SECURITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="annuity-calculator.html">ANNUITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="annuity-payout-calculator.html">ANNUITY PAYOUT</a>
+      <a class="tick sub-tick" data-cat="finance" href="rmd-calculator.html">RMD</a>
+      <a class="tick sub-tick" data-cat="finance" href="marriage-tax-calculator.html">MARRIAGE TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="estate-tax-calculator.html">ESTATE TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="inflation-calculator.html">INFLATION</a>
+      <a class="tick sub-tick" data-cat="finance" href="debt-consolidation-calculator.html">DEBT CONSOLIDATION</a>
+      <a class="tick sub-tick" data-cat="finance" href="student-loan-repayment-calculator.html">REPAYMENT PLAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="pslf-calculator.html">PSLF</a>
+      <a class="tick sub-tick" data-cat="finance" href="student-loan-calculator.html">STUDENT LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="college-cost-calculator.html">COLLEGE COST</a>
+      <a class="tick sub-tick" data-cat="finance" href="depreciation-calculator.html">DEPRECIATION</a>
+      <a class="tick sub-tick" data-cat="finance" href="margin-calculator.html">MARGIN</a>
+      <a class="tick sub-tick" data-cat="finance" href="business-loan-calculator.html">BUSINESS LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="personal-loan-calculator.html">PERSONAL LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="boat-loan-calculator.html">BOAT LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="lease-calculator.html">LEASE</a>
+      <a class="tick sub-tick" data-cat="finance" href="budget-calculator.html">BUDGET</a>
+      <a class="tick sub-tick" data-cat="finance" href="commission-calculator.html">COMMISSION</a>
+      <a class="tick sub-tick" data-cat="health" href="bmi-calculator.html">BMI</a>
+      <a class="tick sub-tick" data-cat="health" href="calorie-calculator.html">CALORIE</a>
+      <a class="tick sub-tick" data-cat="health" href="macro-calculator.html">MACROS</a>
+      <a class="tick sub-tick" data-cat="health" href="pregnancy-calculator.html">PREGNANCY</a>
+      <a class="tick sub-tick" data-cat="health" href="ovulation-calculator.html">OVULATION</a>
+      <a class="tick sub-tick" data-cat="health" href="ideal-weight-calculator.html">IDEAL WEIGHT</a>
+      <a class="tick sub-tick" data-cat="health" href="body-fat-calculator.html">BODY FAT</a>
+      <a class="tick sub-tick" data-cat="health" href="army-body-fat-calculator.html">ARMY BODY FAT</a>
+      <a class="tick sub-tick" data-cat="health" href="lean-body-mass-calculator.html">LEAN MASS</a>
+      <a class="tick sub-tick" data-cat="health" href="healthy-weight-calculator.html">HEALTHY WEIGHT</a>
+      <a class="tick sub-tick" data-cat="health" href="calories-burned-calculator.html">CAL BURNED</a>
+      <a class="tick sub-tick" data-cat="health" href="one-rep-max-calculator.html">1RM</a>
+      <a class="tick sub-tick" data-cat="health" href="target-heart-rate-calculator.html">HEART RATE</a>
+      <a class="tick sub-tick" data-cat="health" href="pregnancy-week-calculator.html">PREGNANCY WEEKS</a>
+      <a class="tick sub-tick" data-cat="health" href="pregnancy-weight-gain-calculator.html">PREG. WEIGHT GAIN</a>
+      <a class="tick sub-tick" data-cat="health" href="conception-calculator.html">CONCEPTION</a>
+      <a class="tick sub-tick" data-cat="health" href="sleep-cycle-calculator.html">SLEEP CYCLE</a>
+      <a class="tick sub-tick" data-cat="health" href="water-intake-calculator.html">WATER INTAKE</a>
+      <a class="tick sub-tick" data-cat="health" href="tdee-calculator.html">TDEE</a>
+      <a class="tick sub-tick" data-cat="health" href="protein-calculator.html">PROTEIN</a>
+      <a class="tick sub-tick" data-cat="education" href="gcf-calculator.html">GCF</a>
+      <a class="tick sub-tick" data-cat="education" href="lcm-calculator.html">LCM</a>
+      <a class="tick sub-tick" data-cat="education" href="factor-calculator.html">FACTORS</a>
+      <a class="tick sub-tick" data-cat="education" href="rounding-calculator.html">ROUNDING</a>
+      <a class="tick sub-tick" data-cat="education" href="scientific-notation-calculator.html">SCI. NOTATION</a>
+      <a class="tick sub-tick" data-cat="education" href="big-number-calculator.html">BIG NUMBERS</a>
+      <a class="tick sub-tick" data-cat="education" href="number-sequence-calculator.html">SEQUENCES</a>
+      <a class="tick sub-tick" data-cat="education" href="probability-calculator.html">PROBABILITY</a>
+      <a class="tick sub-tick" data-cat="education" href="matrix-calculator.html">MATRIX</a>
+      <a class="tick sub-tick" data-cat="education" href="circle-calculator.html">CIRCLE</a>
+      <a class="tick sub-tick" data-cat="education" href="area-calculator.html">AREA</a>
+      <a class="tick sub-tick" data-cat="education" href="volume-calculator.html">VOLUME</a>
+      <a class="tick sub-tick" data-cat="education" href="surface-area-calculator.html">SURFACE AREA</a>
+      <a class="tick sub-tick" data-cat="education" href="slope-calculator.html">SLOPE</a>
+      <a class="tick sub-tick" data-cat="education" href="coordinate-distance-calculator.html">COORDINATE DISTANCE</a>
+      <a class="tick sub-tick" data-cat="education" href="pythagorean-theorem-calculator.html">PYTHAGOREAN THEOREM</a>
+      <a class="tick sub-tick" data-cat="education" href="right-triangle-calculator.html">RIGHT TRIANGLE</a>
+      <a class="tick sub-tick" data-cat="education" href="triangle-calculator.html">TRIANGLE</a>
+      <a class="tick sub-tick" data-cat="education" href="gpa-calculator.html">GPA</a>
+      <a class="tick sub-tick" data-cat="education" href="grade-calculator.html">GRADE</a>
+      <a class="tick sub-tick" data-cat="education" href="scientific-calculator.html">SCIENTIFIC</a>
+      <a class="tick sub-tick" data-cat="education" href="fraction-calculator.html">FRACTION</a>
+      <a class="tick sub-tick" data-cat="education" href="statistics-calculator.html">STATISTICS</a>
+      <a class="tick sub-tick" data-cat="education" href="percent-error-calculator.html">% ERROR</a>
+      <a class="tick sub-tick" data-cat="education" href="exponent-calculator.html">EXPONENT</a>
+      <a class="tick sub-tick" data-cat="education" href="binary-calculator.html">BINARY</a>
+      <a class="tick sub-tick" data-cat="education" href="hex-calculator.html">HEX</a>
+      <a class="tick sub-tick" data-cat="education" href="half-life-calculator.html">HALF-LIFE</a>
+      <a class="tick sub-tick" data-cat="education" href="quadratic-formula-calculator.html">QUADRATIC</a>
+      <a class="tick sub-tick" data-cat="education" href="log-calculator.html">LOG</a>
+      <a class="tick sub-tick" data-cat="education" href="ratio-calculator.html">RATIO</a>
+      <a class="tick sub-tick" data-cat="education" href="root-calculator.html">ROOT</a>
+      <a class="tick sub-tick" data-cat="education" href="standard-deviation-calculator.html">STD DEVIATION</a>
+      <a class="tick sub-tick" data-cat="education" href="sample-size-calculator.html">SAMPLE SIZE</a>
+      <a class="tick sub-tick" data-cat="education" href="mean-median-mode-calculator.html">MEAN/MEDIAN/MODE</a>
+      <a class="tick sub-tick" data-cat="education" href="permutation-combination-calculator.html">PERM/COMBO</a>
+      <a class="tick sub-tick" data-cat="education" href="z-score-calculator.html">Z-SCORE</a>
+      <a class="tick sub-tick" data-cat="education" href="confidence-interval-calculator.html">CONFIDENCE INT.</a>
+      <a class="tick sub-tick" data-cat="everyday" href="basic-calculator.html">CALCULATOR</a>
+      <a class="tick sub-tick" data-cat="everyday" href="percentage-calculator.html">PERCENT</a>
+      <a class="tick sub-tick" data-cat="everyday" href="age-calculator.html">AGE</a>
+      <a class="tick sub-tick" data-cat="everyday" href="days-calculator.html">DAYS</a>
+      <a class="tick sub-tick" data-cat="everyday" href="time-calculator.html">TIME</a>
+      <a class="tick sub-tick" data-cat="everyday" href="unit-converter.html">UNITS</a>
+      <a class="tick sub-tick" data-cat="everyday" href="week-number-calculator.html">WEEK #</a>
+      <a class="tick sub-tick" data-cat="everyday" href="cm-to-inches.html">CM→IN</a>
+      <a class="tick sub-tick" data-cat="everyday" href="kg-to-pounds.html">KG→LB</a>
+      <a class="tick sub-tick" data-cat="everyday" href="celsius-to-fahrenheit.html">°C→°F</a>
+      <a class="tick sub-tick" data-cat="everyday" href="password-generator.html">PASSWORD</a>
+      <a class="tick sub-tick" data-cat="everyday" href="random-number-generator.html">RANDOM #</a>
+      <a class="tick sub-tick" data-cat="everyday" href="word-counter.html">WORD COUNT</a>
+      <a class="tick sub-tick" data-cat="everyday" href="pace-calculator.html">PACE</a>
+      <a class="tick sub-tick" data-cat="everyday" href="bill-split-calculator.html">BILL SPLIT</a>
+      <a class="tick sub-tick" data-cat="everyday" href="fuel-cost-calculator.html">FUEL COST</a>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+    </nav>
+  </div>
+  <!-- TB:NAV:END -->
+</header>
+<div class="nav-backdrop" id="navBackdrop"></div>
+
+<div class="wrap">
+  <div class="crumb"><a href="index.html">TallyBench</a> / GCF Calculator</div>
+
+  <section class="hero">
+    <div class="hero-icon-row cat-education">
+      <div class="hero-icon"><svg><use href="icons.svg#icon-scientific"/></svg></div>
+      <div class="eyebrow">// GREATEST COMMON FACTOR</div>
+    </div>
+    <h1>The largest number that divides all of them.</h1>
+    <p>Enter two or more numbers separated by commas. You get the GCF, the LCM, and the prime factorisation behind the answer.</p>
+  </section>
+
+  <section class="tool" id="gcfcalc">
+    <div class="card">
+      <div>
+        <div class="field"><label for="gcfInput">Numbers (comma separated)</label><input type="text" id="gcfInput" value="48, 180, 210"></div>
+      </div>
+      <div class="readout">
+        <div class="r-row"><span class="r-label">Greatest common factor</span><span class="r-value" id="gcfResult">—</span></div>
+        <div class="r-row"><span class="r-label">Least common multiple</span><span class="r-value" id="gcfLcm">—</span></div>
+        <div class="r-row"><span class="r-label">Coprime?</span><span class="r-value" id="gcfCoprime">—</span></div>
+        <div class="r-row"><span class="r-label">Prime factorisations</span><span class="r-value" id="gcfFactorisations">—</span></div>
+      </div>
+    </div>
+
+  </section>
+
+  <section class="article">
+    <h3>How the GCF is actually found</h3>
+    <p>Listing every factor of both numbers and picking the biggest shared one works, but it is slow. Two better methods:</p>
+    <p><strong>Prime factorisation.</strong> Break each number into primes and take every prime they share, at the lowest power each appears. 48 = 2⁴ × 3 and 180 = 2² × 3² × 5. They share 2² and 3, so the GCF is 4 × 3 = <strong>12</strong>.</p>
+    <p><strong>The Euclidean algorithm.</strong> Repeatedly replace the larger number with the remainder of dividing it by the smaller, until the remainder is zero. 180 ÷ 48 leaves 36; 48 ÷ 36 leaves 12; 36 ÷ 12 leaves 0, so the answer is 12. It is over two thousand years old, it is what this calculator uses, and it is still the fastest known method — it needs no factorisation at all, which matters enormously for large numbers.</p>
+    <h3>The relationship with the LCM</h3>
+    <p>For exactly two numbers, <strong>GCF × LCM = a × b</strong>. For 48 and 180: 12 × 720 = 8,640, and 48 × 180 = 8,640. Find one and the other falls out by division. The identity does <em>not</em> extend to three or more numbers, which is a common mistake.</p>
+    <h3>Coprime numbers</h3>
+    <p>When the GCF is 1 the numbers are <strong>coprime</strong> — they share no factor other than one. They need not be prime themselves: 8 and 9 are coprime despite both being composite. Coprimality is what makes a fraction fully reduced, and it underpins RSA encryption, where the security rests on how hard it is to factor a large number even though finding its GCF with another is easy.</p>
+    <h3>What is the difference between GCF, GCD and HCF?</h3>
+    <p>Nothing — they are three names for the same thing. Greatest Common Factor, Greatest Common Divisor and Highest Common Factor all mean the largest number that divides every input exactly. Different countries and textbooks favour different names.</p>
+    <h3>Can the GCF be larger than the smallest number?</h3>
+    <p>No, never. Any common factor must divide the smallest number, so it cannot exceed it. If one number divides the other exactly, the GCF is the smaller number itself — the GCF of 12 and 36 is 12.</p>
+    <h3>What is the GCF used for?</h3>
+    <p>Reducing fractions to lowest terms is the everyday use: divide numerator and denominator by their GCF and the fraction is fully simplified in one step. It also appears in scheduling, in splitting quantities into equal groups, and throughout cryptography.</p>
+    <h3>How do I find the GCF of three or more numbers?</h3>
+    <p>Take it pairwise: find the GCF of the first two, then the GCF of that result with the third, and so on. The order does not matter. This calculator does exactly that.</p>
+  </section>
+
+  <p style="font-size:13px;color:rgba(242,236,221,0.55);margin:0 0 24px;">The <a href="lcm-calculator.html">LCM Calculator</a> handles the other half of the pair, and the <a href="factor-calculator.html">Factor Calculator</a> lists every factor of a single number with its prime breakdown. To reduce a fraction using the result, use the <a href="fraction-calculator.html">Fraction Calculator</a>.</p>
+
+  <footer>
+    <p>TALLYBENCH · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
+  </footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

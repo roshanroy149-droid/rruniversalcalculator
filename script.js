@@ -11157,3 +11157,383 @@ function tbMoney(n){
   ['trX', 'trY', 'trZ', 'trMode'].forEach(function (id) { g(id).addEventListener('input', calc); g(id).addEventListener('change', calc); });
   calc();
 })();
+
+// ================= Number theory cluster =================
+
+// ---- shared-free helpers live inside each IIFE; no top-level names ----
+
+// ---- GCF / GCD Calculator ----
+(function () {
+  if (!document.getElementById('gcfInput')) return;
+  var g = function (id) { return document.getElementById(id); };
+  function gcd(a, b) { while (b) { var t = b; b = a % b; a = t; } return a; }
+  function parse(s) {
+    return (s || '').split(/[^0-9.\-]+/).map(function (x) { return Math.abs(Math.round(parseFloat(x))); })
+      .filter(function (n) { return isFinite(n) && n > 0; });
+  }
+  function primeFactors(n) {
+    var out = [], d = 2;
+    while (d * d <= n) { while (n % d === 0) { out.push(d); n /= d; } d++; }
+    if (n > 1) out.push(n);
+    return out;
+  }
+  function fmtFactorisation(n) {
+    if (n < 2) return String(n);
+    var f = primeFactors(n), counts = {};
+    f.forEach(function (p) { counts[p] = (counts[p] || 0) + 1; });
+    return Object.keys(counts).map(function (p) { return counts[p] > 1 ? p + '^' + counts[p] : p; }).join(' × ');
+  }
+  function calc() {
+    var nums = parse(g('gcfInput').value);
+    if (nums.length < 2) {
+      ['gcfResult', 'gcfLcm', 'gcfCoprime', 'gcfFactorisations'].forEach(function (id) { g(id).textContent = '—'; });
+      return;
+    }
+    var G = nums.reduce(gcd);
+    var L = nums.reduce(function (a, b) { return a / gcd(a, b) * b; });
+    g('gcfResult').textContent = G.toLocaleString('en-US');
+    g('gcfLcm').textContent = isFinite(L) ? L.toLocaleString('en-US') : 'too large';
+    g('gcfCoprime').textContent = G === 1 ? 'Yes — they share no common factor' : 'No — they share ' + G;
+    g('gcfFactorisations').textContent = nums.map(function (n) { return n + ' = ' + fmtFactorisation(n); }).join('   ·   ');
+  }
+  g('gcfInput').addEventListener('input', calc);
+  calc();
+})();
+
+// ---- LCM Calculator ----
+(function () {
+  if (!document.getElementById('lcmInput')) return;
+  var g = function (id) { return document.getElementById(id); };
+  function gcd(a, b) { while (b) { var t = b; b = a % b; a = t; } return a; }
+  function calc() {
+    var nums = (g('lcmInput').value || '').split(/[^0-9]+/).map(Number)
+      .filter(function (n) { return isFinite(n) && n > 0; });
+    if (nums.length < 2) {
+      ['lcmResult', 'lcmGcf', 'lcmProduct', 'lcmCheck'].forEach(function (id) { g(id).textContent = '—'; });
+      return;
+    }
+    var G = nums.reduce(gcd);
+    var L = nums.reduce(function (a, b) { return a / gcd(a, b) * b; });
+    g('lcmResult').textContent = isFinite(L) ? L.toLocaleString('en-US') : 'too large to display';
+    g('lcmGcf').textContent = G.toLocaleString('en-US');
+    if (nums.length === 2) {
+      g('lcmProduct').textContent = (nums[0] * nums[1]).toLocaleString('en-US');
+      g('lcmCheck').textContent = 'GCF × LCM = ' + (G * L).toLocaleString('en-US') + ', which equals a × b';
+    } else {
+      g('lcmProduct').textContent = 'n/a for more than two numbers';
+      g('lcmCheck').textContent = 'The GCF × LCM identity only holds for exactly two numbers';
+    }
+  }
+  g('lcmInput').addEventListener('input', calc);
+  calc();
+})();
+
+// ---- Factor Calculator ----
+(function () {
+  if (!document.getElementById('facInput')) return;
+  var g = function (id) { return document.getElementById(id); };
+  function calc() {
+    var n = Math.abs(Math.round(parseFloat(g('facInput').value)));
+    if (!isFinite(n) || n < 1 || n > 1e12) {
+      ['facFactors', 'facCount', 'facPrime', 'facIsPrime', 'facSum'].forEach(function (id) { g(id).textContent = '—'; });
+      if (n > 1e12) g('facFactors').textContent = 'Enter a number under 1 trillion';
+      return;
+    }
+    var factors = [], i;
+    for (i = 1; i * i <= n; i++) {
+      if (n % i === 0) { factors.push(i); if (i !== n / i) factors.push(n / i); }
+    }
+    factors.sort(function (a, b) { return a - b; });
+    var pf = [], d = 2, m = n;
+    while (d * d <= m) { while (m % d === 0) { pf.push(d); m /= d; } d++; }
+    if (m > 1) pf.push(m);
+    var counts = {};
+    pf.forEach(function (p) { counts[p] = (counts[p] || 0) + 1; });
+    var pfStr = Object.keys(counts).map(function (p) { return counts[p] > 1 ? p + '^' + counts[p] : p; }).join(' × ');
+
+    g('facFactors').textContent = factors.length > 60
+      ? factors.slice(0, 60).join(', ') + ' … (' + factors.length + ' total)'
+      : factors.join(', ');
+    g('facCount').textContent = factors.length + (factors.length === 1 ? ' factor' : ' factors');
+    g('facPrime').textContent = n < 2 ? 'n/a' : pfStr;
+    g('facIsPrime').textContent = n < 2 ? 'Neither prime nor composite'
+      : (factors.length === 2 ? 'Prime' : 'Composite');
+    g('facSum').textContent = factors.reduce(function (a, b) { return a + b; }, 0).toLocaleString('en-US');
+  }
+  g('facInput').addEventListener('input', calc);
+  calc();
+})();
+
+// ---- Rounding Calculator ----
+(function () {
+  if (!document.getElementById('rndInput')) return;
+  var g = function (id) { return document.getElementById(id); };
+  function sigFig(n, d) {
+    if (n === 0) return 0;
+    var mag = Math.ceil(Math.log10(Math.abs(n)));
+    var power = d - mag;
+    var factor = Math.pow(10, power);
+    return Math.round(n * factor) / factor;
+  }
+  function calc() {
+    var n = parseFloat(g('rndInput').value);
+    var places = parseInt(g('rndPlaces').value, 10);
+    var nearest = parseFloat(g('rndNearest').value);
+    if (!isFinite(n)) { ['rndDecimals', 'rndSig', 'rndNearestOut', 'rndUp', 'rndDown', 'rndHalfEven'].forEach(function (id) { g(id).textContent = '—'; }); return; }
+    var f = Math.pow(10, isFinite(places) ? places : 2);
+    // Show the requested number of decimal places rather than trimming trailing
+    // zeros — "0.00" states the precision, where "0" hides it. norm() also
+    // turns JavaScript's negative zero back into plain 0.
+    var dp = isFinite(places) && places >= 0 && places <= 20 ? places : 2;
+    var norm = function (x) { return Object.is(x, -0) ? 0 : x; };
+    g('rndDecimals').textContent = norm(Math.round(n * f) / f)
+      .toLocaleString('en-US', { minimumFractionDigits: dp, maximumFractionDigits: 20 });
+    g('rndSig').textContent = isFinite(places) && places > 0 ? String(sigFig(n, places)) : '—';
+    g('rndNearestOut').textContent = isFinite(nearest) && nearest > 0
+      ? norm(Math.round(n / nearest) * nearest).toLocaleString('en-US', { maximumFractionDigits: 20 }) : '—';
+    g('rndUp').textContent = (Math.ceil(n * f) / f).toLocaleString('en-US', { maximumFractionDigits: 20 });
+    g('rndDown').textContent = (Math.floor(n * f) / f).toLocaleString('en-US', { maximumFractionDigits: 20 });
+    // banker's rounding (round half to even)
+    var scaled = n * f, r = Math.round(scaled);
+    if (Math.abs(scaled % 1) === 0.5 && r % 2 !== 0) r -= 1;
+    g('rndHalfEven').textContent = (r / f).toLocaleString('en-US', { maximumFractionDigits: 20 });
+  }
+  ['rndInput', 'rndPlaces', 'rndNearest'].forEach(function (id) { g(id).addEventListener('input', calc); });
+  calc();
+})();
+
+// ---- Scientific Notation Calculator ----
+(function () {
+  if (!document.getElementById('sciNotInput')) return;
+  var g = function (id) { return document.getElementById(id); };
+  function calc() {
+    var raw = (g('sciNotInput').value || '').trim().replace(/\s*[×x]\s*10\s*\^?\s*/i, 'e').replace(/\s+/g, '');
+    var n = Number(raw);
+    if (raw === '' || !isFinite(n)) {
+      ['sciNotSci', 'sciNotE', 'sciNotEng', 'sciNotDecimal', 'sciNotOrder'].forEach(function (id) { g(id).textContent = '—'; });
+      return;
+    }
+    if (n === 0) {
+      g('sciNotSci').textContent = '0'; g('sciNotE').textContent = '0e0';
+      g('sciNotEng').textContent = '0'; g('sciNotDecimal').textContent = '0';
+      g('sciNotOrder').textContent = 'n/a — zero has no order of magnitude';
+      return;
+    }
+    var exp = Math.floor(Math.log10(Math.abs(n)));
+    var mant = n / Math.pow(10, exp);
+    // guard against float drift pushing the mantissa to 10
+    if (Math.abs(mant) >= 10) { mant /= 10; exp += 1; }
+    if (Math.abs(mant) < 1) { mant *= 10; exp -= 1; }
+    var engExp = Math.floor(exp / 3) * 3;
+    var engMant = n / Math.pow(10, engExp);
+
+    g('sciNotSci').textContent = (Math.round(mant * 1e6) / 1e6) + ' × 10^' + exp;
+    g('sciNotE').textContent = (Math.round(mant * 1e6) / 1e6) + 'e' + exp;
+    g('sciNotEng').textContent = (Math.round(engMant * 1e6) / 1e6) + ' × 10^' + engExp;
+    g('sciNotDecimal').textContent = Math.abs(exp) > 20 ? n.toExponential() : n.toLocaleString('en-US', { maximumFractionDigits: 20 });
+    g('sciNotOrder').textContent = String(exp);
+  }
+  g('sciNotInput').addEventListener('input', calc);
+  calc();
+})();
+
+// ---- Big Number Calculator (arbitrary precision via BigInt) ----
+(function () {
+  if (!document.getElementById('bigA')) return;
+  var g = function (id) { return document.getElementById(id); };
+  function clean(s) { return (s || '').replace(/[,\s_]/g, ''); }
+  function calc() {
+    var as = clean(g('bigA').value), bs = clean(g('bigB').value), op = g('bigOp').value;
+    var out = g('bigResult'), digits = g('bigDigits'), note = g('bigNote');
+    if (!/^-?\d+$/.test(as) || (op !== 'fact' && !/^-?\d+$/.test(bs))) {
+      out.textContent = '—'; digits.textContent = '—';
+      note.textContent = as || bs ? 'Whole numbers only — BigInt cannot represent decimals.' : '';
+      return;
+    }
+    var a, b, r;
+    try {
+      a = BigInt(as); b = op === 'fact' ? 0n : BigInt(bs);
+      if (op === 'add') r = a + b;
+      else if (op === 'sub') r = a - b;
+      else if (op === 'mul') r = a * b;
+      else if (op === 'div') { if (b === 0n) { out.textContent = 'Division by zero'; digits.textContent = '—'; note.textContent = ''; return; } r = a / b; }
+      else if (op === 'mod') { if (b === 0n) { out.textContent = 'Division by zero'; digits.textContent = '—'; note.textContent = ''; return; } r = a % b; }
+      else if (op === 'pow') {
+        if (b < 0n) { out.textContent = 'Negative exponents give fractions, which BigInt cannot hold'; digits.textContent = '—'; note.textContent = ''; return; }
+        if (b > 100000n) { out.textContent = 'Exponent too large'; digits.textContent = '—'; note.textContent = ''; return; }
+        r = a ** b;
+      } else if (op === 'fact') {
+        if (a < 0n || a > 10000n) { out.textContent = 'Factorial is defined for 0 to 10,000 here'; digits.textContent = '—'; note.textContent = ''; return; }
+        r = 1n; for (var i = 2n; i <= a; i++) r *= i;
+      }
+    } catch (e) { out.textContent = 'Could not compute'; digits.textContent = '—'; note.textContent = ''; return; }
+    var s = r.toString();
+    out.textContent = s.length > 2000 ? s.slice(0, 2000) + '… (truncated for display)' : s;
+    digits.textContent = (s.replace('-', '').length) + ' digits';
+    var exact = Number(s);
+    note.textContent = (s.replace('-', '').length > 15)
+      ? 'This exceeds what a normal JavaScript number can hold exactly — a standard calculator would return ' + exact.toExponential(6) + ' and lose the trailing digits.'
+      : '';
+  }
+  ['bigA', 'bigB', 'bigOp'].forEach(function (id) { g(id).addEventListener('input', calc); g(id).addEventListener('change', calc); });
+  g('bigOp').addEventListener('change', function () {
+    g('bigB').closest('.field').style.display = g('bigOp').value === 'fact' ? 'none' : '';
+  });
+  calc();
+})();
+
+// ---- Number Sequence Calculator ----
+(function () {
+  if (!document.getElementById('seqType')) return;
+  var g = function (id) { return document.getElementById(id); };
+  var f = function (n) { return isFinite(n) ? (Math.round(n * 1e6) / 1e6).toLocaleString('en-US') : '—'; };
+  function calc() {
+    var type = g('seqType').value;
+    var a = parseFloat(g('seqFirst').value);
+    var d = parseFloat(g('seqStep').value);
+    var n = Math.max(1, Math.min(Math.round(parseFloat(g('seqN').value) || 10), 200));
+
+    g('seqStep').closest('.field').style.display = type === 'fib' ? 'none' : '';
+    g('seqStepLabel').textContent = type === 'geometric' ? 'Common ratio (r)' : 'Common difference (d)';
+
+    var terms = [], nth = NaN, sum = NaN;
+    if (type === 'arithmetic' && isFinite(a) && isFinite(d)) {
+      for (var i = 0; i < n; i++) terms.push(a + i * d);
+      nth = a + (n - 1) * d;
+      sum = n / 2 * (2 * a + (n - 1) * d);
+    } else if (type === 'geometric' && isFinite(a) && isFinite(d)) {
+      for (var j = 0; j < n; j++) terms.push(a * Math.pow(d, j));
+      nth = a * Math.pow(d, n - 1);
+      sum = d === 1 ? a * n : a * (1 - Math.pow(d, n)) / (1 - d);
+    } else if (type === 'fib') {
+      var x = isFinite(a) ? a : 0, y = isFinite(a) ? a + 1 : 1;
+      if (!isFinite(a)) { x = 0; y = 1; }
+      for (var k = 0; k < n; k++) { terms.push(x); var t = x + y; x = y; y = t; }
+      nth = terms[terms.length - 1];
+      sum = terms.reduce(function (p, q) { return p + q; }, 0);
+    }
+    g('seqTerms').textContent = terms.length ? terms.map(f).join(', ') : '—';
+    g('seqNth').textContent = f(nth);
+    g('seqSum').textContent = f(sum);
+    g('seqFormula').textContent =
+      type === 'arithmetic' ? 'aₙ = a + (n−1)d' :
+      type === 'geometric' ? 'aₙ = a · r^(n−1)' :
+      'aₙ = aₙ₋₁ + aₙ₋₂';
+  }
+  ['seqType', 'seqFirst', 'seqStep', 'seqN'].forEach(function (id) {
+    g(id).addEventListener('input', calc); g(id).addEventListener('change', calc);
+  });
+  calc();
+})();
+
+// ---- Probability Calculator ----
+(function () {
+  if (!document.getElementById('prbA')) return;
+  var g = function (id) { return document.getElementById(id); };
+  var pct = function (n) { return isFinite(n) ? (Math.round(n * 1e6) / 1e6) + '  (' + (Math.round(n * 1e4) / 100) + '%)' : '—'; };
+  function calc() {
+    var pa = parseFloat(g('prbA').value), pb = parseFloat(g('prbB').value);
+    var note = g('prbNote');
+    if (!isFinite(pa) || !isFinite(pb) || pa < 0 || pa > 1 || pb < 0 || pb > 1) {
+      ['prbNotA', 'prbAnd', 'prbOr', 'prbXor', 'prbNeither', 'prbCond'].forEach(function (id) { g(id).textContent = '—'; });
+      note.textContent = (isFinite(pa) && (pa < 0 || pa > 1)) || (isFinite(pb) && (pb < 0 || pb > 1))
+        ? 'A probability must be between 0 and 1.' : '';
+      return;
+    }
+    var and = pa * pb;                 // independent events
+    var or = pa + pb - and;
+    g('prbNotA').textContent = pct(1 - pa);
+    g('prbAnd').textContent = pct(and);
+    g('prbOr').textContent = pct(or);
+    g('prbXor').textContent = pct(pa + pb - 2 * and);
+    g('prbNeither').textContent = pct((1 - pa) * (1 - pb));
+    g('prbCond').textContent = pb === 0 ? 'undefined (B cannot occur)' : pct(and / pb);
+    note.textContent = 'These assume A and B are independent — one happening does not change the odds of the other. If they are dependent, P(A and B) is not simply P(A) × P(B).';
+  }
+  ['prbA', 'prbB'].forEach(function (id) { g(id).addEventListener('input', calc); });
+  calc();
+})();
+
+// ---- Matrix Calculator ----
+(function () {
+  if (!document.getElementById('matSize')) return;
+  var g = function (id) { return document.getElementById(id); };
+  var f = function (n) { return (Math.round(n * 1e4) / 1e4).toLocaleString('en-US'); };
+  function read(which, size) {
+    var m = [];
+    for (var r = 0; r < size; r++) {
+      m.push([]);
+      for (var c = 0; c < size; c++) {
+        var el = g('mat' + which + r + c);
+        m[r].push(el ? (parseFloat(el.value) || 0) : 0);
+      }
+    }
+    return m;
+  }
+  function det(m) {
+    if (m.length === 2) return m[0][0] * m[1][1] - m[0][1] * m[1][0];
+    return m[0][0] * (m[1][1] * m[2][2] - m[1][2] * m[2][1])
+         - m[0][1] * (m[1][0] * m[2][2] - m[1][2] * m[2][0])
+         + m[0][2] * (m[1][0] * m[2][1] - m[1][1] * m[2][0]);
+  }
+  function inverse(m) {
+    var d = det(m);
+    if (Math.abs(d) < 1e-12) return null;
+    var n = m.length, out = [];
+    if (n === 2) {
+      out = [[m[1][1] / d, -m[0][1] / d], [-m[1][0] / d, m[0][0] / d]];
+    } else {
+      var cof = [];
+      for (var r = 0; r < 3; r++) {
+        cof.push([]);
+        for (var c = 0; c < 3; c++) {
+          var sub = [];
+          for (var i = 0; i < 3; i++) { if (i === r) continue; var row = []; for (var j = 0; j < 3; j++) { if (j === c) continue; row.push(m[i][j]); } sub.push(row); }
+          cof[r].push(((r + c) % 2 ? -1 : 1) * (sub[0][0] * sub[1][1] - sub[0][1] * sub[1][0]));
+        }
+      }
+      for (var a = 0; a < 3; a++) { out.push([]); for (var b = 0; b < 3; b++) out[a].push(cof[b][a] / d); }
+    }
+    return out;
+  }
+  function show(m) {
+    if (!m) return 'not invertible (determinant is zero)';
+    return m.map(function (row) { return '[ ' + row.map(f).join('   ') + ' ]'; }).join('\n');
+  }
+  function render() {
+    var size = parseInt(g('matSize').value, 10);
+    ['A', 'B'].forEach(function (w) {
+      var grid = g('matGrid' + w);
+      grid.innerHTML = '';
+      grid.style.gridTemplateColumns = 'repeat(' + size + ', minmax(0,1fr))';
+      for (var r = 0; r < size; r++) for (var c = 0; c < size; c++) {
+        var inp = document.createElement('input');
+        inp.type = 'number'; inp.step = 'any'; inp.id = 'mat' + w + r + c;
+        inp.value = (w === 'A' ? (r === c ? 1 : 0) : (r === c ? 2 : 1));
+        inp.setAttribute('aria-label', 'Matrix ' + w + ' row ' + (r + 1) + ' column ' + (c + 1));
+        inp.addEventListener('input', calc);
+        grid.appendChild(inp);
+      }
+    });
+    calc();
+  }
+  function calc() {
+    var size = parseInt(g('matSize').value, 10);
+    var op = g('matOp').value;
+    var A = read('A', size), B = read('B', size);
+    var res = [], r, c, k, s;
+    if (op === 'add' || op === 'sub') {
+      for (r = 0; r < size; r++) { res.push([]); for (c = 0; c < size; c++) res[r].push(op === 'add' ? A[r][c] + B[r][c] : A[r][c] - B[r][c]); }
+    } else if (op === 'mul') {
+      for (r = 0; r < size; r++) { res.push([]); for (c = 0; c < size; c++) { s = 0; for (k = 0; k < size; k++) s += A[r][k] * B[k][c]; res[r].push(s); } }
+    } else if (op === 'invA') {
+      res = inverse(A);
+    }
+    g('matResult').textContent = op === 'invA' ? show(res) : show(res);
+    g('matDetA').textContent = f(det(A));
+    g('matDetB').textContent = f(det(B));
+    g('matGridB').closest('.field').style.display = op === 'invA' ? 'none' : '';
+  }
+  ['matSize', 'matOp'].forEach(function (id) { g(id).addEventListener('change', function () { render(); }); });
+  render();
+})();
