@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Volume Calculator — Cube, Box, Cylinder, Sphere, Cone &amp; Pyramid | TallyBench</title>
+<meta name="description" content="Volume and surface area for six common solids, with the formulas and the cube-law relationship explained.">
+<link rel="canonical" href="https://tallybench.com/volume-calculator.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.svg">
+<meta name="theme-color" content="#1C1A17">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="TallyBench">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TallyBench">
+<meta property="og:title" content="Volume Calculator — Cube, Box, Cylinder, Sphere, Cone &amp; Pyramid">
+<meta property="og:description" content="Volume and surface area for six common solids, with the formulas and the cube-law relationship explained.">
+<meta property="og:url" content="https://tallybench.com/volume-calculator.html">
+<meta property="og:image" content="https://tallybench.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Volume Calculator — Cube, Box, Cylinder, Sphere, Cone &amp; Pyramid">
+<meta name="twitter:description" content="Volume and surface area for six common solids, with the formulas and the cube-law relationship explained.">
+<meta name="twitter:image" content="https://tallybench.com/og-image.png">
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="style.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Why is a cone one third of a cylinder?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Because integrating the cross-sectional area of a shape that tapers linearly to a point yields exactly a third of the constant-area case. The same reasoning gives a pyramid one third of its prism. You can demonstrate it physically: three cone-fulls of water fill the matching cylinder exactly." }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I convert cubic metres to litres?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Multiply by 1,000 — one cubic metre is exactly 1,000 litres. For cubic feet to gallons, multiply by 7.4805 for US gallons or 6.2288 for imperial." }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does the pyramid have no surface area here?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Because a pyramid’s surface area depends on the slant heights of its faces, which are not determined by base length, base width and vertical height alone unless the pyramid is right and regular. Quoting a single figure would be wrong for most inputs." }
+    },
+    {
+      "@type": "Question",
+      "name": "What does the square-cube law mean in practice?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Volume rises with the cube of scale while surface area rises with the square. Doubling a shape gives eight times the volume but only four times the surface, which is why heat loss, structural loading and material costs do not scale in step with size." }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Volume Calculator — TallyBench",
+  "applicationCategory": "EducationalApplication",
+  "operatingSystem": "Any (runs in browser)",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "url": "https://tallybench.com/volume-calculator.html"
+}
+</script>
+<!-- TB:BREADCRUMB:START -->
+<script type="application/ld+json">
+{
+    "@context":  "https://schema.org",
+    "@type":  "BreadcrumbList",
+    "itemListElement":  [
+                            {
+                                "@type":  "ListItem",
+                                "position":  1,
+                                "name":  "TallyBench",
+                                "item":  "https://tallybench.com/"
+                            },
+                            {
+                                "@type":  "ListItem",
+                                "position":  2,
+                                "name":  "Volume Calculator",
+                                "item":  "https://tallybench.com/volume-calculator.html"
+                            }
+                        ]
+}
+</script>
+<!-- TB:BREADCRUMB:END -->
+</head>
+<body data-page-cat="education">
+
+<header>
+  <div class="wrap">
+    <div class="headbar">
+      <a class="logo" href="index.html">TALLYBENCH<span>.</span></a>
+      <div class="tagline"><!-- TB:COUNT:START -->
+151 TOOLS · 0 SIGN-UP
+<!-- TB:COUNT:END --></div>
+<button class="nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <!-- TB:NAV:START -->
+  <div class="nav-drawer" id="navDrawer">
+    <div class="nav-drawer-head">
+      <span>Menu</span>
+      <button class="nav-close" id="navClose" type="button" aria-label="Close menu">&#10005;</button>
+    </div>
+    <nav class="ruler cat-ruler" aria-label="Category">
+      <a class="tick" href="index.html">HOME</a>
+      <a class="tick" href="articles.html">ARTICLES</a>
+      <a class="tick" href="book.html">BOOK</a>
+      <a class="tick" href="venstock.html">VENSTOCK</a>
+      <button class="tick cat-tab" type="button" data-cat="finance">FINANCE</button>
+      <button class="tick cat-tab" type="button" data-cat="health">HEALTH</button>
+      <button class="tick cat-tab" type="button" data-cat="education">EDUCATION</button>
+      <button class="tick cat-tab" type="button" data-cat="everyday">EVERYDAY</button>
+    </nav>
+    <nav class="ruler sub-ruler" id="subRuler" aria-label="Tools">
+      <a class="tick sub-tick" data-cat="finance" href="currency-converter.html">CURRENCY</a>
+      <a class="tick sub-tick" data-cat="finance" href="loan-calculator.html">LOAN / EMI</a>
+      <a class="tick sub-tick" data-cat="finance" href="car-loan-calculator.html">CAR LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="mortgage-calculator.html">MORTGAGE</a>
+      <a class="tick sub-tick" data-cat="finance" href="refinance-calculator.html">REFINANCE</a>
+      <a class="tick sub-tick" data-cat="finance" href="rent-vs-buy-calculator.html">RENT VS BUY</a>
+      <a class="tick sub-tick" data-cat="finance" href="tax-calculator.html">TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="paycheck-calculator.html">PAYCHECK</a>
+      <a class="tick sub-tick" data-cat="finance" href="freelancer-tax-calculator-india.html">FREELANCER TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="gst-vat-calculator.html">GST / VAT</a>
+      <a class="tick sub-tick" data-cat="finance" href="investment-calculator.html">INVESTMENT</a>
+      <a class="tick sub-tick" data-cat="finance" href="sip-calculator.html">SIP</a>
+      <a class="tick sub-tick" data-cat="finance" href="compound-interest-calculator.html">COMPOUND INT.</a>
+      <a class="tick sub-tick" data-cat="finance" href="savings-goal-calculator.html">SAVINGS GOAL</a>
+      <a class="tick sub-tick" data-cat="finance" href="retirement-calculator.html">RETIREMENT</a>
+      <a class="tick sub-tick" data-cat="finance" href="net-worth-calculator.html">NET WORTH</a>
+      <a class="tick sub-tick" data-cat="finance" href="discount-calculator.html">DISCOUNT</a>
+      <a class="tick sub-tick" data-cat="finance" href="tip-calculator.html">TIP</a>
+      <a class="tick sub-tick" data-cat="finance" href="fd-calculator.html">FD</a>
+      <a class="tick sub-tick" data-cat="finance" href="rd-calculator.html">RD</a>
+      <a class="tick sub-tick" data-cat="finance" href="ppf-calculator.html">PPF</a>
+      <a class="tick sub-tick" data-cat="finance" href="india-tax-regime-calculator.html">OLD VS NEW REGIME</a>
+      <a class="tick sub-tick" data-cat="finance" href="hra-calculator.html">HRA</a>
+      <a class="tick sub-tick" data-cat="finance" href="gratuity-calculator.html">GRATUITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="epf-calculator.html">EPF</a>
+      <a class="tick sub-tick" data-cat="finance" href="fire-calculator.html">FIRE NUMBER</a>
+      <a class="tick sub-tick" data-cat="finance" href="rsu-vesting-calculator.html">RSU VESTING</a>
+      <a class="tick sub-tick" data-cat="finance" href="cross-country-salary-calculator.html">SALARY BY COUNTRY</a>
+      <a class="tick sub-tick" data-cat="finance" href="currency-fee-calculator.html">FX FEES</a>
+      <a class="tick sub-tick" data-cat="finance" href="zakat-calculator.html">ZAKAT</a>
+      <a class="tick sub-tick" data-cat="finance" href="break-even-calculator.html">BREAK-EVEN</a>
+      <a class="tick sub-tick" data-cat="finance" href="debt-payoff-calculator.html">DEBT PAYOFF</a>
+      <a class="tick sub-tick" data-cat="finance" href="salary-calculator.html">SALARY</a>
+      <a class="tick sub-tick" data-cat="finance" href="sales-tax-calculator.html">SALES TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="cd-calculator.html">CD</a>
+      <a class="tick sub-tick" data-cat="finance" href="amortization-schedule-calculator.html">AMORTIZATION</a>
+      <a class="tick sub-tick" data-cat="finance" href="401k-calculator.html">401(K)</a>
+      <a class="tick sub-tick" data-cat="finance" href="ira-calculator.html">IRA / ROTH</a>
+      <a class="tick sub-tick" data-cat="finance" href="house-affordability-calculator.html">AFFORDABILITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="down-payment-calculator.html">DOWN PAYMENT</a>
+      <a class="tick sub-tick" data-cat="finance" href="debt-to-income-calculator.html">DTI RATIO</a>
+      <a class="tick sub-tick" data-cat="finance" href="simple-interest-calculator.html">SIMPLE INT.</a>
+      <a class="tick sub-tick" data-cat="finance" href="roi-calculator.html">ROI</a>
+      <a class="tick sub-tick" data-cat="finance" href="credit-card-payoff-calculator.html">CC PAYOFF</a>
+      <a class="tick sub-tick" data-cat="finance" href="mortgage-payoff-calculator.html">MTG PAYOFF</a>
+      <a class="tick sub-tick" data-cat="finance" href="rent-affordability-calculator.html">RENT AFFORD</a>
+      <a class="tick sub-tick" data-cat="finance" href="real-estate-investment-calculator.html">REAL ESTATE</a>
+      <a class="tick sub-tick" data-cat="finance" href="rental-property-calculator.html">RENTAL PROPERTY</a>
+      <a class="tick sub-tick" data-cat="finance" href="apr-calculator.html">APR</a>
+      <a class="tick sub-tick" data-cat="finance" href="fha-loan-calculator.html">FHA LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="va-mortgage-calculator.html">VA LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="home-equity-loan-calculator.html">HOME EQUITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="heloc-calculator.html">HELOC</a>
+      <a class="tick sub-tick" data-cat="finance" href="cash-back-or-low-interest-calculator.html">CASH BACK/APR</a>
+      <a class="tick sub-tick" data-cat="finance" href="auto-lease-calculator.html">AUTO LEASE</a>
+      <a class="tick sub-tick" data-cat="finance" href="finance-calculator.html">TVM SOLVER</a>
+      <a class="tick sub-tick" data-cat="finance" href="interest-rate-calculator.html">INT. RATE</a>
+      <a class="tick sub-tick" data-cat="finance" href="bond-calculator.html">BOND</a>
+      <a class="tick sub-tick" data-cat="finance" href="mutual-fund-calculator.html">MUTUAL FUND</a>
+      <a class="tick sub-tick" data-cat="finance" href="average-return-calculator.html">AVG RETURN</a>
+      <a class="tick sub-tick" data-cat="finance" href="irr-calculator.html">IRR</a>
+      <a class="tick sub-tick" data-cat="finance" href="payback-period-calculator.html">PAYBACK PERIOD</a>
+      <a class="tick sub-tick" data-cat="finance" href="present-value-calculator.html">PRESENT VALUE</a>
+      <a class="tick sub-tick" data-cat="finance" href="future-value-calculator.html">FUTURE VALUE</a>
+      <a class="tick sub-tick" data-cat="finance" href="savings-calculator.html">SAVINGS</a>
+      <a class="tick sub-tick" data-cat="finance" href="pension-calculator.html">PENSION</a>
+      <a class="tick sub-tick" data-cat="finance" href="social-security-calculator.html">SOCIAL SECURITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="annuity-calculator.html">ANNUITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="annuity-payout-calculator.html">ANNUITY PAYOUT</a>
+      <a class="tick sub-tick" data-cat="finance" href="rmd-calculator.html">RMD</a>
+      <a class="tick sub-tick" data-cat="finance" href="marriage-tax-calculator.html">MARRIAGE TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="estate-tax-calculator.html">ESTATE TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="inflation-calculator.html">INFLATION</a>
+      <a class="tick sub-tick" data-cat="finance" href="debt-consolidation-calculator.html">DEBT CONSOLIDATION</a>
+      <a class="tick sub-tick" data-cat="finance" href="student-loan-repayment-calculator.html">REPAYMENT PLAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="pslf-calculator.html">PSLF</a>
+      <a class="tick sub-tick" data-cat="finance" href="student-loan-calculator.html">STUDENT LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="college-cost-calculator.html">COLLEGE COST</a>
+      <a class="tick sub-tick" data-cat="finance" href="depreciation-calculator.html">DEPRECIATION</a>
+      <a class="tick sub-tick" data-cat="finance" href="margin-calculator.html">MARGIN</a>
+      <a class="tick sub-tick" data-cat="finance" href="business-loan-calculator.html">BUSINESS LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="personal-loan-calculator.html">PERSONAL LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="boat-loan-calculator.html">BOAT LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="lease-calculator.html">LEASE</a>
+      <a class="tick sub-tick" data-cat="finance" href="budget-calculator.html">BUDGET</a>
+      <a class="tick sub-tick" data-cat="finance" href="commission-calculator.html">COMMISSION</a>
+      <a class="tick sub-tick" data-cat="health" href="bmi-calculator.html">BMI</a>
+      <a class="tick sub-tick" data-cat="health" href="calorie-calculator.html">CALORIE</a>
+      <a class="tick sub-tick" data-cat="health" href="macro-calculator.html">MACROS</a>
+      <a class="tick sub-tick" data-cat="health" href="pregnancy-calculator.html">PREGNANCY</a>
+      <a class="tick sub-tick" data-cat="health" href="ovulation-calculator.html">OVULATION</a>
+      <a class="tick sub-tick" data-cat="health" href="ideal-weight-calculator.html">IDEAL WEIGHT</a>
+      <a class="tick sub-tick" data-cat="health" href="body-fat-calculator.html">BODY FAT</a>
+      <a class="tick sub-tick" data-cat="health" href="army-body-fat-calculator.html">ARMY BODY FAT</a>
+      <a class="tick sub-tick" data-cat="health" href="lean-body-mass-calculator.html">LEAN MASS</a>
+      <a class="tick sub-tick" data-cat="health" href="healthy-weight-calculator.html">HEALTHY WEIGHT</a>
+      <a class="tick sub-tick" data-cat="health" href="calories-burned-calculator.html">CAL BURNED</a>
+      <a class="tick sub-tick" data-cat="health" href="one-rep-max-calculator.html">1RM</a>
+      <a class="tick sub-tick" data-cat="health" href="target-heart-rate-calculator.html">HEART RATE</a>
+      <a class="tick sub-tick" data-cat="health" href="pregnancy-week-calculator.html">PREGNANCY WEEKS</a>
+      <a class="tick sub-tick" data-cat="health" href="pregnancy-weight-gain-calculator.html">PREG. WEIGHT GAIN</a>
+      <a class="tick sub-tick" data-cat="health" href="conception-calculator.html">CONCEPTION</a>
+      <a class="tick sub-tick" data-cat="health" href="sleep-cycle-calculator.html">SLEEP CYCLE</a>
+      <a class="tick sub-tick" data-cat="health" href="water-intake-calculator.html">WATER INTAKE</a>
+      <a class="tick sub-tick" data-cat="health" href="tdee-calculator.html">TDEE</a>
+      <a class="tick sub-tick" data-cat="health" href="protein-calculator.html">PROTEIN</a>
+      <a class="tick sub-tick" data-cat="education" href="circle-calculator.html">CIRCLE</a>
+      <a class="tick sub-tick" data-cat="education" href="area-calculator.html">AREA</a>
+      <a class="tick sub-tick" data-cat="education" href="volume-calculator.html">VOLUME</a>
+      <a class="tick sub-tick" data-cat="education" href="surface-area-calculator.html">SURFACE AREA</a>
+      <a class="tick sub-tick" data-cat="education" href="slope-calculator.html">SLOPE</a>
+      <a class="tick sub-tick" data-cat="education" href="coordinate-distance-calculator.html">COORDINATE DISTANCE</a>
+      <a class="tick sub-tick" data-cat="education" href="pythagorean-theorem-calculator.html">PYTHAGOREAN THEOREM</a>
+      <a class="tick sub-tick" data-cat="education" href="right-triangle-calculator.html">RIGHT TRIANGLE</a>
+      <a class="tick sub-tick" data-cat="education" href="triangle-calculator.html">TRIANGLE</a>
+      <a class="tick sub-tick" data-cat="education" href="gpa-calculator.html">GPA</a>
+      <a class="tick sub-tick" data-cat="education" href="grade-calculator.html">GRADE</a>
+      <a class="tick sub-tick" data-cat="education" href="scientific-calculator.html">SCIENTIFIC</a>
+      <a class="tick sub-tick" data-cat="education" href="fraction-calculator.html">FRACTION</a>
+      <a class="tick sub-tick" data-cat="education" href="statistics-calculator.html">STATISTICS</a>
+      <a class="tick sub-tick" data-cat="education" href="percent-error-calculator.html">% ERROR</a>
+      <a class="tick sub-tick" data-cat="education" href="exponent-calculator.html">EXPONENT</a>
+      <a class="tick sub-tick" data-cat="education" href="binary-calculator.html">BINARY</a>
+      <a class="tick sub-tick" data-cat="education" href="hex-calculator.html">HEX</a>
+      <a class="tick sub-tick" data-cat="education" href="half-life-calculator.html">HALF-LIFE</a>
+      <a class="tick sub-tick" data-cat="education" href="quadratic-formula-calculator.html">QUADRATIC</a>
+      <a class="tick sub-tick" data-cat="education" href="log-calculator.html">LOG</a>
+      <a class="tick sub-tick" data-cat="education" href="ratio-calculator.html">RATIO</a>
+      <a class="tick sub-tick" data-cat="education" href="root-calculator.html">ROOT</a>
+      <a class="tick sub-tick" data-cat="education" href="standard-deviation-calculator.html">STD DEVIATION</a>
+      <a class="tick sub-tick" data-cat="education" href="sample-size-calculator.html">SAMPLE SIZE</a>
+      <a class="tick sub-tick" data-cat="education" href="mean-median-mode-calculator.html">MEAN/MEDIAN/MODE</a>
+      <a class="tick sub-tick" data-cat="education" href="permutation-combination-calculator.html">PERM/COMBO</a>
+      <a class="tick sub-tick" data-cat="education" href="z-score-calculator.html">Z-SCORE</a>
+      <a class="tick sub-tick" data-cat="education" href="confidence-interval-calculator.html">CONFIDENCE INT.</a>
+      <a class="tick sub-tick" data-cat="everyday" href="basic-calculator.html">CALCULATOR</a>
+      <a class="tick sub-tick" data-cat="everyday" href="percentage-calculator.html">PERCENT</a>
+      <a class="tick sub-tick" data-cat="everyday" href="age-calculator.html">AGE</a>
+      <a class="tick sub-tick" data-cat="everyday" href="days-calculator.html">DAYS</a>
+      <a class="tick sub-tick" data-cat="everyday" href="time-calculator.html">TIME</a>
+      <a class="tick sub-tick" data-cat="everyday" href="unit-converter.html">UNITS</a>
+      <a class="tick sub-tick" data-cat="everyday" href="week-number-calculator.html">WEEK #</a>
+      <a class="tick sub-tick" data-cat="everyday" href="cm-to-inches.html">CM→IN</a>
+      <a class="tick sub-tick" data-cat="everyday" href="kg-to-pounds.html">KG→LB</a>
+      <a class="tick sub-tick" data-cat="everyday" href="celsius-to-fahrenheit.html">°C→°F</a>
+      <a class="tick sub-tick" data-cat="everyday" href="password-generator.html">PASSWORD</a>
+      <a class="tick sub-tick" data-cat="everyday" href="random-number-generator.html">RANDOM #</a>
+      <a class="tick sub-tick" data-cat="everyday" href="word-counter.html">WORD COUNT</a>
+      <a class="tick sub-tick" data-cat="everyday" href="pace-calculator.html">PACE</a>
+      <a class="tick sub-tick" data-cat="everyday" href="bill-split-calculator.html">BILL SPLIT</a>
+      <a class="tick sub-tick" data-cat="everyday" href="fuel-cost-calculator.html">FUEL COST</a>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+    </nav>
+  </div>
+  <!-- TB:NAV:END -->
+</header>
+<div class="nav-backdrop" id="navBackdrop"></div>
+
+<div class="wrap">
+  <div class="crumb"><a href="index.html">TallyBench</a> / Volume Calculator</div>
+
+  <section class="hero">
+    <div class="hero-icon-row cat-education">
+      <div class="hero-icon"><svg><use href="icons.svg#icon-scientific"/></svg></div>
+      <div class="eyebrow">// VOLUME CALCULATOR</div>
+    </div>
+    <h1>Volume of the six solids you actually need.</h1>
+    <p>Cube, rectangular box, cylinder, sphere, cone and pyramid — volume, plus surface area where it applies.</p>
+  </section>
+
+  <section class="tool" id="volumecalc">
+    <div class="card">
+      <div>
+        <div class="field"><label for="voShape">Solid</label>
+          <select id="voShape">
+            <option value="box" selected>Rectangular box</option>
+            <option value="cube">Cube</option>
+            <option value="cylinder">Cylinder</option>
+            <option value="sphere">Sphere</option>
+            <option value="cone">Cone</option>
+            <option value="pyramid">Rectangular pyramid</option>
+          </select>
+        </div>
+        <div class="field"><label for="voA">Length</label><input type="number" id="voA" value="4" step="any"></div>
+        <div class="field"><label for="voB">Width</label><input type="number" id="voB" value="3" step="any"></div>
+        <div class="field"><label for="voC">Height</label><input type="number" id="voC" value="5" step="any"></div>
+      </div>
+      <div class="readout">
+        <div class="r-row"><span class="r-label">Volume</span><span class="r-value" id="voVolume">—</span></div>
+        <div class="r-row"><span class="r-label">Surface area</span><span class="r-value" id="voSurface">—</span></div>
+      </div>
+    </div>
+
+  </section>
+
+  <section class="article">
+    <h3>The formulas</h3>
+    <div class="table-scroll">
+      <table class="bracket-table">
+        <thead><tr><th scope="col">Solid</th><th scope="col">Volume</th></tr></thead>
+        <tbody>
+          <tr><td>Cube</td><td>a³</td></tr>
+          <tr><td>Rectangular box</td><td>l × w × h</td></tr>
+          <tr><td>Cylinder</td><td>πr²h</td></tr>
+          <tr><td>Sphere</td><td>⁴⁄₃πr³</td></tr>
+          <tr><td>Cone</td><td>⅓πr²h</td></tr>
+          <tr><td>Pyramid</td><td>⅓ × base area × h</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h3>The one-third rule</h3>
+    <p>A cone holds exactly <strong>one third</strong> of the cylinder that encloses it, and a pyramid one third of its enclosing prism — same base, same height. It is worth knowing because it turns two formulas into one idea: anything that tapers to a point holds a third of the straight-sided shape around it.</p>
+    <h3>Volume grows with the cube</h3>
+    <p>Double every dimension and volume goes up <strong>eightfold</strong>, while surface area only quadruples. This square-cube relationship is why large animals have proportionally thicker legs, why a small cup of coffee cools faster than a large one, and why scaling a physical design up is rarely as simple as multiplying every number.</p>
+    <p>A sphere of radius 3 has a volume of 113.0973 and a surface area of 113.0973 — numerically identical, which is a coincidence of that particular radius rather than anything meaningful, and a good reminder to keep track of units.</p>
+    <h3>Why is a cone one third of a cylinder?</h3>
+    <p>Because integrating the cross-sectional area of a shape that tapers linearly to a point yields exactly a third of the constant-area case. The same reasoning gives a pyramid one third of its prism. You can demonstrate it physically: three cone-fulls of water fill the matching cylinder exactly.</p>
+    <h3>How do I convert cubic metres to litres?</h3>
+    <p>Multiply by 1,000 — one cubic metre is exactly 1,000 litres. For cubic feet to gallons, multiply by 7.4805 for US gallons or 6.2288 for imperial.</p>
+    <h3>Why does the pyramid have no surface area here?</h3>
+    <p>Because a pyramid’s surface area depends on the slant heights of its faces, which are not determined by base length, base width and vertical height alone unless the pyramid is right and regular. Quoting a single figure would be wrong for most inputs.</p>
+    <h3>What does the square-cube law mean in practice?</h3>
+    <p>Volume rises with the cube of scale while surface area rises with the square. Doubling a shape gives eight times the volume but only four times the surface, which is why heat loss, structural loading and material costs do not scale in step with size.</p>
+  </section>
+
+  <p style="font-size:13px;color:rgba(242,236,221,0.55);margin:0 0 24px;">For the outside rather than the inside, use the <a href="surface-area-calculator.html">Surface Area Calculator</a>. Two-dimensional shapes are covered by the <a href="area-calculator.html">Area Calculator</a> and the <a href="circle-calculator.html">Circle Calculator</a>. To switch between cubic units and litres or gallons, use the <a href="unit-converter.html">Unit Converter</a>.</p>
+
+  <footer>
+    <p>TALLYBENCH · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
+  </footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

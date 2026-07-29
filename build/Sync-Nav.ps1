@@ -277,7 +277,9 @@ foreach ($f in $htmlFiles) {
     # tallystock.html is a deliberate redirect stub left behind by the
     # VenStock rename — bare, no site chrome, and exempt for the same
     # reason as the verification file.
-    $isVerificationFile = ($f.Name -like 'google*.html') -or ($f.Name -eq 'tallystock.html')
+    # Detected by the absence of a <header> rather than by name, so each new
+    # rename stub is covered automatically instead of being listed here.
+    $isVerificationFile = ($f.Name -like 'google*.html') -or ($content -notmatch '<header')
     if (-not $isVerificationFile) {
         foreach ($m in @('NAV', 'COUNT')) {
             if ($content -notmatch "TB:${m}:START") {

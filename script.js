@@ -10854,3 +10854,306 @@ function tbMoney(n){
   });
   calc();
 })();
+
+// ================= Geometry cluster =================
+// Each tool is self-contained in its own IIFE. No top-level names.
+
+// ---- Circle Calculator ----
+(function () {
+  if (!document.getElementById('ciInput')) return;
+  var g = function (id) { return document.getElementById(id); };
+  var f = function (n) { return isFinite(n) ? (Math.round(n * 1e6) / 1e6).toLocaleString('en-US') : '—'; };
+  function calc() {
+    var v = parseFloat(g('ciInput').value);
+    var mode = g('ciMode').value;
+    if (!isFinite(v) || v <= 0) { ['ciR', 'ciD', 'ciC', 'ciA'].forEach(function (id) { g(id).textContent = '—'; }); return; }
+    var r;
+    if (mode === 'r') r = v;
+    else if (mode === 'd') r = v / 2;
+    else if (mode === 'c') r = v / (2 * Math.PI);
+    else r = Math.sqrt(v / Math.PI);
+    g('ciR').textContent = f(r);
+    g('ciD').textContent = f(2 * r);
+    g('ciC').textContent = f(2 * Math.PI * r);
+    g('ciA').textContent = f(Math.PI * r * r);
+  }
+  ['ciInput', 'ciMode'].forEach(function (id) { g(id).addEventListener('input', calc); g(id).addEventListener('change', calc); });
+  calc();
+})();
+
+// ---- Area Calculator (2D shapes) ----
+(function () {
+  if (!document.getElementById('arShape')) return;
+  var g = function (id) { return document.getElementById(id); };
+  var f = function (n) { return isFinite(n) && n >= 0 ? (Math.round(n * 1e6) / 1e6).toLocaleString('en-US') : '—'; };
+  var FIELDS = {
+    rectangle: [['Length', 'arA'], ['Width', 'arB']],
+    triangle: [['Base', 'arA'], ['Height', 'arB']],
+    circle: [['Radius', 'arA']],
+    trapezoid: [['Side a', 'arA'], ['Side b', 'arB'], ['Height', 'arC']],
+    parallelogram: [['Base', 'arA'], ['Height', 'arB']],
+    ellipse: [['Semi-axis a', 'arA'], ['Semi-axis b', 'arB']],
+    sector: [['Radius', 'arA'], ['Angle (degrees)', 'arB']]
+  };
+  function show() {
+    var s = g('arShape').value, need = FIELDS[s];
+    [['arA', 0], ['arB', 1], ['arC', 2]].forEach(function (pair) {
+      var wrap = g(pair[0]).closest('.field');
+      var spec = need[pair[1]];
+      if (spec) { wrap.style.display = ''; wrap.querySelector('label').textContent = spec[0]; }
+      else wrap.style.display = 'none';
+    });
+  }
+  function calc() {
+    var s = g('arShape').value;
+    var a = parseFloat(g('arA').value) || 0, b = parseFloat(g('arB').value) || 0, c = parseFloat(g('arC').value) || 0;
+    var area = NaN, per = NaN;
+    if (s === 'rectangle') { area = a * b; per = 2 * (a + b); }
+    else if (s === 'triangle') { area = 0.5 * a * b; }
+    else if (s === 'circle') { area = Math.PI * a * a; per = 2 * Math.PI * a; }
+    else if (s === 'trapezoid') { area = 0.5 * (a + b) * c; }
+    else if (s === 'parallelogram') { area = a * b; }
+    else if (s === 'ellipse') { area = Math.PI * a * b; per = Math.PI * (3 * (a + b) - Math.sqrt((3 * a + b) * (a + 3 * b))); }
+    else if (s === 'sector') { area = Math.PI * a * a * (b / 360); per = 2 * a + 2 * Math.PI * a * (b / 360); }
+    g('arArea').textContent = f(area);
+    g('arPerimeter').textContent = isFinite(per) ? f(per) : 'n/a for this shape';
+  }
+  g('arShape').addEventListener('change', function () { show(); calc(); });
+  ['arA', 'arB', 'arC'].forEach(function (id) { g(id).addEventListener('input', calc); });
+  show(); calc();
+})();
+
+// ---- Volume Calculator (3D solids) ----
+(function () {
+  if (!document.getElementById('voShape')) return;
+  var g = function (id) { return document.getElementById(id); };
+  var f = function (n) { return isFinite(n) && n >= 0 ? (Math.round(n * 1e6) / 1e6).toLocaleString('en-US') : '—'; };
+  var FIELDS = {
+    cube: [['Edge', 'voA']],
+    box: [['Length', 'voA'], ['Width', 'voB'], ['Height', 'voC']],
+    cylinder: [['Radius', 'voA'], ['Height', 'voB']],
+    sphere: [['Radius', 'voA']],
+    cone: [['Radius', 'voA'], ['Height', 'voB']],
+    pyramid: [['Base length', 'voA'], ['Base width', 'voB'], ['Height', 'voC']]
+  };
+  function show() {
+    var need = FIELDS[g('voShape').value];
+    [['voA', 0], ['voB', 1], ['voC', 2]].forEach(function (p) {
+      var wrap = g(p[0]).closest('.field'), spec = need[p[1]];
+      if (spec) { wrap.style.display = ''; wrap.querySelector('label').textContent = spec[0]; }
+      else wrap.style.display = 'none';
+    });
+  }
+  function calc() {
+    var s = g('voShape').value;
+    var a = parseFloat(g('voA').value) || 0, b = parseFloat(g('voB').value) || 0, c = parseFloat(g('voC').value) || 0;
+    var v = NaN, sa = NaN;
+    if (s === 'cube') { v = a * a * a; sa = 6 * a * a; }
+    else if (s === 'box') { v = a * b * c; sa = 2 * (a * b + b * c + a * c); }
+    else if (s === 'cylinder') { v = Math.PI * a * a * b; sa = 2 * Math.PI * a * (a + b); }
+    else if (s === 'sphere') { v = 4 / 3 * Math.PI * a * a * a; sa = 4 * Math.PI * a * a; }
+    else if (s === 'cone') { v = Math.PI * a * a * b / 3; sa = Math.PI * a * (a + Math.sqrt(a * a + b * b)); }
+    else if (s === 'pyramid') { v = a * b * c / 3; }
+    g('voVolume').textContent = f(v);
+    g('voSurface').textContent = isFinite(sa) ? f(sa) : 'n/a for this shape';
+  }
+  g('voShape').addEventListener('change', function () { show(); calc(); });
+  ['voA', 'voB', 'voC'].forEach(function (id) { g(id).addEventListener('input', calc); });
+  show(); calc();
+})();
+
+// ---- Surface Area Calculator ----
+(function () {
+  if (!document.getElementById('saShape')) return;
+  var g = function (id) { return document.getElementById(id); };
+  var f = function (n) { return isFinite(n) && n >= 0 ? (Math.round(n * 1e6) / 1e6).toLocaleString('en-US') : '—'; };
+  var FIELDS = {
+    cube: [['Edge', 'saA']],
+    box: [['Length', 'saA'], ['Width', 'saB'], ['Height', 'saC']],
+    cylinder: [['Radius', 'saA'], ['Height', 'saB']],
+    sphere: [['Radius', 'saA']],
+    cone: [['Radius', 'saA'], ['Height', 'saB']]
+  };
+  function show() {
+    var need = FIELDS[g('saShape').value];
+    [['saA', 0], ['saB', 1], ['saC', 2]].forEach(function (p) {
+      var wrap = g(p[0]).closest('.field'), spec = need[p[1]];
+      if (spec) { wrap.style.display = ''; wrap.querySelector('label').textContent = spec[0]; }
+      else wrap.style.display = 'none';
+    });
+  }
+  function calc() {
+    var s = g('saShape').value;
+    var a = parseFloat(g('saA').value) || 0, b = parseFloat(g('saB').value) || 0, c = parseFloat(g('saC').value) || 0;
+    var total = NaN, lateral = NaN;
+    if (s === 'cube') { total = 6 * a * a; lateral = 4 * a * a; }
+    else if (s === 'box') { total = 2 * (a * b + b * c + a * c); lateral = 2 * c * (a + b); }
+    else if (s === 'cylinder') { lateral = 2 * Math.PI * a * b; total = lateral + 2 * Math.PI * a * a; }
+    else if (s === 'sphere') { total = 4 * Math.PI * a * a; }
+    else if (s === 'cone') { var l = Math.sqrt(a * a + b * b); lateral = Math.PI * a * l; total = lateral + Math.PI * a * a; }
+    g('saTotal').textContent = f(total);
+    g('saLateral').textContent = isFinite(lateral) ? f(lateral) : 'n/a for this shape';
+  }
+  g('saShape').addEventListener('change', function () { show(); calc(); });
+  ['saA', 'saB', 'saC'].forEach(function (id) { g(id).addEventListener('input', calc); });
+  show(); calc();
+})();
+
+// ---- Slope Calculator ----
+(function () {
+  if (!document.getElementById('slX1')) return;
+  var g = function (id) { return document.getElementById(id); };
+  var f = function (n) { return isFinite(n) ? (Math.round(n * 1e6) / 1e6).toLocaleString('en-US') : '—'; };
+  function calc() {
+    var x1 = parseFloat(g('slX1').value), y1 = parseFloat(g('slY1').value);
+    var x2 = parseFloat(g('slX2').value), y2 = parseFloat(g('slY2').value);
+    if ([x1, y1, x2, y2].some(function (v) { return !isFinite(v); })) {
+      ['slSlope', 'slAngle', 'slIntercept', 'slEquation', 'slDistance'].forEach(function (id) { g(id).textContent = '—'; });
+      return;
+    }
+    var dx = x2 - x1, dy = y2 - y1;
+    if (dx === 0) {
+      g('slSlope').textContent = 'undefined (vertical)';
+      g('slAngle').textContent = '90°';
+      g('slIntercept').textContent = 'none';
+      g('slEquation').textContent = 'x = ' + f(x1);
+    } else {
+      var m = dy / dx, bIt = y1 - m * x1;
+      g('slSlope').textContent = f(m);
+      g('slAngle').textContent = f(Math.atan(m) * 180 / Math.PI) + '°';
+      g('slIntercept').textContent = f(bIt);
+      g('slEquation').textContent = 'y = ' + f(m) + 'x ' + (bIt < 0 ? '− ' + f(Math.abs(bIt)) : '+ ' + f(bIt));
+    }
+    g('slDistance').textContent = f(Math.sqrt(dx * dx + dy * dy));
+  }
+  ['slX1', 'slY1', 'slX2', 'slY2'].forEach(function (id) { g(id).addEventListener('input', calc); });
+  calc();
+})();
+
+// ---- Coordinate Distance Calculator ----
+(function () {
+  if (!document.getElementById('cdX1')) return;
+  var g = function (id) { return document.getElementById(id); };
+  var f = function (n) { return isFinite(n) ? (Math.round(n * 1e6) / 1e6).toLocaleString('en-US') : '—'; };
+  function calc() {
+    var use3d = g('cdDim').value === '3d';
+    var x1 = parseFloat(g('cdX1').value) || 0, y1 = parseFloat(g('cdY1').value) || 0, z1 = parseFloat(g('cdZ1').value) || 0;
+    var x2 = parseFloat(g('cdX2').value) || 0, y2 = parseFloat(g('cdY2').value) || 0, z2 = parseFloat(g('cdZ2').value) || 0;
+    if (!use3d) { z1 = 0; z2 = 0; }
+    [g('cdZ1'), g('cdZ2')].forEach(function (el) { el.closest('.field').style.display = use3d ? '' : 'none'; });
+    var dx = x2 - x1, dy = y2 - y1, dz = z2 - z1;
+    g('cdDistance').textContent = f(Math.sqrt(dx * dx + dy * dy + dz * dz));
+    g('cdMidpoint').textContent = '(' + f((x1 + x2) / 2) + ', ' + f((y1 + y2) / 2) + (use3d ? ', ' + f((z1 + z2) / 2) : '') + ')';
+    g('cdDelta').textContent = 'Δx ' + f(dx) + ', Δy ' + f(dy) + (use3d ? ', Δz ' + f(dz) : '');
+  }
+  ['cdX1', 'cdY1', 'cdZ1', 'cdX2', 'cdY2', 'cdZ2', 'cdDim'].forEach(function (id) {
+    g(id).addEventListener('input', calc); g(id).addEventListener('change', calc);
+  });
+  calc();
+})();
+
+// ---- Pythagorean Theorem Calculator ----
+(function () {
+  if (!document.getElementById('pyA')) return;
+  var g = function (id) { return document.getElementById(id); };
+  var f = function (n) { return isFinite(n) && n > 0 ? (Math.round(n * 1e6) / 1e6).toLocaleString('en-US') : '—'; };
+  function calc() {
+    var solve = g('pySolve').value;
+    var a = parseFloat(g('pyA').value), b = parseFloat(g('pyB').value), c = parseFloat(g('pyC').value);
+    g('pyA').closest('.field').style.display = solve === 'a' ? 'none' : '';
+    g('pyB').closest('.field').style.display = solve === 'b' ? 'none' : '';
+    g('pyC').closest('.field').style.display = solve === 'c' ? 'none' : '';
+    var res = NaN, note = '';
+    if (solve === 'c') { if (a > 0 && b > 0) res = Math.sqrt(a * a + b * b); }
+    else if (solve === 'a') {
+      if (c > 0 && b > 0) { if (c <= b) note = 'The hypotenuse must be longer than either leg.'; else res = Math.sqrt(c * c - b * b); }
+    } else {
+      if (c > 0 && a > 0) { if (c <= a) note = 'The hypotenuse must be longer than either leg.'; else res = Math.sqrt(c * c - a * a); }
+    }
+    g('pyResult').textContent = f(res);
+    g('pyLabel').textContent = solve === 'c' ? 'Hypotenuse c' : 'Leg ' + solve;
+    var A = solve === 'a' ? res : a, B = solve === 'b' ? res : b, C = solve === 'c' ? res : c;
+    g('pyArea').textContent = (isFinite(A) && isFinite(B) && A > 0 && B > 0) ? f(0.5 * A * B) : '—';
+    g('pyPerimeter').textContent = [A, B, C].every(function (v) { return isFinite(v) && v > 0; }) ? f(A + B + C) : '—';
+    g('pyNote').textContent = note;
+  }
+  ['pyA', 'pyB', 'pyC', 'pySolve'].forEach(function (id) { g(id).addEventListener('input', calc); g(id).addEventListener('change', calc); });
+  calc();
+})();
+
+// ---- Right Triangle Calculator ----
+(function () {
+  if (!document.getElementById('rtKnown')) return;
+  var g = function (id) { return document.getElementById(id); };
+  var f = function (n) { return isFinite(n) && n > 0 ? (Math.round(n * 1e4) / 1e4).toLocaleString('en-US') : '—'; };
+  var DEG = 180 / Math.PI;
+  function calc() {
+    var mode = g('rtKnown').value;
+    var p = parseFloat(g('rtP').value), q = parseFloat(g('rtQ').value);
+    g('rtPLabel').textContent = mode === 'legs' ? 'Leg a' : (mode === 'legHyp' ? 'Leg a' : 'Leg a');
+    g('rtQLabel').textContent = mode === 'legs' ? 'Leg b' : (mode === 'legHyp' ? 'Hypotenuse c' : 'Angle A (degrees)');
+    var a = NaN, b = NaN, c = NaN, note = '';
+    if (mode === 'legs' && p > 0 && q > 0) { a = p; b = q; c = Math.sqrt(a * a + b * b); }
+    else if (mode === 'legHyp' && p > 0 && q > 0) {
+      if (q <= p) note = 'The hypotenuse must be longer than the leg.';
+      else { a = p; c = q; b = Math.sqrt(c * c - a * a); }
+    } else if (mode === 'legAngle' && p > 0 && q > 0 && q < 90) {
+      a = p; var A = q / DEG; b = a / Math.tan(A); c = a / Math.sin(A);
+    } else if (mode === 'legAngle' && q >= 90) note = 'Angle A must be under 90° in a right triangle.';
+    g('rtA').textContent = f(a); g('rtB').textContent = f(b); g('rtC').textContent = f(c);
+    var angA = (isFinite(a) && isFinite(c)) ? Math.asin(a / c) * DEG : NaN;
+    g('rtAngA').textContent = isFinite(angA) ? f(angA) + '°' : '—';
+    g('rtAngB').textContent = isFinite(angA) ? f(90 - angA) + '°' : '—';
+    g('rtArea').textContent = (isFinite(a) && isFinite(b)) ? f(0.5 * a * b) : '—';
+    g('rtPerimeter').textContent = [a, b, c].every(isFinite) ? f(a + b + c) : '—';
+    g('rtNote').textContent = note;
+  }
+  ['rtP', 'rtQ', 'rtKnown'].forEach(function (id) { g(id).addEventListener('input', calc); g(id).addEventListener('change', calc); });
+  calc();
+})();
+
+// ---- Triangle Calculator (any triangle) ----
+(function () {
+  if (!document.getElementById('trMode')) return;
+  var g = function (id) { return document.getElementById(id); };
+  var f = function (n) { return isFinite(n) && n > 0 ? (Math.round(n * 1e4) / 1e4).toLocaleString('en-US') : '—'; };
+  var DEG = 180 / Math.PI;
+  function calc() {
+    var mode = g('trMode').value;
+    var x = parseFloat(g('trX').value), y = parseFloat(g('trY').value), z = parseFloat(g('trZ').value);
+    var labels = mode === 'sss' ? ['Side a', 'Side b', 'Side c']
+      : mode === 'sas' ? ['Side a', 'Angle C (degrees)', 'Side b']
+        : ['Angle A (degrees)', 'Side c', 'Angle B (degrees)'];
+    ['trXLabel', 'trYLabel', 'trZLabel'].forEach(function (id, i) { g(id).textContent = labels[i]; });
+    var a = NaN, b = NaN, c = NaN, note = '';
+    if (mode === 'sss') {
+      a = x; b = y; c = z;
+      if ([a, b, c].every(function (v) { return v > 0; })) {
+        if (a + b <= c || a + c <= b || b + c <= a) { note = 'Those three lengths cannot form a triangle — any two sides must sum to more than the third.'; a = b = c = NaN; }
+      } else { a = b = c = NaN; }
+    } else if (mode === 'sas') {
+      if (x > 0 && z > 0 && y > 0 && y < 180) { a = x; b = z; c = Math.sqrt(a * a + b * b - 2 * a * b * Math.cos(y / DEG)); }
+    } else {
+      if (x > 0 && z > 0 && y > 0 && x + z < 180) {
+        var A = x / DEG, B = z / DEG, C = Math.PI - A - B;
+        c = y; a = c * Math.sin(A) / Math.sin(C); b = c * Math.sin(B) / Math.sin(C);
+      } else if (x + z >= 180) note = 'Two angles of a triangle must add to less than 180°.';
+    }
+    g('trA').textContent = f(a); g('trB').textContent = f(b); g('trC').textContent = f(c);
+    if ([a, b, c].every(function (v) { return isFinite(v) && v > 0; })) {
+      var angA = Math.acos((b * b + c * c - a * a) / (2 * b * c)) * DEG;
+      var angB = Math.acos((a * a + c * c - b * b) / (2 * a * c)) * DEG;
+      var s = (a + b + c) / 2;
+      g('trAngA').textContent = f(angA) + '°';
+      g('trAngB').textContent = f(angB) + '°';
+      g('trAngC').textContent = f(180 - angA - angB) + '°';
+      g('trArea').textContent = f(Math.sqrt(s * (s - a) * (s - b) * (s - c)));
+      g('trPerimeter').textContent = f(a + b + c);
+    } else {
+      ['trAngA', 'trAngB', 'trAngC', 'trArea', 'trPerimeter'].forEach(function (id) { g(id).textContent = '—'; });
+    }
+    g('trNote').textContent = note;
+  }
+  ['trX', 'trY', 'trZ', 'trMode'].forEach(function (id) { g(id).addEventListener('input', calc); g(id).addEventListener('change', calc); });
+  calc();
+})();
