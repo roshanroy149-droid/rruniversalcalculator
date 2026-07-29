@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Voltage Drop Calculator — AWG Wire Size, Distance and Load | TallyBench</title>
+<meta name="description" content="Work out voltage drop over a cable run from wire gauge, length, current and voltage, against NEC 3% and 5% limits.">
+<link rel="canonical" href="https://tallybench.com/voltage-drop-calculator.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.svg">
+<meta name="theme-color" content="#1C1A17">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="TallyBench">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TallyBench">
+<meta property="og:title" content="Voltage Drop Calculator — AWG Wire Size, Distance and Load">
+<meta property="og:description" content="Work out voltage drop over a cable run from wire gauge, length, current and voltage, against NEC 3% and 5% limits.">
+<meta property="og:url" content="https://tallybench.com/voltage-drop-calculator.html">
+<meta property="og:image" content="https://tallybench.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Voltage Drop Calculator — AWG Wire Size, Distance and Load">
+<meta name="twitter:description" content="Work out voltage drop over a cable run from wire gauge, length, current and voltage, against NEC 3% and 5% limits.">
+<meta name="twitter:image" content="https://tallybench.com/og-image.png">
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="style.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Do I enter the one-way distance or the total length of cable?",
+      "acceptedAnswer": { "@type": "Answer", "text": "One way — the distance from the panel to the load. The calculator doubles it internally for single-phase, because the current has to return along the second conductor. If you enter the round trip you will get twice the real drop. For three-phase it applies √3 instead of 2, which is the standard convention for a balanced three-wire system." }
+    },
+    {
+      "@type": "Question",
+      "name": "How much voltage drop is actually acceptable?",
+      "acceptedAnswer": { "@type": "Answer", "text": "The NEC recommends no more than 3% on a branch circuit and 5% for feeder plus branch combined. These sit in informational notes rather than being enforceable requirements in most cases, but they are the working standard. Sensitive electronics, long motor runs and LED drivers on dimmers are the situations where staying well inside 3% is worth the extra copper." }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does aluminium need a larger size than copper?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Aluminium’s resistivity is about 1.6 times copper’s, so the same gauge in aluminium drops roughly 60% more voltage. In practice you go up about two AWG sizes to match — 4 AWG aluminium behaves roughly like 6 AWG copper. Aluminium also needs antioxidant compound at terminations and connectors rated for it, since the oxide layer is a poor conductor and the metal creeps under pressure." }
+    },
+    {
+      "@type": "Question",
+      "name": "Does voltage drop change when the wire gets hot?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. Copper resistance rises roughly 0.4% per degree Celsius. The NEC table used here is at 75 °C, which is a normal operating assumption for building wire, so it already includes a realistic amount of heating. A conductor running cooler than that will drop slightly less than the calculator says, and one running hotter slightly more. The effect is real but usually second-order compared with getting the length and gauge right." }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I use this outside the United States?",
+      "acceptedAnswer": { "@type": "Answer", "text": "The physics is universal and you can enter the run in metres, but the conductor sizes are AWG from the NEC table, and the mm² figures shown alongside each are nearest-equivalent cross-sections rather than exact IEC standard sizes. If you are working to BS 7671 or an IEC standard, use the mV/A/m figures from your own cable tables rather than converting from these." }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Voltage Drop Calculator — TallyBench",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any (runs in browser)",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "url": "https://tallybench.com/voltage-drop-calculator.html"
+}
+</script>
+<!-- TB:BREADCRUMB:START -->
+<script type="application/ld+json">
+{
+    "@context":  "https://schema.org",
+    "@type":  "BreadcrumbList",
+    "itemListElement":  [
+                            {
+                                "@type":  "ListItem",
+                                "position":  1,
+                                "name":  "TallyBench",
+                                "item":  "https://tallybench.com/"
+                            },
+                            {
+                                "@type":  "ListItem",
+                                "position":  2,
+                                "name":  "Voltage Drop Calculator",
+                                "item":  "https://tallybench.com/voltage-drop-calculator.html"
+                            }
+                        ]
+}
+</script>
+<!-- TB:BREADCRUMB:END -->
+</head>
+<body data-page-cat="everyday">
+
+<header>
+  <div class="wrap">
+    <div class="headbar">
+      <a class="logo" href="index.html">TALLYBENCH<span>.</span></a>
+      <div class="tagline"><!-- TB:COUNT:START -->
+169 TOOLS · 0 SIGN-UP
+<!-- TB:COUNT:END --></div>
+<button class="nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <!-- TB:NAV:START -->
+  <div class="nav-drawer" id="navDrawer">
+    <div class="nav-drawer-head">
+      <span>Menu</span>
+      <button class="nav-close" id="navClose" type="button" aria-label="Close menu">&#10005;</button>
+    </div>
+    <nav class="ruler cat-ruler" aria-label="Category">
+      <a class="tick" href="index.html">HOME</a>
+      <a class="tick" href="articles.html">ARTICLES</a>
+      <a class="tick" href="book.html">BOOK</a>
+      <a class="tick" href="venstock.html">VENSTOCK</a>
+      <button class="tick cat-tab" type="button" data-cat="finance">FINANCE</button>
+      <button class="tick cat-tab" type="button" data-cat="health">HEALTH</button>
+      <button class="tick cat-tab" type="button" data-cat="education">EDUCATION</button>
+      <button class="tick cat-tab" type="button" data-cat="everyday">EVERYDAY</button>
+    </nav>
+    <nav class="ruler sub-ruler" id="subRuler" aria-label="Tools">
+      <a class="tick sub-tick" data-cat="finance" href="currency-converter.html">CURRENCY</a>
+      <a class="tick sub-tick" data-cat="finance" href="loan-calculator.html">LOAN / EMI</a>
+      <a class="tick sub-tick" data-cat="finance" href="car-loan-calculator.html">CAR LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="mortgage-calculator.html">MORTGAGE</a>
+      <a class="tick sub-tick" data-cat="finance" href="refinance-calculator.html">REFINANCE</a>
+      <a class="tick sub-tick" data-cat="finance" href="rent-vs-buy-calculator.html">RENT VS BUY</a>
+      <a class="tick sub-tick" data-cat="finance" href="tax-calculator.html">TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="paycheck-calculator.html">PAYCHECK</a>
+      <a class="tick sub-tick" data-cat="finance" href="freelancer-tax-calculator-india.html">FREELANCER TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="gst-vat-calculator.html">GST / VAT</a>
+      <a class="tick sub-tick" data-cat="finance" href="investment-calculator.html">INVESTMENT</a>
+      <a class="tick sub-tick" data-cat="finance" href="sip-calculator.html">SIP</a>
+      <a class="tick sub-tick" data-cat="finance" href="compound-interest-calculator.html">COMPOUND INT.</a>
+      <a class="tick sub-tick" data-cat="finance" href="savings-goal-calculator.html">SAVINGS GOAL</a>
+      <a class="tick sub-tick" data-cat="finance" href="retirement-calculator.html">RETIREMENT</a>
+      <a class="tick sub-tick" data-cat="finance" href="net-worth-calculator.html">NET WORTH</a>
+      <a class="tick sub-tick" data-cat="finance" href="discount-calculator.html">DISCOUNT</a>
+      <a class="tick sub-tick" data-cat="finance" href="tip-calculator.html">TIP</a>
+      <a class="tick sub-tick" data-cat="finance" href="fd-calculator.html">FD</a>
+      <a class="tick sub-tick" data-cat="finance" href="rd-calculator.html">RD</a>
+      <a class="tick sub-tick" data-cat="finance" href="ppf-calculator.html">PPF</a>
+      <a class="tick sub-tick" data-cat="finance" href="india-tax-regime-calculator.html">OLD VS NEW REGIME</a>
+      <a class="tick sub-tick" data-cat="finance" href="hra-calculator.html">HRA</a>
+      <a class="tick sub-tick" data-cat="finance" href="gratuity-calculator.html">GRATUITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="epf-calculator.html">EPF</a>
+      <a class="tick sub-tick" data-cat="finance" href="fire-calculator.html">FIRE NUMBER</a>
+      <a class="tick sub-tick" data-cat="finance" href="rsu-vesting-calculator.html">RSU VESTING</a>
+      <a class="tick sub-tick" data-cat="finance" href="cross-country-salary-calculator.html">SALARY BY COUNTRY</a>
+      <a class="tick sub-tick" data-cat="finance" href="currency-fee-calculator.html">FX FEES</a>
+      <a class="tick sub-tick" data-cat="finance" href="zakat-calculator.html">ZAKAT</a>
+      <a class="tick sub-tick" data-cat="finance" href="break-even-calculator.html">BREAK-EVEN</a>
+      <a class="tick sub-tick" data-cat="finance" href="debt-payoff-calculator.html">DEBT PAYOFF</a>
+      <a class="tick sub-tick" data-cat="finance" href="salary-calculator.html">SALARY</a>
+      <a class="tick sub-tick" data-cat="finance" href="sales-tax-calculator.html">SALES TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="cd-calculator.html">CD</a>
+      <a class="tick sub-tick" data-cat="finance" href="amortization-schedule-calculator.html">AMORTIZATION</a>
+      <a class="tick sub-tick" data-cat="finance" href="401k-calculator.html">401(K)</a>
+      <a class="tick sub-tick" data-cat="finance" href="ira-calculator.html">IRA / ROTH</a>
+      <a class="tick sub-tick" data-cat="finance" href="house-affordability-calculator.html">AFFORDABILITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="down-payment-calculator.html">DOWN PAYMENT</a>
+      <a class="tick sub-tick" data-cat="finance" href="debt-to-income-calculator.html">DTI RATIO</a>
+      <a class="tick sub-tick" data-cat="finance" href="simple-interest-calculator.html">SIMPLE INT.</a>
+      <a class="tick sub-tick" data-cat="finance" href="roi-calculator.html">ROI</a>
+      <a class="tick sub-tick" data-cat="finance" href="credit-card-payoff-calculator.html">CC PAYOFF</a>
+      <a class="tick sub-tick" data-cat="finance" href="mortgage-payoff-calculator.html">MTG PAYOFF</a>
+      <a class="tick sub-tick" data-cat="finance" href="rent-affordability-calculator.html">RENT AFFORD</a>
+      <a class="tick sub-tick" data-cat="finance" href="real-estate-investment-calculator.html">REAL ESTATE</a>
+      <a class="tick sub-tick" data-cat="finance" href="rental-property-calculator.html">RENTAL PROPERTY</a>
+      <a class="tick sub-tick" data-cat="finance" href="apr-calculator.html">APR</a>
+      <a class="tick sub-tick" data-cat="finance" href="fha-loan-calculator.html">FHA LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="va-mortgage-calculator.html">VA LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="home-equity-loan-calculator.html">HOME EQUITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="heloc-calculator.html">HELOC</a>
+      <a class="tick sub-tick" data-cat="finance" href="cash-back-or-low-interest-calculator.html">CASH BACK/APR</a>
+      <a class="tick sub-tick" data-cat="finance" href="auto-lease-calculator.html">AUTO LEASE</a>
+      <a class="tick sub-tick" data-cat="finance" href="finance-calculator.html">TVM SOLVER</a>
+      <a class="tick sub-tick" data-cat="finance" href="interest-rate-calculator.html">INT. RATE</a>
+      <a class="tick sub-tick" data-cat="finance" href="bond-calculator.html">BOND</a>
+      <a class="tick sub-tick" data-cat="finance" href="mutual-fund-calculator.html">MUTUAL FUND</a>
+      <a class="tick sub-tick" data-cat="finance" href="average-return-calculator.html">AVG RETURN</a>
+      <a class="tick sub-tick" data-cat="finance" href="irr-calculator.html">IRR</a>
+      <a class="tick sub-tick" data-cat="finance" href="payback-period-calculator.html">PAYBACK PERIOD</a>
+      <a class="tick sub-tick" data-cat="finance" href="present-value-calculator.html">PRESENT VALUE</a>
+      <a class="tick sub-tick" data-cat="finance" href="future-value-calculator.html">FUTURE VALUE</a>
+      <a class="tick sub-tick" data-cat="finance" href="savings-calculator.html">SAVINGS</a>
+      <a class="tick sub-tick" data-cat="finance" href="pension-calculator.html">PENSION</a>
+      <a class="tick sub-tick" data-cat="finance" href="social-security-calculator.html">SOCIAL SECURITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="annuity-calculator.html">ANNUITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="annuity-payout-calculator.html">ANNUITY PAYOUT</a>
+      <a class="tick sub-tick" data-cat="finance" href="rmd-calculator.html">RMD</a>
+      <a class="tick sub-tick" data-cat="finance" href="marriage-tax-calculator.html">MARRIAGE TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="estate-tax-calculator.html">ESTATE TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="inflation-calculator.html">INFLATION</a>
+      <a class="tick sub-tick" data-cat="finance" href="debt-consolidation-calculator.html">DEBT CONSOLIDATION</a>
+      <a class="tick sub-tick" data-cat="finance" href="student-loan-repayment-calculator.html">REPAYMENT PLAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="pslf-calculator.html">PSLF</a>
+      <a class="tick sub-tick" data-cat="finance" href="student-loan-calculator.html">STUDENT LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="college-cost-calculator.html">COLLEGE COST</a>
+      <a class="tick sub-tick" data-cat="finance" href="depreciation-calculator.html">DEPRECIATION</a>
+      <a class="tick sub-tick" data-cat="finance" href="margin-calculator.html">MARGIN</a>
+      <a class="tick sub-tick" data-cat="finance" href="business-loan-calculator.html">BUSINESS LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="personal-loan-calculator.html">PERSONAL LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="boat-loan-calculator.html">BOAT LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="lease-calculator.html">LEASE</a>
+      <a class="tick sub-tick" data-cat="finance" href="budget-calculator.html">BUDGET</a>
+      <a class="tick sub-tick" data-cat="finance" href="commission-calculator.html">COMMISSION</a>
+      <a class="tick sub-tick" data-cat="health" href="bmi-calculator.html">BMI</a>
+      <a class="tick sub-tick" data-cat="health" href="calorie-calculator.html">CALORIE</a>
+      <a class="tick sub-tick" data-cat="health" href="macro-calculator.html">MACROS</a>
+      <a class="tick sub-tick" data-cat="health" href="pregnancy-calculator.html">PREGNANCY</a>
+      <a class="tick sub-tick" data-cat="health" href="ovulation-calculator.html">OVULATION</a>
+      <a class="tick sub-tick" data-cat="health" href="ideal-weight-calculator.html">IDEAL WEIGHT</a>
+      <a class="tick sub-tick" data-cat="health" href="body-fat-calculator.html">BODY FAT</a>
+      <a class="tick sub-tick" data-cat="health" href="army-body-fat-calculator.html">ARMY BODY FAT</a>
+      <a class="tick sub-tick" data-cat="health" href="lean-body-mass-calculator.html">LEAN MASS</a>
+      <a class="tick sub-tick" data-cat="health" href="healthy-weight-calculator.html">HEALTHY WEIGHT</a>
+      <a class="tick sub-tick" data-cat="health" href="calories-burned-calculator.html">CAL BURNED</a>
+      <a class="tick sub-tick" data-cat="health" href="one-rep-max-calculator.html">1RM</a>
+      <a class="tick sub-tick" data-cat="health" href="target-heart-rate-calculator.html">HEART RATE</a>
+      <a class="tick sub-tick" data-cat="health" href="pregnancy-week-calculator.html">PREGNANCY WEEKS</a>
+      <a class="tick sub-tick" data-cat="health" href="pregnancy-weight-gain-calculator.html">PREG. WEIGHT GAIN</a>
+      <a class="tick sub-tick" data-cat="health" href="conception-calculator.html">CONCEPTION</a>
+      <a class="tick sub-tick" data-cat="health" href="sleep-cycle-calculator.html">SLEEP CYCLE</a>
+      <a class="tick sub-tick" data-cat="health" href="water-intake-calculator.html">WATER INTAKE</a>
+      <a class="tick sub-tick" data-cat="health" href="tdee-calculator.html">TDEE</a>
+      <a class="tick sub-tick" data-cat="health" href="protein-calculator.html">PROTEIN</a>
+      <a class="tick sub-tick" data-cat="education" href="gcf-calculator.html">GCF</a>
+      <a class="tick sub-tick" data-cat="education" href="lcm-calculator.html">LCM</a>
+      <a class="tick sub-tick" data-cat="education" href="factor-calculator.html">FACTORS</a>
+      <a class="tick sub-tick" data-cat="education" href="rounding-calculator.html">ROUNDING</a>
+      <a class="tick sub-tick" data-cat="education" href="scientific-notation-calculator.html">SCI. NOTATION</a>
+      <a class="tick sub-tick" data-cat="education" href="big-number-calculator.html">BIG NUMBERS</a>
+      <a class="tick sub-tick" data-cat="education" href="number-sequence-calculator.html">SEQUENCES</a>
+      <a class="tick sub-tick" data-cat="education" href="probability-calculator.html">PROBABILITY</a>
+      <a class="tick sub-tick" data-cat="education" href="matrix-calculator.html">MATRIX</a>
+      <a class="tick sub-tick" data-cat="education" href="circle-calculator.html">CIRCLE</a>
+      <a class="tick sub-tick" data-cat="education" href="area-calculator.html">AREA</a>
+      <a class="tick sub-tick" data-cat="education" href="volume-calculator.html">VOLUME</a>
+      <a class="tick sub-tick" data-cat="education" href="surface-area-calculator.html">SURFACE AREA</a>
+      <a class="tick sub-tick" data-cat="education" href="slope-calculator.html">SLOPE</a>
+      <a class="tick sub-tick" data-cat="education" href="coordinate-distance-calculator.html">COORDINATE DISTANCE</a>
+      <a class="tick sub-tick" data-cat="education" href="pythagorean-theorem-calculator.html">PYTHAGOREAN THEOREM</a>
+      <a class="tick sub-tick" data-cat="education" href="right-triangle-calculator.html">RIGHT TRIANGLE</a>
+      <a class="tick sub-tick" data-cat="education" href="triangle-calculator.html">TRIANGLE</a>
+      <a class="tick sub-tick" data-cat="education" href="gpa-calculator.html">GPA</a>
+      <a class="tick sub-tick" data-cat="education" href="grade-calculator.html">GRADE</a>
+      <a class="tick sub-tick" data-cat="education" href="scientific-calculator.html">SCIENTIFIC</a>
+      <a class="tick sub-tick" data-cat="education" href="fraction-calculator.html">FRACTION</a>
+      <a class="tick sub-tick" data-cat="education" href="statistics-calculator.html">STATISTICS</a>
+      <a class="tick sub-tick" data-cat="education" href="percent-error-calculator.html">% ERROR</a>
+      <a class="tick sub-tick" data-cat="education" href="exponent-calculator.html">EXPONENT</a>
+      <a class="tick sub-tick" data-cat="education" href="binary-calculator.html">BINARY</a>
+      <a class="tick sub-tick" data-cat="education" href="hex-calculator.html">HEX</a>
+      <a class="tick sub-tick" data-cat="education" href="half-life-calculator.html">HALF-LIFE</a>
+      <a class="tick sub-tick" data-cat="education" href="quadratic-formula-calculator.html">QUADRATIC</a>
+      <a class="tick sub-tick" data-cat="education" href="log-calculator.html">LOG</a>
+      <a class="tick sub-tick" data-cat="education" href="ratio-calculator.html">RATIO</a>
+      <a class="tick sub-tick" data-cat="education" href="root-calculator.html">ROOT</a>
+      <a class="tick sub-tick" data-cat="education" href="standard-deviation-calculator.html">STD DEVIATION</a>
+      <a class="tick sub-tick" data-cat="education" href="sample-size-calculator.html">SAMPLE SIZE</a>
+      <a class="tick sub-tick" data-cat="education" href="mean-median-mode-calculator.html">MEAN/MEDIAN/MODE</a>
+      <a class="tick sub-tick" data-cat="education" href="permutation-combination-calculator.html">PERM/COMBO</a>
+      <a class="tick sub-tick" data-cat="education" href="z-score-calculator.html">Z-SCORE</a>
+      <a class="tick sub-tick" data-cat="education" href="confidence-interval-calculator.html">CONFIDENCE INT.</a>
+      <a class="tick sub-tick" data-cat="everyday" href="basic-calculator.html">CALCULATOR</a>
+      <a class="tick sub-tick" data-cat="everyday" href="percentage-calculator.html">PERCENT</a>
+      <a class="tick sub-tick" data-cat="everyday" href="age-calculator.html">AGE</a>
+      <a class="tick sub-tick" data-cat="everyday" href="days-calculator.html">DAYS</a>
+      <a class="tick sub-tick" data-cat="everyday" href="time-calculator.html">TIME</a>
+      <a class="tick sub-tick" data-cat="everyday" href="unit-converter.html">UNITS</a>
+      <a class="tick sub-tick" data-cat="everyday" href="week-number-calculator.html">WEEK #</a>
+      <a class="tick sub-tick" data-cat="everyday" href="cm-to-inches.html">CM→IN</a>
+      <a class="tick sub-tick" data-cat="everyday" href="kg-to-pounds.html">KG→LB</a>
+      <a class="tick sub-tick" data-cat="everyday" href="celsius-to-fahrenheit.html">°C→°F</a>
+      <a class="tick sub-tick" data-cat="everyday" href="password-generator.html">PASSWORD</a>
+      <a class="tick sub-tick" data-cat="everyday" href="random-number-generator.html">RANDOM #</a>
+      <a class="tick sub-tick" data-cat="everyday" href="word-counter.html">WORD COUNT</a>
+      <a class="tick sub-tick" data-cat="everyday" href="pace-calculator.html">PACE</a>
+      <a class="tick sub-tick" data-cat="everyday" href="bill-split-calculator.html">BILL SPLIT</a>
+      <a class="tick sub-tick" data-cat="everyday" href="fuel-cost-calculator.html">FUEL COST</a>
+      <a class="tick sub-tick" data-cat="education" href="ohms-law-calculator.html">OHM’S LAW</a>
+      <a class="tick sub-tick" data-cat="education" href="resistor-color-code-calculator.html">RESISTOR CODE</a>
+      <a class="tick sub-tick" data-cat="education" href="roman-numeral-converter.html">ROMAN NUMERALS</a>
+      <a class="tick sub-tick" data-cat="everyday" href="voltage-drop-calculator.html">VOLTAGE DROP</a>
+      <a class="tick sub-tick" data-cat="everyday" href="electricity-cost-calculator.html">ELECTRICITY COST</a>
+      <a class="tick sub-tick" data-cat="everyday" href="ip-subnet-calculator.html">IP SUBNET</a>
+      <a class="tick sub-tick" data-cat="everyday" href="bandwidth-calculator.html">BANDWIDTH</a>
+      <a class="tick sub-tick" data-cat="everyday" href="base64-converter.html">BASE64</a>
+      <a class="tick sub-tick" data-cat="everyday" href="url-encoder.html">URL ENCODER</a>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+    </nav>
+  </div>
+  <!-- TB:NAV:END -->
+</header>
+<div class="nav-backdrop" id="navBackdrop"></div>
+
+<div class="wrap">
+  <div class="crumb"><a href="index.html">TallyBench</a> / Voltage Drop Calculator</div>
+
+  <section class="hero">
+    <div class="hero-icon-row cat-everyday">
+      <div class="hero-icon"><svg><use href="icons.svg#icon-units"/></svg></div>
+      <div class="eyebrow">// VOLTAGE DROP CALCULATOR</div>
+    </div>
+    <h1>Voltage Drop Calculator</h1>
+    <p>Enter the conductor size, the length of the run and the load. It returns the volts lost in the cable and checks it against the 3% and 5% figures the NEC recommends.</p>
+  </section>
+
+  <section class="tool" id="voltagedrop">
+    <div class="card">
+      <div>
+        <div class="field"><label>Conductor size (AWG)</label>
+          <select id="vdAwg">
+            <option value="14">14 AWG (2.1 mm²)</option>
+            <option value="12" selected>12 AWG (3.3 mm²)</option>
+            <option value="10">10 AWG (5.3 mm²)</option>
+            <option value="8">8 AWG (8.4 mm²)</option>
+            <option value="6">6 AWG (13.3 mm²)</option>
+            <option value="4">4 AWG (21.2 mm²)</option>
+            <option value="3">3 AWG (26.7 mm²)</option>
+            <option value="2">2 AWG (33.6 mm²)</option>
+            <option value="1">1 AWG (42.4 mm²)</option>
+            <option value="1/0">1/0 AWG (53.5 mm²)</option>
+            <option value="2/0">2/0 AWG (67.4 mm²)</option>
+            <option value="3/0">3/0 AWG (85.0 mm²)</option>
+            <option value="4/0">4/0 AWG (107 mm²)</option>
+          </select>
+        </div>
+        <div class="field"><label>Conductor material</label>
+          <select id="vdMaterial">
+            <option value="cu">Copper</option>
+            <option value="al">Aluminium</option>
+          </select>
+        </div>
+        <div class="field"><label>Load current (amps)</label><input type="number" id="vdAmps" value="20" min="0" step="0.5"></div>
+        <div class="field"><label>One-way length of run</label>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+            <input type="number" id="vdLength" value="100" min="0" step="5" style="flex:1;min-width:100px;">
+            <select id="vdLenUnit" style="width:auto;">
+              <option value="ft">feet</option>
+              <option value="m">metres</option>
+            </select>
+          </div>
+        </div>
+        <div class="field"><label>Supply voltage</label><input type="number" id="vdVolts" value="120" min="0" step="1"></div>
+        <div class="field"><label>System</label>
+          <select id="vdPhase">
+            <option value="1">Single phase</option>
+            <option value="3">Three phase</option>
+          </select>
+        </div>
+      </div>
+      <div class="readout">
+        <div class="r-row"><span class="r-label">Voltage drop</span><span class="r-value" id="vdDrop">—</span></div>
+        <div class="r-row"><span class="r-label">Drop as a percentage</span><span class="r-value" id="vdPct">—</span></div>
+        <div class="r-row"><span class="r-label">Voltage at the load</span><span class="r-value" id="vdEnd">—</span></div>
+        <div class="r-row"><span class="r-label">Conductor resistance</span><span class="r-value" id="vdOhms">—</span></div>
+        <p class="r-note" id="vdVerdict"></p>
+      </div>
+    </div>
+
+  </section>
+
+  <section class="article">
+    <h2>Why voltage drops along a cable</h2>
+    <p>Copper is a good conductor but not a perfect one. Every metre of cable has some resistance, and by Ohm’s law any current flowing through a resistance produces a voltage across it. That voltage is lost to the cable rather than delivered to the load, and it comes out as heat in the wire.</p>
+    <p>The current has to travel out to the load and back, so a single-phase run counts <strong>twice</strong> its one-way length. That is the single most common mistake — people enter 100 ft and forget the return conductor is also 100 ft. Three-phase is different: the return currents partially cancel, and the standard factor is √3, roughly 1.732, instead of 2.</p>
+    <p>The full expression is <strong>V<sub>drop</sub> = k × I × R × L / 1000</strong>, where k is 2 for single phase or √3 for three phase, I is the current in amps, R is the conductor’s resistance in ohms per 1000 ft, and L is the one-way run in feet.</p>
+
+    <h2>Conductor resistance</h2>
+    <p>The resistance figures used here are from <strong>NEC Chapter 9, Table 8</strong> — direct-current resistance at 75 °C for stranded conductors, in ohms per 1000 feet.</p>
+    <table class="data-table">
+      <thead><tr><th>Size</th><th>Copper (Ω/kft)</th><th>Aluminium (Ω/kft)</th></tr></thead>
+      <tbody>
+        <tr><td>14 AWG</td><td>3.14</td><td>5.17</td></tr>
+        <tr><td>12 AWG</td><td>1.98</td><td>3.25</td></tr>
+        <tr><td>10 AWG</td><td>1.24</td><td>2.04</td></tr>
+        <tr><td>8 AWG</td><td>0.778</td><td>1.28</td></tr>
+        <tr><td>6 AWG</td><td>0.491</td><td>0.808</td></tr>
+        <tr><td>4 AWG</td><td>0.308</td><td>0.508</td></tr>
+        <tr><td>2 AWG</td><td>0.194</td><td>0.319</td></tr>
+        <tr><td>1/0 AWG</td><td>0.122</td><td>0.201</td></tr>
+        <tr><td>2/0 AWG</td><td>0.0967</td><td>0.159</td></tr>
+        <tr><td>4/0 AWG</td><td>0.0608</td><td>0.100</td></tr>
+      </tbody>
+    </table>
+    <p>Two things fall out of that table. Aluminium has roughly 1.6 times the resistance of copper for the same gauge, which is why an aluminium run needs to be about two sizes larger to match a copper one. And each three steps down in AWG number roughly halves the resistance — the gauge scale is logarithmic.</p>
+
+    <h2>A worked example</h2>
+    <p>A 20 A load on a 120 V circuit, 100 ft away, wired in 12 AWG copper. Resistance is 1.98 Ω per 1000 ft, so the run contributes 2 × 20 × 1.98 × 0.1 = <strong>7.92 V</strong> of drop. As a percentage that is 6.6% of 120 V, which is over both the 3% branch-circuit recommendation and the 5% combined figure. The load sees about 112 V rather than 120 V.</p>
+    <p>Move up to 10 AWG copper and the drop falls to 4.96 V, or 4.1%. Move to 8 AWG and it is 3.11 V, or 2.6% — comfortably inside the recommendation. That is the practical shape of the problem: on long runs the gauge is set by voltage drop, not by the ampacity the breaker needs.</p>
+
+    <h2>The 3% and 5% figures</h2>
+    <p>These come from informational notes in NEC Article 210.19(A) and 215.2(A) — 3% maximum on a branch circuit, and no more than 5% for feeder and branch circuit combined. They are <em>recommendations</em>, not mandatory code requirements in the general case, but they are what inspectors and designers work to, and they exist for good reason: undervoltage makes motors draw more current and run hot, dims lighting, and makes electronics behave unpredictably.</p>
+    <p>Outside the US, the IEC convention is broadly similar in spirit — UK practice under BS 7671 uses 3% for lighting and 5% for other uses, measured from the origin of the installation.</p>
+
+    <h2>What this calculator does not cover</h2>
+    <p>It computes DC resistance at 75 °C. It does not account for conductor temperature above that, AC skin effect and reactance in large conductors, power factor on inductive loads, or conduit and grouping derating. For a large three-phase feeder or anything approaching the limits, NEC Chapter 9 Table 9 gives AC impedance figures that matter more than the DC values here.</p>
+    <p>Voltage drop is also only half of conductor sizing. The other half is ampacity — whether the conductor can carry the current safely at all, which is Table 310.16 territory and depends on insulation type, ambient temperature and how many conductors share a raceway. A cable can pass voltage drop and still be dangerously undersized. Fixed wiring is licensed electrician work.</p>
+    <h3>Do I enter the one-way distance or the total length of cable?</h3>
+    <p>One way — the distance from the panel to the load. The calculator doubles it internally for single-phase, because the current has to return along the second conductor. If you enter the round trip you will get twice the real drop. For three-phase it applies √3 instead of 2, which is the standard convention for a balanced three-wire system.</p>
+    <h3>How much voltage drop is actually acceptable?</h3>
+    <p>The NEC recommends no more than 3% on a branch circuit and 5% for feeder plus branch combined. These sit in informational notes rather than being enforceable requirements in most cases, but they are the working standard. Sensitive electronics, long motor runs and LED drivers on dimmers are the situations where staying well inside 3% is worth the extra copper.</p>
+    <h3>Why does aluminium need a larger size than copper?</h3>
+    <p>Aluminium’s resistivity is about 1.6 times copper’s, so the same gauge in aluminium drops roughly 60% more voltage. In practice you go up about two AWG sizes to match — 4 AWG aluminium behaves roughly like 6 AWG copper. Aluminium also needs antioxidant compound at terminations and connectors rated for it, since the oxide layer is a poor conductor and the metal creeps under pressure.</p>
+    <h3>Does voltage drop change when the wire gets hot?</h3>
+    <p>Yes. Copper resistance rises roughly 0.4% per degree Celsius. The NEC table used here is at 75 °C, which is a normal operating assumption for building wire, so it already includes a realistic amount of heating. A conductor running cooler than that will drop slightly less than the calculator says, and one running hotter slightly more. The effect is real but usually second-order compared with getting the length and gauge right.</p>
+    <h3>Can I use this outside the United States?</h3>
+    <p>The physics is universal and you can enter the run in metres, but the conductor sizes are AWG from the NEC table, and the mm² figures shown alongside each are nearest-equivalent cross-sections rather than exact IEC standard sizes. If you are working to BS 7671 or an IEC standard, use the mV/A/m figures from your own cable tables rather than converting from these.</p>
+  </section>
+
+  <p style="font-size:13px;color:rgba(242,236,221,0.55);margin:0 0 24px;">Related: <a href="ohms-law-calculator.html">Ohm’s Law Calculator</a> · <a href="electricity-cost-calculator.html">Electricity Cost Calculator</a> · <a href="resistor-color-code-calculator.html">Resistor Colour Code Calculator</a> · <a href="unit-converter.html">Unit Converter</a></p>
+
+  <footer>
+    <p>TALLYBENCH · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
+  </footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

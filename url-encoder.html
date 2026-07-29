@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>URL Encoder and Decoder — Percent Encoding | TallyBench</title>
+<meta name="description" content="Percent-encode a URL or query string value, or decode one back to readable text, in your browser.">
+<link rel="canonical" href="https://tallybench.com/url-encoder.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.svg">
+<meta name="theme-color" content="#1C1A17">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="TallyBench">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TallyBench">
+<meta property="og:title" content="URL Encoder and Decoder — Percent Encoding">
+<meta property="og:description" content="Percent-encode a URL or query string value, or decode one back to readable text, in your browser.">
+<meta property="og:url" content="https://tallybench.com/url-encoder.html">
+<meta property="og:image" content="https://tallybench.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="URL Encoder and Decoder — Percent Encoding">
+<meta name="twitter:description" content="Percent-encode a URL or query string value, or decode one back to readable text, in your browser.">
+<meta name="twitter:image" content="https://tallybench.com/og-image.png">
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="style.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is the difference between encoding a component and encoding a whole URL?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Component encoding escapes every character with structural meaning, including slashes, colons, ampersands and question marks. Use it for a single value that will sit inside a URL. Whole-URL encoding leaves those characters intact so the address still functions, and only fixes genuinely illegal characters such as spaces. Applying component encoding to a full URL produces something that is correct as a parameter value but useless as a link." }
+    },
+    {
+      "@type": "Question",
+      "name": "Why is a space sometimes %20 and sometimes a plus sign?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Two different specifications. Percent-encoding proper, as used in URL paths, represents a space as %20. HTML form submissions using application/x-www-form-urlencoded represent it as +, a convention that predates the modern standard and survives for compatibility. Query strings built by forms use +; almost everything else uses %20. Decoders generally accept both, and this tool converts + back to a space." }
+    },
+    {
+      "@type": "Question",
+      "name": "What does %25 in a URL mean?",
+      "acceptedAnswer": { "@type": "Answer", "text": "It is a literal percent sign. Because % is the escape character itself, it has to be escaped too. Seeing %25 followed by what looks like another escape — for example %2520 — means the value was encoded twice, usually because a framework escaped it automatically and application code escaped it again. Decode twice to read it, then find the duplicated step rather than patching around it." }
+    },
+    {
+      "@type": "Question",
+      "name": "Does encoding a URL make it secure?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No. Percent-encoding is a formatting convention, not a security control. It exists so a parser reads a URL the way you intended, nothing more. It does not hide data, and anything in a URL is visible in browser history, server logs, proxy logs and referrer headers — which is exactly why sensitive values should travel in a request body over HTTPS rather than in a query string, encoded or not." }
+    },
+    {
+      "@type": "Question",
+      "name": "Why do accented and non-English characters produce so many escapes?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Percent-encoding operates on bytes, and modern URLs use UTF-8, where any character outside basic ASCII takes two to four bytes. Each byte becomes its own three-character escape, so é becomes %C3%A9 and a single CJK character typically becomes nine characters. The expansion is unavoidable. Internationalised domain names sidestep it entirely by using Punycode instead, since DNS does not accept percent escapes." }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "URL Encoder and Decoder — TallyBench",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any (runs in browser)",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "url": "https://tallybench.com/url-encoder.html"
+}
+</script>
+<!-- TB:BREADCRUMB:START -->
+<script type="application/ld+json">
+{
+    "@context":  "https://schema.org",
+    "@type":  "BreadcrumbList",
+    "itemListElement":  [
+                            {
+                                "@type":  "ListItem",
+                                "position":  1,
+                                "name":  "TallyBench",
+                                "item":  "https://tallybench.com/"
+                            },
+                            {
+                                "@type":  "ListItem",
+                                "position":  2,
+                                "name":  "URL Encoder and Decoder",
+                                "item":  "https://tallybench.com/url-encoder.html"
+                            }
+                        ]
+}
+</script>
+<!-- TB:BREADCRUMB:END -->
+</head>
+<body data-page-cat="everyday">
+
+<header>
+  <div class="wrap">
+    <div class="headbar">
+      <a class="logo" href="index.html">TALLYBENCH<span>.</span></a>
+      <div class="tagline"><!-- TB:COUNT:START -->
+169 TOOLS · 0 SIGN-UP
+<!-- TB:COUNT:END --></div>
+<button class="nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <!-- TB:NAV:START -->
+  <div class="nav-drawer" id="navDrawer">
+    <div class="nav-drawer-head">
+      <span>Menu</span>
+      <button class="nav-close" id="navClose" type="button" aria-label="Close menu">&#10005;</button>
+    </div>
+    <nav class="ruler cat-ruler" aria-label="Category">
+      <a class="tick" href="index.html">HOME</a>
+      <a class="tick" href="articles.html">ARTICLES</a>
+      <a class="tick" href="book.html">BOOK</a>
+      <a class="tick" href="venstock.html">VENSTOCK</a>
+      <button class="tick cat-tab" type="button" data-cat="finance">FINANCE</button>
+      <button class="tick cat-tab" type="button" data-cat="health">HEALTH</button>
+      <button class="tick cat-tab" type="button" data-cat="education">EDUCATION</button>
+      <button class="tick cat-tab" type="button" data-cat="everyday">EVERYDAY</button>
+    </nav>
+    <nav class="ruler sub-ruler" id="subRuler" aria-label="Tools">
+      <a class="tick sub-tick" data-cat="finance" href="currency-converter.html">CURRENCY</a>
+      <a class="tick sub-tick" data-cat="finance" href="loan-calculator.html">LOAN / EMI</a>
+      <a class="tick sub-tick" data-cat="finance" href="car-loan-calculator.html">CAR LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="mortgage-calculator.html">MORTGAGE</a>
+      <a class="tick sub-tick" data-cat="finance" href="refinance-calculator.html">REFINANCE</a>
+      <a class="tick sub-tick" data-cat="finance" href="rent-vs-buy-calculator.html">RENT VS BUY</a>
+      <a class="tick sub-tick" data-cat="finance" href="tax-calculator.html">TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="paycheck-calculator.html">PAYCHECK</a>
+      <a class="tick sub-tick" data-cat="finance" href="freelancer-tax-calculator-india.html">FREELANCER TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="gst-vat-calculator.html">GST / VAT</a>
+      <a class="tick sub-tick" data-cat="finance" href="investment-calculator.html">INVESTMENT</a>
+      <a class="tick sub-tick" data-cat="finance" href="sip-calculator.html">SIP</a>
+      <a class="tick sub-tick" data-cat="finance" href="compound-interest-calculator.html">COMPOUND INT.</a>
+      <a class="tick sub-tick" data-cat="finance" href="savings-goal-calculator.html">SAVINGS GOAL</a>
+      <a class="tick sub-tick" data-cat="finance" href="retirement-calculator.html">RETIREMENT</a>
+      <a class="tick sub-tick" data-cat="finance" href="net-worth-calculator.html">NET WORTH</a>
+      <a class="tick sub-tick" data-cat="finance" href="discount-calculator.html">DISCOUNT</a>
+      <a class="tick sub-tick" data-cat="finance" href="tip-calculator.html">TIP</a>
+      <a class="tick sub-tick" data-cat="finance" href="fd-calculator.html">FD</a>
+      <a class="tick sub-tick" data-cat="finance" href="rd-calculator.html">RD</a>
+      <a class="tick sub-tick" data-cat="finance" href="ppf-calculator.html">PPF</a>
+      <a class="tick sub-tick" data-cat="finance" href="india-tax-regime-calculator.html">OLD VS NEW REGIME</a>
+      <a class="tick sub-tick" data-cat="finance" href="hra-calculator.html">HRA</a>
+      <a class="tick sub-tick" data-cat="finance" href="gratuity-calculator.html">GRATUITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="epf-calculator.html">EPF</a>
+      <a class="tick sub-tick" data-cat="finance" href="fire-calculator.html">FIRE NUMBER</a>
+      <a class="tick sub-tick" data-cat="finance" href="rsu-vesting-calculator.html">RSU VESTING</a>
+      <a class="tick sub-tick" data-cat="finance" href="cross-country-salary-calculator.html">SALARY BY COUNTRY</a>
+      <a class="tick sub-tick" data-cat="finance" href="currency-fee-calculator.html">FX FEES</a>
+      <a class="tick sub-tick" data-cat="finance" href="zakat-calculator.html">ZAKAT</a>
+      <a class="tick sub-tick" data-cat="finance" href="break-even-calculator.html">BREAK-EVEN</a>
+      <a class="tick sub-tick" data-cat="finance" href="debt-payoff-calculator.html">DEBT PAYOFF</a>
+      <a class="tick sub-tick" data-cat="finance" href="salary-calculator.html">SALARY</a>
+      <a class="tick sub-tick" data-cat="finance" href="sales-tax-calculator.html">SALES TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="cd-calculator.html">CD</a>
+      <a class="tick sub-tick" data-cat="finance" href="amortization-schedule-calculator.html">AMORTIZATION</a>
+      <a class="tick sub-tick" data-cat="finance" href="401k-calculator.html">401(K)</a>
+      <a class="tick sub-tick" data-cat="finance" href="ira-calculator.html">IRA / ROTH</a>
+      <a class="tick sub-tick" data-cat="finance" href="house-affordability-calculator.html">AFFORDABILITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="down-payment-calculator.html">DOWN PAYMENT</a>
+      <a class="tick sub-tick" data-cat="finance" href="debt-to-income-calculator.html">DTI RATIO</a>
+      <a class="tick sub-tick" data-cat="finance" href="simple-interest-calculator.html">SIMPLE INT.</a>
+      <a class="tick sub-tick" data-cat="finance" href="roi-calculator.html">ROI</a>
+      <a class="tick sub-tick" data-cat="finance" href="credit-card-payoff-calculator.html">CC PAYOFF</a>
+      <a class="tick sub-tick" data-cat="finance" href="mortgage-payoff-calculator.html">MTG PAYOFF</a>
+      <a class="tick sub-tick" data-cat="finance" href="rent-affordability-calculator.html">RENT AFFORD</a>
+      <a class="tick sub-tick" data-cat="finance" href="real-estate-investment-calculator.html">REAL ESTATE</a>
+      <a class="tick sub-tick" data-cat="finance" href="rental-property-calculator.html">RENTAL PROPERTY</a>
+      <a class="tick sub-tick" data-cat="finance" href="apr-calculator.html">APR</a>
+      <a class="tick sub-tick" data-cat="finance" href="fha-loan-calculator.html">FHA LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="va-mortgage-calculator.html">VA LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="home-equity-loan-calculator.html">HOME EQUITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="heloc-calculator.html">HELOC</a>
+      <a class="tick sub-tick" data-cat="finance" href="cash-back-or-low-interest-calculator.html">CASH BACK/APR</a>
+      <a class="tick sub-tick" data-cat="finance" href="auto-lease-calculator.html">AUTO LEASE</a>
+      <a class="tick sub-tick" data-cat="finance" href="finance-calculator.html">TVM SOLVER</a>
+      <a class="tick sub-tick" data-cat="finance" href="interest-rate-calculator.html">INT. RATE</a>
+      <a class="tick sub-tick" data-cat="finance" href="bond-calculator.html">BOND</a>
+      <a class="tick sub-tick" data-cat="finance" href="mutual-fund-calculator.html">MUTUAL FUND</a>
+      <a class="tick sub-tick" data-cat="finance" href="average-return-calculator.html">AVG RETURN</a>
+      <a class="tick sub-tick" data-cat="finance" href="irr-calculator.html">IRR</a>
+      <a class="tick sub-tick" data-cat="finance" href="payback-period-calculator.html">PAYBACK PERIOD</a>
+      <a class="tick sub-tick" data-cat="finance" href="present-value-calculator.html">PRESENT VALUE</a>
+      <a class="tick sub-tick" data-cat="finance" href="future-value-calculator.html">FUTURE VALUE</a>
+      <a class="tick sub-tick" data-cat="finance" href="savings-calculator.html">SAVINGS</a>
+      <a class="tick sub-tick" data-cat="finance" href="pension-calculator.html">PENSION</a>
+      <a class="tick sub-tick" data-cat="finance" href="social-security-calculator.html">SOCIAL SECURITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="annuity-calculator.html">ANNUITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="annuity-payout-calculator.html">ANNUITY PAYOUT</a>
+      <a class="tick sub-tick" data-cat="finance" href="rmd-calculator.html">RMD</a>
+      <a class="tick sub-tick" data-cat="finance" href="marriage-tax-calculator.html">MARRIAGE TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="estate-tax-calculator.html">ESTATE TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="inflation-calculator.html">INFLATION</a>
+      <a class="tick sub-tick" data-cat="finance" href="debt-consolidation-calculator.html">DEBT CONSOLIDATION</a>
+      <a class="tick sub-tick" data-cat="finance" href="student-loan-repayment-calculator.html">REPAYMENT PLAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="pslf-calculator.html">PSLF</a>
+      <a class="tick sub-tick" data-cat="finance" href="student-loan-calculator.html">STUDENT LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="college-cost-calculator.html">COLLEGE COST</a>
+      <a class="tick sub-tick" data-cat="finance" href="depreciation-calculator.html">DEPRECIATION</a>
+      <a class="tick sub-tick" data-cat="finance" href="margin-calculator.html">MARGIN</a>
+      <a class="tick sub-tick" data-cat="finance" href="business-loan-calculator.html">BUSINESS LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="personal-loan-calculator.html">PERSONAL LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="boat-loan-calculator.html">BOAT LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="lease-calculator.html">LEASE</a>
+      <a class="tick sub-tick" data-cat="finance" href="budget-calculator.html">BUDGET</a>
+      <a class="tick sub-tick" data-cat="finance" href="commission-calculator.html">COMMISSION</a>
+      <a class="tick sub-tick" data-cat="health" href="bmi-calculator.html">BMI</a>
+      <a class="tick sub-tick" data-cat="health" href="calorie-calculator.html">CALORIE</a>
+      <a class="tick sub-tick" data-cat="health" href="macro-calculator.html">MACROS</a>
+      <a class="tick sub-tick" data-cat="health" href="pregnancy-calculator.html">PREGNANCY</a>
+      <a class="tick sub-tick" data-cat="health" href="ovulation-calculator.html">OVULATION</a>
+      <a class="tick sub-tick" data-cat="health" href="ideal-weight-calculator.html">IDEAL WEIGHT</a>
+      <a class="tick sub-tick" data-cat="health" href="body-fat-calculator.html">BODY FAT</a>
+      <a class="tick sub-tick" data-cat="health" href="army-body-fat-calculator.html">ARMY BODY FAT</a>
+      <a class="tick sub-tick" data-cat="health" href="lean-body-mass-calculator.html">LEAN MASS</a>
+      <a class="tick sub-tick" data-cat="health" href="healthy-weight-calculator.html">HEALTHY WEIGHT</a>
+      <a class="tick sub-tick" data-cat="health" href="calories-burned-calculator.html">CAL BURNED</a>
+      <a class="tick sub-tick" data-cat="health" href="one-rep-max-calculator.html">1RM</a>
+      <a class="tick sub-tick" data-cat="health" href="target-heart-rate-calculator.html">HEART RATE</a>
+      <a class="tick sub-tick" data-cat="health" href="pregnancy-week-calculator.html">PREGNANCY WEEKS</a>
+      <a class="tick sub-tick" data-cat="health" href="pregnancy-weight-gain-calculator.html">PREG. WEIGHT GAIN</a>
+      <a class="tick sub-tick" data-cat="health" href="conception-calculator.html">CONCEPTION</a>
+      <a class="tick sub-tick" data-cat="health" href="sleep-cycle-calculator.html">SLEEP CYCLE</a>
+      <a class="tick sub-tick" data-cat="health" href="water-intake-calculator.html">WATER INTAKE</a>
+      <a class="tick sub-tick" data-cat="health" href="tdee-calculator.html">TDEE</a>
+      <a class="tick sub-tick" data-cat="health" href="protein-calculator.html">PROTEIN</a>
+      <a class="tick sub-tick" data-cat="education" href="gcf-calculator.html">GCF</a>
+      <a class="tick sub-tick" data-cat="education" href="lcm-calculator.html">LCM</a>
+      <a class="tick sub-tick" data-cat="education" href="factor-calculator.html">FACTORS</a>
+      <a class="tick sub-tick" data-cat="education" href="rounding-calculator.html">ROUNDING</a>
+      <a class="tick sub-tick" data-cat="education" href="scientific-notation-calculator.html">SCI. NOTATION</a>
+      <a class="tick sub-tick" data-cat="education" href="big-number-calculator.html">BIG NUMBERS</a>
+      <a class="tick sub-tick" data-cat="education" href="number-sequence-calculator.html">SEQUENCES</a>
+      <a class="tick sub-tick" data-cat="education" href="probability-calculator.html">PROBABILITY</a>
+      <a class="tick sub-tick" data-cat="education" href="matrix-calculator.html">MATRIX</a>
+      <a class="tick sub-tick" data-cat="education" href="circle-calculator.html">CIRCLE</a>
+      <a class="tick sub-tick" data-cat="education" href="area-calculator.html">AREA</a>
+      <a class="tick sub-tick" data-cat="education" href="volume-calculator.html">VOLUME</a>
+      <a class="tick sub-tick" data-cat="education" href="surface-area-calculator.html">SURFACE AREA</a>
+      <a class="tick sub-tick" data-cat="education" href="slope-calculator.html">SLOPE</a>
+      <a class="tick sub-tick" data-cat="education" href="coordinate-distance-calculator.html">COORDINATE DISTANCE</a>
+      <a class="tick sub-tick" data-cat="education" href="pythagorean-theorem-calculator.html">PYTHAGOREAN THEOREM</a>
+      <a class="tick sub-tick" data-cat="education" href="right-triangle-calculator.html">RIGHT TRIANGLE</a>
+      <a class="tick sub-tick" data-cat="education" href="triangle-calculator.html">TRIANGLE</a>
+      <a class="tick sub-tick" data-cat="education" href="gpa-calculator.html">GPA</a>
+      <a class="tick sub-tick" data-cat="education" href="grade-calculator.html">GRADE</a>
+      <a class="tick sub-tick" data-cat="education" href="scientific-calculator.html">SCIENTIFIC</a>
+      <a class="tick sub-tick" data-cat="education" href="fraction-calculator.html">FRACTION</a>
+      <a class="tick sub-tick" data-cat="education" href="statistics-calculator.html">STATISTICS</a>
+      <a class="tick sub-tick" data-cat="education" href="percent-error-calculator.html">% ERROR</a>
+      <a class="tick sub-tick" data-cat="education" href="exponent-calculator.html">EXPONENT</a>
+      <a class="tick sub-tick" data-cat="education" href="binary-calculator.html">BINARY</a>
+      <a class="tick sub-tick" data-cat="education" href="hex-calculator.html">HEX</a>
+      <a class="tick sub-tick" data-cat="education" href="half-life-calculator.html">HALF-LIFE</a>
+      <a class="tick sub-tick" data-cat="education" href="quadratic-formula-calculator.html">QUADRATIC</a>
+      <a class="tick sub-tick" data-cat="education" href="log-calculator.html">LOG</a>
+      <a class="tick sub-tick" data-cat="education" href="ratio-calculator.html">RATIO</a>
+      <a class="tick sub-tick" data-cat="education" href="root-calculator.html">ROOT</a>
+      <a class="tick sub-tick" data-cat="education" href="standard-deviation-calculator.html">STD DEVIATION</a>
+      <a class="tick sub-tick" data-cat="education" href="sample-size-calculator.html">SAMPLE SIZE</a>
+      <a class="tick sub-tick" data-cat="education" href="mean-median-mode-calculator.html">MEAN/MEDIAN/MODE</a>
+      <a class="tick sub-tick" data-cat="education" href="permutation-combination-calculator.html">PERM/COMBO</a>
+      <a class="tick sub-tick" data-cat="education" href="z-score-calculator.html">Z-SCORE</a>
+      <a class="tick sub-tick" data-cat="education" href="confidence-interval-calculator.html">CONFIDENCE INT.</a>
+      <a class="tick sub-tick" data-cat="everyday" href="basic-calculator.html">CALCULATOR</a>
+      <a class="tick sub-tick" data-cat="everyday" href="percentage-calculator.html">PERCENT</a>
+      <a class="tick sub-tick" data-cat="everyday" href="age-calculator.html">AGE</a>
+      <a class="tick sub-tick" data-cat="everyday" href="days-calculator.html">DAYS</a>
+      <a class="tick sub-tick" data-cat="everyday" href="time-calculator.html">TIME</a>
+      <a class="tick sub-tick" data-cat="everyday" href="unit-converter.html">UNITS</a>
+      <a class="tick sub-tick" data-cat="everyday" href="week-number-calculator.html">WEEK #</a>
+      <a class="tick sub-tick" data-cat="everyday" href="cm-to-inches.html">CM→IN</a>
+      <a class="tick sub-tick" data-cat="everyday" href="kg-to-pounds.html">KG→LB</a>
+      <a class="tick sub-tick" data-cat="everyday" href="celsius-to-fahrenheit.html">°C→°F</a>
+      <a class="tick sub-tick" data-cat="everyday" href="password-generator.html">PASSWORD</a>
+      <a class="tick sub-tick" data-cat="everyday" href="random-number-generator.html">RANDOM #</a>
+      <a class="tick sub-tick" data-cat="everyday" href="word-counter.html">WORD COUNT</a>
+      <a class="tick sub-tick" data-cat="everyday" href="pace-calculator.html">PACE</a>
+      <a class="tick sub-tick" data-cat="everyday" href="bill-split-calculator.html">BILL SPLIT</a>
+      <a class="tick sub-tick" data-cat="everyday" href="fuel-cost-calculator.html">FUEL COST</a>
+      <a class="tick sub-tick" data-cat="education" href="ohms-law-calculator.html">OHM’S LAW</a>
+      <a class="tick sub-tick" data-cat="education" href="resistor-color-code-calculator.html">RESISTOR CODE</a>
+      <a class="tick sub-tick" data-cat="education" href="roman-numeral-converter.html">ROMAN NUMERALS</a>
+      <a class="tick sub-tick" data-cat="everyday" href="voltage-drop-calculator.html">VOLTAGE DROP</a>
+      <a class="tick sub-tick" data-cat="everyday" href="electricity-cost-calculator.html">ELECTRICITY COST</a>
+      <a class="tick sub-tick" data-cat="everyday" href="ip-subnet-calculator.html">IP SUBNET</a>
+      <a class="tick sub-tick" data-cat="everyday" href="bandwidth-calculator.html">BANDWIDTH</a>
+      <a class="tick sub-tick" data-cat="everyday" href="base64-converter.html">BASE64</a>
+      <a class="tick sub-tick" data-cat="everyday" href="url-encoder.html">URL ENCODER</a>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+    </nav>
+  </div>
+  <!-- TB:NAV:END -->
+</header>
+<div class="nav-backdrop" id="navBackdrop"></div>
+
+<div class="wrap">
+  <div class="crumb"><a href="index.html">TallyBench</a> / URL Encoder</div>
+
+  <section class="hero">
+    <div class="hero-icon-row cat-everyday">
+      <div class="hero-icon"><svg><use href="icons.svg#icon-password"/></svg></div>
+      <div class="eyebrow">// URL ENCODER · DECODER</div>
+    </div>
+    <h1>URL Encoder and Decoder</h1>
+    <p>Encode a value for a query string, encode a whole URL, or decode percent-encoded text back to something readable.</p>
+  </section>
+
+  <section class="tool" id="urlenc">
+    <div class="card">
+      <div>
+        <div class="field"><label>Mode</label>
+          <select id="urlMode">
+            <option value="component">Encode a component (query string value)</option>
+            <option value="full">Encode a whole URL</option>
+            <option value="decode">Decode</option>
+          </select>
+        </div>
+        <div class="field"><label>Input</label><textarea id="urlInput" rows="7" placeholder="Paste a URL or a value…">price &amp; tax = 50%</textarea></div>
+      </div>
+      <div class="readout">
+        <div style="margin-top:2px;">
+          <div class="r-label" style="margin-bottom:8px;">Result</div>
+          <div id="urlOutput" style="word-break:break-all;font-family:var(--mono,monospace);font-size:14px;line-height:1.7;color:var(--teal);">—</div>
+        </div>
+        <p class="r-note" id="urlNote"></p>
+      </div>
+    </div>
+
+  </section>
+
+  <section class="article">
+    <h2>Why URLs need encoding</h2>
+    <p>A URL is not free text. Certain characters carry structural meaning — <code>?</code> starts the query string, <code>&amp;</code> separates parameters, <code>=</code> joins a name to its value, <code>#</code> begins the fragment, <code>/</code> divides path segments. If any of those appear inside a <em>value</em>, the parser on the other end has no way to tell them apart from the real thing.</p>
+    <p>Percent encoding solves it by replacing the character with a <code>%</code> followed by its two-digit hexadecimal byte value. A space becomes <code>%20</code>, an ampersand becomes <code>%26</code>, a question mark <code>%3F</code>. The parser sees inert text and the value survives intact.</p>
+
+    <h2>The three modes, and why the distinction matters</h2>
+    <p><strong>Encode a component.</strong> Use this on a single value that is going inside a URL — a search term, a name, a redirect target. It escapes everything with structural meaning, including <code>/ ? : @ &amp; = + $ #</code>. This is what you want the overwhelming majority of the time.</p>
+    <p><strong>Encode a whole URL.</strong> Use this when the input is already a complete address and you only want to fix illegal characters such as spaces. It deliberately leaves <code>/ ? : @ &amp; =</code> alone, because escaping those would break the address. Applying component-encoding to a full URL turns <code>https://example.com</code> into <code>https%3A%2F%2Fexample.com</code>, which is correct if it is a parameter value and wrong if it is meant to be a working link.</p>
+    <p><strong>Decode.</strong> Reverses either. This tool also converts <code>+</code> to a space, because HTML form submissions encode spaces that way — a legacy of the older <code>application/x-www-form-urlencoded</code> format rather than the percent-encoding standard itself.</p>
+
+    <h2>A worked example</h2>
+    <p>The value <code>price &amp; tax = 50%</code> component-encodes to <code>price%20%26%20tax%20%3D%2050%25</code>. Every space becomes %20, the ampersand becomes %26, the equals becomes %3D, and — this one is easy to miss — the literal percent sign becomes %25. A percent sign that is not escaped is the most common cause of a decode failure, because the decoder tries to read the next two characters as hex and finds something else.</p>
+
+    <h2>Reserved characters worth memorising</h2>
+    <table class="data-table">
+      <thead><tr><th>Character</th><th>Encoded</th><th>Why it matters</th></tr></thead>
+      <tbody>
+        <tr><td>space</td><td>%20</td><td>Illegal in a URL; sometimes written as +</td></tr>
+        <tr><td>&amp;</td><td>%26</td><td>Separates query parameters</td></tr>
+        <tr><td>=</td><td>%3D</td><td>Joins a parameter name to its value</td></tr>
+        <tr><td>?</td><td>%3F</td><td>Starts the query string</td></tr>
+        <tr><td>#</td><td>%23</td><td>Starts the fragment — everything after is never sent to the server</td></tr>
+        <tr><td>/</td><td>%2F</td><td>Separates path segments</td></tr>
+        <tr><td>%</td><td>%25</td><td>The escape character itself</td></tr>
+        <tr><td>+</td><td>%2B</td><td>Otherwise read as a space by form decoders</td></tr>
+      </tbody>
+    </table>
+    <p>The <code>#</code> row has a consequence people hit repeatedly: a fragment is handled entirely by the browser and never transmitted to the server. An unescaped <code>#</code> inside a parameter value silently truncates everything after it from the server’s point of view, and the request looks fine in the address bar while arriving incomplete.</p>
+
+    <h2>Non-ASCII characters</h2>
+    <p>Modern percent-encoding works on UTF-8 bytes, so a character outside ASCII becomes several escapes. The <code>é</code> in café is two bytes in UTF-8 and encodes to <code>%C3%A9</code>. A CJK character is usually three bytes and produces three escapes. This is why an encoded string containing non-English text looks disproportionately long, and why a mismatched character set produces mojibake rather than an error.</p>
+    <p>Domain names work differently. Internationalised domains use Punycode rather than percent-encoding — <code>münchen.de</code> becomes <code>xn--mnchen-3ya.de</code> — because the DNS system predates and does not accept percent escapes.</p>
+
+    <h2>Double encoding</h2>
+    <p>Encoding something that is already encoded turns each <code>%</code> into <code>%25</code>, so <code>%20</code> becomes <code>%2520</code>. Seeing <code>%25</code> where you expected a plain escape is the signature of a value that passed through two encoding layers, typically because a framework encoded it automatically and application code encoded it again. The fix is to decode twice, then find and remove the duplicate encoding step rather than compensating for it downstream.</p>
+    <h3>What is the difference between encoding a component and encoding a whole URL?</h3>
+    <p>Component encoding escapes every character with structural meaning, including slashes, colons, ampersands and question marks. Use it for a single value that will sit inside a URL. Whole-URL encoding leaves those characters intact so the address still functions, and only fixes genuinely illegal characters such as spaces. Applying component encoding to a full URL produces something that is correct as a parameter value but useless as a link.</p>
+    <h3>Why is a space sometimes %20 and sometimes a plus sign?</h3>
+    <p>Two different specifications. Percent-encoding proper, as used in URL paths, represents a space as %20. HTML form submissions using application/x-www-form-urlencoded represent it as +, a convention that predates the modern standard and survives for compatibility. Query strings built by forms use +; almost everything else uses %20. Decoders generally accept both, and this tool converts + back to a space.</p>
+    <h3>What does %25 in a URL mean?</h3>
+    <p>It is a literal percent sign. Because % is the escape character itself, it has to be escaped too. Seeing %25 followed by what looks like another escape — for example %2520 — means the value was encoded twice, usually because a framework escaped it automatically and application code escaped it again. Decode twice to read it, then find the duplicated step rather than patching around it.</p>
+    <h3>Does encoding a URL make it secure?</h3>
+    <p>No. Percent-encoding is a formatting convention, not a security control. It exists so a parser reads a URL the way you intended, nothing more. It does not hide data, and anything in a URL is visible in browser history, server logs, proxy logs and referrer headers — which is exactly why sensitive values should travel in a request body over HTTPS rather than in a query string, encoded or not.</p>
+    <h3>Why do accented and non-English characters produce so many escapes?</h3>
+    <p>Percent-encoding operates on bytes, and modern URLs use UTF-8, where any character outside basic ASCII takes two to four bytes. Each byte becomes its own three-character escape, so é becomes %C3%A9 and a single CJK character typically becomes nine characters. The expansion is unavoidable. Internationalised domain names sidestep it entirely by using Punycode instead, since DNS does not accept percent escapes.</p>
+  </section>
+
+  <p style="font-size:13px;color:rgba(242,236,221,0.55);margin:0 0 24px;">Related: <a href="base64-converter.html">Base64 Converter</a> · <a href="ip-subnet-calculator.html">IP Subnet Calculator</a> · <a href="password-generator.html">Password Generator</a> · <a href="word-counter.html">Word Counter</a></p>
+
+  <footer>
+    <p>TALLYBENCH · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
+  </footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

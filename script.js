@@ -11537,3 +11537,341 @@ function tbMoney(n){
   ['matSize', 'matOp'].forEach(function (id) { g(id).addEventListener('change', function () { render(); }); });
   render();
 })();
+
+// ================= Electronics / IT cluster =================
+
+// ---- Ohm's Law Calculator ----
+(function () {
+  if (!document.getElementById('ohmV')) return;
+  var g = function (id) { return document.getElementById(id); };
+  var f = function (n) { return isFinite(n) && n >= 0 ? (Math.round(n * 1e6) / 1e6).toLocaleString('en-US') : '—'; };
+  function calc() {
+    var V = parseFloat(g('ohmV').value), I = parseFloat(g('ohmI').value);
+    var R = parseFloat(g('ohmR').value), P = parseFloat(g('ohmP').value);
+    var known = [V, I, R, P].filter(function (x) { return isFinite(x) && x !== 0; }).length;
+    var note = g('ohmNote');
+    // Derive from whichever pair is supplied.
+    if (isFinite(V) && isFinite(I)) { R = V / I; P = V * I; }
+    else if (isFinite(V) && isFinite(R)) { I = V / R; P = V * V / R; }
+    else if (isFinite(V) && isFinite(P)) { I = P / V; R = V * V / P; }
+    else if (isFinite(I) && isFinite(R)) { V = I * R; P = I * I * R; }
+    else if (isFinite(I) && isFinite(P)) { V = P / I; R = P / (I * I); }
+    else if (isFinite(R) && isFinite(P)) { V = Math.sqrt(P * R); I = Math.sqrt(P / R); }
+    else {
+      ['ohmOutV', 'ohmOutI', 'ohmOutR', 'ohmOutP'].forEach(function (id) { g(id).textContent = '—'; });
+      note.textContent = known === 1 ? 'Enter a second value — any two of the four determine the other two.' : 'Enter any two values.';
+      return;
+    }
+    g('ohmOutV').textContent = f(V) + ' V';
+    g('ohmOutI').textContent = f(I) + ' A';
+    g('ohmOutR').textContent = f(R) + ' Ω';
+    g('ohmOutP').textContent = f(P) + ' W';
+    note.textContent = 'V = I × R  ·  P = V × I = I²R = V²/R';
+  }
+  ['ohmV', 'ohmI', 'ohmR', 'ohmP'].forEach(function (id) { g(id).addEventListener('input', calc); });
+  calc();
+})();
+
+// ---- Resistor Colour Code Calculator ----
+(function () {
+  if (!document.getElementById('resBands')) return;
+  var g = function (id) { return document.getElementById(id); };
+  var DIGIT = { black: 0, brown: 1, red: 2, orange: 3, yellow: 4, green: 5, blue: 6, violet: 7, grey: 8, white: 9 };
+  var MULT = { black: 1, brown: 10, red: 100, orange: 1e3, yellow: 1e4, green: 1e5, blue: 1e6, violet: 1e7, grey: 1e8, white: 1e9, gold: 0.1, silver: 0.01 };
+  var TOL = { brown: 1, red: 2, green: 0.5, blue: 0.25, violet: 0.1, grey: 0.05, gold: 5, silver: 10 };
+  function fmtOhms(r) {
+    if (!isFinite(r)) return '—';
+    if (r >= 1e9) return (r / 1e9) + ' GΩ';
+    if (r >= 1e6) return (r / 1e6) + ' MΩ';
+    if (r >= 1e3) return (r / 1e3) + ' kΩ';
+    return (Math.round(r * 1e4) / 1e4) + ' Ω';
+  }
+  function calc() {
+    var bands = parseInt(g('resBands').value, 10);
+    g('resB3').closest('.field').style.display = bands >= 5 ? '' : 'none';
+    var d1 = DIGIT[g('resB1').value], d2 = DIGIT[g('resB2').value], d3 = DIGIT[g('resB3').value];
+    var m = MULT[g('resMult').value], t = TOL[g('resTol').value];
+    var digits = bands >= 5 ? (d1 * 100 + d2 * 10 + d3) : (d1 * 10 + d2);
+    var r = digits * m;
+    g('resValue').textContent = fmtOhms(r);
+    g('resExact').textContent = isFinite(r) ? r.toLocaleString('en-US', { maximumFractionDigits: 4 }) + ' Ω' : '—';
+    g('resTolOut').textContent = '± ' + t + '%';
+    g('resRange').textContent = fmtOhms(r * (1 - t / 100)) + '  to  ' + fmtOhms(r * (1 + t / 100));
+  }
+  ['resBands', 'resB1', 'resB2', 'resB3', 'resMult', 'resTol'].forEach(function (id) {
+    g(id).addEventListener('change', calc); g(id).addEventListener('input', calc);
+  });
+  calc();
+})();
+
+// ---- Voltage Drop Calculator ----
+(function () {
+  if (!document.getElementById('vdAwg')) return;
+  var g = function (id) { return document.getElementById(id); };
+  // NEC Chapter 9, Table 8 — DC resistance at 75 °C, ohms per 1000 ft, stranded.
+  var R = {
+    '14': [3.14, 5.17], '12': [1.98, 3.25], '10': [1.24, 2.04], '8': [0.778, 1.28],
+    '6': [0.491, 0.808], '4': [0.308, 0.508], '3': [0.245, 0.403], '2': [0.194, 0.319],
+    '1': [0.154, 0.253], '1/0': [0.122, 0.201], '2/0': [0.0967, 0.159],
+    '3/0': [0.0766, 0.126], '4/0': [0.0608, 0.100]
+  };
+  function calc() {
+    var awg = g('vdAwg').value;
+    var mat = g('vdMaterial').value === 'al' ? 1 : 0;
+    var amps = parseFloat(g('vdAmps').value) || 0;
+    var len = parseFloat(g('vdLength').value) || 0;
+    // The NEC table is per 1000 ft, so a metric run is converted before use.
+    var feet = g('vdLenUnit').value === 'm' ? len * 3.280839895 : len;
+    var volts = parseFloat(g('vdVolts').value) || 0;
+    var phase = g('vdPhase').value;
+
+    var ohmsPerK = R[awg][mat];
+    var factor = phase === '3' ? Math.sqrt(3) : 2;   // 2 for one-way-and-back, √3 for three-phase
+    var drop = factor * amps * ohmsPerK * (feet / 1000);
+    var pct = volts > 0 ? drop / volts * 100 : NaN;
+
+    g('vdDrop').textContent = (Math.round(drop * 1000) / 1000) + ' V';
+    g('vdPct').textContent = isFinite(pct) ? (Math.round(pct * 100) / 100) + '%' : '—';
+    g('vdEnd').textContent = (Math.round((volts - drop) * 100) / 100) + ' V';
+    g('vdOhms').textContent = ohmsPerK + ' Ω per 1000 ft  ·  run of ' + (Math.round(feet * 10) / 10) + ' ft';
+
+    var verdict = g('vdVerdict');
+    if (!isFinite(pct)) { verdict.textContent = ''; return; }
+    if (pct <= 3) verdict.textContent = 'Within the 3% the NEC recommends for a branch circuit.';
+    else if (pct <= 5) verdict.textContent = 'Over the 3% branch-circuit recommendation but within the 5% total limit. Consider a heavier conductor.';
+    else verdict.textContent = 'Over 5%. This exceeds what the NEC recommends for feeder and branch circuit combined — go up in conductor size or shorten the run.';
+  }
+  ['vdAwg', 'vdMaterial', 'vdAmps', 'vdLength', 'vdLenUnit', 'vdVolts', 'vdPhase'].forEach(function (id) {
+    g(id).addEventListener('input', calc); g(id).addEventListener('change', calc);
+  });
+  calc();
+})();
+
+// ---- Electricity Cost Calculator ----
+(function () {
+  if (!document.getElementById('elecWatts')) return;
+  var g = function (id) { return document.getElementById(id); };
+  function calc() {
+    var w = parseFloat(g('elecWatts').value) || 0;
+    var hrs = parseFloat(g('elecHours').value) || 0;
+    var rate = parseFloat(g('elecRate').value) || 0;
+    var sym = g('elecCur').value;
+    var kwhDay = w * hrs / 1000;
+    var money = function (n) { return sym + (Math.round(n * 100) / 100).toLocaleString('en-US', { minimumFractionDigits: 2 }); };
+    g('elecKwhDay').textContent = (Math.round(kwhDay * 1000) / 1000) + ' kWh';
+    g('elecKwhYear').textContent = (Math.round(kwhDay * 365 * 10) / 10).toLocaleString('en-US') + ' kWh';
+    g('elecDay').textContent = money(kwhDay * rate);
+    g('elecMonth').textContent = money(kwhDay * rate * 30.44);
+    g('elecYear').textContent = money(kwhDay * rate * 365);
+  }
+  ['elecWatts', 'elecHours', 'elecRate', 'elecCur'].forEach(function (id) {
+    g(id).addEventListener('input', calc); g(id).addEventListener('change', calc);
+  });
+  calc();
+})();
+
+// ---- IP Subnet Calculator ----
+(function () {
+  if (!document.getElementById('subIp')) return;
+  var g = function (id) { return document.getElementById(id); };
+  function toInt(o) { return ((o[0] << 24) >>> 0) + (o[1] << 16) + (o[2] << 8) + o[3]; }
+  function toStr(n) { return [(n >>> 24) & 255, (n >>> 16) & 255, (n >>> 8) & 255, n & 255].join('.'); }
+  function calc() {
+    var raw = (g('subIp').value || '').trim();
+    var cidr = parseInt(g('subCidr').value, 10);
+    var m = raw.match(/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/);
+    var out = ['subMask', 'subNetwork', 'subBroadcast', 'subFirst', 'subLast', 'subHosts', 'subWildcard', 'subClass'];
+    if (!m || !isFinite(cidr) || cidr < 0 || cidr > 32) {
+      out.forEach(function (id) { g(id).textContent = '—'; });
+      g('subNote').textContent = raw ? 'Enter a valid IPv4 address such as 192.168.1.10, and a prefix from 0 to 32.' : '';
+      return;
+    }
+    var oct = m.slice(1).map(Number);
+    if (oct.some(function (o) { return o > 255; })) {
+      out.forEach(function (id) { g(id).textContent = '—'; });
+      g('subNote').textContent = 'Each octet must be 0 to 255.';
+      return;
+    }
+    var ip = toInt(oct);
+    var mask = cidr === 0 ? 0 : (0xFFFFFFFF << (32 - cidr)) >>> 0;
+    var net = (ip & mask) >>> 0;
+    var bcast = (net | (~mask >>> 0)) >>> 0;
+    var total = Math.pow(2, 32 - cidr);
+    var usable = cidr >= 31 ? (cidr === 32 ? 1 : 2) : total - 2;
+
+    g('subMask').textContent = toStr(mask);
+    g('subWildcard').textContent = toStr(~mask >>> 0);
+    g('subNetwork').textContent = toStr(net) + '/' + cidr;
+    g('subBroadcast').textContent = cidr >= 31 ? 'n/a at this prefix' : toStr(bcast);
+    g('subFirst').textContent = cidr >= 31 ? toStr(net) : toStr(net + 1);
+    g('subLast').textContent = cidr >= 31 ? toStr(bcast) : toStr(bcast - 1);
+    g('subHosts').textContent = usable.toLocaleString('en-US') + ' usable  (' + total.toLocaleString('en-US') + ' total)';
+
+    var first = oct[0];
+    var cls = first < 128 ? 'A' : first < 192 ? 'B' : first < 224 ? 'C' : first < 240 ? 'D (multicast)' : 'E (reserved)';
+    var priv = (first === 10) || (first === 172 && oct[1] >= 16 && oct[1] <= 31) || (first === 192 && oct[1] === 168);
+    g('subClass').textContent = 'Class ' + cls + (priv ? ' · private (RFC 1918)' : ' · public');
+    g('subNote').textContent = cidr === 31 ? 'A /31 is a point-to-point link (RFC 3021) — both addresses are usable and there is no broadcast.'
+      : cidr === 32 ? 'A /32 is a single host route.' : '';
+  }
+  ['subIp', 'subCidr'].forEach(function (id) { g(id).addEventListener('input', calc); g(id).addEventListener('change', calc); });
+  calc();
+})();
+
+// ---- Bandwidth / Transfer Time Calculator ----
+(function () {
+  if (!document.getElementById('bwSize')) return;
+  var g = function (id) { return document.getElementById(id); };
+  var SIZE = { KB: 1e3, MB: 1e6, GB: 1e9, TB: 1e12, KiB: 1024, MiB: 1048576, GiB: 1073741824 };
+  var SPEED = { Kbps: 1e3, Mbps: 1e6, Gbps: 1e9, 'KB/s': 8e3, 'MB/s': 8e6 };
+  function calc() {
+    var size = parseFloat(g('bwSize').value) || 0;
+    var bytes = size * SIZE[g('bwSizeUnit').value];
+    var bits = bytes * 8;
+    var bps = (parseFloat(g('bwSpeed').value) || 0) * SPEED[g('bwSpeedUnit').value];
+    if (bps <= 0 || bits <= 0) {
+      ['bwTime', 'bwBits', 'bwEffective', 'bwMonthly'].forEach(function (id) { g(id).textContent = '—'; });
+      return;
+    }
+    var secs = bits / bps;
+    var d = Math.floor(secs / 86400), h = Math.floor(secs % 86400 / 3600),
+        mn = Math.floor(secs % 3600 / 60), s = Math.round(secs % 60);
+    var parts = [];
+    if (d) parts.push(d + 'd'); if (h) parts.push(h + 'h'); if (mn) parts.push(mn + 'm');
+    if (s || !parts.length) parts.push(s + 's');
+    g('bwTime').textContent = parts.join(' ');
+    g('bwBits').textContent = bits.toLocaleString('en-US') + ' bits  (' + bytes.toLocaleString('en-US') + ' bytes)';
+    // Real-world throughput is typically well under the advertised line rate.
+    var eff = secs / 0.8;
+    var d2 = Math.floor(eff / 86400), h2 = Math.floor(eff % 86400 / 3600), m2 = Math.floor(eff % 3600 / 60), s2 = Math.round(eff % 60);
+    var p2 = []; if (d2) p2.push(d2 + 'd'); if (h2) p2.push(h2 + 'h'); if (m2) p2.push(m2 + 'm'); if (s2 || !p2.length) p2.push(s2 + 's');
+    g('bwEffective').textContent = p2.join(' ');
+    g('bwMonthly').textContent = (bytes * 30 / 1e9).toLocaleString('en-US', { maximumFractionDigits: 2 }) + ' GB if repeated daily';
+  }
+  ['bwSize', 'bwSizeUnit', 'bwSpeed', 'bwSpeedUnit'].forEach(function (id) {
+    g(id).addEventListener('input', calc); g(id).addEventListener('change', calc);
+  });
+  calc();
+})();
+
+// ---- Base64 Converter ----
+(function () {
+  if (!document.getElementById('b64Input')) return;
+  var g = function (id) { return document.getElementById(id); };
+  function encode(str) {
+    var bytes = new TextEncoder().encode(str);
+    var bin = '';
+    bytes.forEach(function (b) { bin += String.fromCharCode(b); });
+    return btoa(bin);
+  }
+  function decode(b64) {
+    var bin = atob(b64.replace(/\s/g, ''));
+    var bytes = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    return new TextDecoder().decode(bytes);
+  }
+  function calc() {
+    var mode = g('b64Mode').value, src = g('b64Input').value;
+    var out = g('b64Output'), note = g('b64Note');
+    if (!src) { out.textContent = '—'; g('b64Len').textContent = '—'; note.textContent = ''; return; }
+    try {
+      var r = mode === 'encode' ? encode(src) : decode(src);
+      out.textContent = r;
+      g('b64Len').textContent = src.length + ' chars in, ' + r.length + ' out';
+      note.textContent = mode === 'encode'
+        ? 'Base64 grows the data by about a third — three bytes become four characters. It is an encoding, not encryption: anyone can reverse it.'
+        : '';
+    } catch (e) {
+      out.textContent = '—'; g('b64Len').textContent = '—';
+      note.textContent = 'That is not valid Base64. Check for stray characters — valid input uses A–Z, a–z, 0–9, + and /, padded with =.';
+    }
+  }
+  ['b64Input', 'b64Mode'].forEach(function (id) { g(id).addEventListener('input', calc); g(id).addEventListener('change', calc); });
+  calc();
+})();
+
+// ---- URL Encoder / Decoder ----
+(function () {
+  if (!document.getElementById('urlInput')) return;
+  var g = function (id) { return document.getElementById(id); };
+  function calc() {
+    var mode = g('urlMode').value, src = g('urlInput').value;
+    var out = g('urlOutput'), note = g('urlNote');
+    if (!src) { out.textContent = '—'; note.textContent = ''; return; }
+    try {
+      if (mode === 'component') out.textContent = encodeURIComponent(src);
+      else if (mode === 'full') out.textContent = encodeURI(src);
+      else out.textContent = decodeURIComponent(src.replace(/\+/g, ' '));
+      note.textContent = mode === 'component'
+        ? 'Component encoding escapes / ? : @ & = + $ # too — use it for a value going inside a query string.'
+        : mode === 'full'
+          ? 'Full-URL encoding leaves / ? : @ & = intact so the address still works — use it on a whole URL.'
+          : 'A + is decoded as a space, which is how form submissions encode them.';
+    } catch (e) {
+      out.textContent = '—';
+      note.textContent = 'Could not decode — check for a stray % that is not followed by two hex digits.';
+    }
+  }
+  ['urlInput', 'urlMode'].forEach(function (id) { g(id).addEventListener('input', calc); g(id).addEventListener('change', calc); });
+  calc();
+})();
+
+// ---- Roman Numeral Converter ----
+(function () {
+  if (!document.getElementById('romInput')) return;
+  var g = function (id) { return document.getElementById(id); };
+  var MAP = [[1000, 'M'], [900, 'CM'], [500, 'D'], [400, 'CD'], [100, 'C'], [90, 'XC'],
+             [50, 'L'], [40, 'XL'], [10, 'X'], [9, 'IX'], [5, 'V'], [4, 'IV'], [1, 'I']];
+  var VAL = { I: 1, V: 5, X: 10, L: 50, C: 100, D: 500, M: 1000 };
+  function toRoman(n) {
+    var out = '';
+    MAP.forEach(function (p) { while (n >= p[0]) { out += p[1]; n -= p[0]; } });
+    return out;
+  }
+  // [value, symbol] pairs in the order they are written, so IV stays one group.
+  function groups(n) {
+    var out = [];
+    MAP.forEach(function (p) { while (n >= p[0]) { out.push(p); n -= p[0]; } });
+    return out;
+  }
+  function fromRoman(s) {
+    var total = 0;
+    for (var i = 0; i < s.length; i++) {
+      var v = VAL[s[i]], next = VAL[s[i + 1]];
+      if (v === undefined) return NaN;
+      total += (next && next > v) ? -v : v;
+    }
+    return total;
+  }
+  function calc() {
+    var src = (g('romInput').value || '').trim().toUpperCase();
+    var out = g('romOutput'), note = g('romNote'), br = g('romBreakdown');
+    if (!src) { out.textContent = '—'; br.textContent = '—'; note.textContent = ''; return; }
+    if (/^\d+$/.test(src)) {
+      var n = parseInt(src, 10);
+      if (n < 1 || n > 3999) {
+        out.textContent = '—'; br.textContent = '—';
+        note.textContent = 'Standard Roman numerals run from 1 to 3999. There is no symbol for zero, and none above M without an overbar.';
+        return;
+      }
+      var r = toRoman(n);
+      out.textContent = r;
+      // Break into standard groups, so a subtractive pair reads as one unit
+      // rather than being split into two letters that mean something else.
+      br.textContent = groups(n).map(function (p) { return p[1] + ' (' + p[0] + ')'; }).join(' + ');
+      note.textContent = '';
+    } else if (/^[IVXLCDM]+$/.test(src)) {
+      var v = fromRoman(src);
+      var round = toRoman(v);
+      out.textContent = isFinite(v) ? v.toLocaleString('en-US') : '—';
+      br.textContent = (round === src ? '' : 'Non-standard — usually written ' + round + '. ')
+        + groups(v).map(function (p) { return p[1] + ' (' + p[0] + ')'; }).join(' + ');
+      note.textContent = '';
+    } else {
+      out.textContent = '—'; br.textContent = '—';
+      note.textContent = 'Enter either a number from 1 to 3999, or a Roman numeral using only I, V, X, L, C, D and M.';
+    }
+  }
+  g('romInput').addEventListener('input', calc);
+  calc();
+})();

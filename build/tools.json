@@ -1,170 +1,1547 @@
 {
   "categories": [
-    { "id": "finance", "label": "FINANCE", "blurb": "Loans, tax, savings, and everyday money math." },
-    { "id": "health", "label": "HEALTH", "blurb": "Body and fitness metrics." },
-    { "id": "education", "label": "EDUCATION", "blurb": "School and academic math." },
-    { "id": "everyday", "label": "EVERYDAY", "blurb": "Quick, practical tools for daily use." }
+    {
+      "id": "finance",
+      "label": "FINANCE",
+      "blurb": "Loans, tax, savings, and everyday money math."
+    },
+    {
+      "id": "health",
+      "label": "HEALTH",
+      "blurb": "Body and fitness metrics."
+    },
+    {
+      "id": "education",
+      "label": "EDUCATION",
+      "blurb": "School and academic math."
+    },
+    {
+      "id": "everyday",
+      "label": "EVERYDAY",
+      "blurb": "Quick, practical tools for daily use."
+    }
   ],
   "tools": [
-    { "id": "currency-converter", "file": "currency-converter.html", "category": "finance", "navLabel": "CURRENCY", "title": "Currency Converter", "icon": "icon-currency", "blurb": "Live exchange rates between world currencies." },
-    { "id": "loan-calculator", "file": "loan-calculator.html", "category": "finance", "navLabel": "LOAN / EMI", "title": "Loan / EMI Calculator", "icon": "icon-loan", "blurb": "Monthly payment and total interest, any currency, years or months." },
-    { "id": "car-loan-calculator", "file": "car-loan-calculator.html", "category": "finance", "navLabel": "CAR LOAN", "title": "Car Loan Calculator", "icon": "icon-loan", "blurb": "Monthly payment with trade-in value and sales tax." },
-    { "id": "mortgage-calculator", "file": "mortgage-calculator.html", "category": "finance", "navLabel": "MORTGAGE", "title": "Mortgage Calculator", "icon": "icon-mortgage", "blurb": "Monthly payment with property tax, insurance, and PMI." },
-    { "id": "refinance-calculator", "file": "refinance-calculator.html", "category": "finance", "navLabel": "REFINANCE", "title": "Refinance Calculator", "icon": "icon-mortgage", "blurb": "Compare your current loan against a new rate and term." },
-    { "id": "rent-vs-buy-calculator", "file": "rent-vs-buy-calculator.html", "category": "finance", "navLabel": "RENT VS BUY", "title": "Rent vs. Buy Calculator", "icon": "icon-mortgage", "blurb": "Net cost of renting vs. buying, with a break-even year." },
-    { "id": "tax-calculator", "file": "tax-calculator.html", "category": "finance", "navLabel": "TAX", "title": "Tax Calculator", "icon": "icon-tax", "blurb": "Income tax estimate by country, with deductions and regimes." },
-    { "id": "paycheck-calculator", "file": "paycheck-calculator.html", "category": "finance", "navLabel": "PAYCHECK", "title": "Paycheck Calculator", "icon": "icon-tax", "blurb": "Take-home pay per paycheck, after tax and payroll deductions." },
-    { "id": "freelancer-tax-calculator-india", "file": "freelancer-tax-calculator-india.html", "category": "finance", "navLabel": "FREELANCER TAX", "title": "Freelancer Tax Calculator (India)", "icon": "icon-gst", "blurb": "44ADA vs books, GST threshold and advance tax dates." },
-    { "id": "gst-vat-calculator", "file": "gst-vat-calculator.html", "category": "finance", "navLabel": "GST / VAT", "title": "GST / VAT Calculator", "icon": "icon-gst", "blurb": "Add or remove GST/VAT for 8+ countries." },
-    { "id": "investment-calculator", "file": "investment-calculator.html", "category": "finance", "navLabel": "INVESTMENT", "title": "Investment Calculator", "icon": "icon-investment", "blurb": "SIP, SWP, compound growth, and CAGR." },
-    { "id": "sip-calculator", "file": "sip-calculator.html", "category": "finance", "navLabel": "SIP", "title": "SIP Calculator", "icon": "icon-investment", "blurb": "Systematic investment plan maturity value, with step-up." },
-    { "id": "compound-interest-calculator", "file": "compound-interest-calculator.html", "category": "finance", "navLabel": "COMPOUND INT.", "title": "Compound Interest Calculator", "icon": "icon-investment", "blurb": "Compound growth with optional monthly contributions." },
-    { "id": "savings-goal-calculator", "file": "savings-goal-calculator.html", "category": "finance", "navLabel": "SAVINGS GOAL", "title": "Savings Goal Calculator", "icon": "icon-investment", "blurb": "How long to reach a goal, or how much to save monthly." },
-    { "id": "retirement-calculator", "file": "retirement-calculator.html", "category": "finance", "navLabel": "RETIREMENT", "title": "Retirement Calculator", "icon": "icon-investment", "blurb": "Retirement balance projection, with employer match." },
-    { "id": "net-worth-calculator", "file": "net-worth-calculator.html", "category": "finance", "navLabel": "NET WORTH", "title": "Net Worth Calculator", "icon": "icon-investment", "blurb": "Total assets minus liabilities." },
-    { "id": "discount-calculator", "file": "discount-calculator.html", "category": "finance", "navLabel": "DISCOUNT", "title": "Discount Calculator", "icon": "icon-discount", "blurb": "Sale price, savings, or the original price in reverse." },
-    { "id": "tip-calculator", "file": "tip-calculator.html", "category": "finance", "navLabel": "TIP", "title": "Tip Calculator", "icon": "icon-tip", "blurb": "Split a bill by percentage and number of people." },
-    { "id": "fd-calculator", "file": "fd-calculator.html", "category": "finance", "navLabel": "FD", "title": "FD Calculator", "icon": "icon-loan", "blurb": "Fixed deposit maturity with quarterly compounding (India)." },
-    { "id": "rd-calculator", "file": "rd-calculator.html", "category": "finance", "navLabel": "RD", "title": "RD Calculator", "icon": "icon-days", "blurb": "Recurring deposit maturity on monthly deposits (India)." },
-    { "id": "ppf-calculator", "file": "ppf-calculator.html", "category": "finance", "navLabel": "PPF", "title": "PPF Calculator", "icon": "icon-investment", "blurb": "15-year tax-free Public Provident Fund growth (India)." },
-    { "id": "india-tax-regime-calculator", "file": "india-tax-regime-calculator.html", "category": "finance", "navLabel": "OLD VS NEW REGIME", "title": "Old vs New Tax Regime Calculator", "icon": "icon-tax", "blurb": "Which India regime wins, given your actual deductions." },
-    { "id": "hra-calculator", "file": "hra-calculator.html", "category": "finance", "navLabel": "HRA", "title": "HRA Calculator", "icon": "icon-mortgage", "blurb": "House rent allowance exemption, metro or non-metro (India)." },
-    { "id": "gratuity-calculator", "file": "gratuity-calculator.html", "category": "finance", "navLabel": "GRATUITY", "title": "Gratuity Calculator", "icon": "icon-investment", "blurb": "Gratuity payout and tax-exempt portion under the ₹20 lakh limit (India)." },
-    { "id": "epf-calculator", "file": "epf-calculator.html", "category": "finance", "navLabel": "EPF", "title": "EPF Calculator", "icon": "icon-investment", "blurb": "Project your Employee Provident Fund corpus to retirement (India)." },
-    { "id": "fire-calculator", "file": "fire-calculator.html", "category": "finance", "navLabel": "FIRE NUMBER", "title": "FIRE &amp; Coast FIRE Calculator", "icon": "icon-investment", "blurb": "Your retire-early number, plus how much you need saved today to coast there." },
-    { "id": "rsu-vesting-calculator", "file": "rsu-vesting-calculator.html", "category": "finance", "navLabel": "RSU VESTING", "title": "RSU Vesting Calculator", "icon": "icon-investment", "blurb": "Year-by-year RSU vesting schedule with pre-tax and after-tax value." },
-    { "id": "cross-country-salary-calculator", "file": "cross-country-salary-calculator.html", "category": "finance", "navLabel": "SALARY BY COUNTRY", "title": "Cross-Country Salary Calculator", "icon": "icon-currency", "blurb": "Compare take-home pay across eight countries at live rates." },
-    { "id": "currency-fee-calculator", "file": "currency-fee-calculator.html", "category": "finance", "navLabel": "FX FEES", "title": "FX Hidden-Fee Calculator", "icon": "icon-currency", "blurb": "See the real markup your bank or card charges vs. the live mid-market rate." },
-    { "id": "zakat-calculator", "file": "zakat-calculator.html", "category": "finance", "navLabel": "ZAKAT", "title": "Zakat Calculator", "icon": "icon-investment", "blurb": "2.5% of qualifying wealth above nisab, gold or silver basis." },
-    { "id": "break-even-calculator", "file": "break-even-calculator.html", "category": "finance", "navLabel": "BREAK-EVEN", "title": "Break-Even &amp; Profit Margin Calculator", "icon": "icon-investment", "blurb": "Units to break even, plus gross margin and markup." },
-    { "id": "debt-payoff-calculator", "file": "debt-payoff-calculator.html", "category": "finance", "navLabel": "DEBT PAYOFF", "title": "Debt Payoff Calculator", "icon": "icon-loan", "blurb": "Snowball vs. avalanche payoff strategy comparison." },
-    { "id": "salary-calculator", "file": "salary-calculator.html", "category": "finance", "navLabel": "SALARY", "title": "Salary Calculator", "icon": "icon-tax", "blurb": "Convert pay between hourly, weekly, monthly, and annual." },
-    { "id": "sales-tax-calculator", "file": "sales-tax-calculator.html", "category": "finance", "navLabel": "SALES TAX", "title": "Sales Tax Calculator", "icon": "icon-gst", "blurb": "Add sales tax to a price, or back it out from a total." },
-    { "id": "cd-calculator", "file": "cd-calculator.html", "category": "finance", "navLabel": "CD", "title": "CD Calculator", "icon": "icon-loan", "blurb": "Certificate of deposit maturity value and APY (US)." },
-    { "id": "amortization-schedule-calculator", "file": "amortization-schedule-calculator.html", "category": "finance", "navLabel": "AMORTIZATION", "title": "Amortization Schedule Calculator", "icon": "icon-loan", "blurb": "Full payment-by-payment principal vs. interest breakdown for any loan." },
-    { "id": "401k-calculator", "file": "401k-calculator.html", "category": "finance", "navLabel": "401(K)", "title": "401(k) Calculator", "icon": "icon-investment", "blurb": "Retirement balance projection with employer match and contribution %." },
-    { "id": "ira-calculator", "file": "ira-calculator.html", "category": "finance", "navLabel": "IRA / ROTH", "title": "IRA &amp; Roth IRA Calculator", "icon": "icon-investment", "blurb": "Growth projection and traditional vs. Roth tax comparison." },
-    { "id": "house-affordability-calculator", "file": "house-affordability-calculator.html", "category": "finance", "navLabel": "AFFORDABILITY", "title": "House Affordability Calculator", "icon": "icon-mortgage", "blurb": "Maximum home price from your income, debts, and down payment." },
-    { "id": "down-payment-calculator", "file": "down-payment-calculator.html", "category": "finance", "navLabel": "DOWN PAYMENT", "title": "Down Payment Calculator", "icon": "icon-mortgage", "blurb": "How much to save, and whether you'll owe PMI." },
-    { "id": "debt-to-income-calculator", "file": "debt-to-income-calculator.html", "category": "finance", "navLabel": "DTI RATIO", "title": "Debt-to-Income Ratio Calculator", "icon": "icon-loan", "blurb": "The ratio lenders use to judge how much more you can borrow." },
-    { "id": "simple-interest-calculator", "file": "simple-interest-calculator.html", "category": "finance", "navLabel": "SIMPLE INT.", "title": "Simple Interest Calculator", "icon": "icon-investment", "blurb": "Interest and total payable on principal, rate, and time — no compounding." },
-    { "id": "roi-calculator", "file": "roi-calculator.html", "category": "finance", "navLabel": "ROI", "title": "ROI Calculator", "icon": "icon-investment", "blurb": "Return on investment, annualized return, from cost, gain, and time." },
-    { "id": "credit-card-payoff-calculator", "file": "credit-card-payoff-calculator.html", "category": "finance", "navLabel": "CC PAYOFF", "title": "Credit Card Payoff Calculator", "icon": "icon-loan", "blurb": "Months to pay off a card, or the payment needed to hit your target date." },
-    { "id": "mortgage-payoff-calculator", "file": "mortgage-payoff-calculator.html", "category": "finance", "navLabel": "MTG PAYOFF", "title": "Mortgage Payoff Calculator", "icon": "icon-mortgage", "blurb": "Extra payments and their effect on your mortgage term and interest." },
-    { "id": "rent-affordability-calculator", "file": "rent-affordability-calculator.html", "category": "finance", "navLabel": "RENT AFFORD", "title": "Rent Affordability Calculator", "icon": "icon-mortgage", "blurb": "How much rent you can afford based on income and expenses." },
-    { "id": "real-estate-investment-calculator", "file": "real-estate-investment-calculator.html", "category": "finance", "navLabel": "REAL ESTATE", "title": "Real Estate Investment Calculator", "icon": "icon-mortgage", "blurb": "Cash flow, cap rate, and cash-on-cash return on a rental property." },
-    { "id": "rental-property-calculator", "file": "rental-property-calculator.html", "category": "finance", "navLabel": "RENTAL PROPERTY", "title": "Rental Property Calculator", "icon": "icon-mortgage", "blurb": "Full income and expense breakdown for owning a rental." },
-    { "id": "apr-calculator", "file": "apr-calculator.html", "category": "finance", "navLabel": "APR", "title": "APR Calculator", "icon": "icon-loan", "blurb": "True annual percentage rate on a loan, including fees." },
-    { "id": "fha-loan-calculator", "file": "fha-loan-calculator.html", "category": "finance", "navLabel": "FHA LOAN", "title": "FHA Loan Calculator", "icon": "icon-mortgage", "blurb": "FHA mortgage payment with upfront and annual mortgage insurance." },
-    { "id": "va-mortgage-calculator", "file": "va-mortgage-calculator.html", "category": "finance", "navLabel": "VA LOAN", "title": "VA Mortgage Calculator", "icon": "icon-mortgage", "blurb": "VA loan payment with funding fee, no PMI." },
-    { "id": "home-equity-loan-calculator", "file": "home-equity-loan-calculator.html", "category": "finance", "navLabel": "HOME EQUITY", "title": "Home Equity Loan Calculator", "icon": "icon-mortgage", "blurb": "Payment on a lump-sum loan against your home's equity." },
-    { "id": "heloc-calculator", "file": "heloc-calculator.html", "category": "finance", "navLabel": "HELOC", "title": "HELOC Calculator", "icon": "icon-mortgage", "blurb": "Draw and repayment period payments on a home equity line of credit." },
-    { "id": "cash-back-or-low-interest-calculator", "file": "cash-back-or-low-interest-calculator.html", "category": "finance", "navLabel": "CASH BACK/APR", "title": "Cash Back or Low Interest Calculator", "icon": "icon-loan", "blurb": "Compare a dealer cash-back offer against low-interest financing." },
-    { "id": "auto-lease-calculator", "file": "auto-lease-calculator.html", "category": "finance", "navLabel": "AUTO LEASE", "title": "Auto Lease Calculator", "icon": "icon-loan", "blurb": "Monthly lease payment from residual value, money factor, and term." },
-    { "id": "finance-calculator", "file": "finance-calculator.html", "category": "finance", "navLabel": "TVM SOLVER", "title": "Finance Calculator (Time Value of Money)", "icon": "icon-investment", "blurb": "Solve for present value, future value, rate, or payment." },
-    { "id": "interest-rate-calculator", "file": "interest-rate-calculator.html", "category": "finance", "navLabel": "INT. RATE", "title": "Interest Rate Calculator", "icon": "icon-investment", "blurb": "Solve for the interest rate given payment, principal, and term." },
-    { "id": "bond-calculator", "file": "bond-calculator.html", "category": "finance", "navLabel": "BOND", "title": "Bond Calculator", "icon": "icon-investment", "blurb": "Bond price, yield to maturity, and coupon income." },
-    { "id": "mutual-fund-calculator", "file": "mutual-fund-calculator.html", "category": "finance", "navLabel": "MUTUAL FUND", "title": "Mutual Fund Calculator", "icon": "icon-investment", "blurb": "Projected value of a lump sum plus recurring investments, net of fees." },
-    { "id": "average-return-calculator", "file": "average-return-calculator.html", "category": "finance", "navLabel": "AVG RETURN", "title": "Average Return Calculator", "icon": "icon-investment", "blurb": "Average and annualized return across multiple years of gains/losses." },
-    { "id": "irr-calculator", "file": "irr-calculator.html", "category": "finance", "navLabel": "IRR", "title": "IRR Calculator", "icon": "icon-investment", "blurb": "Internal rate of return on a series of cash flows." },
-    { "id": "payback-period-calculator", "file": "payback-period-calculator.html", "category": "finance", "navLabel": "PAYBACK PERIOD", "title": "Payback Period Calculator", "icon": "icon-investment", "blurb": "Time to recover an initial investment from its cash flows." },
-    { "id": "present-value-calculator", "file": "present-value-calculator.html", "category": "finance", "navLabel": "PRESENT VALUE", "title": "Present Value Calculator", "icon": "icon-investment", "blurb": "Today's value of a future lump sum or annuity." },
-    { "id": "future-value-calculator", "file": "future-value-calculator.html", "category": "finance", "navLabel": "FUTURE VALUE", "title": "Future Value Calculator", "icon": "icon-investment", "blurb": "Future value of a lump sum plus regular contributions." },
-    { "id": "savings-calculator", "file": "savings-calculator.html", "category": "finance", "navLabel": "SAVINGS", "title": "Savings Calculator", "icon": "icon-investment", "blurb": "Balance grown from deposits and interest over time." },
-    { "id": "pension-calculator", "file": "pension-calculator.html", "category": "finance", "navLabel": "PENSION", "title": "Pension Calculator", "icon": "icon-investment", "blurb": "Estimated monthly pension from years of service and salary." },
-    { "id": "social-security-calculator", "file": "social-security-calculator.html", "category": "finance", "navLabel": "SOCIAL SECURITY", "title": "Social Security Calculator", "icon": "icon-investment", "blurb": "Estimated monthly benefit by claiming age." },
-    { "id": "annuity-calculator", "file": "annuity-calculator.html", "category": "finance", "navLabel": "ANNUITY", "title": "Annuity Calculator", "icon": "icon-investment", "blurb": "Growth of a fixed annuity during the accumulation phase." },
-    { "id": "annuity-payout-calculator", "file": "annuity-payout-calculator.html", "category": "finance", "navLabel": "ANNUITY PAYOUT", "title": "Annuity Payout Calculator", "icon": "icon-investment", "blurb": "Monthly payout from an annuity over a fixed period or for life." },
-    { "id": "rmd-calculator", "file": "rmd-calculator.html", "category": "finance", "navLabel": "RMD", "title": "RMD Calculator", "icon": "icon-investment", "blurb": "Required minimum distribution from a retirement account by age." },
-    { "id": "marriage-tax-calculator", "file": "marriage-tax-calculator.html", "category": "finance", "navLabel": "MARRIAGE TAX", "title": "Marriage Tax Calculator", "icon": "icon-tax", "blurb": "Tax difference between filing jointly vs. as two single filers." },
-    { "id": "estate-tax-calculator", "file": "estate-tax-calculator.html", "category": "finance", "navLabel": "ESTATE TAX", "title": "Estate Tax Calculator", "icon": "icon-tax", "blurb": "Estimated federal estate tax above the current exemption." },
-    { "id": "inflation-calculator", "file": "inflation-calculator.html", "category": "finance", "navLabel": "INFLATION", "title": "Inflation Calculator", "icon": "icon-currency", "blurb": "What a past or future dollar amount is worth in today's money." },
-    { "id": "debt-consolidation-calculator", "file": "debt-consolidation-calculator.html", "category": "finance", "navLabel": "DEBT CONSOLIDATION", "title": "Debt Consolidation Calculator", "icon": "icon-loan", "blurb": "Combined payment and payoff time vs. one consolidation loan." },
-    { "id": "student-loan-repayment-calculator", "file": "student-loan-repayment-calculator.html", "category": "finance", "navLabel": "REPAYMENT PLAN", "title": "Income-Driven Repayment Calculator", "icon": "icon-loan", "blurb": "Compare the 2026 RAP plan against IBR and the standard payment." },
-    { "id": "pslf-calculator", "file": "pslf-calculator.html", "category": "finance", "navLabel": "PSLF", "title": "PSLF Calculator", "icon": "icon-loan", "blurb": "Track the 120 payments and what would be forgiven." },
-    { "id": "student-loan-calculator", "file": "student-loan-calculator.html", "category": "finance", "navLabel": "STUDENT LOAN", "title": "Student Loan Calculator", "icon": "icon-loan", "blurb": "Monthly payment and total interest on a student loan." },
-    { "id": "college-cost-calculator", "file": "college-cost-calculator.html", "category": "finance", "navLabel": "COLLEGE COST", "title": "College Cost Calculator", "icon": "icon-gpa", "blurb": "Projected total cost of college with tuition inflation." },
-    { "id": "depreciation-calculator", "file": "depreciation-calculator.html", "category": "finance", "navLabel": "DEPRECIATION", "title": "Depreciation Calculator", "icon": "icon-investment", "blurb": "Straight-line and declining-balance asset depreciation schedules." },
-    { "id": "margin-calculator", "file": "margin-calculator.html", "category": "finance", "navLabel": "MARGIN", "title": "Margin Calculator", "icon": "icon-discount", "blurb": "Selling price, margin %, and markup % from cost and price." },
-    { "id": "business-loan-calculator", "file": "business-loan-calculator.html", "category": "finance", "navLabel": "BUSINESS LOAN", "title": "Business Loan Calculator", "icon": "icon-loan", "blurb": "Payment and total cost on a fixed-rate business loan." },
-    { "id": "personal-loan-calculator", "file": "personal-loan-calculator.html", "category": "finance", "navLabel": "PERSONAL LOAN", "title": "Personal Loan Calculator", "icon": "icon-loan", "blurb": "Monthly payment and total interest on an unsecured personal loan." },
-    { "id": "boat-loan-calculator", "file": "boat-loan-calculator.html", "category": "finance", "navLabel": "BOAT LOAN", "title": "Boat Loan Calculator", "icon": "icon-loan", "blurb": "Monthly payment on a fixed-rate boat loan." },
-    { "id": "lease-calculator", "file": "lease-calculator.html", "category": "finance", "navLabel": "LEASE", "title": "Lease Calculator", "icon": "icon-loan", "blurb": "Payment on a general equipment or property lease." },
-    { "id": "budget-calculator", "file": "budget-calculator.html", "category": "finance", "navLabel": "BUDGET", "title": "Budget Calculator", "icon": "icon-tax", "blurb": "Income vs. expenses by category, and what's left to save." },
-    { "id": "commission-calculator", "file": "commission-calculator.html", "category": "finance", "navLabel": "COMMISSION", "title": "Commission Calculator", "icon": "icon-tip", "blurb": "Commission earned from a sale, flat-rate or tiered." },
-    { "id": "bmi-calculator", "file": "bmi-calculator.html", "category": "health", "navLabel": "BMI", "title": "BMI Calculator", "icon": "icon-bmi", "blurb": "Body mass index from height and weight." },
-    { "id": "calorie-calculator", "file": "calorie-calculator.html", "category": "health", "navLabel": "CALORIE", "title": "Calorie / BMR Calculator", "icon": "icon-calorie", "blurb": "BMR and daily calorie needs by activity level." },
-    { "id": "macro-calculator", "file": "macro-calculator.html", "category": "health", "navLabel": "MACROS", "title": "Macro Calculator", "icon": "icon-calorie", "blurb": "Protein, carb, and fat targets in grams." },
-    { "id": "pregnancy-calculator", "file": "pregnancy-calculator.html", "category": "health", "navLabel": "PREGNANCY", "title": "Pregnancy Due Date Calculator", "icon": "icon-days", "blurb": "Due date, current week, and trimester." },
-    { "id": "ovulation-calculator", "file": "ovulation-calculator.html", "category": "health", "navLabel": "OVULATION", "title": "Ovulation Calculator", "icon": "icon-days", "blurb": "Ovulation day and fertile window estimate." },
-    { "id": "ideal-weight-calculator", "file": "ideal-weight-calculator.html", "category": "health", "navLabel": "IDEAL WEIGHT", "title": "Ideal Weight Calculator", "icon": "icon-bmi", "blurb": "Healthy weight range across four medical formulas." },
-    { "id": "body-fat-calculator", "file": "body-fat-calculator.html", "category": "health", "navLabel": "BODY FAT", "title": "Body Fat Calculator", "icon": "icon-bmi", "blurb": "Body fat percentage from tape-measure circumferences (US Navy method)." },
-    { "id": "army-body-fat-calculator", "file": "army-body-fat-calculator.html", "category": "health", "navLabel": "ARMY BODY FAT", "title": "Army Body Fat Calculator", "icon": "icon-bmi", "blurb": "Body fat % using the US Army's circumference-based standard." },
-    { "id": "lean-body-mass-calculator", "file": "lean-body-mass-calculator.html", "category": "health", "navLabel": "LEAN MASS", "title": "Lean Body Mass Calculator", "icon": "icon-bmi", "blurb": "Fat-free mass across four medical formulas." },
-    { "id": "healthy-weight-calculator", "file": "healthy-weight-calculator.html", "category": "health", "navLabel": "HEALTHY WEIGHT", "title": "Healthy Weight Calculator", "icon": "icon-bmi", "blurb": "BMI-based healthy weight range for your height." },
-    { "id": "calories-burned-calculator", "file": "calories-burned-calculator.html", "category": "health", "navLabel": "CAL BURNED", "title": "Calories Burned Calculator", "icon": "icon-calorie", "blurb": "Calories burned by activity, duration, and body weight." },
-    { "id": "one-rep-max-calculator", "file": "one-rep-max-calculator.html", "category": "health", "navLabel": "1RM", "title": "One Rep Max Calculator", "icon": "icon-calorie", "blurb": "Estimated one-rep max from any weight and rep count." },
-    { "id": "target-heart-rate-calculator", "file": "target-heart-rate-calculator.html", "category": "health", "navLabel": "HEART RATE", "title": "Target Heart Rate Calculator", "icon": "icon-bmi", "blurb": "Training heart-rate zones from age and resting heart rate." },
-    { "id": "pregnancy-week-calculator", "file": "pregnancy-week-calculator.html", "category": "health", "navLabel": "PREGNANCY WEEKS", "title": "Pregnancy Calculator", "icon": "icon-days", "blurb": "Current week, trimester, and milestones from your last period." },
-    { "id": "pregnancy-weight-gain-calculator", "file": "pregnancy-weight-gain-calculator.html", "category": "health", "navLabel": "PREG. WEIGHT GAIN", "title": "Pregnancy Weight Gain Calculator", "icon": "icon-bmi", "blurb": "Recommended weight gain range by pre-pregnancy BMI." },
-    { "id": "conception-calculator", "file": "conception-calculator.html", "category": "health", "navLabel": "CONCEPTION", "title": "Conception Calculator", "icon": "icon-days", "blurb": "Likely conception date from a due date or last period." },
-    { "id": "sleep-cycle-calculator", "file": "sleep-cycle-calculator.html", "category": "health", "navLabel": "SLEEP CYCLE", "title": "Sleep Cycle Calculator", "icon": "icon-calorie", "blurb": "Best bedtime or wake-up time based on 90-minute sleep cycles." },
-    { "id": "water-intake-calculator", "file": "water-intake-calculator.html", "category": "health", "navLabel": "WATER INTAKE", "title": "Water Intake Calculator", "icon": "icon-calorie", "blurb": "Daily hydration target from weight, exercise, and climate." },
-    { "id": "tdee-calculator", "file": "tdee-calculator.html", "category": "health", "navLabel": "TDEE", "title": "TDEE Calculator", "icon": "icon-calorie", "blurb": "Total daily calorie burn from BMR and activity level." },
-    { "id": "protein-calculator", "file": "protein-calculator.html", "category": "health", "navLabel": "PROTEIN", "title": "Protein Calculator", "icon": "icon-calorie", "blurb": "Daily protein target in grams, by training goal." },
-    { "id": "gcf-calculator", "file": "gcf-calculator.html", "category": "education", "navLabel": "GCF", "title": "GCF Calculator", "icon": "icon-scientific", "blurb": "Greatest common factor, with prime factorisations." },
-    { "id": "lcm-calculator", "file": "lcm-calculator.html", "category": "education", "navLabel": "LCM", "title": "LCM Calculator", "icon": "icon-scientific", "blurb": "Least common multiple of two or more numbers." },
-    { "id": "factor-calculator", "file": "factor-calculator.html", "category": "education", "navLabel": "FACTORS", "title": "Factor Calculator", "icon": "icon-scientific", "blurb": "Every factor of a number plus its prime factorisation." },
-    { "id": "rounding-calculator", "file": "rounding-calculator.html", "category": "education", "navLabel": "ROUNDING", "title": "Rounding Calculator", "icon": "icon-scientific", "blurb": "Decimals, significant figures and banker’s rounding." },
-    { "id": "scientific-notation-calculator", "file": "scientific-notation-calculator.html", "category": "education", "navLabel": "SCI. NOTATION", "title": "Scientific Notation Calculator", "icon": "icon-scientific", "blurb": "Convert to and from scientific and engineering notation." },
-    { "id": "big-number-calculator", "file": "big-number-calculator.html", "category": "education", "navLabel": "BIG NUMBERS", "title": "Big Number Calculator", "icon": "icon-scientific", "blurb": "Exact arithmetic on integers of any size." },
-    { "id": "number-sequence-calculator", "file": "number-sequence-calculator.html", "category": "education", "navLabel": "SEQUENCES", "title": "Number Sequence Calculator", "icon": "icon-scientific", "blurb": "Arithmetic, geometric and Fibonacci sequences." },
-    { "id": "probability-calculator", "file": "probability-calculator.html", "category": "education", "navLabel": "PROBABILITY", "title": "Probability Calculator", "icon": "icon-scientific", "blurb": "Two events: and, or, neither, and conditional." },
-    { "id": "matrix-calculator", "file": "matrix-calculator.html", "category": "education", "navLabel": "MATRIX", "title": "Matrix Calculator", "icon": "icon-scientific", "blurb": "Add, multiply, determinant and inverse for 2×2 and 3×3." },
-    { "id": "circle-calculator", "file": "circle-calculator.html", "category": "education", "navLabel": "CIRCLE", "title": "Circle Calculator", "icon": "icon-scientific", "blurb": "Radius, diameter, circumference and area from any one." },
-    { "id": "area-calculator", "file": "area-calculator.html", "category": "education", "navLabel": "AREA", "title": "Area Calculator", "icon": "icon-scientific", "blurb": "Area and perimeter for seven common 2D shapes." },
-    { "id": "volume-calculator", "file": "volume-calculator.html", "category": "education", "navLabel": "VOLUME", "title": "Volume Calculator", "icon": "icon-scientific", "blurb": "Volume and surface area for six common solids." },
-    { "id": "surface-area-calculator", "file": "surface-area-calculator.html", "category": "education", "navLabel": "SURFACE AREA", "title": "Surface Area Calculator", "icon": "icon-scientific", "blurb": "Total and lateral surface area for five solids." },
-    { "id": "slope-calculator", "file": "slope-calculator.html", "category": "education", "navLabel": "SLOPE", "title": "Slope Calculator", "icon": "icon-scientific", "blurb": "Slope, angle, intercept and line equation from two points." },
-    { "id": "coordinate-distance-calculator", "file": "coordinate-distance-calculator.html", "category": "education", "navLabel": "COORDINATE DISTANCE", "title": "Coordinate Distance Calculator", "icon": "icon-scientific", "blurb": "Distance and midpoint between two points, 2D or 3D." },
-    { "id": "pythagorean-theorem-calculator", "file": "pythagorean-theorem-calculator.html", "category": "education", "navLabel": "PYTHAGOREAN THEOREM", "title": "Pythagorean Theorem Calculator", "icon": "icon-scientific", "blurb": "Solve a² + b² = c² for any missing side." },
-    { "id": "right-triangle-calculator", "file": "right-triangle-calculator.html", "category": "education", "navLabel": "RIGHT TRIANGLE", "title": "Right Triangle Calculator", "icon": "icon-scientific", "blurb": "Sides, angles, area and perimeter from any two knowns." },
-    { "id": "triangle-calculator", "file": "triangle-calculator.html", "category": "education", "navLabel": "TRIANGLE", "title": "Triangle Calculator", "icon": "icon-scientific", "blurb": "Solve any triangle from SSS, SAS or ASA." },
-    { "id": "gpa-calculator", "file": "gpa-calculator.html", "category": "education", "navLabel": "GPA", "title": "GPA Calculator", "icon": "icon-gpa", "blurb": "GPA on the 4.0, 5.0, or 10.0 scale, by credit hours." },
-    { "id": "grade-calculator", "file": "grade-calculator.html", "category": "education", "navLabel": "GRADE", "title": "Grade Calculator", "icon": "icon-gpa", "blurb": "Weighted course grade, plus the score you need on what's left." },
-    { "id": "scientific-calculator", "file": "scientific-calculator.html", "category": "education", "navLabel": "SCIENTIFIC", "title": "Scientific Calculator", "icon": "icon-scientific", "blurb": "Trig, logs, powers, roots, and memory keys." },
-    { "id": "fraction-calculator", "file": "fraction-calculator.html", "category": "education", "navLabel": "FRACTION", "title": "Fraction Calculator", "icon": "icon-scientific", "blurb": "Add, subtract, multiply, divide, and simplify fractions." },
-    { "id": "statistics-calculator", "file": "statistics-calculator.html", "category": "education", "navLabel": "STATISTICS", "title": "Statistics Calculator", "icon": "icon-scientific", "blurb": "Mean, median, mode, range, variance, and standard deviation." },
-    { "id": "percent-error-calculator", "file": "percent-error-calculator.html", "category": "education", "navLabel": "% ERROR", "title": "Percent Error Calculator", "icon": "icon-scientific", "blurb": "Percent error between an experimental and true value." },
-    { "id": "exponent-calculator", "file": "exponent-calculator.html", "category": "education", "navLabel": "EXPONENT", "title": "Exponent Calculator", "icon": "icon-scientific", "blurb": "Raise any base to any power, including negative and fractional." },
-    { "id": "binary-calculator", "file": "binary-calculator.html", "category": "education", "navLabel": "BINARY", "title": "Binary Calculator", "icon": "icon-scientific", "blurb": "Add, subtract, and convert between binary and decimal." },
-    { "id": "hex-calculator", "file": "hex-calculator.html", "category": "education", "navLabel": "HEX", "title": "Hex Calculator", "icon": "icon-scientific", "blurb": "Add, subtract, and convert between hexadecimal and decimal." },
-    { "id": "half-life-calculator", "file": "half-life-calculator.html", "category": "education", "navLabel": "HALF-LIFE", "title": "Half-Life Calculator", "icon": "icon-scientific", "blurb": "Remaining quantity after any number of half-lives, or the half-life itself." },
-    { "id": "quadratic-formula-calculator", "file": "quadratic-formula-calculator.html", "category": "education", "navLabel": "QUADRATIC", "title": "Quadratic Formula Calculator", "icon": "icon-scientific", "blurb": "Real or complex roots of ax² + bx + c = 0." },
-    { "id": "log-calculator", "file": "log-calculator.html", "category": "education", "navLabel": "LOG", "title": "Log Calculator", "icon": "icon-scientific", "blurb": "Logarithm to any base, including natural log." },
-    { "id": "ratio-calculator", "file": "ratio-calculator.html", "category": "education", "navLabel": "RATIO", "title": "Ratio Calculator", "icon": "icon-scientific", "blurb": "Simplify a ratio, or solve for a missing term in A:B = C:D." },
-    { "id": "root-calculator", "file": "root-calculator.html", "category": "education", "navLabel": "ROOT", "title": "Root Calculator", "icon": "icon-scientific", "blurb": "Square root, cube root, or any nth root." },
-    { "id": "standard-deviation-calculator", "file": "standard-deviation-calculator.html", "category": "education", "navLabel": "STD DEVIATION", "title": "Standard Deviation Calculator", "icon": "icon-scientific", "blurb": "Population and sample standard deviation and variance." },
-    { "id": "sample-size-calculator", "file": "sample-size-calculator.html", "category": "education", "navLabel": "SAMPLE SIZE", "title": "Sample Size Calculator", "icon": "icon-scientific", "blurb": "Required survey sample size for a target confidence and margin of error." },
-    { "id": "mean-median-mode-calculator", "file": "mean-median-mode-calculator.html", "category": "education", "navLabel": "MEAN/MEDIAN/MODE", "title": "Mean, Median, Mode &amp; Range Calculator", "icon": "icon-scientific", "blurb": "Central tendency and spread for any list of numbers." },
-    { "id": "permutation-combination-calculator", "file": "permutation-combination-calculator.html", "category": "education", "navLabel": "PERM/COMBO", "title": "Permutation and Combination Calculator", "icon": "icon-scientific", "blurb": "nPr and nCr — arrangements and selections from a set." },
-    { "id": "z-score-calculator", "file": "z-score-calculator.html", "category": "education", "navLabel": "Z-SCORE", "title": "Z-Score Calculator", "icon": "icon-scientific", "blurb": "Standard score from a value, mean, and standard deviation." },
-    { "id": "confidence-interval-calculator", "file": "confidence-interval-calculator.html", "category": "education", "navLabel": "CONFIDENCE INT.", "title": "Confidence Interval Calculator", "icon": "icon-scientific", "blurb": "Confidence interval for a sample mean or proportion." },
-    { "id": "basic-calculator", "file": "basic-calculator.html", "category": "everyday", "navLabel": "CALCULATOR", "title": "Basic Calculator", "icon": "icon-percent", "blurb": "Plain arithmetic with full keyboard support." },
-    { "id": "percentage-calculator", "file": "percentage-calculator.html", "category": "everyday", "navLabel": "PERCENT", "title": "Percentage Calculator", "icon": "icon-percent", "blurb": "Find X% of Y, or what percent A is of B." },
-    { "id": "age-calculator", "file": "age-calculator.html", "category": "everyday", "navLabel": "AGE", "title": "Age Calculator", "icon": "icon-age", "blurb": "Exact age in years, months, and days." },
-    { "id": "days-calculator", "file": "days-calculator.html", "category": "everyday", "navLabel": "DAYS", "title": "Days Between Dates", "icon": "icon-days", "blurb": "Exact days, weeks, and business days between two dates." },
-    { "id": "time-calculator", "file": "time-calculator.html", "category": "everyday", "navLabel": "TIME", "title": "Time Calculator", "icon": "icon-days", "blurb": "Add or subtract durations, and total hours worked from clock times." },
-    { "id": "unit-converter", "file": "unit-converter.html", "category": "everyday", "navLabel": "UNITS", "title": "Unit Converter", "icon": "icon-units", "blurb": "Length, weight, volume, area, speed, time, data, and temperature." },
-    { "id": "week-number-calculator", "file": "week-number-calculator.html", "category": "everyday", "navLabel": "WEEK #", "title": "Week Number Calculator", "icon": "icon-days", "blurb": "ISO week number, day of year, and weekday for any date." },
-    { "id": "cm-to-inches", "file": "cm-to-inches.html", "category": "everyday", "navLabel": "CM→IN", "title": "CM to Inches", "icon": "icon-units", "blurb": "Quick two-way centimeter/inch conversion." },
-    { "id": "kg-to-pounds", "file": "kg-to-pounds.html", "category": "everyday", "navLabel": "KG→LB", "title": "KG to Pounds", "icon": "icon-units", "blurb": "Quick two-way kilogram/pound conversion." },
-    { "id": "celsius-to-fahrenheit", "file": "celsius-to-fahrenheit.html", "category": "everyday", "navLabel": "°C→°F", "title": "Celsius to Fahrenheit", "icon": "icon-units", "blurb": "Quick two-way temperature conversion." },
-    { "id": "password-generator", "file": "password-generator.html", "category": "everyday", "navLabel": "PASSWORD", "title": "Password Generator", "icon": "icon-password", "blurb": "Strong random passwords, generated locally." },
-    { "id": "random-number-generator", "file": "random-number-generator.html", "category": "everyday", "navLabel": "RANDOM #", "title": "Random Number Generator", "icon": "icon-password", "blurb": "Random integers in a range, with optional no-repeat mode." },
-    { "id": "word-counter", "file": "word-counter.html", "category": "everyday", "navLabel": "WORD COUNT", "title": "Word Counter", "icon": "icon-words", "blurb": "Live word, character, and sentence counts." },
-    { "id": "pace-calculator", "file": "pace-calculator.html", "category": "everyday", "navLabel": "PACE", "title": "Pace Calculator", "icon": "icon-days", "blurb": "Running/walking pace, split times, and finish-time projections." },
-    { "id": "bill-split-calculator", "file": "bill-split-calculator.html", "category": "everyday", "navLabel": "BILL SPLIT", "title": "Bill Split Calculator", "icon": "icon-tip", "blurb": "Split an uneven bill fairly, with tax and tip proportional to what each person ordered." },
-    { "id": "fuel-cost-calculator", "file": "fuel-cost-calculator.html", "category": "everyday", "navLabel": "FUEL COST", "title": "Fuel Cost Calculator", "icon": "icon-units", "blurb": "Trip fuel cost by distance and efficiency — MPG, L/100km, or km/L." }
+    {
+      "id": "currency-converter",
+      "file": "currency-converter.html",
+      "category": "finance",
+      "navLabel": "CURRENCY",
+      "title": "Currency Converter",
+      "icon": "icon-currency",
+      "blurb": "Live exchange rates between world currencies."
+    },
+    {
+      "id": "loan-calculator",
+      "file": "loan-calculator.html",
+      "category": "finance",
+      "navLabel": "LOAN / EMI",
+      "title": "Loan / EMI Calculator",
+      "icon": "icon-loan",
+      "blurb": "Monthly payment and total interest, any currency, years or months."
+    },
+    {
+      "id": "car-loan-calculator",
+      "file": "car-loan-calculator.html",
+      "category": "finance",
+      "navLabel": "CAR LOAN",
+      "title": "Car Loan Calculator",
+      "icon": "icon-loan",
+      "blurb": "Monthly payment with trade-in value and sales tax."
+    },
+    {
+      "id": "mortgage-calculator",
+      "file": "mortgage-calculator.html",
+      "category": "finance",
+      "navLabel": "MORTGAGE",
+      "title": "Mortgage Calculator",
+      "icon": "icon-mortgage",
+      "blurb": "Monthly payment with property tax, insurance, and PMI."
+    },
+    {
+      "id": "refinance-calculator",
+      "file": "refinance-calculator.html",
+      "category": "finance",
+      "navLabel": "REFINANCE",
+      "title": "Refinance Calculator",
+      "icon": "icon-mortgage",
+      "blurb": "Compare your current loan against a new rate and term."
+    },
+    {
+      "id": "rent-vs-buy-calculator",
+      "file": "rent-vs-buy-calculator.html",
+      "category": "finance",
+      "navLabel": "RENT VS BUY",
+      "title": "Rent vs. Buy Calculator",
+      "icon": "icon-mortgage",
+      "blurb": "Net cost of renting vs. buying, with a break-even year."
+    },
+    {
+      "id": "tax-calculator",
+      "file": "tax-calculator.html",
+      "category": "finance",
+      "navLabel": "TAX",
+      "title": "Tax Calculator",
+      "icon": "icon-tax",
+      "blurb": "Income tax estimate by country, with deductions and regimes."
+    },
+    {
+      "id": "paycheck-calculator",
+      "file": "paycheck-calculator.html",
+      "category": "finance",
+      "navLabel": "PAYCHECK",
+      "title": "Paycheck Calculator",
+      "icon": "icon-tax",
+      "blurb": "Take-home pay per paycheck, after tax and payroll deductions."
+    },
+    {
+      "id": "freelancer-tax-calculator-india",
+      "file": "freelancer-tax-calculator-india.html",
+      "category": "finance",
+      "navLabel": "FREELANCER TAX",
+      "title": "Freelancer Tax Calculator (India)",
+      "icon": "icon-gst",
+      "blurb": "44ADA vs books, GST threshold and advance tax dates."
+    },
+    {
+      "id": "gst-vat-calculator",
+      "file": "gst-vat-calculator.html",
+      "category": "finance",
+      "navLabel": "GST / VAT",
+      "title": "GST / VAT Calculator",
+      "icon": "icon-gst",
+      "blurb": "Add or remove GST/VAT for 8+ countries."
+    },
+    {
+      "id": "investment-calculator",
+      "file": "investment-calculator.html",
+      "category": "finance",
+      "navLabel": "INVESTMENT",
+      "title": "Investment Calculator",
+      "icon": "icon-investment",
+      "blurb": "SIP, SWP, compound growth, and CAGR."
+    },
+    {
+      "id": "sip-calculator",
+      "file": "sip-calculator.html",
+      "category": "finance",
+      "navLabel": "SIP",
+      "title": "SIP Calculator",
+      "icon": "icon-investment",
+      "blurb": "Systematic investment plan maturity value, with step-up."
+    },
+    {
+      "id": "compound-interest-calculator",
+      "file": "compound-interest-calculator.html",
+      "category": "finance",
+      "navLabel": "COMPOUND INT.",
+      "title": "Compound Interest Calculator",
+      "icon": "icon-investment",
+      "blurb": "Compound growth with optional monthly contributions."
+    },
+    {
+      "id": "savings-goal-calculator",
+      "file": "savings-goal-calculator.html",
+      "category": "finance",
+      "navLabel": "SAVINGS GOAL",
+      "title": "Savings Goal Calculator",
+      "icon": "icon-investment",
+      "blurb": "How long to reach a goal, or how much to save monthly."
+    },
+    {
+      "id": "retirement-calculator",
+      "file": "retirement-calculator.html",
+      "category": "finance",
+      "navLabel": "RETIREMENT",
+      "title": "Retirement Calculator",
+      "icon": "icon-investment",
+      "blurb": "Retirement balance projection, with employer match."
+    },
+    {
+      "id": "net-worth-calculator",
+      "file": "net-worth-calculator.html",
+      "category": "finance",
+      "navLabel": "NET WORTH",
+      "title": "Net Worth Calculator",
+      "icon": "icon-investment",
+      "blurb": "Total assets minus liabilities."
+    },
+    {
+      "id": "discount-calculator",
+      "file": "discount-calculator.html",
+      "category": "finance",
+      "navLabel": "DISCOUNT",
+      "title": "Discount Calculator",
+      "icon": "icon-discount",
+      "blurb": "Sale price, savings, or the original price in reverse."
+    },
+    {
+      "id": "tip-calculator",
+      "file": "tip-calculator.html",
+      "category": "finance",
+      "navLabel": "TIP",
+      "title": "Tip Calculator",
+      "icon": "icon-tip",
+      "blurb": "Split a bill by percentage and number of people."
+    },
+    {
+      "id": "fd-calculator",
+      "file": "fd-calculator.html",
+      "category": "finance",
+      "navLabel": "FD",
+      "title": "FD Calculator",
+      "icon": "icon-loan",
+      "blurb": "Fixed deposit maturity with quarterly compounding (India)."
+    },
+    {
+      "id": "rd-calculator",
+      "file": "rd-calculator.html",
+      "category": "finance",
+      "navLabel": "RD",
+      "title": "RD Calculator",
+      "icon": "icon-days",
+      "blurb": "Recurring deposit maturity on monthly deposits (India)."
+    },
+    {
+      "id": "ppf-calculator",
+      "file": "ppf-calculator.html",
+      "category": "finance",
+      "navLabel": "PPF",
+      "title": "PPF Calculator",
+      "icon": "icon-investment",
+      "blurb": "15-year tax-free Public Provident Fund growth (India)."
+    },
+    {
+      "id": "india-tax-regime-calculator",
+      "file": "india-tax-regime-calculator.html",
+      "category": "finance",
+      "navLabel": "OLD VS NEW REGIME",
+      "title": "Old vs New Tax Regime Calculator",
+      "icon": "icon-tax",
+      "blurb": "Which India regime wins, given your actual deductions."
+    },
+    {
+      "id": "hra-calculator",
+      "file": "hra-calculator.html",
+      "category": "finance",
+      "navLabel": "HRA",
+      "title": "HRA Calculator",
+      "icon": "icon-mortgage",
+      "blurb": "House rent allowance exemption, metro or non-metro (India)."
+    },
+    {
+      "id": "gratuity-calculator",
+      "file": "gratuity-calculator.html",
+      "category": "finance",
+      "navLabel": "GRATUITY",
+      "title": "Gratuity Calculator",
+      "icon": "icon-investment",
+      "blurb": "Gratuity payout and tax-exempt portion under the ₹20 lakh limit (India)."
+    },
+    {
+      "id": "epf-calculator",
+      "file": "epf-calculator.html",
+      "category": "finance",
+      "navLabel": "EPF",
+      "title": "EPF Calculator",
+      "icon": "icon-investment",
+      "blurb": "Project your Employee Provident Fund corpus to retirement (India)."
+    },
+    {
+      "id": "fire-calculator",
+      "file": "fire-calculator.html",
+      "category": "finance",
+      "navLabel": "FIRE NUMBER",
+      "title": "FIRE &amp; Coast FIRE Calculator",
+      "icon": "icon-investment",
+      "blurb": "Your retire-early number, plus how much you need saved today to coast there."
+    },
+    {
+      "id": "rsu-vesting-calculator",
+      "file": "rsu-vesting-calculator.html",
+      "category": "finance",
+      "navLabel": "RSU VESTING",
+      "title": "RSU Vesting Calculator",
+      "icon": "icon-investment",
+      "blurb": "Year-by-year RSU vesting schedule with pre-tax and after-tax value."
+    },
+    {
+      "id": "cross-country-salary-calculator",
+      "file": "cross-country-salary-calculator.html",
+      "category": "finance",
+      "navLabel": "SALARY BY COUNTRY",
+      "title": "Cross-Country Salary Calculator",
+      "icon": "icon-currency",
+      "blurb": "Compare take-home pay across eight countries at live rates."
+    },
+    {
+      "id": "currency-fee-calculator",
+      "file": "currency-fee-calculator.html",
+      "category": "finance",
+      "navLabel": "FX FEES",
+      "title": "FX Hidden-Fee Calculator",
+      "icon": "icon-currency",
+      "blurb": "See the real markup your bank or card charges vs. the live mid-market rate."
+    },
+    {
+      "id": "zakat-calculator",
+      "file": "zakat-calculator.html",
+      "category": "finance",
+      "navLabel": "ZAKAT",
+      "title": "Zakat Calculator",
+      "icon": "icon-investment",
+      "blurb": "2.5% of qualifying wealth above nisab, gold or silver basis."
+    },
+    {
+      "id": "break-even-calculator",
+      "file": "break-even-calculator.html",
+      "category": "finance",
+      "navLabel": "BREAK-EVEN",
+      "title": "Break-Even &amp; Profit Margin Calculator",
+      "icon": "icon-investment",
+      "blurb": "Units to break even, plus gross margin and markup."
+    },
+    {
+      "id": "debt-payoff-calculator",
+      "file": "debt-payoff-calculator.html",
+      "category": "finance",
+      "navLabel": "DEBT PAYOFF",
+      "title": "Debt Payoff Calculator",
+      "icon": "icon-loan",
+      "blurb": "Snowball vs. avalanche payoff strategy comparison."
+    },
+    {
+      "id": "salary-calculator",
+      "file": "salary-calculator.html",
+      "category": "finance",
+      "navLabel": "SALARY",
+      "title": "Salary Calculator",
+      "icon": "icon-tax",
+      "blurb": "Convert pay between hourly, weekly, monthly, and annual."
+    },
+    {
+      "id": "sales-tax-calculator",
+      "file": "sales-tax-calculator.html",
+      "category": "finance",
+      "navLabel": "SALES TAX",
+      "title": "Sales Tax Calculator",
+      "icon": "icon-gst",
+      "blurb": "Add sales tax to a price, or back it out from a total."
+    },
+    {
+      "id": "cd-calculator",
+      "file": "cd-calculator.html",
+      "category": "finance",
+      "navLabel": "CD",
+      "title": "CD Calculator",
+      "icon": "icon-loan",
+      "blurb": "Certificate of deposit maturity value and APY (US)."
+    },
+    {
+      "id": "amortization-schedule-calculator",
+      "file": "amortization-schedule-calculator.html",
+      "category": "finance",
+      "navLabel": "AMORTIZATION",
+      "title": "Amortization Schedule Calculator",
+      "icon": "icon-loan",
+      "blurb": "Full payment-by-payment principal vs. interest breakdown for any loan."
+    },
+    {
+      "id": "401k-calculator",
+      "file": "401k-calculator.html",
+      "category": "finance",
+      "navLabel": "401(K)",
+      "title": "401(k) Calculator",
+      "icon": "icon-investment",
+      "blurb": "Retirement balance projection with employer match and contribution %."
+    },
+    {
+      "id": "ira-calculator",
+      "file": "ira-calculator.html",
+      "category": "finance",
+      "navLabel": "IRA / ROTH",
+      "title": "IRA &amp; Roth IRA Calculator",
+      "icon": "icon-investment",
+      "blurb": "Growth projection and traditional vs. Roth tax comparison."
+    },
+    {
+      "id": "house-affordability-calculator",
+      "file": "house-affordability-calculator.html",
+      "category": "finance",
+      "navLabel": "AFFORDABILITY",
+      "title": "House Affordability Calculator",
+      "icon": "icon-mortgage",
+      "blurb": "Maximum home price from your income, debts, and down payment."
+    },
+    {
+      "id": "down-payment-calculator",
+      "file": "down-payment-calculator.html",
+      "category": "finance",
+      "navLabel": "DOWN PAYMENT",
+      "title": "Down Payment Calculator",
+      "icon": "icon-mortgage",
+      "blurb": "How much to save, and whether you'll owe PMI."
+    },
+    {
+      "id": "debt-to-income-calculator",
+      "file": "debt-to-income-calculator.html",
+      "category": "finance",
+      "navLabel": "DTI RATIO",
+      "title": "Debt-to-Income Ratio Calculator",
+      "icon": "icon-loan",
+      "blurb": "The ratio lenders use to judge how much more you can borrow."
+    },
+    {
+      "id": "simple-interest-calculator",
+      "file": "simple-interest-calculator.html",
+      "category": "finance",
+      "navLabel": "SIMPLE INT.",
+      "title": "Simple Interest Calculator",
+      "icon": "icon-investment",
+      "blurb": "Interest and total payable on principal, rate, and time — no compounding."
+    },
+    {
+      "id": "roi-calculator",
+      "file": "roi-calculator.html",
+      "category": "finance",
+      "navLabel": "ROI",
+      "title": "ROI Calculator",
+      "icon": "icon-investment",
+      "blurb": "Return on investment, annualized return, from cost, gain, and time."
+    },
+    {
+      "id": "credit-card-payoff-calculator",
+      "file": "credit-card-payoff-calculator.html",
+      "category": "finance",
+      "navLabel": "CC PAYOFF",
+      "title": "Credit Card Payoff Calculator",
+      "icon": "icon-loan",
+      "blurb": "Months to pay off a card, or the payment needed to hit your target date."
+    },
+    {
+      "id": "mortgage-payoff-calculator",
+      "file": "mortgage-payoff-calculator.html",
+      "category": "finance",
+      "navLabel": "MTG PAYOFF",
+      "title": "Mortgage Payoff Calculator",
+      "icon": "icon-mortgage",
+      "blurb": "Extra payments and their effect on your mortgage term and interest."
+    },
+    {
+      "id": "rent-affordability-calculator",
+      "file": "rent-affordability-calculator.html",
+      "category": "finance",
+      "navLabel": "RENT AFFORD",
+      "title": "Rent Affordability Calculator",
+      "icon": "icon-mortgage",
+      "blurb": "How much rent you can afford based on income and expenses."
+    },
+    {
+      "id": "real-estate-investment-calculator",
+      "file": "real-estate-investment-calculator.html",
+      "category": "finance",
+      "navLabel": "REAL ESTATE",
+      "title": "Real Estate Investment Calculator",
+      "icon": "icon-mortgage",
+      "blurb": "Cash flow, cap rate, and cash-on-cash return on a rental property."
+    },
+    {
+      "id": "rental-property-calculator",
+      "file": "rental-property-calculator.html",
+      "category": "finance",
+      "navLabel": "RENTAL PROPERTY",
+      "title": "Rental Property Calculator",
+      "icon": "icon-mortgage",
+      "blurb": "Full income and expense breakdown for owning a rental."
+    },
+    {
+      "id": "apr-calculator",
+      "file": "apr-calculator.html",
+      "category": "finance",
+      "navLabel": "APR",
+      "title": "APR Calculator",
+      "icon": "icon-loan",
+      "blurb": "True annual percentage rate on a loan, including fees."
+    },
+    {
+      "id": "fha-loan-calculator",
+      "file": "fha-loan-calculator.html",
+      "category": "finance",
+      "navLabel": "FHA LOAN",
+      "title": "FHA Loan Calculator",
+      "icon": "icon-mortgage",
+      "blurb": "FHA mortgage payment with upfront and annual mortgage insurance."
+    },
+    {
+      "id": "va-mortgage-calculator",
+      "file": "va-mortgage-calculator.html",
+      "category": "finance",
+      "navLabel": "VA LOAN",
+      "title": "VA Mortgage Calculator",
+      "icon": "icon-mortgage",
+      "blurb": "VA loan payment with funding fee, no PMI."
+    },
+    {
+      "id": "home-equity-loan-calculator",
+      "file": "home-equity-loan-calculator.html",
+      "category": "finance",
+      "navLabel": "HOME EQUITY",
+      "title": "Home Equity Loan Calculator",
+      "icon": "icon-mortgage",
+      "blurb": "Payment on a lump-sum loan against your home's equity."
+    },
+    {
+      "id": "heloc-calculator",
+      "file": "heloc-calculator.html",
+      "category": "finance",
+      "navLabel": "HELOC",
+      "title": "HELOC Calculator",
+      "icon": "icon-mortgage",
+      "blurb": "Draw and repayment period payments on a home equity line of credit."
+    },
+    {
+      "id": "cash-back-or-low-interest-calculator",
+      "file": "cash-back-or-low-interest-calculator.html",
+      "category": "finance",
+      "navLabel": "CASH BACK/APR",
+      "title": "Cash Back or Low Interest Calculator",
+      "icon": "icon-loan",
+      "blurb": "Compare a dealer cash-back offer against low-interest financing."
+    },
+    {
+      "id": "auto-lease-calculator",
+      "file": "auto-lease-calculator.html",
+      "category": "finance",
+      "navLabel": "AUTO LEASE",
+      "title": "Auto Lease Calculator",
+      "icon": "icon-loan",
+      "blurb": "Monthly lease payment from residual value, money factor, and term."
+    },
+    {
+      "id": "finance-calculator",
+      "file": "finance-calculator.html",
+      "category": "finance",
+      "navLabel": "TVM SOLVER",
+      "title": "Finance Calculator (Time Value of Money)",
+      "icon": "icon-investment",
+      "blurb": "Solve for present value, future value, rate, or payment."
+    },
+    {
+      "id": "interest-rate-calculator",
+      "file": "interest-rate-calculator.html",
+      "category": "finance",
+      "navLabel": "INT. RATE",
+      "title": "Interest Rate Calculator",
+      "icon": "icon-investment",
+      "blurb": "Solve for the interest rate given payment, principal, and term."
+    },
+    {
+      "id": "bond-calculator",
+      "file": "bond-calculator.html",
+      "category": "finance",
+      "navLabel": "BOND",
+      "title": "Bond Calculator",
+      "icon": "icon-investment",
+      "blurb": "Bond price, yield to maturity, and coupon income."
+    },
+    {
+      "id": "mutual-fund-calculator",
+      "file": "mutual-fund-calculator.html",
+      "category": "finance",
+      "navLabel": "MUTUAL FUND",
+      "title": "Mutual Fund Calculator",
+      "icon": "icon-investment",
+      "blurb": "Projected value of a lump sum plus recurring investments, net of fees."
+    },
+    {
+      "id": "average-return-calculator",
+      "file": "average-return-calculator.html",
+      "category": "finance",
+      "navLabel": "AVG RETURN",
+      "title": "Average Return Calculator",
+      "icon": "icon-investment",
+      "blurb": "Average and annualized return across multiple years of gains/losses."
+    },
+    {
+      "id": "irr-calculator",
+      "file": "irr-calculator.html",
+      "category": "finance",
+      "navLabel": "IRR",
+      "title": "IRR Calculator",
+      "icon": "icon-investment",
+      "blurb": "Internal rate of return on a series of cash flows."
+    },
+    {
+      "id": "payback-period-calculator",
+      "file": "payback-period-calculator.html",
+      "category": "finance",
+      "navLabel": "PAYBACK PERIOD",
+      "title": "Payback Period Calculator",
+      "icon": "icon-investment",
+      "blurb": "Time to recover an initial investment from its cash flows."
+    },
+    {
+      "id": "present-value-calculator",
+      "file": "present-value-calculator.html",
+      "category": "finance",
+      "navLabel": "PRESENT VALUE",
+      "title": "Present Value Calculator",
+      "icon": "icon-investment",
+      "blurb": "Today's value of a future lump sum or annuity."
+    },
+    {
+      "id": "future-value-calculator",
+      "file": "future-value-calculator.html",
+      "category": "finance",
+      "navLabel": "FUTURE VALUE",
+      "title": "Future Value Calculator",
+      "icon": "icon-investment",
+      "blurb": "Future value of a lump sum plus regular contributions."
+    },
+    {
+      "id": "savings-calculator",
+      "file": "savings-calculator.html",
+      "category": "finance",
+      "navLabel": "SAVINGS",
+      "title": "Savings Calculator",
+      "icon": "icon-investment",
+      "blurb": "Balance grown from deposits and interest over time."
+    },
+    {
+      "id": "pension-calculator",
+      "file": "pension-calculator.html",
+      "category": "finance",
+      "navLabel": "PENSION",
+      "title": "Pension Calculator",
+      "icon": "icon-investment",
+      "blurb": "Estimated monthly pension from years of service and salary."
+    },
+    {
+      "id": "social-security-calculator",
+      "file": "social-security-calculator.html",
+      "category": "finance",
+      "navLabel": "SOCIAL SECURITY",
+      "title": "Social Security Calculator",
+      "icon": "icon-investment",
+      "blurb": "Estimated monthly benefit by claiming age."
+    },
+    {
+      "id": "annuity-calculator",
+      "file": "annuity-calculator.html",
+      "category": "finance",
+      "navLabel": "ANNUITY",
+      "title": "Annuity Calculator",
+      "icon": "icon-investment",
+      "blurb": "Growth of a fixed annuity during the accumulation phase."
+    },
+    {
+      "id": "annuity-payout-calculator",
+      "file": "annuity-payout-calculator.html",
+      "category": "finance",
+      "navLabel": "ANNUITY PAYOUT",
+      "title": "Annuity Payout Calculator",
+      "icon": "icon-investment",
+      "blurb": "Monthly payout from an annuity over a fixed period or for life."
+    },
+    {
+      "id": "rmd-calculator",
+      "file": "rmd-calculator.html",
+      "category": "finance",
+      "navLabel": "RMD",
+      "title": "RMD Calculator",
+      "icon": "icon-investment",
+      "blurb": "Required minimum distribution from a retirement account by age."
+    },
+    {
+      "id": "marriage-tax-calculator",
+      "file": "marriage-tax-calculator.html",
+      "category": "finance",
+      "navLabel": "MARRIAGE TAX",
+      "title": "Marriage Tax Calculator",
+      "icon": "icon-tax",
+      "blurb": "Tax difference between filing jointly vs. as two single filers."
+    },
+    {
+      "id": "estate-tax-calculator",
+      "file": "estate-tax-calculator.html",
+      "category": "finance",
+      "navLabel": "ESTATE TAX",
+      "title": "Estate Tax Calculator",
+      "icon": "icon-tax",
+      "blurb": "Estimated federal estate tax above the current exemption."
+    },
+    {
+      "id": "inflation-calculator",
+      "file": "inflation-calculator.html",
+      "category": "finance",
+      "navLabel": "INFLATION",
+      "title": "Inflation Calculator",
+      "icon": "icon-currency",
+      "blurb": "What a past or future dollar amount is worth in today's money."
+    },
+    {
+      "id": "debt-consolidation-calculator",
+      "file": "debt-consolidation-calculator.html",
+      "category": "finance",
+      "navLabel": "DEBT CONSOLIDATION",
+      "title": "Debt Consolidation Calculator",
+      "icon": "icon-loan",
+      "blurb": "Combined payment and payoff time vs. one consolidation loan."
+    },
+    {
+      "id": "student-loan-repayment-calculator",
+      "file": "student-loan-repayment-calculator.html",
+      "category": "finance",
+      "navLabel": "REPAYMENT PLAN",
+      "title": "Income-Driven Repayment Calculator",
+      "icon": "icon-loan",
+      "blurb": "Compare the 2026 RAP plan against IBR and the standard payment."
+    },
+    {
+      "id": "pslf-calculator",
+      "file": "pslf-calculator.html",
+      "category": "finance",
+      "navLabel": "PSLF",
+      "title": "PSLF Calculator",
+      "icon": "icon-loan",
+      "blurb": "Track the 120 payments and what would be forgiven."
+    },
+    {
+      "id": "student-loan-calculator",
+      "file": "student-loan-calculator.html",
+      "category": "finance",
+      "navLabel": "STUDENT LOAN",
+      "title": "Student Loan Calculator",
+      "icon": "icon-loan",
+      "blurb": "Monthly payment and total interest on a student loan."
+    },
+    {
+      "id": "college-cost-calculator",
+      "file": "college-cost-calculator.html",
+      "category": "finance",
+      "navLabel": "COLLEGE COST",
+      "title": "College Cost Calculator",
+      "icon": "icon-gpa",
+      "blurb": "Projected total cost of college with tuition inflation."
+    },
+    {
+      "id": "depreciation-calculator",
+      "file": "depreciation-calculator.html",
+      "category": "finance",
+      "navLabel": "DEPRECIATION",
+      "title": "Depreciation Calculator",
+      "icon": "icon-investment",
+      "blurb": "Straight-line and declining-balance asset depreciation schedules."
+    },
+    {
+      "id": "margin-calculator",
+      "file": "margin-calculator.html",
+      "category": "finance",
+      "navLabel": "MARGIN",
+      "title": "Margin Calculator",
+      "icon": "icon-discount",
+      "blurb": "Selling price, margin %, and markup % from cost and price."
+    },
+    {
+      "id": "business-loan-calculator",
+      "file": "business-loan-calculator.html",
+      "category": "finance",
+      "navLabel": "BUSINESS LOAN",
+      "title": "Business Loan Calculator",
+      "icon": "icon-loan",
+      "blurb": "Payment and total cost on a fixed-rate business loan."
+    },
+    {
+      "id": "personal-loan-calculator",
+      "file": "personal-loan-calculator.html",
+      "category": "finance",
+      "navLabel": "PERSONAL LOAN",
+      "title": "Personal Loan Calculator",
+      "icon": "icon-loan",
+      "blurb": "Monthly payment and total interest on an unsecured personal loan."
+    },
+    {
+      "id": "boat-loan-calculator",
+      "file": "boat-loan-calculator.html",
+      "category": "finance",
+      "navLabel": "BOAT LOAN",
+      "title": "Boat Loan Calculator",
+      "icon": "icon-loan",
+      "blurb": "Monthly payment on a fixed-rate boat loan."
+    },
+    {
+      "id": "lease-calculator",
+      "file": "lease-calculator.html",
+      "category": "finance",
+      "navLabel": "LEASE",
+      "title": "Lease Calculator",
+      "icon": "icon-loan",
+      "blurb": "Payment on a general equipment or property lease."
+    },
+    {
+      "id": "budget-calculator",
+      "file": "budget-calculator.html",
+      "category": "finance",
+      "navLabel": "BUDGET",
+      "title": "Budget Calculator",
+      "icon": "icon-tax",
+      "blurb": "Income vs. expenses by category, and what's left to save."
+    },
+    {
+      "id": "commission-calculator",
+      "file": "commission-calculator.html",
+      "category": "finance",
+      "navLabel": "COMMISSION",
+      "title": "Commission Calculator",
+      "icon": "icon-tip",
+      "blurb": "Commission earned from a sale, flat-rate or tiered."
+    },
+    {
+      "id": "bmi-calculator",
+      "file": "bmi-calculator.html",
+      "category": "health",
+      "navLabel": "BMI",
+      "title": "BMI Calculator",
+      "icon": "icon-bmi",
+      "blurb": "Body mass index from height and weight."
+    },
+    {
+      "id": "calorie-calculator",
+      "file": "calorie-calculator.html",
+      "category": "health",
+      "navLabel": "CALORIE",
+      "title": "Calorie / BMR Calculator",
+      "icon": "icon-calorie",
+      "blurb": "BMR and daily calorie needs by activity level."
+    },
+    {
+      "id": "macro-calculator",
+      "file": "macro-calculator.html",
+      "category": "health",
+      "navLabel": "MACROS",
+      "title": "Macro Calculator",
+      "icon": "icon-calorie",
+      "blurb": "Protein, carb, and fat targets in grams."
+    },
+    {
+      "id": "pregnancy-calculator",
+      "file": "pregnancy-calculator.html",
+      "category": "health",
+      "navLabel": "PREGNANCY",
+      "title": "Pregnancy Due Date Calculator",
+      "icon": "icon-days",
+      "blurb": "Due date, current week, and trimester."
+    },
+    {
+      "id": "ovulation-calculator",
+      "file": "ovulation-calculator.html",
+      "category": "health",
+      "navLabel": "OVULATION",
+      "title": "Ovulation Calculator",
+      "icon": "icon-days",
+      "blurb": "Ovulation day and fertile window estimate."
+    },
+    {
+      "id": "ideal-weight-calculator",
+      "file": "ideal-weight-calculator.html",
+      "category": "health",
+      "navLabel": "IDEAL WEIGHT",
+      "title": "Ideal Weight Calculator",
+      "icon": "icon-bmi",
+      "blurb": "Healthy weight range across four medical formulas."
+    },
+    {
+      "id": "body-fat-calculator",
+      "file": "body-fat-calculator.html",
+      "category": "health",
+      "navLabel": "BODY FAT",
+      "title": "Body Fat Calculator",
+      "icon": "icon-bmi",
+      "blurb": "Body fat percentage from tape-measure circumferences (US Navy method)."
+    },
+    {
+      "id": "army-body-fat-calculator",
+      "file": "army-body-fat-calculator.html",
+      "category": "health",
+      "navLabel": "ARMY BODY FAT",
+      "title": "Army Body Fat Calculator",
+      "icon": "icon-bmi",
+      "blurb": "Body fat % using the US Army's circumference-based standard."
+    },
+    {
+      "id": "lean-body-mass-calculator",
+      "file": "lean-body-mass-calculator.html",
+      "category": "health",
+      "navLabel": "LEAN MASS",
+      "title": "Lean Body Mass Calculator",
+      "icon": "icon-bmi",
+      "blurb": "Fat-free mass across four medical formulas."
+    },
+    {
+      "id": "healthy-weight-calculator",
+      "file": "healthy-weight-calculator.html",
+      "category": "health",
+      "navLabel": "HEALTHY WEIGHT",
+      "title": "Healthy Weight Calculator",
+      "icon": "icon-bmi",
+      "blurb": "BMI-based healthy weight range for your height."
+    },
+    {
+      "id": "calories-burned-calculator",
+      "file": "calories-burned-calculator.html",
+      "category": "health",
+      "navLabel": "CAL BURNED",
+      "title": "Calories Burned Calculator",
+      "icon": "icon-calorie",
+      "blurb": "Calories burned by activity, duration, and body weight."
+    },
+    {
+      "id": "one-rep-max-calculator",
+      "file": "one-rep-max-calculator.html",
+      "category": "health",
+      "navLabel": "1RM",
+      "title": "One Rep Max Calculator",
+      "icon": "icon-calorie",
+      "blurb": "Estimated one-rep max from any weight and rep count."
+    },
+    {
+      "id": "target-heart-rate-calculator",
+      "file": "target-heart-rate-calculator.html",
+      "category": "health",
+      "navLabel": "HEART RATE",
+      "title": "Target Heart Rate Calculator",
+      "icon": "icon-bmi",
+      "blurb": "Training heart-rate zones from age and resting heart rate."
+    },
+    {
+      "id": "pregnancy-week-calculator",
+      "file": "pregnancy-week-calculator.html",
+      "category": "health",
+      "navLabel": "PREGNANCY WEEKS",
+      "title": "Pregnancy Calculator",
+      "icon": "icon-days",
+      "blurb": "Current week, trimester, and milestones from your last period."
+    },
+    {
+      "id": "pregnancy-weight-gain-calculator",
+      "file": "pregnancy-weight-gain-calculator.html",
+      "category": "health",
+      "navLabel": "PREG. WEIGHT GAIN",
+      "title": "Pregnancy Weight Gain Calculator",
+      "icon": "icon-bmi",
+      "blurb": "Recommended weight gain range by pre-pregnancy BMI."
+    },
+    {
+      "id": "conception-calculator",
+      "file": "conception-calculator.html",
+      "category": "health",
+      "navLabel": "CONCEPTION",
+      "title": "Conception Calculator",
+      "icon": "icon-days",
+      "blurb": "Likely conception date from a due date or last period."
+    },
+    {
+      "id": "sleep-cycle-calculator",
+      "file": "sleep-cycle-calculator.html",
+      "category": "health",
+      "navLabel": "SLEEP CYCLE",
+      "title": "Sleep Cycle Calculator",
+      "icon": "icon-calorie",
+      "blurb": "Best bedtime or wake-up time based on 90-minute sleep cycles."
+    },
+    {
+      "id": "water-intake-calculator",
+      "file": "water-intake-calculator.html",
+      "category": "health",
+      "navLabel": "WATER INTAKE",
+      "title": "Water Intake Calculator",
+      "icon": "icon-calorie",
+      "blurb": "Daily hydration target from weight, exercise, and climate."
+    },
+    {
+      "id": "tdee-calculator",
+      "file": "tdee-calculator.html",
+      "category": "health",
+      "navLabel": "TDEE",
+      "title": "TDEE Calculator",
+      "icon": "icon-calorie",
+      "blurb": "Total daily calorie burn from BMR and activity level."
+    },
+    {
+      "id": "protein-calculator",
+      "file": "protein-calculator.html",
+      "category": "health",
+      "navLabel": "PROTEIN",
+      "title": "Protein Calculator",
+      "icon": "icon-calorie",
+      "blurb": "Daily protein target in grams, by training goal."
+    },
+    {
+      "id": "gcf-calculator",
+      "file": "gcf-calculator.html",
+      "category": "education",
+      "navLabel": "GCF",
+      "title": "GCF Calculator",
+      "icon": "icon-scientific",
+      "blurb": "Greatest common factor, with prime factorisations."
+    },
+    {
+      "id": "lcm-calculator",
+      "file": "lcm-calculator.html",
+      "category": "education",
+      "navLabel": "LCM",
+      "title": "LCM Calculator",
+      "icon": "icon-scientific",
+      "blurb": "Least common multiple of two or more numbers."
+    },
+    {
+      "id": "factor-calculator",
+      "file": "factor-calculator.html",
+      "category": "education",
+      "navLabel": "FACTORS",
+      "title": "Factor Calculator",
+      "icon": "icon-scientific",
+      "blurb": "Every factor of a number plus its prime factorisation."
+    },
+    {
+      "id": "rounding-calculator",
+      "file": "rounding-calculator.html",
+      "category": "education",
+      "navLabel": "ROUNDING",
+      "title": "Rounding Calculator",
+      "icon": "icon-scientific",
+      "blurb": "Decimals, significant figures and banker’s rounding."
+    },
+    {
+      "id": "scientific-notation-calculator",
+      "file": "scientific-notation-calculator.html",
+      "category": "education",
+      "navLabel": "SCI. NOTATION",
+      "title": "Scientific Notation Calculator",
+      "icon": "icon-scientific",
+      "blurb": "Convert to and from scientific and engineering notation."
+    },
+    {
+      "id": "big-number-calculator",
+      "file": "big-number-calculator.html",
+      "category": "education",
+      "navLabel": "BIG NUMBERS",
+      "title": "Big Number Calculator",
+      "icon": "icon-scientific",
+      "blurb": "Exact arithmetic on integers of any size."
+    },
+    {
+      "id": "number-sequence-calculator",
+      "file": "number-sequence-calculator.html",
+      "category": "education",
+      "navLabel": "SEQUENCES",
+      "title": "Number Sequence Calculator",
+      "icon": "icon-scientific",
+      "blurb": "Arithmetic, geometric and Fibonacci sequences."
+    },
+    {
+      "id": "probability-calculator",
+      "file": "probability-calculator.html",
+      "category": "education",
+      "navLabel": "PROBABILITY",
+      "title": "Probability Calculator",
+      "icon": "icon-scientific",
+      "blurb": "Two events: and, or, neither, and conditional."
+    },
+    {
+      "id": "matrix-calculator",
+      "file": "matrix-calculator.html",
+      "category": "education",
+      "navLabel": "MATRIX",
+      "title": "Matrix Calculator",
+      "icon": "icon-scientific",
+      "blurb": "Add, multiply, determinant and inverse for 2×2 and 3×3."
+    },
+    {
+      "id": "circle-calculator",
+      "file": "circle-calculator.html",
+      "category": "education",
+      "navLabel": "CIRCLE",
+      "title": "Circle Calculator",
+      "icon": "icon-scientific",
+      "blurb": "Radius, diameter, circumference and area from any one."
+    },
+    {
+      "id": "area-calculator",
+      "file": "area-calculator.html",
+      "category": "education",
+      "navLabel": "AREA",
+      "title": "Area Calculator",
+      "icon": "icon-scientific",
+      "blurb": "Area and perimeter for seven common 2D shapes."
+    },
+    {
+      "id": "volume-calculator",
+      "file": "volume-calculator.html",
+      "category": "education",
+      "navLabel": "VOLUME",
+      "title": "Volume Calculator",
+      "icon": "icon-scientific",
+      "blurb": "Volume and surface area for six common solids."
+    },
+    {
+      "id": "surface-area-calculator",
+      "file": "surface-area-calculator.html",
+      "category": "education",
+      "navLabel": "SURFACE AREA",
+      "title": "Surface Area Calculator",
+      "icon": "icon-scientific",
+      "blurb": "Total and lateral surface area for five solids."
+    },
+    {
+      "id": "slope-calculator",
+      "file": "slope-calculator.html",
+      "category": "education",
+      "navLabel": "SLOPE",
+      "title": "Slope Calculator",
+      "icon": "icon-scientific",
+      "blurb": "Slope, angle, intercept and line equation from two points."
+    },
+    {
+      "id": "coordinate-distance-calculator",
+      "file": "coordinate-distance-calculator.html",
+      "category": "education",
+      "navLabel": "COORDINATE DISTANCE",
+      "title": "Coordinate Distance Calculator",
+      "icon": "icon-scientific",
+      "blurb": "Distance and midpoint between two points, 2D or 3D."
+    },
+    {
+      "id": "pythagorean-theorem-calculator",
+      "file": "pythagorean-theorem-calculator.html",
+      "category": "education",
+      "navLabel": "PYTHAGOREAN THEOREM",
+      "title": "Pythagorean Theorem Calculator",
+      "icon": "icon-scientific",
+      "blurb": "Solve a² + b² = c² for any missing side."
+    },
+    {
+      "id": "right-triangle-calculator",
+      "file": "right-triangle-calculator.html",
+      "category": "education",
+      "navLabel": "RIGHT TRIANGLE",
+      "title": "Right Triangle Calculator",
+      "icon": "icon-scientific",
+      "blurb": "Sides, angles, area and perimeter from any two knowns."
+    },
+    {
+      "id": "triangle-calculator",
+      "file": "triangle-calculator.html",
+      "category": "education",
+      "navLabel": "TRIANGLE",
+      "title": "Triangle Calculator",
+      "icon": "icon-scientific",
+      "blurb": "Solve any triangle from SSS, SAS or ASA."
+    },
+    {
+      "id": "gpa-calculator",
+      "file": "gpa-calculator.html",
+      "category": "education",
+      "navLabel": "GPA",
+      "title": "GPA Calculator",
+      "icon": "icon-gpa",
+      "blurb": "GPA on the 4.0, 5.0, or 10.0 scale, by credit hours."
+    },
+    {
+      "id": "grade-calculator",
+      "file": "grade-calculator.html",
+      "category": "education",
+      "navLabel": "GRADE",
+      "title": "Grade Calculator",
+      "icon": "icon-gpa",
+      "blurb": "Weighted course grade, plus the score you need on what's left."
+    },
+    {
+      "id": "scientific-calculator",
+      "file": "scientific-calculator.html",
+      "category": "education",
+      "navLabel": "SCIENTIFIC",
+      "title": "Scientific Calculator",
+      "icon": "icon-scientific",
+      "blurb": "Trig, logs, powers, roots, and memory keys."
+    },
+    {
+      "id": "fraction-calculator",
+      "file": "fraction-calculator.html",
+      "category": "education",
+      "navLabel": "FRACTION",
+      "title": "Fraction Calculator",
+      "icon": "icon-scientific",
+      "blurb": "Add, subtract, multiply, divide, and simplify fractions."
+    },
+    {
+      "id": "statistics-calculator",
+      "file": "statistics-calculator.html",
+      "category": "education",
+      "navLabel": "STATISTICS",
+      "title": "Statistics Calculator",
+      "icon": "icon-scientific",
+      "blurb": "Mean, median, mode, range, variance, and standard deviation."
+    },
+    {
+      "id": "percent-error-calculator",
+      "file": "percent-error-calculator.html",
+      "category": "education",
+      "navLabel": "% ERROR",
+      "title": "Percent Error Calculator",
+      "icon": "icon-scientific",
+      "blurb": "Percent error between an experimental and true value."
+    },
+    {
+      "id": "exponent-calculator",
+      "file": "exponent-calculator.html",
+      "category": "education",
+      "navLabel": "EXPONENT",
+      "title": "Exponent Calculator",
+      "icon": "icon-scientific",
+      "blurb": "Raise any base to any power, including negative and fractional."
+    },
+    {
+      "id": "binary-calculator",
+      "file": "binary-calculator.html",
+      "category": "education",
+      "navLabel": "BINARY",
+      "title": "Binary Calculator",
+      "icon": "icon-scientific",
+      "blurb": "Add, subtract, and convert between binary and decimal."
+    },
+    {
+      "id": "hex-calculator",
+      "file": "hex-calculator.html",
+      "category": "education",
+      "navLabel": "HEX",
+      "title": "Hex Calculator",
+      "icon": "icon-scientific",
+      "blurb": "Add, subtract, and convert between hexadecimal and decimal."
+    },
+    {
+      "id": "half-life-calculator",
+      "file": "half-life-calculator.html",
+      "category": "education",
+      "navLabel": "HALF-LIFE",
+      "title": "Half-Life Calculator",
+      "icon": "icon-scientific",
+      "blurb": "Remaining quantity after any number of half-lives, or the half-life itself."
+    },
+    {
+      "id": "quadratic-formula-calculator",
+      "file": "quadratic-formula-calculator.html",
+      "category": "education",
+      "navLabel": "QUADRATIC",
+      "title": "Quadratic Formula Calculator",
+      "icon": "icon-scientific",
+      "blurb": "Real or complex roots of ax² + bx + c = 0."
+    },
+    {
+      "id": "log-calculator",
+      "file": "log-calculator.html",
+      "category": "education",
+      "navLabel": "LOG",
+      "title": "Log Calculator",
+      "icon": "icon-scientific",
+      "blurb": "Logarithm to any base, including natural log."
+    },
+    {
+      "id": "ratio-calculator",
+      "file": "ratio-calculator.html",
+      "category": "education",
+      "navLabel": "RATIO",
+      "title": "Ratio Calculator",
+      "icon": "icon-scientific",
+      "blurb": "Simplify a ratio, or solve for a missing term in A:B = C:D."
+    },
+    {
+      "id": "root-calculator",
+      "file": "root-calculator.html",
+      "category": "education",
+      "navLabel": "ROOT",
+      "title": "Root Calculator",
+      "icon": "icon-scientific",
+      "blurb": "Square root, cube root, or any nth root."
+    },
+    {
+      "id": "standard-deviation-calculator",
+      "file": "standard-deviation-calculator.html",
+      "category": "education",
+      "navLabel": "STD DEVIATION",
+      "title": "Standard Deviation Calculator",
+      "icon": "icon-scientific",
+      "blurb": "Population and sample standard deviation and variance."
+    },
+    {
+      "id": "sample-size-calculator",
+      "file": "sample-size-calculator.html",
+      "category": "education",
+      "navLabel": "SAMPLE SIZE",
+      "title": "Sample Size Calculator",
+      "icon": "icon-scientific",
+      "blurb": "Required survey sample size for a target confidence and margin of error."
+    },
+    {
+      "id": "mean-median-mode-calculator",
+      "file": "mean-median-mode-calculator.html",
+      "category": "education",
+      "navLabel": "MEAN/MEDIAN/MODE",
+      "title": "Mean, Median, Mode &amp; Range Calculator",
+      "icon": "icon-scientific",
+      "blurb": "Central tendency and spread for any list of numbers."
+    },
+    {
+      "id": "permutation-combination-calculator",
+      "file": "permutation-combination-calculator.html",
+      "category": "education",
+      "navLabel": "PERM/COMBO",
+      "title": "Permutation and Combination Calculator",
+      "icon": "icon-scientific",
+      "blurb": "nPr and nCr — arrangements and selections from a set."
+    },
+    {
+      "id": "z-score-calculator",
+      "file": "z-score-calculator.html",
+      "category": "education",
+      "navLabel": "Z-SCORE",
+      "title": "Z-Score Calculator",
+      "icon": "icon-scientific",
+      "blurb": "Standard score from a value, mean, and standard deviation."
+    },
+    {
+      "id": "confidence-interval-calculator",
+      "file": "confidence-interval-calculator.html",
+      "category": "education",
+      "navLabel": "CONFIDENCE INT.",
+      "title": "Confidence Interval Calculator",
+      "icon": "icon-scientific",
+      "blurb": "Confidence interval for a sample mean or proportion."
+    },
+    {
+      "id": "basic-calculator",
+      "file": "basic-calculator.html",
+      "category": "everyday",
+      "navLabel": "CALCULATOR",
+      "title": "Basic Calculator",
+      "icon": "icon-percent",
+      "blurb": "Plain arithmetic with full keyboard support."
+    },
+    {
+      "id": "percentage-calculator",
+      "file": "percentage-calculator.html",
+      "category": "everyday",
+      "navLabel": "PERCENT",
+      "title": "Percentage Calculator",
+      "icon": "icon-percent",
+      "blurb": "Find X% of Y, or what percent A is of B."
+    },
+    {
+      "id": "age-calculator",
+      "file": "age-calculator.html",
+      "category": "everyday",
+      "navLabel": "AGE",
+      "title": "Age Calculator",
+      "icon": "icon-age",
+      "blurb": "Exact age in years, months, and days."
+    },
+    {
+      "id": "days-calculator",
+      "file": "days-calculator.html",
+      "category": "everyday",
+      "navLabel": "DAYS",
+      "title": "Days Between Dates",
+      "icon": "icon-days",
+      "blurb": "Exact days, weeks, and business days between two dates."
+    },
+    {
+      "id": "time-calculator",
+      "file": "time-calculator.html",
+      "category": "everyday",
+      "navLabel": "TIME",
+      "title": "Time Calculator",
+      "icon": "icon-days",
+      "blurb": "Add or subtract durations, and total hours worked from clock times."
+    },
+    {
+      "id": "unit-converter",
+      "file": "unit-converter.html",
+      "category": "everyday",
+      "navLabel": "UNITS",
+      "title": "Unit Converter",
+      "icon": "icon-units",
+      "blurb": "Length, weight, volume, area, speed, time, data, and temperature."
+    },
+    {
+      "id": "week-number-calculator",
+      "file": "week-number-calculator.html",
+      "category": "everyday",
+      "navLabel": "WEEK #",
+      "title": "Week Number Calculator",
+      "icon": "icon-days",
+      "blurb": "ISO week number, day of year, and weekday for any date."
+    },
+    {
+      "id": "cm-to-inches",
+      "file": "cm-to-inches.html",
+      "category": "everyday",
+      "navLabel": "CM→IN",
+      "title": "CM to Inches",
+      "icon": "icon-units",
+      "blurb": "Quick two-way centimeter/inch conversion."
+    },
+    {
+      "id": "kg-to-pounds",
+      "file": "kg-to-pounds.html",
+      "category": "everyday",
+      "navLabel": "KG→LB",
+      "title": "KG to Pounds",
+      "icon": "icon-units",
+      "blurb": "Quick two-way kilogram/pound conversion."
+    },
+    {
+      "id": "celsius-to-fahrenheit",
+      "file": "celsius-to-fahrenheit.html",
+      "category": "everyday",
+      "navLabel": "°C→°F",
+      "title": "Celsius to Fahrenheit",
+      "icon": "icon-units",
+      "blurb": "Quick two-way temperature conversion."
+    },
+    {
+      "id": "password-generator",
+      "file": "password-generator.html",
+      "category": "everyday",
+      "navLabel": "PASSWORD",
+      "title": "Password Generator",
+      "icon": "icon-password",
+      "blurb": "Strong random passwords, generated locally."
+    },
+    {
+      "id": "random-number-generator",
+      "file": "random-number-generator.html",
+      "category": "everyday",
+      "navLabel": "RANDOM #",
+      "title": "Random Number Generator",
+      "icon": "icon-password",
+      "blurb": "Random integers in a range, with optional no-repeat mode."
+    },
+    {
+      "id": "word-counter",
+      "file": "word-counter.html",
+      "category": "everyday",
+      "navLabel": "WORD COUNT",
+      "title": "Word Counter",
+      "icon": "icon-words",
+      "blurb": "Live word, character, and sentence counts."
+    },
+    {
+      "id": "pace-calculator",
+      "file": "pace-calculator.html",
+      "category": "everyday",
+      "navLabel": "PACE",
+      "title": "Pace Calculator",
+      "icon": "icon-days",
+      "blurb": "Running/walking pace, split times, and finish-time projections."
+    },
+    {
+      "id": "bill-split-calculator",
+      "file": "bill-split-calculator.html",
+      "category": "everyday",
+      "navLabel": "BILL SPLIT",
+      "title": "Bill Split Calculator",
+      "icon": "icon-tip",
+      "blurb": "Split an uneven bill fairly, with tax and tip proportional to what each person ordered."
+    },
+    {
+      "id": "fuel-cost-calculator",
+      "file": "fuel-cost-calculator.html",
+      "category": "everyday",
+      "navLabel": "FUEL COST",
+      "title": "Fuel Cost Calculator",
+      "icon": "icon-units",
+      "blurb": "Trip fuel cost by distance and efficiency — MPG, L/100km, or km/L."
+    },
+    {
+      "id": "ohms-law-calculator",
+      "file": "ohms-law-calculator.html",
+      "category": "education",
+      "navLabel": "OHM’S LAW",
+      "title": "Ohm’s Law Calculator",
+      "icon": "icon-scientific",
+      "blurb": "Any two of voltage, current, resistance and power give the other two."
+    },
+    {
+      "id": "resistor-color-code-calculator",
+      "file": "resistor-color-code-calculator.html",
+      "category": "education",
+      "navLabel": "RESISTOR CODE",
+      "title": "Resistor Colour Code Calculator",
+      "icon": "icon-scientific",
+      "blurb": "Decode 4, 5 and 6-band resistor colours into resistance and tolerance."
+    },
+    {
+      "id": "roman-numeral-converter",
+      "file": "roman-numeral-converter.html",
+      "category": "education",
+      "navLabel": "ROMAN NUMERALS",
+      "title": "Roman Numeral Converter",
+      "icon": "icon-words",
+      "blurb": "Numbers to Roman numerals and back, with standard form checked."
+    },
+    {
+      "id": "voltage-drop-calculator",
+      "file": "voltage-drop-calculator.html",
+      "category": "everyday",
+      "navLabel": "VOLTAGE DROP",
+      "title": "Voltage Drop Calculator",
+      "icon": "icon-units",
+      "blurb": "Volts lost over a cable run, checked against NEC 3% and 5% limits."
+    },
+    {
+      "id": "electricity-cost-calculator",
+      "file": "electricity-cost-calculator.html",
+      "category": "everyday",
+      "navLabel": "ELECTRICITY COST",
+      "title": "Electricity Cost Calculator",
+      "icon": "icon-units",
+      "blurb": "What an appliance costs to run per day, month and year."
+    },
+    {
+      "id": "ip-subnet-calculator",
+      "file": "ip-subnet-calculator.html",
+      "category": "everyday",
+      "navLabel": "IP SUBNET",
+      "title": "IP Subnet Calculator",
+      "icon": "icon-password",
+      "blurb": "CIDR to network, broadcast, host range, netmask and wildcard."
+    },
+    {
+      "id": "bandwidth-calculator",
+      "file": "bandwidth-calculator.html",
+      "category": "everyday",
+      "navLabel": "BANDWIDTH",
+      "title": "Bandwidth Calculator",
+      "icon": "icon-days",
+      "blurb": "File transfer time from size and connection speed, bits versus bytes handled."
+    },
+    {
+      "id": "base64-converter",
+      "file": "base64-converter.html",
+      "category": "everyday",
+      "navLabel": "BASE64",
+      "title": "Base64 Encoder and Decoder",
+      "icon": "icon-password",
+      "blurb": "Text to Base64 and back, with full Unicode support."
+    },
+    {
+      "id": "url-encoder",
+      "file": "url-encoder.html",
+      "category": "everyday",
+      "navLabel": "URL ENCODER",
+      "title": "URL Encoder and Decoder",
+      "icon": "icon-password",
+      "blurb": "Percent-encode a URL or query value, or decode one back."
+    }
   ]
 }
