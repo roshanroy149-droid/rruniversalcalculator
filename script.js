@@ -11875,3 +11875,298 @@ function tbMoney(n){
   g('romInput').addEventListener('input', calc);
   calc();
 })();
+
+// ================= Measurement & science cluster =================
+
+// Standard atomic weights (IUPAC conventional values), shared by the
+// molecular-weight and molarity tools.
+var sciAtomicWeights = {
+  H: 1.0080, He: 4.0026, Li: 6.94, Be: 9.0122, B: 10.81, C: 12.011, N: 14.007,
+  O: 15.999, F: 18.998, Ne: 20.180, Na: 22.990, Mg: 24.305, Al: 26.982,
+  Si: 28.085, P: 30.974, S: 32.06, Cl: 35.45, Ar: 39.95, K: 39.098, Ca: 40.078,
+  Sc: 44.956, Ti: 47.867, V: 50.942, Cr: 51.996, Mn: 54.938, Fe: 55.845,
+  Co: 58.933, Ni: 58.693, Cu: 63.546, Zn: 65.38, Ga: 69.723, Ge: 72.630,
+  As: 74.922, Se: 78.971, Br: 79.904, Kr: 83.798, Rb: 85.468, Sr: 87.62,
+  Y: 88.906, Zr: 91.224, Nb: 92.906, Mo: 95.95, Tc: 97, Ru: 101.07, Rh: 102.91,
+  Pd: 106.42, Ag: 107.87, Cd: 112.41, In: 114.82, Sn: 118.71, Sb: 121.76,
+  Te: 127.60, I: 126.90, Xe: 131.29, Cs: 132.91, Ba: 137.33, La: 138.91,
+  Ce: 140.12, Pr: 140.91, Nd: 144.24, Pm: 145, Sm: 150.36, Eu: 151.96,
+  Gd: 157.25, Tb: 158.93, Dy: 162.50, Ho: 164.93, Er: 167.26, Tm: 168.93,
+  Yb: 173.05, Lu: 174.97, Hf: 178.49, Ta: 180.95, W: 183.84, Re: 186.21,
+  Os: 190.23, Ir: 192.22, Pt: 195.08, Au: 196.97, Hg: 200.59, Tl: 204.38,
+  Pb: 207.2, Bi: 208.98, Po: 209, At: 210, Rn: 222, Fr: 223, Ra: 226,
+  Ac: 227, Th: 232.04, Pa: 231.04, U: 238.03
+};
+
+// Parses a chemical formula into {symbol: count}. Handles nested brackets and
+// hydrate notation (CuSO4·5H2O). Throws with a readable message on bad input.
+function sciParseFormula(raw) {
+  var parts = String(raw).replace(/\s+/g, '').split(/[·*.]/).filter(function (p) { return p.length; });
+  if (!parts.length) throw new Error('Enter a formula.');
+  var total = {};
+  parts.forEach(function (part) {
+    var lead = part.match(/^(\d+)/);
+    var mult = lead ? parseInt(lead[1], 10) : 1;
+    if (lead) part = part.slice(lead[1].length);
+    var f = part, i = 0;
+    function num() {
+      var s = '';
+      while (i < f.length && f[i] >= '0' && f[i] <= '9') { s += f[i]; i++; }
+      return s ? parseInt(s, 10) : 1;
+    }
+    function group() {
+      var c = {};
+      while (i < f.length) {
+        var ch = f[i];
+        if (ch === '(' || ch === '[') {
+          i++;
+          var inner = group();
+          if (f[i] === ')' || f[i] === ']') i++; else throw new Error('Unmatched bracket in "' + part + '".');
+          var n = num();
+          for (var k in inner) c[k] = (c[k] || 0) + inner[k] * n;
+        } else if (ch === ')' || ch === ']') {
+          return c;
+        } else if (ch >= 'A' && ch <= 'Z') {
+          var sym = ch; i++;
+          while (i < f.length && f[i] >= 'a' && f[i] <= 'z') { sym += f[i]; i++; }
+          if (!sciAtomicWeights[sym]) throw new Error('Unknown element "' + sym + '".');
+          c[sym] = (c[sym] || 0) + num();
+        } else {
+          throw new Error('Unexpected character "' + ch + '".');
+        }
+      }
+      return c;
+    }
+    var counts = group();
+    if (i < f.length) throw new Error('Unmatched bracket in "' + part + '".');
+    for (var k2 in counts) total[k2] = (total[k2] || 0) + counts[k2] * mult;
+  });
+  if (!Object.keys(total).length) throw new Error('Enter a formula.');
+  return total;
+}
+
+// ---- Molecular Weight Calculator ----
+(function () {
+  if (!document.getElementById('mwFormula')) return;
+  var g = function (id) { return document.getElementById(id); };
+  function calc() {
+    var raw = g('mwFormula').value.trim();
+    var out = g('mwResult'), note = g('mwNote'), tbody = g('mwBreakdown');
+    if (!raw) { out.textContent = '—'; tbody.innerHTML = ''; note.textContent = ''; g('mwAtoms').textContent = '—'; return; }
+    try {
+      var counts = sciParseFormula(raw);
+      var total = 0, atoms = 0;
+      var rows = Object.keys(counts).map(function (sym) {
+        var w = sciAtomicWeights[sym], n = counts[sym], sub = w * n;
+        total += sub; atoms += n;
+        return { sym: sym, n: n, w: w, sub: sub };
+      });
+      rows.sort(function (a, b) { return b.sub - a.sub; });
+      out.textContent = (Math.round(total * 10000) / 10000).toLocaleString('en-US') + ' g/mol';
+      g('mwAtoms').textContent = atoms + ' atoms across ' + rows.length + ' element' + (rows.length === 1 ? '' : 's');
+      tbody.innerHTML = rows.map(function (r) {
+        return '<tr><td>' + r.sym + '</td><td>' + r.n + '</td><td>' + r.w + '</td><td>' +
+          (Math.round(r.sub * 1000) / 1000) + '</td><td>' + (Math.round(r.sub / total * 1000) / 10) + '%</td></tr>';
+      }).join('');
+      note.textContent = '';
+    } catch (e) {
+      out.textContent = '—'; g('mwAtoms').textContent = '—'; tbody.innerHTML = '';
+      note.textContent = e.message + ' Element symbols are case-sensitive: Co is cobalt, CO is carbon monoxide.';
+    }
+  }
+  g('mwFormula').addEventListener('input', calc);
+  calc();
+})();
+
+// ---- Molarity Calculator ----
+(function () {
+  if (!document.getElementById('molSolve')) return;
+  var g = function (id) { return document.getElementById(id); };
+  var VOL = { L: 1, mL: 0.001, uL: 1e-6, gal: 3.785411784 };
+  function calc() {
+    var solve = g('molSolve').value;
+    var mm = parseFloat(g('molMass').value) || 0;
+    var vol = (parseFloat(g('molVolume').value) || 0) * VOL[g('molVolUnit').value];
+    var grams = parseFloat(g('molGrams').value) || 0;
+    var molar = parseFloat(g('molMolarity').value) || 0;
+
+    g('molGrams').closest('.field').style.display = solve === 'mass' ? 'none' : '';
+    g('molMolarity').closest('.field').style.display = solve === 'molarity' ? 'none' : '';
+
+    var note = g('molNote');
+    if (mm <= 0 || vol <= 0) {
+      ['molOutMolarity', 'molOutMoles', 'molOutMass', 'molOutVol'].forEach(function (i) { g(i).textContent = '—'; });
+      note.textContent = 'Enter a molar mass and a volume greater than zero.';
+      return;
+    }
+    var moles, mass, M;
+    if (solve === 'molarity') { moles = grams / mm; M = moles / vol; mass = grams; }
+    else { M = molar; moles = M * vol; mass = moles * mm; }
+
+    g('molOutMolarity').textContent = (Math.round(M * 1e6) / 1e6).toLocaleString('en-US') + ' mol/L';
+    g('molOutMoles').textContent = (Math.round(moles * 1e6) / 1e6).toLocaleString('en-US') + ' mol';
+    g('molOutMass').textContent = (Math.round(mass * 1e4) / 1e4).toLocaleString('en-US') + ' g';
+    g('molOutVol').textContent = (Math.round(vol * 1e6) / 1e6).toLocaleString('en-US') + ' L';
+    note.textContent = solve === 'molarity'
+      ? 'Molarity = moles of solute ÷ litres of solution. Moles = mass ÷ molar mass.'
+      : 'Dissolve this mass in enough solvent to reach the stated final volume — not by adding that volume of solvent.';
+  }
+  ['molSolve', 'molMass', 'molVolume', 'molVolUnit', 'molGrams', 'molMolarity'].forEach(function (id) {
+    g(id).addEventListener('input', calc); g(id).addEventListener('change', calc);
+  });
+  calc();
+})();
+
+// ---- Density Calculator ----
+(function () {
+  if (!document.getElementById('denSolve')) return;
+  var g = function (id) { return document.getElementById(id); };
+  var MASS = { g: 1, kg: 1000, mg: 0.001, lb: 453.59237, oz: 28.349523125 };
+  var VOLU = { cm3: 1, m3: 1e6, L: 1000, mL: 1, in3: 16.387064, ft3: 28316.846592, gal: 3785.411784 };
+  function calc() {
+    var solve = g('denSolve').value;
+    var m = (parseFloat(g('denMass').value) || 0) * MASS[g('denMassUnit').value];      // grams
+    var v = (parseFloat(g('denVolume').value) || 0) * VOLU[g('denVolUnit').value];     // cm3
+    var d = parseFloat(g('denDensity').value) || 0;                                    // g/cm3
+
+    g('denMass').closest('.field').style.display = solve === 'mass' ? 'none' : '';
+    g('denVolume').closest('.field').style.display = solve === 'volume' ? 'none' : '';
+    g('denDensity').closest('.field').style.display = solve === 'density' ? 'none' : '';
+
+    if (solve === 'density') { if (v <= 0) { d = NaN; } else d = m / v; }
+    else if (solve === 'mass') { m = d * v; }
+    else { v = d > 0 ? m / d : NaN; }
+
+    var f = function (n, u) { return isFinite(n) ? (Math.round(n * 1e6) / 1e6).toLocaleString('en-US') + ' ' + u : '—'; };
+    g('denOutDensity').textContent = f(d, 'g/cm³');
+    g('denOutDensityAlt').textContent = f(d * 1000, 'kg/m³') + '  ·  ' + f(d * 62.427960576, 'lb/ft³');
+    g('denOutMass').textContent = f(m, 'g') + '  (' + f(m / 1000, 'kg') + ')';
+    g('denOutVolume').textContent = f(v, 'cm³') + '  (' + f(v / 1000, 'L') + ')';
+    var fl = g('denFloat');
+    if (!isFinite(d) || d <= 0) fl.textContent = '';
+    else fl.textContent = d < 1 ? 'Less dense than water (1 g/cm³) — this floats in fresh water.'
+      : d > 1 ? 'Denser than water (1 g/cm³) — this sinks in fresh water.'
+        : 'Exactly the density of water — it would sit neutrally buoyant.';
+  }
+  ['denSolve', 'denMass', 'denMassUnit', 'denVolume', 'denVolUnit', 'denDensity'].forEach(function (id) {
+    g(id).addEventListener('input', calc); g(id).addEventListener('change', calc);
+  });
+  calc();
+})();
+
+// ---- Speed / Distance / Time Calculator ----
+(function () {
+  if (!document.getElementById('spdSolve')) return;
+  var g = function (id) { return document.getElementById(id); };
+  var DIST = { km: 1000, mi: 1609.344, m: 1, ft: 0.3048, yd: 0.9144, nmi: 1852 };
+  function calc() {
+    var solve = g('spdSolve').value;
+    var dist = (parseFloat(g('spdDistance').value) || 0) * DIST[g('spdDistUnit').value];  // metres
+    var h = parseFloat(g('spdHours').value) || 0;
+    var mn = parseFloat(g('spdMinutes').value) || 0;
+    var s = parseFloat(g('spdSeconds').value) || 0;
+    var secs = h * 3600 + mn * 60 + s;
+    var spd = parseFloat(g('spdSpeed').value) || 0;                                      // in chosen unit
+    var spdUnit = g('spdSpeedUnit').value;
+    var toMs = { kmh: 1 / 3.6, mph: 0.44704, ms: 1, fts: 0.3048, kn: 0.514444444 };
+
+    g('spdDistance').closest('.field').style.display = solve === 'distance' ? 'none' : '';
+    g('spdTimeRow').style.display = solve === 'time' ? 'none' : '';
+    g('spdSpeed').closest('.field').style.display = solve === 'speed' ? 'none' : '';
+
+    var ms;
+    if (solve === 'speed') { ms = secs > 0 ? dist / secs : NaN; }
+    else if (solve === 'distance') { ms = spd * toMs[spdUnit]; dist = ms * secs; }
+    else { ms = spd * toMs[spdUnit]; secs = ms > 0 ? dist / ms : NaN; }
+
+    var f = function (n, u, dp) { return isFinite(n) ? (Math.round(n * Math.pow(10, dp || 3)) / Math.pow(10, dp || 3)).toLocaleString('en-US') + ' ' + u : '—'; };
+    g('spdOutSpeed').textContent = f(ms * 3.6, 'km/h') + '  ·  ' + f(ms / 0.44704, 'mph');
+    g('spdOutSpeedAlt').textContent = f(ms, 'm/s') + '  ·  ' + f(ms / 0.514444444, 'knots');
+    g('spdOutDistance').textContent = f(dist / 1000, 'km') + '  ·  ' + f(dist / 1609.344, 'miles');
+    if (isFinite(secs) && secs >= 0) {
+      var hh = Math.floor(secs / 3600), mm2 = Math.floor(secs % 3600 / 60), rem = secs % 60;
+      // Keep hundredths on short times — a sprint split rounded to whole seconds is useless.
+      var ss = secs < 60 ? Math.round(rem * 100) / 100 : Math.round(rem);
+      g('spdOutTime').textContent = (hh ? hh + 'h ' : '') + (mm2 || hh ? mm2 + 'm ' : '') + ss + 's';
+    } else g('spdOutTime').textContent = '—';
+    // Pace is how runners and cyclists actually think about speed.
+    if (isFinite(ms) && ms > 0) {
+      var perKm = 1000 / ms, perMi = 1609.344 / ms;
+      var pace = function (t) { return Math.floor(t / 60) + ':' + String(Math.round(t % 60)).padStart(2, '0'); };
+      g('spdOutPace').textContent = pace(perKm) + ' /km  ·  ' + pace(perMi) + ' /mile';
+    } else g('spdOutPace').textContent = '—';
+  }
+  ['spdSolve', 'spdDistance', 'spdDistUnit', 'spdHours', 'spdMinutes', 'spdSeconds', 'spdSpeed', 'spdSpeedUnit'].forEach(function (id) {
+    g(id).addEventListener('input', calc); g(id).addEventListener('change', calc);
+  });
+  calc();
+})();
+
+// ---- Weight on Other Planets ----
+(function () {
+  if (!document.getElementById('wopWeight')) return;
+  var g = function (id) { return document.getElementById(id); };
+  // Surface gravity, m/s² — NASA NSSDCA Planetary Fact Sheet. Gas giants are
+  // quoted at the 1 bar level; all values include the effect of rotation.
+  var BODIES = [
+    ['Mercury', 3.7], ['Venus', 8.9], ['Earth', 9.8], ['The Moon', 1.6],
+    ['Mars', 3.7], ['Jupiter', 23.1], ['Saturn', 9.0], ['Uranus', 8.7],
+    ['Neptune', 11.0], ['Pluto', 0.6]
+  ];
+  var EARTH = 9.8;
+  function calc() {
+    var w = parseFloat(g('wopWeight').value) || 0;
+    var unit = g('wopUnit').value;
+    g('wopBody').innerHTML = BODIES.map(function (b) {
+      var val = w * b[1] / EARTH;
+      var rel = b[1] / EARTH;
+      return '<tr><td>' + b[0] + '</td><td>' + b[1] + '</td><td>' +
+        (Math.round(rel * 1000) / 1000) + '×</td><td><strong>' +
+        (Math.round(val * 100) / 100).toLocaleString('en-US') + ' ' + unit + '</strong></td></tr>';
+    }).join('');
+    g('wopNote').textContent = w > 0
+      ? 'Your mass never changes — only the force gravity exerts on it does. On Pluto you would weigh about ' +
+        (Math.round(w * 0.6 / EARTH * 100) / 100) + ' ' + unit + ', but you would still be just as hard to push sideways.'
+      : '';
+  }
+  ['wopWeight', 'wopUnit'].forEach(function (id) { g(id).addEventListener('input', calc); g(id).addEventListener('change', calc); });
+  calc();
+})();
+
+// ---- Child Height Predictor ----
+(function () {
+  if (!document.getElementById('chSex')) return;
+  var g = function (id) { return document.getElementById(id); };
+  function readHeight(prefix) {
+    if (g('chUnit').value === 'cm') return parseFloat(g(prefix + 'Cm').value) || 0;
+    var ft = parseFloat(g(prefix + 'Ft').value) || 0, inch = parseFloat(g(prefix + 'In').value) || 0;
+    return (ft * 12 + inch) * 2.54;
+  }
+  function fmt(cm) {
+    if (!isFinite(cm) || cm <= 0) return '—';
+    var totalIn = cm / 2.54;
+    var ft = Math.floor(totalIn / 12), inch = totalIn - ft * 12;
+    return (Math.round(cm * 10) / 10) + ' cm  (' + ft + '′ ' + (Math.round(inch * 10) / 10) + '″)';
+  }
+  function calc() {
+    var metric = g('chUnit').value === 'cm';
+    g('chCmRow').style.display = metric ? '' : 'none';
+    g('chFtRow').style.display = metric ? 'none' : '';
+    var dad = readHeight('chDad'), mum = readHeight('chMum');
+    if (dad <= 0 || mum <= 0) {
+      ['chTarget', 'chRange', 'chMid'].forEach(function (i) { g(i).textContent = '—'; });
+      g('chNote').textContent = 'Enter both parents’ adult heights.';
+      return;
+    }
+    var mid = (dad + mum) / 2;
+    var target = g('chSex').value === 'boy' ? mid + 6.5 : mid - 6.5;
+    g('chMid').textContent = fmt(mid);
+    g('chTarget').textContent = fmt(target);
+    g('chRange').textContent = fmt(target - 8.5) + '   to   ' + fmt(target + 8.5);
+    g('chNote').textContent = 'The ±8.5 cm band spans roughly the 3rd to 97th percentile of outcomes — it is wide on purpose.';
+  }
+  ['chSex', 'chUnit', 'chDadCm', 'chMumCm', 'chDadFt', 'chDadIn', 'chMumFt', 'chMumIn'].forEach(function (id) {
+    g(id).addEventListener('input', calc); g(id).addEventListener('change', calc);
+  });
+  calc();
+})();

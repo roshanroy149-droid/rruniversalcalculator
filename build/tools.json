@@ -1542,6 +1542,60 @@
       "title": "URL Encoder and Decoder",
       "icon": "icon-password",
       "blurb": "Percent-encode a URL or query value, or decode one back."
+    },
+    {
+      "id": "molecular-weight-calculator",
+      "file": "molecular-weight-calculator.html",
+      "category": "education",
+      "navLabel": "MOLECULAR WEIGHT",
+      "title": "Molecular Weight Calculator",
+      "icon": "icon-scientific",
+      "blurb": "Molar mass from a chemical formula, with a per-element breakdown."
+    },
+    {
+      "id": "molarity-calculator",
+      "file": "molarity-calculator.html",
+      "category": "education",
+      "navLabel": "MOLARITY",
+      "title": "Molarity Calculator",
+      "icon": "icon-scientific",
+      "blurb": "Solution concentration, moles and the mass to weigh out."
+    },
+    {
+      "id": "density-calculator",
+      "file": "density-calculator.html",
+      "category": "education",
+      "navLabel": "DENSITY",
+      "title": "Density Calculator",
+      "icon": "icon-units",
+      "blurb": "Any two of density, mass and volume give the third."
+    },
+    {
+      "id": "weight-on-planets-calculator",
+      "file": "weight-on-planets-calculator.html",
+      "category": "education",
+      "navLabel": "WEIGHT ON PLANETS",
+      "title": "Weight on Other Planets",
+      "icon": "icon-scientific",
+      "blurb": "What you would weigh across the solar system, using NASA gravity data."
+    },
+    {
+      "id": "speed-calculator",
+      "file": "speed-calculator.html",
+      "category": "everyday",
+      "navLabel": "SPEED",
+      "title": "Speed Calculator",
+      "icon": "icon-units",
+      "blurb": "Speed, distance and time in any two directions, plus running pace."
+    },
+    {
+      "id": "child-height-calculator",
+      "file": "child-height-calculator.html",
+      "category": "health",
+      "navLabel": "CHILD HEIGHT",
+      "title": "Child Height Predictor",
+      "icon": "icon-bmi",
+      "blurb": "Mid-parental target height, with the real prediction range."
     }
   ]
 }

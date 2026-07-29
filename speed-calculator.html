@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Speed Calculator — Speed, Distance and Time | TallyBench</title>
+<meta name="description" content="Solve for speed, distance or time, with km/h, mph, m/s and knots, plus running pace per km and mile.">
+<link rel="canonical" href="https://tallybench.com/speed-calculator.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.svg">
+<meta name="theme-color" content="#1C1A17">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="TallyBench">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TallyBench">
+<meta property="og:title" content="Speed Calculator — Speed, Distance and Time">
+<meta property="og:description" content="Solve for speed, distance or time, with km/h, mph, m/s and knots, plus running pace per km and mile.">
+<meta property="og:url" content="https://tallybench.com/speed-calculator.html">
+<meta property="og:image" content="https://tallybench.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Speed Calculator — Speed, Distance and Time">
+<meta name="twitter:description" content="Solve for speed, distance or time, with km/h, mph, m/s and knots, plus running pace per km and mile.">
+<meta name="twitter:image" content="https://tallybench.com/og-image.png">
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="style.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How do I convert km/h to m/s?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Divide by 3.6. A kilometre is 1000 metres and an hour is 3600 seconds, so 1 km/h is 1000/3600 = 0.2778 m/s. Going the other way, multiply m/s by 3.6. It is worth memorising because the two units dominate different contexts — road speeds are quoted in km/h or mph, while physics problems and sports science almost always use m/s." }
+    },
+    {
+      "@type": "Question",
+      "name": "Why is my average speed lower than the average of my speeds?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Because you spend more time at the slower speed, so it carries more weight. Drive 60 km at 60 km/h then 60 km at 30 km/h: that is one hour plus two hours for 120 km, giving 40 km/h, not the 45 you would get by averaging the two numbers. Average speed is always total distance divided by total time. For equal distances at different speeds the correct figure is the harmonic mean, which is always the lower of the two." }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between speed and velocity?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Speed is a scalar — just a magnitude. Velocity is a vector, carrying both magnitude and direction. A car going round a roundabout at a constant 30 km/h has constant speed but continuously changing velocity, because its direction keeps changing. That change is an acceleration, which is why you feel pushed sideways. For everyday distance-and-time questions the distinction rarely matters; in physics it always does." }
+    },
+    {
+      "@type": "Question",
+      "name": "What is a knot and why is it used?",
+      "acceptedAnswer": { "@type": "Answer", "text": "One knot is one nautical mile per hour, where a nautical mile is 1852 metres — one minute of latitude along a meridian. That definition is exactly why it persists at sea and in the air: on a chart, one minute of latitude equals one nautical mile of distance anywhere on the globe, which makes navigation arithmetic simple. A knot is about 1.852 km/h or 1.151 mph." }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I convert speed into running pace?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Pace is the inverse of speed — time per unit distance rather than distance per unit time. Divide 60 by your speed in km/h to get minutes per kilometre: 10 km/h gives 6.0, which is 6:00 per km. The calculator does this conversion automatically. Runners prefer pace because it maps directly onto what a watch shows during a run, and because it makes finishing times easy to project." }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Speed Calculator — TallyBench",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any (runs in browser)",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "url": "https://tallybench.com/speed-calculator.html"
+}
+</script>
+<!-- TB:BREADCRUMB:START -->
+<script type="application/ld+json">
+{
+    "@context":  "https://schema.org",
+    "@type":  "BreadcrumbList",
+    "itemListElement":  [
+                            {
+                                "@type":  "ListItem",
+                                "position":  1,
+                                "name":  "TallyBench",
+                                "item":  "https://tallybench.com/"
+                            },
+                            {
+                                "@type":  "ListItem",
+                                "position":  2,
+                                "name":  "Speed Calculator",
+                                "item":  "https://tallybench.com/speed-calculator.html"
+                            }
+                        ]
+}
+</script>
+<!-- TB:BREADCRUMB:END -->
+</head>
+<body data-page-cat="everyday">
+
+<header>
+  <div class="wrap">
+    <div class="headbar">
+      <a class="logo" href="index.html">TALLYBENCH<span>.</span></a>
+      <div class="tagline"><!-- TB:COUNT:START -->
+175 TOOLS · 0 SIGN-UP
+<!-- TB:COUNT:END --></div>
+<button class="nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <!-- TB:NAV:START -->
+  <div class="nav-drawer" id="navDrawer">
+    <div class="nav-drawer-head">
+      <span>Menu</span>
+      <button class="nav-close" id="navClose" type="button" aria-label="Close menu">&#10005;</button>
+    </div>
+    <nav class="ruler cat-ruler" aria-label="Category">
+      <a class="tick" href="index.html">HOME</a>
+      <a class="tick" href="articles.html">ARTICLES</a>
+      <a class="tick" href="book.html">BOOK</a>
+      <a class="tick" href="venstock.html">VENSTOCK</a>
+      <button class="tick cat-tab" type="button" data-cat="finance">FINANCE</button>
+      <button class="tick cat-tab" type="button" data-cat="health">HEALTH</button>
+      <button class="tick cat-tab" type="button" data-cat="education">EDUCATION</button>
+      <button class="tick cat-tab" type="button" data-cat="everyday">EVERYDAY</button>
+    </nav>
+    <nav class="ruler sub-ruler" id="subRuler" aria-label="Tools">
+      <a class="tick sub-tick" data-cat="finance" href="currency-converter.html">CURRENCY</a>
+      <a class="tick sub-tick" data-cat="finance" href="loan-calculator.html">LOAN / EMI</a>
+      <a class="tick sub-tick" data-cat="finance" href="car-loan-calculator.html">CAR LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="mortgage-calculator.html">MORTGAGE</a>
+      <a class="tick sub-tick" data-cat="finance" href="refinance-calculator.html">REFINANCE</a>
+      <a class="tick sub-tick" data-cat="finance" href="rent-vs-buy-calculator.html">RENT VS BUY</a>
+      <a class="tick sub-tick" data-cat="finance" href="tax-calculator.html">TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="paycheck-calculator.html">PAYCHECK</a>
+      <a class="tick sub-tick" data-cat="finance" href="freelancer-tax-calculator-india.html">FREELANCER TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="gst-vat-calculator.html">GST / VAT</a>
+      <a class="tick sub-tick" data-cat="finance" href="investment-calculator.html">INVESTMENT</a>
+      <a class="tick sub-tick" data-cat="finance" href="sip-calculator.html">SIP</a>
+      <a class="tick sub-tick" data-cat="finance" href="compound-interest-calculator.html">COMPOUND INT.</a>
+      <a class="tick sub-tick" data-cat="finance" href="savings-goal-calculator.html">SAVINGS GOAL</a>
+      <a class="tick sub-tick" data-cat="finance" href="retirement-calculator.html">RETIREMENT</a>
+      <a class="tick sub-tick" data-cat="finance" href="net-worth-calculator.html">NET WORTH</a>
+      <a class="tick sub-tick" data-cat="finance" href="discount-calculator.html">DISCOUNT</a>
+      <a class="tick sub-tick" data-cat="finance" href="tip-calculator.html">TIP</a>
+      <a class="tick sub-tick" data-cat="finance" href="fd-calculator.html">FD</a>
+      <a class="tick sub-tick" data-cat="finance" href="rd-calculator.html">RD</a>
+      <a class="tick sub-tick" data-cat="finance" href="ppf-calculator.html">PPF</a>
+      <a class="tick sub-tick" data-cat="finance" href="india-tax-regime-calculator.html">OLD VS NEW REGIME</a>
+      <a class="tick sub-tick" data-cat="finance" href="hra-calculator.html">HRA</a>
+      <a class="tick sub-tick" data-cat="finance" href="gratuity-calculator.html">GRATUITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="epf-calculator.html">EPF</a>
+      <a class="tick sub-tick" data-cat="finance" href="fire-calculator.html">FIRE NUMBER</a>
+      <a class="tick sub-tick" data-cat="finance" href="rsu-vesting-calculator.html">RSU VESTING</a>
+      <a class="tick sub-tick" data-cat="finance" href="cross-country-salary-calculator.html">SALARY BY COUNTRY</a>
+      <a class="tick sub-tick" data-cat="finance" href="currency-fee-calculator.html">FX FEES</a>
+      <a class="tick sub-tick" data-cat="finance" href="zakat-calculator.html">ZAKAT</a>
+      <a class="tick sub-tick" data-cat="finance" href="break-even-calculator.html">BREAK-EVEN</a>
+      <a class="tick sub-tick" data-cat="finance" href="debt-payoff-calculator.html">DEBT PAYOFF</a>
+      <a class="tick sub-tick" data-cat="finance" href="salary-calculator.html">SALARY</a>
+      <a class="tick sub-tick" data-cat="finance" href="sales-tax-calculator.html">SALES TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="cd-calculator.html">CD</a>
+      <a class="tick sub-tick" data-cat="finance" href="amortization-schedule-calculator.html">AMORTIZATION</a>
+      <a class="tick sub-tick" data-cat="finance" href="401k-calculator.html">401(K)</a>
+      <a class="tick sub-tick" data-cat="finance" href="ira-calculator.html">IRA / ROTH</a>
+      <a class="tick sub-tick" data-cat="finance" href="house-affordability-calculator.html">AFFORDABILITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="down-payment-calculator.html">DOWN PAYMENT</a>
+      <a class="tick sub-tick" data-cat="finance" href="debt-to-income-calculator.html">DTI RATIO</a>
+      <a class="tick sub-tick" data-cat="finance" href="simple-interest-calculator.html">SIMPLE INT.</a>
+      <a class="tick sub-tick" data-cat="finance" href="roi-calculator.html">ROI</a>
+      <a class="tick sub-tick" data-cat="finance" href="credit-card-payoff-calculator.html">CC PAYOFF</a>
+      <a class="tick sub-tick" data-cat="finance" href="mortgage-payoff-calculator.html">MTG PAYOFF</a>
+      <a class="tick sub-tick" data-cat="finance" href="rent-affordability-calculator.html">RENT AFFORD</a>
+      <a class="tick sub-tick" data-cat="finance" href="real-estate-investment-calculator.html">REAL ESTATE</a>
+      <a class="tick sub-tick" data-cat="finance" href="rental-property-calculator.html">RENTAL PROPERTY</a>
+      <a class="tick sub-tick" data-cat="finance" href="apr-calculator.html">APR</a>
+      <a class="tick sub-tick" data-cat="finance" href="fha-loan-calculator.html">FHA LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="va-mortgage-calculator.html">VA LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="home-equity-loan-calculator.html">HOME EQUITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="heloc-calculator.html">HELOC</a>
+      <a class="tick sub-tick" data-cat="finance" href="cash-back-or-low-interest-calculator.html">CASH BACK/APR</a>
+      <a class="tick sub-tick" data-cat="finance" href="auto-lease-calculator.html">AUTO LEASE</a>
+      <a class="tick sub-tick" data-cat="finance" href="finance-calculator.html">TVM SOLVER</a>
+      <a class="tick sub-tick" data-cat="finance" href="interest-rate-calculator.html">INT. RATE</a>
+      <a class="tick sub-tick" data-cat="finance" href="bond-calculator.html">BOND</a>
+      <a class="tick sub-tick" data-cat="finance" href="mutual-fund-calculator.html">MUTUAL FUND</a>
+      <a class="tick sub-tick" data-cat="finance" href="average-return-calculator.html">AVG RETURN</a>
+      <a class="tick sub-tick" data-cat="finance" href="irr-calculator.html">IRR</a>
+      <a class="tick sub-tick" data-cat="finance" href="payback-period-calculator.html">PAYBACK PERIOD</a>
+      <a class="tick sub-tick" data-cat="finance" href="present-value-calculator.html">PRESENT VALUE</a>
+      <a class="tick sub-tick" data-cat="finance" href="future-value-calculator.html">FUTURE VALUE</a>
+      <a class="tick sub-tick" data-cat="finance" href="savings-calculator.html">SAVINGS</a>
+      <a class="tick sub-tick" data-cat="finance" href="pension-calculator.html">PENSION</a>
+      <a class="tick sub-tick" data-cat="finance" href="social-security-calculator.html">SOCIAL SECURITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="annuity-calculator.html">ANNUITY</a>
+      <a class="tick sub-tick" data-cat="finance" href="annuity-payout-calculator.html">ANNUITY PAYOUT</a>
+      <a class="tick sub-tick" data-cat="finance" href="rmd-calculator.html">RMD</a>
+      <a class="tick sub-tick" data-cat="finance" href="marriage-tax-calculator.html">MARRIAGE TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="estate-tax-calculator.html">ESTATE TAX</a>
+      <a class="tick sub-tick" data-cat="finance" href="inflation-calculator.html">INFLATION</a>
+      <a class="tick sub-tick" data-cat="finance" href="debt-consolidation-calculator.html">DEBT CONSOLIDATION</a>
+      <a class="tick sub-tick" data-cat="finance" href="student-loan-repayment-calculator.html">REPAYMENT PLAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="pslf-calculator.html">PSLF</a>
+      <a class="tick sub-tick" data-cat="finance" href="student-loan-calculator.html">STUDENT LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="college-cost-calculator.html">COLLEGE COST</a>
+      <a class="tick sub-tick" data-cat="finance" href="depreciation-calculator.html">DEPRECIATION</a>
+      <a class="tick sub-tick" data-cat="finance" href="margin-calculator.html">MARGIN</a>
+      <a class="tick sub-tick" data-cat="finance" href="business-loan-calculator.html">BUSINESS LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="personal-loan-calculator.html">PERSONAL LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="boat-loan-calculator.html">BOAT LOAN</a>
+      <a class="tick sub-tick" data-cat="finance" href="lease-calculator.html">LEASE</a>
+      <a class="tick sub-tick" data-cat="finance" href="budget-calculator.html">BUDGET</a>
+      <a class="tick sub-tick" data-cat="finance" href="commission-calculator.html">COMMISSION</a>
+      <a class="tick sub-tick" data-cat="health" href="bmi-calculator.html">BMI</a>
+      <a class="tick sub-tick" data-cat="health" href="calorie-calculator.html">CALORIE</a>
+      <a class="tick sub-tick" data-cat="health" href="macro-calculator.html">MACROS</a>
+      <a class="tick sub-tick" data-cat="health" href="pregnancy-calculator.html">PREGNANCY</a>
+      <a class="tick sub-tick" data-cat="health" href="ovulation-calculator.html">OVULATION</a>
+      <a class="tick sub-tick" data-cat="health" href="ideal-weight-calculator.html">IDEAL WEIGHT</a>
+      <a class="tick sub-tick" data-cat="health" href="body-fat-calculator.html">BODY FAT</a>
+      <a class="tick sub-tick" data-cat="health" href="army-body-fat-calculator.html">ARMY BODY FAT</a>
+      <a class="tick sub-tick" data-cat="health" href="lean-body-mass-calculator.html">LEAN MASS</a>
+      <a class="tick sub-tick" data-cat="health" href="healthy-weight-calculator.html">HEALTHY WEIGHT</a>
+      <a class="tick sub-tick" data-cat="health" href="calories-burned-calculator.html">CAL BURNED</a>
+      <a class="tick sub-tick" data-cat="health" href="one-rep-max-calculator.html">1RM</a>
+      <a class="tick sub-tick" data-cat="health" href="target-heart-rate-calculator.html">HEART RATE</a>
+      <a class="tick sub-tick" data-cat="health" href="pregnancy-week-calculator.html">PREGNANCY WEEKS</a>
+      <a class="tick sub-tick" data-cat="health" href="pregnancy-weight-gain-calculator.html">PREG. WEIGHT GAIN</a>
+      <a class="tick sub-tick" data-cat="health" href="conception-calculator.html">CONCEPTION</a>
+      <a class="tick sub-tick" data-cat="health" href="sleep-cycle-calculator.html">SLEEP CYCLE</a>
+      <a class="tick sub-tick" data-cat="health" href="water-intake-calculator.html">WATER INTAKE</a>
+      <a class="tick sub-tick" data-cat="health" href="tdee-calculator.html">TDEE</a>
+      <a class="tick sub-tick" data-cat="health" href="protein-calculator.html">PROTEIN</a>
+      <a class="tick sub-tick" data-cat="education" href="gcf-calculator.html">GCF</a>
+      <a class="tick sub-tick" data-cat="education" href="lcm-calculator.html">LCM</a>
+      <a class="tick sub-tick" data-cat="education" href="factor-calculator.html">FACTORS</a>
+      <a class="tick sub-tick" data-cat="education" href="rounding-calculator.html">ROUNDING</a>
+      <a class="tick sub-tick" data-cat="education" href="scientific-notation-calculator.html">SCI. NOTATION</a>
+      <a class="tick sub-tick" data-cat="education" href="big-number-calculator.html">BIG NUMBERS</a>
+      <a class="tick sub-tick" data-cat="education" href="number-sequence-calculator.html">SEQUENCES</a>
+      <a class="tick sub-tick" data-cat="education" href="probability-calculator.html">PROBABILITY</a>
+      <a class="tick sub-tick" data-cat="education" href="matrix-calculator.html">MATRIX</a>
+      <a class="tick sub-tick" data-cat="education" href="circle-calculator.html">CIRCLE</a>
+      <a class="tick sub-tick" data-cat="education" href="area-calculator.html">AREA</a>
+      <a class="tick sub-tick" data-cat="education" href="volume-calculator.html">VOLUME</a>
+      <a class="tick sub-tick" data-cat="education" href="surface-area-calculator.html">SURFACE AREA</a>
+      <a class="tick sub-tick" data-cat="education" href="slope-calculator.html">SLOPE</a>
+      <a class="tick sub-tick" data-cat="education" href="coordinate-distance-calculator.html">COORDINATE DISTANCE</a>
+      <a class="tick sub-tick" data-cat="education" href="pythagorean-theorem-calculator.html">PYTHAGOREAN THEOREM</a>
+      <a class="tick sub-tick" data-cat="education" href="right-triangle-calculator.html">RIGHT TRIANGLE</a>
+      <a class="tick sub-tick" data-cat="education" href="triangle-calculator.html">TRIANGLE</a>
+      <a class="tick sub-tick" data-cat="education" href="gpa-calculator.html">GPA</a>
+      <a class="tick sub-tick" data-cat="education" href="grade-calculator.html">GRADE</a>
+      <a class="tick sub-tick" data-cat="education" href="scientific-calculator.html">SCIENTIFIC</a>
+      <a class="tick sub-tick" data-cat="education" href="fraction-calculator.html">FRACTION</a>
+      <a class="tick sub-tick" data-cat="education" href="statistics-calculator.html">STATISTICS</a>
+      <a class="tick sub-tick" data-cat="education" href="percent-error-calculator.html">% ERROR</a>
+      <a class="tick sub-tick" data-cat="education" href="exponent-calculator.html">EXPONENT</a>
+      <a class="tick sub-tick" data-cat="education" href="binary-calculator.html">BINARY</a>
+      <a class="tick sub-tick" data-cat="education" href="hex-calculator.html">HEX</a>
+      <a class="tick sub-tick" data-cat="education" href="half-life-calculator.html">HALF-LIFE</a>
+      <a class="tick sub-tick" data-cat="education" href="quadratic-formula-calculator.html">QUADRATIC</a>
+      <a class="tick sub-tick" data-cat="education" href="log-calculator.html">LOG</a>
+      <a class="tick sub-tick" data-cat="education" href="ratio-calculator.html">RATIO</a>
+      <a class="tick sub-tick" data-cat="education" href="root-calculator.html">ROOT</a>
+      <a class="tick sub-tick" data-cat="education" href="standard-deviation-calculator.html">STD DEVIATION</a>
+      <a class="tick sub-tick" data-cat="education" href="sample-size-calculator.html">SAMPLE SIZE</a>
+      <a class="tick sub-tick" data-cat="education" href="mean-median-mode-calculator.html">MEAN/MEDIAN/MODE</a>
+      <a class="tick sub-tick" data-cat="education" href="permutation-combination-calculator.html">PERM/COMBO</a>
+      <a class="tick sub-tick" data-cat="education" href="z-score-calculator.html">Z-SCORE</a>
+      <a class="tick sub-tick" data-cat="education" href="confidence-interval-calculator.html">CONFIDENCE INT.</a>
+      <a class="tick sub-tick" data-cat="everyday" href="basic-calculator.html">CALCULATOR</a>
+      <a class="tick sub-tick" data-cat="everyday" href="percentage-calculator.html">PERCENT</a>
+      <a class="tick sub-tick" data-cat="everyday" href="age-calculator.html">AGE</a>
+      <a class="tick sub-tick" data-cat="everyday" href="days-calculator.html">DAYS</a>
+      <a class="tick sub-tick" data-cat="everyday" href="time-calculator.html">TIME</a>
+      <a class="tick sub-tick" data-cat="everyday" href="unit-converter.html">UNITS</a>
+      <a class="tick sub-tick" data-cat="everyday" href="week-number-calculator.html">WEEK #</a>
+      <a class="tick sub-tick" data-cat="everyday" href="cm-to-inches.html">CM→IN</a>
+      <a class="tick sub-tick" data-cat="everyday" href="kg-to-pounds.html">KG→LB</a>
+      <a class="tick sub-tick" data-cat="everyday" href="celsius-to-fahrenheit.html">°C→°F</a>
+      <a class="tick sub-tick" data-cat="everyday" href="password-generator.html">PASSWORD</a>
+      <a class="tick sub-tick" data-cat="everyday" href="random-number-generator.html">RANDOM #</a>
+      <a class="tick sub-tick" data-cat="everyday" href="word-counter.html">WORD COUNT</a>
+      <a class="tick sub-tick" data-cat="everyday" href="pace-calculator.html">PACE</a>
+      <a class="tick sub-tick" data-cat="everyday" href="bill-split-calculator.html">BILL SPLIT</a>
+      <a class="tick sub-tick" data-cat="everyday" href="fuel-cost-calculator.html">FUEL COST</a>
+      <a class="tick sub-tick" data-cat="education" href="ohms-law-calculator.html">OHM’S LAW</a>
+      <a class="tick sub-tick" data-cat="education" href="resistor-color-code-calculator.html">RESISTOR CODE</a>
+      <a class="tick sub-tick" data-cat="education" href="roman-numeral-converter.html">ROMAN NUMERALS</a>
+      <a class="tick sub-tick" data-cat="everyday" href="voltage-drop-calculator.html">VOLTAGE DROP</a>
+      <a class="tick sub-tick" data-cat="everyday" href="electricity-cost-calculator.html">ELECTRICITY COST</a>
+      <a class="tick sub-tick" data-cat="everyday" href="ip-subnet-calculator.html">IP SUBNET</a>
+      <a class="tick sub-tick" data-cat="everyday" href="bandwidth-calculator.html">BANDWIDTH</a>
+      <a class="tick sub-tick" data-cat="everyday" href="base64-converter.html">BASE64</a>
+      <a class="tick sub-tick" data-cat="everyday" href="url-encoder.html">URL ENCODER</a>
+      <a class="tick sub-tick" data-cat="education" href="molecular-weight-calculator.html">MOLECULAR WEIGHT</a>
+      <a class="tick sub-tick" data-cat="education" href="molarity-calculator.html">MOLARITY</a>
+      <a class="tick sub-tick" data-cat="education" href="density-calculator.html">DENSITY</a>
+      <a class="tick sub-tick" data-cat="education" href="weight-on-planets-calculator.html">WEIGHT ON PLANETS</a>
+      <a class="tick sub-tick" data-cat="everyday" href="speed-calculator.html">SPEED</a>
+      <a class="tick sub-tick" data-cat="health" href="child-height-calculator.html">CHILD HEIGHT</a>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+      <span class="sub-ruler-filler" aria-hidden="true"></span>
+    </nav>
+  </div>
+  <!-- TB:NAV:END -->
+</header>
+<div class="nav-backdrop" id="navBackdrop"></div>
+
+<div class="wrap">
+  <div class="crumb"><a href="index.html">TallyBench</a> / Speed Calculator</div>
+
+  <section class="hero">
+    <div class="hero-icon-row cat-everyday">
+      <div class="hero-icon"><svg><use href="icons.svg#icon-units"/></svg></div>
+      <div class="eyebrow">// SPEED CALCULATOR</div>
+    </div>
+    <h1>Speed, Distance and Time Calculator</h1>
+    <p>Enter any two of speed, distance and time. It returns the third in several units, and converts speed into running pace.</p>
+  </section>
+
+  <section class="tool" id="speedcalc">
+    <div class="card">
+      <div>
+        <div class="field"><label>What do you want to find?</label>
+          <select id="spdSolve">
+            <option value="speed">Speed</option>
+            <option value="distance">Distance</option>
+            <option value="time">Time</option>
+          </select>
+        </div>
+        <div class="field"><label>Distance</label>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+            <input type="number" id="spdDistance" value="42.195" min="0" step="any" style="flex:1;min-width:100px;">
+            <select id="spdDistUnit" style="width:auto;">
+              <option value="km">km</option>
+              <option value="mi">miles</option>
+              <option value="m">metres</option>
+              <option value="ft">feet</option>
+              <option value="yd">yards</option>
+              <option value="nmi">nautical miles</option>
+            </select>
+          </div>
+        </div>
+        <div class="field" id="spdTimeRow"><label>Time taken</label>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+            <input type="number" id="spdHours" value="4" min="0" step="1" style="flex:1;min-width:60px;" placeholder="h">
+            <input type="number" id="spdMinutes" value="0" min="0" step="1" style="flex:1;min-width:60px;" placeholder="min">
+            <input type="number" id="spdSeconds" value="0" min="0" step="1" style="flex:1;min-width:60px;" placeholder="s">
+          </div>
+        </div>
+        <div class="field"><label>Speed</label>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+            <input type="number" id="spdSpeed" value="10" min="0" step="any" style="flex:1;min-width:100px;">
+            <select id="spdSpeedUnit" style="width:auto;">
+              <option value="kmh">km/h</option>
+              <option value="mph">mph</option>
+              <option value="ms">m/s</option>
+              <option value="fts">ft/s</option>
+              <option value="kn">knots</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="readout">
+        <div class="r-row"><span class="r-label">Speed</span><span class="r-value" id="spdOutSpeed">—</span></div>
+        <div class="r-row"><span class="r-label">Also</span><span class="r-value" id="spdOutSpeedAlt">—</span></div>
+        <div class="r-row"><span class="r-label">Distance</span><span class="r-value" id="spdOutDistance">—</span></div>
+        <div class="r-row"><span class="r-label">Time</span><span class="r-value" id="spdOutTime">—</span></div>
+        <div class="r-row"><span class="r-label">Pace</span><span class="r-value" id="spdOutPace">—</span></div>
+      </div>
+    </div>
+
+  </section>
+
+  <section class="article">
+    <h2>The relationship</h2>
+    <p>Speed is distance divided by time, and the three quantities rearrange freely: <strong>v = d / t</strong>, <strong>d = v × t</strong>, <strong>t = d / v</strong>. Knowing any two fixes the third, which is what this calculator does in whichever direction you need.</p>
+    <p>The only real trap is unit consistency. Kilometres divided by hours gives km/h; metres divided by seconds gives m/s. Mixing them silently produces a number that looks reasonable and is wrong by a factor of 3.6, which is the conversion between the two. This calculator normalises internally and reports several units at once, so the comparison is always visible.</p>
+
+    <h2>A worked example</h2>
+    <p>A marathon is 42.195 km. Covering it in exactly 4 hours means 42.195 ÷ 4 = <strong>10.549 km/h</strong>, or 6.555 mph, or 2.93 m/s. As pace — which is how runners actually think — that is <strong>5:41 per km</strong> or about 9:09 per mile.</p>
+    <p>Pace is the inverse of speed, and inverting it is why a small speed change feels larger than it looks. Going from 10 km/h to 11 km/h sounds like a 10% improvement; in pace terms it moves 6:00/km to 5:27/km, which over a marathon is more than twenty minutes.</p>
+
+    <h2>Average speed is not the average of speeds</h2>
+    <p>This catches people constantly. Drive 60 km at 60 km/h, then 60 km at 30 km/h. The average of 60 and 30 is 45, but the actual average speed is not 45 km/h. The first leg takes one hour and the second takes two, so you covered 120 km in 3 hours — an average of <strong>40 km/h</strong>.</p>
+    <p>Average speed is always total distance divided by total time. When equal distances are covered at different speeds, the correct average is the harmonic mean, which is always lower than the arithmetic one. The slow section dominates because you spend longer in it.</p>
+
+    <h2>Reference speeds</h2>
+    <table class="data-table">
+      <thead><tr><th></th><th>km/h</th><th>mph</th><th>m/s</th></tr></thead>
+      <tbody>
+        <tr><td>Walking</td><td>5</td><td>3.1</td><td>1.4</td></tr>
+        <tr><td>Recreational running</td><td>10</td><td>6.2</td><td>2.8</td></tr>
+        <tr><td>Usain Bolt, 100 m peak</td><td>44.7</td><td>27.8</td><td>12.4</td></tr>
+        <tr><td>Urban speed limit (typical)</td><td>50</td><td>31</td><td>13.9</td></tr>
+        <tr><td>Motorway cruising</td><td>110</td><td>68</td><td>30.6</td></tr>
+        <tr><td>Airliner cruise</td><td>900</td><td>560</td><td>250</td></tr>
+        <tr><td>Speed of sound (sea level)</td><td>1235</td><td>767</td><td>343</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Knots and nautical miles</h2>
+    <p>A knot is one nautical mile per hour, and a nautical mile is 1852 metres — defined as one minute of latitude along a meridian. That definition is the reason it survives in marine and aviation use: it makes chart navigation arithmetic straightforward, because one minute of latitude on the chart is one nautical mile of distance regardless of where you are. A knot is about 1.852 km/h or 1.151 mph.</p>
+
+    <h2>Why speed limits are not stopping distances</h2>
+    <p>Kinetic energy rises with the <em>square</em> of speed, so a car at 60 km/h carries four times the energy it does at 30, not twice. Braking distance follows the same square relationship. This is the single most useful thing physics has to say about road safety, and it is why a modest increase in speed produces a disproportionate increase in both stopping distance and collision severity.</p>
+    <h3>How do I convert km/h to m/s?</h3>
+    <p>Divide by 3.6. A kilometre is 1000 metres and an hour is 3600 seconds, so 1 km/h is 1000/3600 = 0.2778 m/s. Going the other way, multiply m/s by 3.6. It is worth memorising because the two units dominate different contexts — road speeds are quoted in km/h or mph, while physics problems and sports science almost always use m/s.</p>
+    <h3>Why is my average speed lower than the average of my speeds?</h3>
+    <p>Because you spend more time at the slower speed, so it carries more weight. Drive 60 km at 60 km/h then 60 km at 30 km/h: that is one hour plus two hours for 120 km, giving 40 km/h, not the 45 you would get by averaging the two numbers. Average speed is always total distance divided by total time. For equal distances at different speeds the correct figure is the harmonic mean, which is always the lower of the two.</p>
+    <h3>What is the difference between speed and velocity?</h3>
+    <p>Speed is a scalar — just a magnitude. Velocity is a vector, carrying both magnitude and direction. A car going round a roundabout at a constant 30 km/h has constant speed but continuously changing velocity, because its direction keeps changing. That change is an acceleration, which is why you feel pushed sideways. For everyday distance-and-time questions the distinction rarely matters; in physics it always does.</p>
+    <h3>What is a knot and why is it used?</h3>
+    <p>One knot is one nautical mile per hour, where a nautical mile is 1852 metres — one minute of latitude along a meridian. That definition is exactly why it persists at sea and in the air: on a chart, one minute of latitude equals one nautical mile of distance anywhere on the globe, which makes navigation arithmetic simple. A knot is about 1.852 km/h or 1.151 mph.</p>
+    <h3>How do I convert speed into running pace?</h3>
+    <p>Pace is the inverse of speed — time per unit distance rather than distance per unit time. Divide 60 by your speed in km/h to get minutes per kilometre: 10 km/h gives 6.0, which is 6:00 per km. The calculator does this conversion automatically. Runners prefer pace because it maps directly onto what a watch shows during a run, and because it makes finishing times easy to project.</p>
+  </section>
+
+  <p style="font-size:13px;color:rgba(242,236,221,0.55);margin:0 0 24px;">Related: <a href="pace-calculator.html">Pace Calculator</a> · <a href="time-calculator.html">Time Calculator</a> · <a href="fuel-cost-calculator.html">Fuel Cost Calculator</a> · <a href="unit-converter.html">Unit Converter</a></p>
+
+  <footer>
+    <p>TALLYBENCH · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
+  </footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
