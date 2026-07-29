@@ -44,8 +44,12 @@ function New-NavBlock($indent) {
     $lines.Add("$indent  <nav class=`"ruler cat-ruler`" aria-label=`"Category`">")
     $lines.Add("$indent    <a class=`"tick`" href=`"index.html`">HOME</a>")
     $lines.Add("$indent    <a class=`"tick`" href=`"articles.html`">ARTICLES</a>")
+    # BOOK stays because the books are finance content — same subject as the
+    # site. VENSTOCK was removed 2026-07-29 and moved to venrostech.com: it is
+    # inventory software, and carrying an unrelated product in the primary nav
+    # muddies what TallyBench is topically about. The rule going forward is
+    # "anything topically finance stays; anything else lives on the studio site".
     $lines.Add("$indent    <a class=`"tick`" href=`"book.html`">BOOK</a>")
-    $lines.Add("$indent    <a class=`"tick`" href=`"venstock.html`">VENSTOCK</a>")
     foreach ($cat in $data.categories) {
         $lines.Add("$indent    <button class=`"tick cat-tab`" type=`"button`" data-cat=`"$($cat.id)`">$($cat.label)</button>")
     }
@@ -184,8 +188,6 @@ function New-BreadcrumbBlock($indent, $fileName) {
         $crumbs.Add(@{ name = 'Articles'; item = 'https://tallybench.com/articles.html' })
     } elseif ($fileName -eq 'book.html') {
         $crumbs.Add(@{ name = 'The Book'; item = 'https://tallybench.com/book.html' })
-    } elseif ($fileName -eq 'venstock.html') {
-        $crumbs.Add(@{ name = 'VenStock'; item = 'https://tallybench.com/venstock.html' })
     } elseif ($fileName -eq 'about.html') {
         $crumbs.Add(@{ name = 'About'; item = 'https://tallybench.com/about.html' })
     } elseif ($fileName -eq 'privacy-policy.html') {

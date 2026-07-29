@@ -1,7 +1,7 @@
 {
-  "name": "TallyBench — Finance Calculators & More",
+  "name": "TallyBench — Personal Finance Guides & Calculators",
   "short_name": "TallyBench",
-  "description": "TallyBench is a finance-first calculator site — loans, mortgages, taxes, investing, debt payoff, and retirement — plus trusted tools for health, education, and everyday math. 135 free calculators, no sign-up, nothing stored.",
+  "description": "TallyBench is a personal finance resource — guides and free calculators for loans, mortgages, tax, investing, debt payoff and retirement, plus health, education and everyday tools. No sign-up, nothing stored.",
   "start_url": "/?source=pwa",
   "scope": "/",
   "display": "standalone",
@@ -9,8 +9,23 @@
   "background_color": "#1C1A17",
   "theme_color": "#1C1A17",
   "icons": [
-    { "src": "icon-192.svg", "sizes": "192x192", "type": "image/svg+xml", "purpose": "any" },
-    { "src": "icon-512.svg", "sizes": "512x512", "type": "image/svg+xml", "purpose": "any" },
-    { "src": "icon-maskable.svg", "sizes": "512x512", "type": "image/svg+xml", "purpose": "maskable" }
+    {
+      "src": "icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-maskable.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
   ]
 }
