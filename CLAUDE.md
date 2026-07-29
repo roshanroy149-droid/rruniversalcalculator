@@ -17,6 +17,7 @@ This file is a checklist of rules earned the hard way across this project's buil
 - `build/Sync-Nav.ps1` generates, from `tools.json`/`articles.json`, these things across every HTML page via marker comments:
   - `<!-- TB:NAV:START/END -->` — header category tabs + tool list (desktop ruler / mobile drawer), plus a plain "ARTICLES" link to `articles.html`
   - `<!-- TB:COUNT:START/END -->` — the "N TOOLS · 0 SIGN-UP" header tagline count
+  - `<!-- TB:COUNTINLINE:START/END -->` — the bare tool count for **prose** that cites it mid-sentence (optional; currently only `index.html` and `book.html`). Added 2026-07-29 because hand-written body copy citing the count went stale at 49, 60, 125, 137 *and* 196 — the generated header was right every time while the sentence under it was wrong. **If you ever write the tool count into visible copy, wrap it in these markers rather than typing the number.**
   - `<!-- TB:HOMEGRID:START/END -->` — homepage category tool grids (index.html only)
   - `<!-- TB:ARTICLELIST:START/END -->` — the article list, newest-first (articles.html only)
   - `<!-- TB:BREADCRUMB:START/END -->` — BreadcrumbList JSON-LD, derived purely from which list (if any) the filename appears in — every page except index.html
