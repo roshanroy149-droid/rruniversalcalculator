@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Protein Calculator — Daily Protein Intake by Goal | TallyBench</title>
-<meta name="description" content="Free protein calculator. Get a daily protein range in grams from your body weight and training goal — maintenance, muscle gain, cutting, or endurance.">
-<link rel="canonical" href="https://tallybench.com/protein-calculator.html">
+<title>Colour Converter — HEX, RGB, HSL and WCAG Contrast Checker | TallyBench</title>
+<meta name="description" content="Convert a colour between HEX, RGB and HSL, and check the WCAG contrast ratio between two colours.">
+<link rel="canonical" href="https://tallybench.com/color-converter.html">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.svg">
@@ -15,15 +15,15 @@
 <meta name="apple-mobile-web-app-title" content="TallyBench">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TallyBench">
-<meta property="og:title" content="Protein Calculator — Daily Protein Intake by Goal">
-<meta property="og:description" content="Free protein calculator. Get a daily protein range in grams from your body weight and training goal — maintenance, muscle gain, cutting, or endurance.">
-<meta property="og:url" content="https://tallybench.com/protein-calculator.html">
+<meta property="og:title" content="Colour Converter — HEX, RGB, HSL and WCAG Contrast Checker">
+<meta property="og:description" content="Convert a colour between HEX, RGB and HSL, and check the WCAG contrast ratio between two colours.">
+<meta property="og:url" content="https://tallybench.com/color-converter.html">
 <meta property="og:image" content="https://tallybench.com/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Protein Calculator — Daily Protein Intake by Goal">
-<meta name="twitter:description" content="Free protein calculator. Get a daily protein range in grams from your body weight and training goal — maintenance, muscle gain, cutting, or endurance.">
+<meta name="twitter:title" content="Colour Converter — HEX, RGB, HSL and WCAG Contrast Checker">
+<meta name="twitter:description" content="Convert a colour between HEX, RGB and HSL, and check the WCAG contrast ratio between two colours.">
 <meta name="twitter:image" content="https://tallybench.com/og-image.png">
 <link rel="stylesheet" href="fonts/fonts.css">
 <link rel="stylesheet" href="style.css">
@@ -35,35 +35,28 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "How much protein do I need per day?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "It depends on what you are doing with your body, not just how much you weigh. The baseline RDA for a sedentary adult is about 0.8 g per kg of body weight, which is a minimum to prevent deficiency rather than an optimum. People doing regular resistance training are commonly advised something closer to 1.6-2.2 g per kg, and people eating in a calorie deficit are often advised the high end or slightly above, because adequate protein helps preserve muscle while losing fat."
-      }
+      "name": "What is a good contrast ratio?",
+      "acceptedAnswer": { "@type": "Answer", "text": "At least 4.5:1 for body text and 3:1 for large text, which is WCAG level AA and what most accessibility legislation references. AAA asks for 7:1 and 4.5:1 respectively. Large text means 18pt or above, or 14pt bold — roughly 24px and 18.66px in CSS. Non-text elements such as icons, form borders and focus indicators need 3:1 against their surroundings." }
     },
     {
       "@type": "Question",
-      "name": "Should I calculate protein from total body weight or lean body mass?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "For most people at a typical body composition, total body weight is simpler and close enough. Lean body mass becomes the more sensible basis at higher body-fat percentages, because fat tissue has little protein requirement — using total weight there can overstate the target substantially. This calculator offers both: enter body-fat percentage to switch to a lean-mass basis."
-      }
+      "name": "Why does the contrast formula weight green so heavily?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Because human vision is far more sensitive to green than to red or blue. The coefficients — 0.2126 red, 0.7152 green, 0.0722 blue — reflect that sensitivity, so green contributes most of what we perceive as brightness. It explains why blue text on a dark background can look acceptable while failing badly, and why yellow on white looks obviously wrong: yellow combines the two most heavily weighted channels." }
     },
     {
       "@type": "Question",
-      "name": "Can you eat too much protein?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "For healthy adults with normal kidney function, intakes in the ranges shown here are generally considered safe in the research literature, and there is no strong evidence that they harm healthy kidneys. Very high intakes mostly displace other nutrients and calories rather than causing direct harm. People with existing kidney or liver disease are a genuine exception and should have protein intake set by their doctor, not by a calculator."
-      }
+      "name": "What is the difference between HEX, RGB and HSL?",
+      "acceptedAnswer": { "@type": "Answer", "text": "HEX and RGB carry identical information in different bases — #D4A373 is rgb(212, 163, 115), just hexadecimal rather than decimal. HSL restructures the same colour into hue as an angle, plus saturation and lightness as percentages. HSL is far easier to adjust with: making a colour lighter or less saturated means changing one number, where in HEX or RGB you would be guessing at three at once." }
     },
     {
       "@type": "Question",
-      "name": "Does protein timing matter?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Far less than total daily intake. Hitting your daily target is the thing that matters most; spreading it across roughly 3-5 meals of 25-40 g each is a reasonable practical default because it is easier to reach the total that way, not because a narrow post-workout window is critical. The old idea of a 30-minute anabolic window has been substantially walked back by later research."
-      }
+      "name": "What is the lightest grey I can use on white?",
+      "acceptedAnswer": { "@type": "Answer", "text": "For body text, #767676 at 4.54:1 is the lightest that passes AA. For AAA, #595959 at 7.00:1. Anything lighter than #949494 fails even the 3:1 large-text threshold. These are worth memorising, because placeholder text, captions and disabled states are where contrast failures cluster — almost always a grey that looked fine on a bright screen in a dark room." }
+    },
+    {
+      "@type": "Question",
+      "name": "Does passing contrast make my site accessible?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No, it is one requirement among many. Colour must never be the sole way information is conveyed — an error state shown only by turning a field red is unusable for someone with colour vision deficiency, which affects roughly 8% of men. Contrast also says nothing about text size, font legibility, line length, keyboard navigation or screen reader support. Treat it as a floor rather than a finish line." }
     }
   ]
 }
@@ -72,15 +65,11 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "Protein Calculator — TallyBench",
-  "applicationCategory": "HealthApplication",
+  "name": "Colour Converter — TallyBench",
+  "applicationCategory": "UtilitiesApplication",
   "operatingSystem": "Any (runs in browser)",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "url": "https://tallybench.com/protein-calculator.html"
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "url": "https://tallybench.com/color-converter.html"
 }
 </script>
 <!-- TB:BREADCRUMB:START -->
@@ -98,15 +87,15 @@
                             {
                                 "@type":  "ListItem",
                                 "position":  2,
-                                "name":  "Protein Calculator",
-                                "item":  "https://tallybench.com/protein-calculator.html"
+                                "name":  "Colour Converter",
+                                "item":  "https://tallybench.com/color-converter.html"
                             }
                         ]
 }
 </script>
 <!-- TB:BREADCRUMB:END -->
 </head>
-<body data-page-cat="health">
+<body data-page-cat="everyday">
 
 <header>
   <div class="wrap">
@@ -402,91 +391,91 @@
 <div class="nav-backdrop" id="navBackdrop"></div>
 
 <div class="wrap">
-  <div class="crumb"><a href="index.html">TallyBench</a> / Protein Calculator</div>
+  <div class="crumb"><a href="index.html">TallyBench</a> / Colour Converter</div>
 
   <section class="hero">
-    <div class="hero-icon-row cat-health">
-      <div class="hero-icon"><svg><use href="icons.svg#icon-calorie"/></svg></div>
-      <div class="eyebrow">// PROTEIN CALCULATOR</div>
+    <div class="hero-icon-row cat-everyday">
+      <div class="hero-icon"><svg><use href="icons.svg#icon-password"/></svg></div>
+      <div class="eyebrow">// COLOUR CONVERTER</div>
     </div>
-    <h1>How much protein should you actually eat a day?</h1>
-    <p>Enter your weight and what you're training for. Optionally switch to a lean-mass basis, which is the more sensible reference at higher body-fat percentages.</p>
+    <h1>Colour Converter and Contrast Checker</h1>
+    <p>HEX, RGB and HSL for any colour — plus the WCAG contrast ratio against a second colour, with the AA and AAA verdicts.</p>
   </section>
 
-  <section class="tool" id="protein">
-    <div class="disclaimer">
-      <strong>General nutrition estimate — not medical advice.</strong> These are population-level ranges from sports-nutrition guidance, not a prescription. Anyone with kidney or liver disease, or who is pregnant, should have protein intake set by a doctor or registered dietitian rather than a calculator.
-    </div>
+  <section class="tool" id="colorconv">
     <div class="card">
       <div>
-        <div class="field"><label>Weight</label>
-          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
-            <input type="number" id="pcWeight" value="80" min="20" step="0.5" style="flex:1;min-width:100px;">
-            <div class="seg" id="pcWeightUnitSeg">
-              <button type="button" class="active" data-unit="kg">kg</button>
-              <button type="button" data-unit="lb">lb</button>
-            </div>
+        <div class="field"><label>Colour (foreground)</label>
+          <div style="display:flex;gap:10px;align-items:center;">
+            <input type="text" id="clHex" value="#D4A373" placeholder="#RRGGBB" style="flex:1;">
+            <span id="clSwatch" style="width:44px;height:38px;border-radius:4px;border:1px solid rgba(242,236,221,0.25);display:inline-block;flex:none;"></span>
           </div>
         </div>
-        <div class="field"><label for="pcGoal">Goal / activity</label>
-          <select id="pcGoal">
-            <option value="sedentary">Sedentary — little or no exercise</option>
-            <option value="active">Generally active — light training</option>
-            <option value="strength" selected>Building muscle — resistance training</option>
-            <option value="cut">Cutting — fat loss, preserving muscle</option>
-            <option value="endurance">Endurance training — running, cycling</option>
-          </select>
-        </div>
-        <div class="field"><label>Calculate from</label>
-          <div class="seg" id="pcBasisSeg">
-            <button type="button" class="active" data-basis="total">Total body weight</button>
-            <button type="button" data-basis="lean">Lean body mass</button>
+        <div class="field"><label>Second colour (background)</label>
+          <div style="display:flex;gap:10px;align-items:center;">
+            <input type="text" id="clHex2" value="#1C1A17" placeholder="#RRGGBB" style="flex:1;">
+            <span id="clSwatch2" style="width:44px;height:38px;border-radius:4px;border:1px solid rgba(242,236,221,0.25);display:inline-block;flex:none;"></span>
           </div>
         </div>
-        <div class="field" id="pcBodyFatWrap" style="display:none;"><label for="pcBodyFat">Body fat (%)</label><input type="number" id="pcBodyFat" value="20" min="3" max="60" step="0.5"></div>
+        <div id="clPreview" style="margin-top:14px;padding:16px;border-radius:6px;border:1px solid rgba(242,236,221,0.15);font-size:15px;line-height:1.6;">The quick brown fox jumps over the lazy dog. <strong style="font-size:20px;">Large text sample.</strong></div>
       </div>
       <div class="readout">
-        <div class="r-row"><span class="r-label">Daily protein target</span><span class="r-value" id="pcRange">—</span></div>
-        <div class="r-row"><span class="r-label">Midpoint</span><span class="r-sub" id="pcMid">—</span></div>
-        <div class="r-row"><span class="r-label">Calories from protein (midpoint)</span><span class="r-sub" id="pcCals">—</span></div>
-        <div class="r-row"><span class="r-label">Basis used</span><span class="r-sub" id="pcBasisOut">—</span></div>
-        <div class="r-row"><span class="r-label">Per meal across 4 meals</span><span class="r-sub" id="pcPerMeal">—</span></div>
+        <div class="r-row"><span class="r-label">HEX</span><span class="r-value" id="clHexOut">—</span></div>
+        <div class="r-row"><span class="r-label">RGB</span><span class="r-value" id="clRgb">—</span></div>
+        <div class="r-row"><span class="r-label">HSL</span><span class="r-value" id="clHsl">—</span></div>
+        <div class="r-row"><span class="r-label">Contrast ratio</span><span class="r-value" id="clContrast">—</span></div>
+        <div class="r-row"><span class="r-label">WCAG AA</span><span class="r-value" id="clAA">—</span></div>
+        <div class="r-row"><span class="r-label">WCAG AAA</span><span class="r-value" id="clAAA">—</span></div>
+        <p class="r-note" id="clNote"></p>
       </div>
-      <div class="field-warning" id="pcWarning"></div>
     </div>
-  </section>
 
-  <section class="tool" id="reference">
-    <div class="tool-head"><span class="tool-num">//</span><div><h2>Protein ranges by goal</h2><p class="tool-sub">Grams per kilogram of body weight per day.</p></div></div>
-    <div class="table-scroll">
-      <table class="bracket-table">
-        <thead><tr><th scope="col">Goal</th><th scope="col">g/kg per day</th><th scope="col">Why</th></tr></thead>
-        <tbody>
-          <tr><td>Sedentary</td><td>0.8&ndash;1.0</td><td>RDA baseline — prevents deficiency, not an optimum</td></tr>
-          <tr><td>Generally active</td><td>1.2&ndash;1.4</td><td>Light training raises repair and turnover needs</td></tr>
-          <tr><td>Building muscle</td><td>1.6&ndash;2.2</td><td>Common resistance-training range in the literature</td></tr>
-          <tr><td>Cutting</td><td>1.8&ndash;2.4</td><td>Higher intake helps preserve muscle in a deficit</td></tr>
-          <tr><td>Endurance</td><td>1.2&ndash;1.6</td><td>Repair from high training volume, less hypertrophy demand</td></tr>
-        </tbody>
-      </table>
-    </div>
   </section>
 
   <section class="article">
-    <h3>How much protein do I need per day?</h3>
-    <p>It depends on what you're doing with your body, not just how much you weigh. The baseline RDA for a sedentary adult is about <strong>0.8 g per kg of body weight</strong> — a minimum to prevent deficiency, not an optimum. People doing regular resistance training are commonly advised something closer to <strong>1.6&ndash;2.2 g per kg</strong>, and people eating in a calorie deficit are often advised the high end or slightly above, because adequate protein helps preserve muscle while losing fat.</p>
-    <h3>Should I calculate protein from total body weight or lean body mass?</h3>
-    <p>For most people at a typical body composition, total body weight is simpler and close enough. Lean body mass becomes the more sensible basis at higher body-fat percentages, because fat tissue has little protein requirement — using total weight there can overstate the target substantially. Switch the basis toggle above to use lean mass and enter your body-fat percentage.</p>
-    <h3>Can you eat too much protein?</h3>
-    <p>For healthy adults with normal kidney function, intakes in the ranges shown here are generally considered safe in the research literature, and there's no strong evidence they harm healthy kidneys. Very high intakes mostly displace other nutrients and calories rather than causing direct harm. People with existing kidney or liver disease are a genuine exception and should have protein intake set by their doctor, not by a calculator.</p>
-    <h3>Does protein timing matter?</h3>
-    <p>Far less than total daily intake. Hitting your daily target is what matters most; spreading it across roughly 3&ndash;5 meals of 25&ndash;40 g each is a reasonable practical default because it's easier to reach the total that way — not because a narrow post-workout window is critical. The old idea of a 30-minute "anabolic window" has been substantially walked back by later research.</p>
-    <h3>How does protein fit into total calories?</h3>
-    <p>Protein provides 4 calories per gram, so a 160 g daily target is 640 calories — a meaningful share of most people's intake, which is why protein is usually set first and carbs and fat fill the remainder. The calculator shows this figure so you can slot it into a wider calorie budget rather than treating protein in isolation.</p>
-    <p><strong>Worked example:</strong> an 80 kg person building muscle lands in the 1.6&ndash;2.2 g/kg band, so 128&ndash;176 g a day, with a midpoint of 152 g — about 608 calories from protein, or roughly 38 g at each of four meals. If that same person is 20% body fat and switches to a lean-mass basis, lean mass is 64 kg and the same band gives 102&ndash;141 g instead.</p>
-    <p style="font-size:13px;color:rgba(242,236,221,0.55);margin:0 0 24px;">Need the calorie budget this protein fits inside? Use the <a href="tdee-calculator.html">TDEE Calculator</a> for daily burn, or the <a href="macro-calculator.html">Macro Calculator</a> for a full protein/carb/fat split. To estimate the lean-mass figure this page can use as a basis, try the <a href="lean-body-mass-calculator.html">Lean Body Mass Calculator</a> or the <a href="body-fat-calculator.html">Body Fat Calculator</a>. For the other two macronutrients, see the <a href="fat-intake-calculator.html">Fat Intake Calculator</a> and the <a href="macro-calculator.html">Macro Calculator</a>.</p>
+    <h2>The three notations</h2>
+    <p><strong>HEX</strong> is six hexadecimal digits — two each for red, green and blue, each from 00 to FF, meaning 0 to 255. <code>#D4A373</code> is 212 red, 163 green, 115 blue. The three-digit shorthand <code>#FA0</code> expands to <code>#FFAA00</code> by doubling each digit.</p>
+    <p><strong>RGB</strong> is the same information in decimal, written <code>rgb(212, 163, 115)</code>. Identical data, easier to manipulate arithmetically.</p>
+    <p><strong>HSL</strong> restructures it into hue, saturation and lightness — hue as an angle from 0 to 360 on the colour wheel, the other two as percentages. It is the notation to reach for when adjusting a colour rather than specifying one: making something lighter means changing one number instead of guessing at three.</p>
+
+    <h2>Contrast is a ratio, not a difference</h2>
+    <p>WCAG contrast is computed from <em>relative luminance</em>, which weights the three channels by how sensitive human vision is to each:</p>
+    <p style="font-family:var(--mono,monospace);font-size:14px;line-height:1.8;">L = 0.2126R + 0.7152G + 0.0722B</p>
+    <p>with each channel linearised first — divided by 12.92 below the threshold, and put through a 2.4 power curve above it. The contrast ratio is then <strong>(L₁ + 0.05) ÷ (L₂ + 0.05)</strong>, lighter over darker, giving a range from 1:1 for identical colours to 21:1 for black on white.</p>
+    <p>The green coefficient of 0.7152 is the important one. Human vision is far more sensitive to green than to blue, so green contributes most of the perceived brightness and blue very little. This is why blue text on black can look reasonable and still fail badly, while yellow on white looks obviously wrong — yellow is red plus green, both heavily weighted.</p>
+    <p>The WCAG specification states the linearisation threshold as 0.03928. The technically correct sRGB value is 0.04045, and the published errata acknowledges this — the difference is negligible for 8-bit colour, and conformance checkers use the specified figure, so this calculator does too.</p>
+
+    <h2>The thresholds</h2>
+    <table class="data-table">
+      <thead><tr><th>Level</th><th>Normal text</th><th>Large text</th></tr></thead>
+      <tbody>
+        <tr><td>AA (the usual legal standard)</td><td>4.5:1</td><td>3:1</td></tr>
+        <tr><td>AAA (enhanced)</td><td>7:1</td><td>4.5:1</td></tr>
+        <tr><td>UI components and graphics</td><td colspan="2">3:1</td></tr>
+      </tbody>
+    </table>
+    <p>"Large text" means 18pt and above, or 14pt and above if bold — roughly 24px and 18.66px in CSS. Logos and purely decorative text are exempt. AA is what most accessibility legislation references, including the European Accessibility Act and the standards applied under the ADA in the US.</p>
+
+    <h2>Some useful reference points</h2>
+    <p>Pure black on pure white is <strong>21:1</strong>, the maximum possible. On a white background, <code>#767676</code> is the lightest grey that still passes AA for body text at 4.54:1, and <code>#595959</code> is the lightest that reaches AAA at 7:1. Anything lighter than <code>#949494</code> fails even the 3:1 threshold for large text.</p>
+    <p>Those three greys are worth remembering. Placeholder text, captions and disabled states are where contrast failures cluster, and they are almost always a grey that looked fine on the designer's screen.</p>
+
+    <h2>What contrast ratio does not cover</h2>
+    <p>Passing 4.5:1 does not make a design accessible on its own. Colour must not be the only means of conveying information — a form field marked as invalid only by turning red is unusable for someone who cannot distinguish it, which is why the convention is to add an icon or text as well. Around 8% of men and 0.5% of women have some form of colour vision deficiency, most commonly red-green.</p>
+    <p>The ratio also says nothing about whether text is legible at its size, whether the font is readable, or whether the line length is comfortable. It is a floor, not a finish line.</p>
+    <h3>What is a good contrast ratio?</h3>
+    <p>At least 4.5:1 for body text and 3:1 for large text, which is WCAG level AA and what most accessibility legislation references. AAA asks for 7:1 and 4.5:1 respectively. Large text means 18pt or above, or 14pt bold — roughly 24px and 18.66px in CSS. Non-text elements such as icons, form borders and focus indicators need 3:1 against their surroundings.</p>
+    <h3>Why does the contrast formula weight green so heavily?</h3>
+    <p>Because human vision is far more sensitive to green than to red or blue. The coefficients — 0.2126 red, 0.7152 green, 0.0722 blue — reflect that sensitivity, so green contributes most of what we perceive as brightness. It explains why blue text on a dark background can look acceptable while failing badly, and why yellow on white looks obviously wrong: yellow combines the two most heavily weighted channels.</p>
+    <h3>What is the difference between HEX, RGB and HSL?</h3>
+    <p>HEX and RGB carry identical information in different bases — #D4A373 is rgb(212, 163, 115), just hexadecimal rather than decimal. HSL restructures the same colour into hue as an angle, plus saturation and lightness as percentages. HSL is far easier to adjust with: making a colour lighter or less saturated means changing one number, where in HEX or RGB you would be guessing at three at once.</p>
+    <h3>What is the lightest grey I can use on white?</h3>
+    <p>For body text, #767676 at 4.54:1 is the lightest that passes AA. For AAA, #595959 at 7.00:1. Anything lighter than #949494 fails even the 3:1 large-text threshold. These are worth memorising, because placeholder text, captions and disabled states are where contrast failures cluster — almost always a grey that looked fine on a bright screen in a dark room.</p>
+    <h3>Does passing contrast make my site accessible?</h3>
+    <p>No, it is one requirement among many. Colour must never be the sole way information is conveyed — an error state shown only by turning a field red is unusable for someone with colour vision deficiency, which affects roughly 8% of men. Contrast also says nothing about text size, font legibility, line length, keyboard navigation or screen reader support. Treat it as a floor rather than a finish line.</p>
   </section>
 
+  <p style="font-size:13px;color:rgba(242,236,221,0.55);margin:0 0 24px;">Related: <a href="aspect-ratio-calculator.html">Aspect Ratio Calculator</a> · <a href="hex-calculator.html">Hex Calculator</a> · <a href="base64-converter.html">Base64 Converter</a> · <a href="url-encoder.html">URL Encoder</a></p>
 
   <footer>
     <p>TALLYBENCH · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>

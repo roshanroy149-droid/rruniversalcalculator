@@ -1785,6 +1785,42 @@
       "title": "Time Zone Converter",
       "icon": "icon-days",
       "blurb": "One time across 33 cities, with daylight saving resolved."
+    },
+    {
+      "id": "paint-calculator",
+      "file": "paint-calculator.html",
+      "category": "everyday",
+      "navLabel": "PAINT",
+      "title": "Paint Calculator",
+      "icon": "icon-units",
+      "blurb": "Litres or gallons for a room, with doors and windows deducted."
+    },
+    {
+      "id": "cooking-measurement-converter",
+      "file": "cooking-measurement-converter.html",
+      "category": "everyday",
+      "navLabel": "COOKING UNITS",
+      "title": "Cooking Measurement Converter",
+      "icon": "icon-units",
+      "blurb": "Cups to grams by ingredient — a cup of flour is not a cup of sugar."
+    },
+    {
+      "id": "aspect-ratio-calculator",
+      "file": "aspect-ratio-calculator.html",
+      "category": "everyday",
+      "navLabel": "ASPECT RATIO",
+      "title": "Aspect Ratio Calculator",
+      "icon": "icon-percent",
+      "blurb": "Resize without distortion; names the real ratio behind the marketing label."
+    },
+    {
+      "id": "color-converter",
+      "file": "color-converter.html",
+      "category": "everyday",
+      "navLabel": "COLOUR / CONTRAST",
+      "title": "Colour Converter",
+      "icon": "icon-password",
+      "blurb": "HEX, RGB, HSL and a WCAG contrast checker with AA/AAA verdicts."
     }
   ]
 }

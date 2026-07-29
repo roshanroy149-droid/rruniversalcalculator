@@ -13165,3 +13165,255 @@ function sciParseFormula(raw) {
   if (!g('tzTime').value) g('tzTime').value = '09:00';
   calc();
 })();
+
+// ================= The 200 cluster =================
+
+// ---- Paint Calculator ----
+(function () {
+  if (!document.getElementById('pntLength')) return;
+  var g = function (id) { return document.getElementById(id); };
+  function calc() {
+    var imperial = g('pntUnit').value === 'imperial';
+    var toFt = imperial ? 1 : 3.280839895;
+    var L = (parseFloat(g('pntLength').value) || 0) * toFt;
+    var W = (parseFloat(g('pntWidth').value) || 0) * toFt;
+    var H = (parseFloat(g('pntHeight').value) || 0) * toFt;
+    var coats = parseFloat(g('pntCoats').value) || 1;
+    var doors = parseFloat(g('pntDoors').value) || 0;
+    var windows = parseFloat(g('pntWindows').value) || 0;
+
+    // Walls are the perimeter times the height; the ceiling is the footprint.
+    var walls = 2 * (L + W) * H;
+    var ceiling = g('pntCeiling').checked ? L * W : 0;
+    // Standard openings: a door is about 20 sq ft, a window about 15.
+    var deduct = doors * 20 + windows * 15;
+    var paintable = Math.max(0, walls + ceiling - deduct);
+    var total = paintable * coats;
+
+    var coverage = parseFloat(g('pntCoverage').value) || 350;   // sq ft per US gallon
+    var gallons = total / coverage;
+    var litres = gallons * 3.785411784;
+
+    var f = function (v, d) { return (Math.round(v * Math.pow(10, d)) / Math.pow(10, d)).toLocaleString('en-US', { maximumFractionDigits: d }); };
+    g('pntWallArea').textContent = f(walls, 1) + ' sq ft  ·  ' + f(walls * 0.09290304, 1) + ' m²';
+    g('pntPaintable').textContent = f(paintable, 1) + ' sq ft  ·  ' + f(paintable * 0.09290304, 1) + ' m²' +
+      (deduct > 0 ? '  (after ' + f(deduct, 0) + ' sq ft of openings)' : '');
+    g('pntTotalArea').textContent = f(total, 1) + ' sq ft over ' + coats + ' coat' + (coats === 1 ? '' : 's');
+    g('pntGallons').textContent = f(gallons, 2) + ' US gallons';
+    g('pntLitres').textContent = f(litres, 2) + ' litres';
+    g('pntCans').textContent = Math.ceil(gallons) + ' × 1 gal  or  ' + Math.ceil(litres / 5) + ' × 5 L  or  ' + Math.ceil(litres / 2.5) + ' × 2.5 L';
+
+    var price = parseFloat(g('pntPrice').value) || 0;
+    var sym = g('pntCur').value;
+    g('pntCost').textContent = price > 0
+      ? sym + f(g('pntPriceUnit').value === 'l' ? Math.ceil(litres / 5) * price : Math.ceil(gallons) * price, 2) +
+        ' buying whole containers'
+      : '—';
+    g('pntNote').textContent = coats < 2
+      ? 'One coat rarely covers properly. Two is standard, and three is realistic when going light over dark, covering a strong colour, or painting bare plaster.'
+      : 'Coverage varies a great deal with surface. Bare plaster, new drywall and textured walls can absorb 25% more than the figure on the tin.';
+  }
+  ['pntUnit', 'pntLength', 'pntWidth', 'pntHeight', 'pntCoats', 'pntDoors', 'pntWindows',
+    'pntCeiling', 'pntCoverage', 'pntPrice', 'pntPriceUnit', 'pntCur'].forEach(function (id) {
+      g(id).addEventListener('input', calc); g(id).addEventListener('change', calc);
+    });
+  calc();
+})();
+
+// ---- Cooking Measurement Converter ----
+(function () {
+  if (!document.getElementById('ckIngredient')) return;
+  var g = function (id) { return document.getElementById(id); };
+  var CUP_ML = 236.5882365;
+  // Grams per US cup. Dry goods follow the King Arthur Baking weight chart —
+  // those depend on measuring technique, not just density. Liquids use real
+  // density instead, because the "8 fl oz = 8 oz" convention is not accurate.
+  var ING = {
+    water: ['Water', 236.6], milk: ['Milk', 244], oil: ['Vegetable oil', 218],
+    honey: ['Honey', 336], syrup: ['Maple syrup', 322],
+    apflour: ['Flour, all-purpose', 120], breadflour: ['Flour, bread', 120],
+    wwflour: ['Flour, whole wheat', 113],
+    sugar: ['Sugar, granulated', 198], brownsugar: ['Sugar, brown (packed)', 213],
+    powdered: ['Sugar, confectioners’', 113],
+    butter: ['Butter', 227], cocoa: ['Cocoa powder', 84], oats: ['Rolled oats', 113],
+    rice: ['Rice, long grain (dry)', 198], salt: ['Salt, table', 288],
+    chocchips: ['Chocolate chips', 170]
+  };
+  // Volume units in millilitres.
+  var VOL = { cup: CUP_ML, tbsp: CUP_ML / 16, tsp: CUP_ML / 48, ml: 1, l: 1000, floz: 29.5735295625, pint: 473.176473, quart: 946.352946 };
+  // Weight units in grams.
+  var WT = { g: 1, kg: 1000, oz: 28.349523125, lb: 453.59237 };
+
+  var opts = Object.keys(ING).map(function (k) { return '<option value="' + k + '">' + ING[k][0] + '</option>'; }).join('');
+  g('ckIngredient').innerHTML = opts;
+  g('ckIngredient').value = 'apflour';
+
+  function calc() {
+    var amt = parseFloat(g('ckAmount').value);
+    var from = g('ckFrom').value, to = g('ckTo').value;
+    var ing = ING[g('ckIngredient').value];
+    var gPerCup = ing[1];
+    var density = gPerCup / CUP_ML;     // g per ml
+
+    if (!isFinite(amt) || amt < 0) { g('ckResult').textContent = '—'; g('ckAll').innerHTML = ''; return; }
+
+    // Normalise the input to millilitres and grams, whichever way it came in.
+    var ml, grams;
+    if (VOL[from] !== undefined) { ml = amt * VOL[from]; grams = ml * density; }
+    else { grams = amt * WT[from]; ml = grams / density; }
+
+    var out = VOL[to] !== undefined ? ml / VOL[to] : grams / WT[to];
+    var round = function (v) {
+      if (v === 0) return '0';
+      var d = v < 1 ? 4 : v < 10 ? 3 : v < 100 ? 2 : 1;
+      return (Math.round(v * Math.pow(10, d)) / Math.pow(10, d)).toLocaleString('en-US', { maximumFractionDigits: d });
+    };
+    var label = { cup: 'cups', tbsp: 'tbsp', tsp: 'tsp', ml: 'ml', l: 'litres', floz: 'fl oz', pint: 'pints', quart: 'quarts', g: 'g', kg: 'kg', oz: 'oz', lb: 'lb' };
+    g('ckResult').textContent = round(out) + ' ' + label[to];
+
+    // A full conversion table is more useful than the single answer.
+    var rows = [['Cups', ml / VOL.cup], ['Tablespoons', ml / VOL.tbsp], ['Teaspoons', ml / VOL.tsp],
+      ['Millilitres', ml], ['Fluid ounces', ml / VOL.floz],
+      ['Grams', grams], ['Ounces', grams / WT.oz], ['Pounds', grams / WT.lb]];
+    g('ckAll').innerHTML = rows.map(function (r) {
+      return '<tr><td>' + r[0] + '</td><td>' + round(r[1]) + '</td></tr>';
+    }).join('');
+    g('ckDensity').textContent = gPerCup + ' g per US cup  ·  ' + (Math.round(density * 1000) / 1000) + ' g/ml';
+    g('ckNote').textContent = (VOL[from] !== undefined) === (VOL[to] !== undefined)
+      ? 'This conversion is pure arithmetic — it does not depend on the ingredient.'
+      : 'Converting between volume and weight depends entirely on the ingredient, which is why it is selected above.';
+  }
+  ['ckIngredient', 'ckAmount', 'ckFrom', 'ckTo'].forEach(function (id) {
+    g(id).addEventListener('input', calc); g(id).addEventListener('change', calc);
+  });
+  calc();
+})();
+
+// ---- Aspect Ratio Calculator ----
+(function () {
+  if (!document.getElementById('arW1')) return;
+  var g = function (id) { return document.getElementById(id); };
+  var NAMED = {
+    '16:9': 'Widescreen — HD, most monitors and video',
+    '4:3': 'Traditional — older TVs, iPad, many photos',
+    '3:2': '35mm film and most DSLR sensors',
+    '1:1': 'Square — Instagram, album art',
+    '21:9': 'Ultrawide — cinema and ultrawide monitors',
+    '16:10': 'Common on laptops and productivity monitors',
+    '5:4': 'Older 1280×1024 monitors',
+    '9:16': 'Vertical video — phones, Reels, Shorts',
+    '2:3': 'Portrait photo',
+    '256:135': 'DCI 4K cinema',
+    // "21:9" is a marketing label; the real panel ratios simplify to these.
+    '64:27': 'Ultrawide — marketed as 21:9 (2560×1080, 3840×1620)',
+    '43:18': 'Ultrawide — marketed as 21:9 (3440×1440)',
+    '12:5': 'Super ultrawide — marketed as 24:10',
+    '32:9': 'Super ultrawide — dual 16:9 side by side'
+  };
+  function gcd(a, b) { while (b) { var t = b; b = a % b; a = t; } return a; }
+  function calc(driver) {
+    var w1 = parseFloat(g('arW1').value) || 0;
+    var h1 = parseFloat(g('arH1').value) || 0;
+    if (w1 <= 0 || h1 <= 0) {
+      ['arRatio', 'arDecimal', 'arName', 'arPixels'].forEach(function (i) { g(i).textContent = '—'; });
+      return;
+    }
+    var ratio = w1 / h1;
+    // Whichever new dimension the user last touched drives the other.
+    var w2 = parseFloat(g('arW2').value), h2 = parseFloat(g('arH2').value);
+    if (driver === 'arW2' && isFinite(w2) && w2 > 0) { g('arH2').value = Math.round(w2 / ratio * 100) / 100; }
+    else if (driver === 'arH2' && isFinite(h2) && h2 > 0) { g('arW2').value = Math.round(h2 * ratio * 100) / 100; }
+    else if (isFinite(w2) && w2 > 0) { g('arH2').value = Math.round(w2 / ratio * 100) / 100; }
+
+    var d = gcd(Math.round(w1), Math.round(h1)) || 1;
+    var simple = Math.round(w1 / d) + ':' + Math.round(h1 / d);
+    g('arRatio').textContent = simple;
+    g('arDecimal').textContent = (Math.round(ratio * 10000) / 10000) + ' : 1';
+    g('arName').textContent = NAMED[simple] || (Math.abs(ratio - 16 / 9) < 0.01 ? 'Very close to 16:9' :
+      Math.abs(ratio - 4 / 3) < 0.01 ? 'Very close to 4:3' : 'No standard name');
+    var px = Math.round(w1) * Math.round(h1);
+    g('arPixels').textContent = px.toLocaleString('en-US') + ' px  (' + (Math.round(px / 1e6 * 100) / 100) + ' MP)';
+    g('arOrientation').textContent = ratio > 1 ? 'Landscape' : ratio < 1 ? 'Portrait' : 'Square';
+  }
+  ['arW1', 'arH1'].forEach(function (id) { g(id).addEventListener('input', function () { calc(null); }); });
+  ['arW2', 'arH2'].forEach(function (id) { g(id).addEventListener('input', function () { calc(id); }); });
+  calc(null);
+})();
+
+// ---- Colour Converter and Contrast Checker ----
+(function () {
+  if (!document.getElementById('clHex')) return;
+  var g = function (id) { return document.getElementById(id); };
+  function parseHex(s) {
+    s = String(s).trim().replace(/^#/, '');
+    if (/^[0-9a-fA-F]{3}$/.test(s)) s = s[0] + s[0] + s[1] + s[1] + s[2] + s[2];
+    if (!/^[0-9a-fA-F]{6}$/.test(s)) return null;
+    return [parseInt(s.slice(0, 2), 16), parseInt(s.slice(2, 4), 16), parseInt(s.slice(4, 6), 16)];
+  }
+  function toHex(rgb) {
+    return '#' + rgb.map(function (v) { return ('0' + Math.round(v).toString(16)).slice(-2); }).join('').toUpperCase();
+  }
+  function toHsl(r, gr, b) {
+    r /= 255; gr /= 255; b /= 255;
+    var max = Math.max(r, gr, b), min = Math.min(r, gr, b);
+    var h, s, l = (max + min) / 2;
+    if (max === min) { h = s = 0; }
+    else {
+      var d = max - min;
+      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+      if (max === r) h = ((gr - b) / d + (gr < b ? 6 : 0));
+      else if (max === gr) h = (b - r) / d + 2;
+      else h = (r - gr) / d + 4;
+      h /= 6;
+    }
+    return [Math.round(h * 360), Math.round(s * 100), Math.round(l * 100)];
+  }
+  // WCAG 2.x relative luminance. The spec states the threshold as 0.03928.
+  function luminance(rgb) {
+    var c = rgb.map(function (v) {
+      v = v / 255;
+      return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+    });
+    return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+  }
+  function calc() {
+    var a = parseHex(g('clHex').value);
+    var b = parseHex(g('clHex2').value);
+    var note = g('clNote');
+    if (!a) {
+      ['clRgb', 'clHsl', 'clHexOut', 'clContrast', 'clAA', 'clAAA'].forEach(function (i) { g(i).textContent = '—'; });
+      note.textContent = 'Enter a colour as #RRGGBB or #RGB — for example #D4A373.';
+      g('clSwatch').style.background = 'transparent';
+      return;
+    }
+    var hsl = toHsl(a[0], a[1], a[2]);
+    g('clHexOut').textContent = toHex(a);
+    g('clRgb').textContent = 'rgb(' + a.join(', ') + ')';
+    g('clHsl').textContent = 'hsl(' + hsl[0] + ', ' + hsl[1] + '%, ' + hsl[2] + '%)';
+    g('clSwatch').style.background = toHex(a);
+
+    if (!b) {
+      ['clContrast', 'clAA', 'clAAA'].forEach(function (i) { g(i).textContent = '—'; });
+      g('clSwatch2').style.background = 'transparent';
+      note.textContent = 'Enter a second colour to check contrast against it.';
+      return;
+    }
+    g('clSwatch2').style.background = toHex(b);
+    var l1 = luminance(a), l2 = luminance(b);
+    var ratio = (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
+    g('clContrast').textContent = (Math.round(ratio * 100) / 100) + ' : 1';
+    var mark = function (ok) { return ok ? 'Pass' : 'Fail'; };
+    g('clAA').textContent = 'Normal text ' + mark(ratio >= 4.5) + '  ·  Large text ' + mark(ratio >= 3);
+    g('clAAA').textContent = 'Normal text ' + mark(ratio >= 7) + '  ·  Large text ' + mark(ratio >= 4.5);
+    note.textContent = ratio >= 7 ? 'Passes every WCAG threshold including AAA for body text.'
+      : ratio >= 4.5 ? 'Passes AA for body text. AAA needs 7:1.'
+        : ratio >= 3 ? 'Only sufficient for large text (18pt, or 14pt bold) and UI components. Body text needs 4.5:1.'
+          : 'Below every WCAG threshold — not usable for text at any size.';
+    // Show the pairing in situ so the number is not the only evidence.
+    var prev = g('clPreview');
+    prev.style.background = toHex(b);
+    prev.style.color = toHex(a);
+  }
+  ['clHex', 'clHex2'].forEach(function (id) { g(id).addEventListener('input', calc); g(id).addEventListener('change', calc); });
+  calc();
+})();

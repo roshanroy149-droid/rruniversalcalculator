@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Protein Calculator — Daily Protein Intake by Goal | TallyBench</title>
-<meta name="description" content="Free protein calculator. Get a daily protein range in grams from your body weight and training goal — maintenance, muscle gain, cutting, or endurance.">
-<link rel="canonical" href="https://tallybench.com/protein-calculator.html">
+<title>Aspect Ratio Calculator — Resize Without Distortion | TallyBench</title>
+<meta name="description" content="Work out the missing width or height to keep an image or video at the same aspect ratio.">
+<link rel="canonical" href="https://tallybench.com/aspect-ratio-calculator.html">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.svg">
@@ -15,15 +15,15 @@
 <meta name="apple-mobile-web-app-title" content="TallyBench">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TallyBench">
-<meta property="og:title" content="Protein Calculator — Daily Protein Intake by Goal">
-<meta property="og:description" content="Free protein calculator. Get a daily protein range in grams from your body weight and training goal — maintenance, muscle gain, cutting, or endurance.">
-<meta property="og:url" content="https://tallybench.com/protein-calculator.html">
+<meta property="og:title" content="Aspect Ratio Calculator — Resize Without Distortion">
+<meta property="og:description" content="Work out the missing width or height to keep an image or video at the same aspect ratio.">
+<meta property="og:url" content="https://tallybench.com/aspect-ratio-calculator.html">
 <meta property="og:image" content="https://tallybench.com/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Protein Calculator — Daily Protein Intake by Goal">
-<meta name="twitter:description" content="Free protein calculator. Get a daily protein range in grams from your body weight and training goal — maintenance, muscle gain, cutting, or endurance.">
+<meta name="twitter:title" content="Aspect Ratio Calculator — Resize Without Distortion">
+<meta name="twitter:description" content="Work out the missing width or height to keep an image or video at the same aspect ratio.">
 <meta name="twitter:image" content="https://tallybench.com/og-image.png">
 <link rel="stylesheet" href="fonts/fonts.css">
 <link rel="stylesheet" href="style.css">
@@ -35,35 +35,28 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "How much protein do I need per day?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "It depends on what you are doing with your body, not just how much you weigh. The baseline RDA for a sedentary adult is about 0.8 g per kg of body weight, which is a minimum to prevent deficiency rather than an optimum. People doing regular resistance training are commonly advised something closer to 1.6-2.2 g per kg, and people eating in a calorie deficit are often advised the high end or slightly above, because adequate protein helps preserve muscle while losing fat."
-      }
+      "name": "How do I resize an image without distorting it?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Keep the aspect ratio constant by multiplying both dimensions by the same factor. If you know one target dimension, divide or multiply by the ratio to get the other — new height = new width ÷ ratio. Scaling 1920 × 1080 to a width of 1280 gives a height of 720, because both are 16:9. Changing one dimension without the other is exactly what causes stretching." }
     },
     {
       "@type": "Question",
-      "name": "Should I calculate protein from total body weight or lean body mass?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "For most people at a typical body composition, total body weight is simpler and close enough. Lean body mass becomes the more sensible basis at higher body-fat percentages, because fat tissue has little protein requirement — using total weight there can overstate the target substantially. This calculator offers both: enter body-fat percentage to switch to a lean-mass basis."
-      }
+      "name": "What does 16:9 mean?",
+      "acceptedAnswer": { "@type": "Answer", "text": "For every 16 units of width there are 9 of height, a decimal ratio of about 1.778. It is the standard for HD and 4K video and for most monitors and televisions. The numbers are a proportion, not a size — 1280 × 720, 1920 × 1080 and 3840 × 2160 are all 16:9 and differ only in how many pixels make up the same shape." }
     },
     {
       "@type": "Question",
-      "name": "Can you eat too much protein?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "For healthy adults with normal kidney function, intakes in the ranges shown here are generally considered safe in the research literature, and there is no strong evidence that they harm healthy kidneys. Very high intakes mostly displace other nutrients and calories rather than causing direct harm. People with existing kidney or liver disease are a genuine exception and should have protein intake set by their doctor, not by a calculator."
-      }
+      "name": "Is 2560 × 1080 really 21:9?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No. It reduces to 64:27, a decimal ratio of 2.370, where a true 21:9 would be 2.333. A 3440 × 1440 ultrawide is 43:18, or 2.389. Both are marketed as 21:9 because it reads as a tidy step up from 16:9, but neither is that ratio. If you are calculating a crop or a render size, use the real figure — this calculator reports it and names the marketing label alongside." }
     },
     {
       "@type": "Question",
-      "name": "Does protein timing matter?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Far less than total daily intake. Hitting your daily target is the thing that matters most; spreading it across roughly 3-5 meals of 25-40 g each is a reasonable practical default because it is easier to reach the total that way, not because a narrow post-workout window is critical. The old idea of a 30-minute anabolic window has been substantially walked back by later research."
-      }
+      "name": "What is the difference between aspect ratio and resolution?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Aspect ratio is the shape; resolution is the number of pixels filling it. 1280 × 720 and 3840 × 2160 are the same shape at very different resolutions. Doubling both dimensions quadruples the pixel count, which is why 4K is about four times the data of 1080p rather than twice. Screens can differ in either dimension independently — an ultrawide is a different shape, a 4K panel is a finer grid." }
+    },
+    {
+      "@type": "Question",
+      "name": "Why do videos have black bars?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Because the content and the screen have different aspect ratios, and letterboxing preserves the entire frame rather than cutting into it. Cinema shot at 2.39:1 shown on a 16:9 television gets bars top and bottom; older 4:3 material on a widescreen gets bars at the sides. The alternatives are cropping, which removes content, or stretching, which distorts it — bars are the option that shows you exactly what was filmed." }
     }
   ]
 }
@@ -72,15 +65,11 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "Protein Calculator — TallyBench",
-  "applicationCategory": "HealthApplication",
+  "name": "Aspect Ratio Calculator — TallyBench",
+  "applicationCategory": "UtilitiesApplication",
   "operatingSystem": "Any (runs in browser)",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "url": "https://tallybench.com/protein-calculator.html"
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "url": "https://tallybench.com/aspect-ratio-calculator.html"
 }
 </script>
 <!-- TB:BREADCRUMB:START -->
@@ -98,15 +87,15 @@
                             {
                                 "@type":  "ListItem",
                                 "position":  2,
-                                "name":  "Protein Calculator",
-                                "item":  "https://tallybench.com/protein-calculator.html"
+                                "name":  "Aspect Ratio Calculator",
+                                "item":  "https://tallybench.com/aspect-ratio-calculator.html"
                             }
                         ]
 }
 </script>
 <!-- TB:BREADCRUMB:END -->
 </head>
-<body data-page-cat="health">
+<body data-page-cat="everyday">
 
 <header>
   <div class="wrap">
@@ -402,91 +391,95 @@
 <div class="nav-backdrop" id="navBackdrop"></div>
 
 <div class="wrap">
-  <div class="crumb"><a href="index.html">TallyBench</a> / Protein Calculator</div>
+  <div class="crumb"><a href="index.html">TallyBench</a> / Aspect Ratio Calculator</div>
 
   <section class="hero">
-    <div class="hero-icon-row cat-health">
-      <div class="hero-icon"><svg><use href="icons.svg#icon-calorie"/></svg></div>
-      <div class="eyebrow">// PROTEIN CALCULATOR</div>
+    <div class="hero-icon-row cat-everyday">
+      <div class="hero-icon"><svg><use href="icons.svg#icon-percent"/></svg></div>
+      <div class="eyebrow">// ASPECT RATIO CALCULATOR</div>
     </div>
-    <h1>How much protein should you actually eat a day?</h1>
-    <p>Enter your weight and what you're training for. Optionally switch to a lean-mass basis, which is the more sensible reference at higher body-fat percentages.</p>
+    <h1>Aspect Ratio Calculator</h1>
+    <p>Enter the original dimensions and one new dimension — it fills in the other so nothing stretches.</p>
   </section>
 
-  <section class="tool" id="protein">
-    <div class="disclaimer">
-      <strong>General nutrition estimate — not medical advice.</strong> These are population-level ranges from sports-nutrition guidance, not a prescription. Anyone with kidney or liver disease, or who is pregnant, should have protein intake set by a doctor or registered dietitian rather than a calculator.
-    </div>
+  <section class="tool" id="aspectratio">
     <div class="card">
       <div>
-        <div class="field"><label>Weight</label>
+        <div class="field"><label>Original size (pixels)</label>
           <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
-            <input type="number" id="pcWeight" value="80" min="20" step="0.5" style="flex:1;min-width:100px;">
-            <div class="seg" id="pcWeightUnitSeg">
-              <button type="button" class="active" data-unit="kg">kg</button>
-              <button type="button" data-unit="lb">lb</button>
-            </div>
+            <input type="number" id="arW1" value="1920" min="1" step="1" style="flex:1;min-width:90px;" placeholder="width">
+            <span style="color:rgba(242,236,221,0.5);">×</span>
+            <input type="number" id="arH1" value="1080" min="1" step="1" style="flex:1;min-width:90px;" placeholder="height">
           </div>
         </div>
-        <div class="field"><label for="pcGoal">Goal / activity</label>
-          <select id="pcGoal">
-            <option value="sedentary">Sedentary — little or no exercise</option>
-            <option value="active">Generally active — light training</option>
-            <option value="strength" selected>Building muscle — resistance training</option>
-            <option value="cut">Cutting — fat loss, preserving muscle</option>
-            <option value="endurance">Endurance training — running, cycling</option>
-          </select>
-        </div>
-        <div class="field"><label>Calculate from</label>
-          <div class="seg" id="pcBasisSeg">
-            <button type="button" class="active" data-basis="total">Total body weight</button>
-            <button type="button" data-basis="lean">Lean body mass</button>
+        <div class="field"><label>New size — fill in either box</label>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+            <input type="number" id="arW2" value="1280" min="0" step="1" style="flex:1;min-width:90px;" placeholder="width">
+            <span style="color:rgba(242,236,221,0.5);">×</span>
+            <input type="number" id="arH2" value="720" min="0" step="1" style="flex:1;min-width:90px;" placeholder="height">
           </div>
         </div>
-        <div class="field" id="pcBodyFatWrap" style="display:none;"><label for="pcBodyFat">Body fat (%)</label><input type="number" id="pcBodyFat" value="20" min="3" max="60" step="0.5"></div>
+        <p style="font-size:13px;color:rgba(242,236,221,0.6);margin:4px 0 0;">Type in one and the other updates to match the original proportions.</p>
       </div>
       <div class="readout">
-        <div class="r-row"><span class="r-label">Daily protein target</span><span class="r-value" id="pcRange">—</span></div>
-        <div class="r-row"><span class="r-label">Midpoint</span><span class="r-sub" id="pcMid">—</span></div>
-        <div class="r-row"><span class="r-label">Calories from protein (midpoint)</span><span class="r-sub" id="pcCals">—</span></div>
-        <div class="r-row"><span class="r-label">Basis used</span><span class="r-sub" id="pcBasisOut">—</span></div>
-        <div class="r-row"><span class="r-label">Per meal across 4 meals</span><span class="r-sub" id="pcPerMeal">—</span></div>
+        <div class="r-row"><span class="r-label">Aspect ratio</span><span class="r-value" id="arRatio">—</span></div>
+        <div class="r-row"><span class="r-label">As a decimal</span><span class="r-value" id="arDecimal">—</span></div>
+        <div class="r-row"><span class="r-label">Standard name</span><span class="r-value" id="arName">—</span></div>
+        <div class="r-row"><span class="r-label">Orientation</span><span class="r-value" id="arOrientation">—</span></div>
+        <div class="r-row"><span class="r-label">Total pixels</span><span class="r-value" id="arPixels">—</span></div>
       </div>
-      <div class="field-warning" id="pcWarning"></div>
     </div>
-  </section>
 
-  <section class="tool" id="reference">
-    <div class="tool-head"><span class="tool-num">//</span><div><h2>Protein ranges by goal</h2><p class="tool-sub">Grams per kilogram of body weight per day.</p></div></div>
-    <div class="table-scroll">
-      <table class="bracket-table">
-        <thead><tr><th scope="col">Goal</th><th scope="col">g/kg per day</th><th scope="col">Why</th></tr></thead>
-        <tbody>
-          <tr><td>Sedentary</td><td>0.8&ndash;1.0</td><td>RDA baseline — prevents deficiency, not an optimum</td></tr>
-          <tr><td>Generally active</td><td>1.2&ndash;1.4</td><td>Light training raises repair and turnover needs</td></tr>
-          <tr><td>Building muscle</td><td>1.6&ndash;2.2</td><td>Common resistance-training range in the literature</td></tr>
-          <tr><td>Cutting</td><td>1.8&ndash;2.4</td><td>Higher intake helps preserve muscle in a deficit</td></tr>
-          <tr><td>Endurance</td><td>1.2&ndash;1.6</td><td>Repair from high training volume, less hypertrophy demand</td></tr>
-        </tbody>
-      </table>
-    </div>
   </section>
 
   <section class="article">
-    <h3>How much protein do I need per day?</h3>
-    <p>It depends on what you're doing with your body, not just how much you weigh. The baseline RDA for a sedentary adult is about <strong>0.8 g per kg of body weight</strong> — a minimum to prevent deficiency, not an optimum. People doing regular resistance training are commonly advised something closer to <strong>1.6&ndash;2.2 g per kg</strong>, and people eating in a calorie deficit are often advised the high end or slightly above, because adequate protein helps preserve muscle while losing fat.</p>
-    <h3>Should I calculate protein from total body weight or lean body mass?</h3>
-    <p>For most people at a typical body composition, total body weight is simpler and close enough. Lean body mass becomes the more sensible basis at higher body-fat percentages, because fat tissue has little protein requirement — using total weight there can overstate the target substantially. Switch the basis toggle above to use lean mass and enter your body-fat percentage.</p>
-    <h3>Can you eat too much protein?</h3>
-    <p>For healthy adults with normal kidney function, intakes in the ranges shown here are generally considered safe in the research literature, and there's no strong evidence they harm healthy kidneys. Very high intakes mostly displace other nutrients and calories rather than causing direct harm. People with existing kidney or liver disease are a genuine exception and should have protein intake set by their doctor, not by a calculator.</p>
-    <h3>Does protein timing matter?</h3>
-    <p>Far less than total daily intake. Hitting your daily target is what matters most; spreading it across roughly 3&ndash;5 meals of 25&ndash;40 g each is a reasonable practical default because it's easier to reach the total that way — not because a narrow post-workout window is critical. The old idea of a 30-minute "anabolic window" has been substantially walked back by later research.</p>
-    <h3>How does protein fit into total calories?</h3>
-    <p>Protein provides 4 calories per gram, so a 160 g daily target is 640 calories — a meaningful share of most people's intake, which is why protein is usually set first and carbs and fat fill the remainder. The calculator shows this figure so you can slot it into a wider calorie budget rather than treating protein in isolation.</p>
-    <p><strong>Worked example:</strong> an 80 kg person building muscle lands in the 1.6&ndash;2.2 g/kg band, so 128&ndash;176 g a day, with a midpoint of 152 g — about 608 calories from protein, or roughly 38 g at each of four meals. If that same person is 20% body fat and switches to a lean-mass basis, lean mass is 64 kg and the same band gives 102&ndash;141 g instead.</p>
-    <p style="font-size:13px;color:rgba(242,236,221,0.55);margin:0 0 24px;">Need the calorie budget this protein fits inside? Use the <a href="tdee-calculator.html">TDEE Calculator</a> for daily burn, or the <a href="macro-calculator.html">Macro Calculator</a> for a full protein/carb/fat split. To estimate the lean-mass figure this page can use as a basis, try the <a href="lean-body-mass-calculator.html">Lean Body Mass Calculator</a> or the <a href="body-fat-calculator.html">Body Fat Calculator</a>. For the other two macronutrients, see the <a href="fat-intake-calculator.html">Fat Intake Calculator</a> and the <a href="macro-calculator.html">Macro Calculator</a>.</p>
+    <h2>What an aspect ratio is</h2>
+    <p>Aspect ratio is width divided by height, expressed as the smallest whole-number pair that produces the same result. 1920 × 1080 divides down by 120 to give <strong>16:9</strong>. The point of keeping it constant when resizing is that anything else stretches or squashes the content.</p>
+    <p>To scale without distortion, multiply both dimensions by the same factor. If you know one target dimension, the other follows: new height = new width ÷ ratio.</p>
+
+    <h2>Common ratios</h2>
+    <table class="data-table">
+      <thead><tr><th>Ratio</th><th>Decimal</th><th>Where you meet it</th></tr></thead>
+      <tbody>
+        <tr><td>16:9</td><td>1.778</td><td>HD and 4K video, most monitors and TVs</td></tr>
+        <tr><td>4:3</td><td>1.333</td><td>Older TVs and monitors, iPad, many compact cameras</td></tr>
+        <tr><td>3:2</td><td>1.500</td><td>35mm film and most DSLR and mirrorless sensors</td></tr>
+        <tr><td>1:1</td><td>1.000</td><td>Square — profile pictures, album art</td></tr>
+        <tr><td>9:16</td><td>0.563</td><td>Vertical video — Reels, Shorts, TikTok</td></tr>
+        <tr><td>16:10</td><td>1.600</td><td>Many laptops and productivity monitors</td></tr>
+        <tr><td>64:27</td><td>2.370</td><td>Ultrawide monitors, marketed as "21:9"</td></tr>
+        <tr><td>256:135</td><td>1.896</td><td>DCI 4K cinema</td></tr>
+      </tbody>
+    </table>
+
+    <h2>"21:9" is a marketing label</h2>
+    <p>No mainstream ultrawide monitor is actually 21:9. A 2560 × 1080 panel simplifies to <strong>64:27</strong> — a decimal ratio of 2.370, not the 2.333 that a true 21:9 would give. A 3440 × 1440 panel is <strong>43:18</strong>, or 2.389. Both are sold as 21:9 because it reads as a natural step up from 16:9 and the exact figures do not.</p>
+    <p>This calculator reports what the numbers actually reduce to and names the marketing label alongside, because if you are computing a crop or a render size, the real ratio is the one that matters.</p>
+
+    <h2>Why letterboxing exists</h2>
+    <p>When content and screen have different ratios, something has to give. <strong>Letterboxing</strong> adds bars to preserve the whole frame — black bars top and bottom when 21:9 cinema content plays on a 16:9 screen, or pillarbox bars at the sides when 4:3 content plays on a widescreen. <strong>Cropping</strong> fills the screen by cutting content off, which is what "zoom to fill" does and why heads get chopped. <strong>Stretching</strong> fills the screen by distorting, which is always the wrong answer and always obvious once you notice it.</p>
+    <p>The same trade-off drives the "safe area" convention in video production: shoot so the important content survives a centre crop, because you cannot control what ratio it eventually plays back at.</p>
+
+    <h2>Resolution and ratio are different things</h2>
+    <p>1280 × 720, 1920 × 1080 and 3840 × 2160 are all 16:9. They differ in resolution — the pixel count — not in shape. Doubling both dimensions quadruples the pixels: 1080p is about 2.1 megapixels and 4K is about 8.3, four times as many, which is why file sizes and render times scale the way they do.</p>
+    <p>This is worth keeping straight because "higher resolution" and "wider screen" get conflated constantly. An ultrawide monitor is a different shape; a 4K monitor is a finer grid. They are independent choices.</p>
+
+    <h2>Where to be careful</h2>
+    <p>Social platforms each want different ratios and re-crop what does not fit, usually badly. Instagram feed posts favour 1:1 and 4:5, stories and Reels want 9:16, and YouTube thumbnails are 16:9. Uploading one ratio and letting the platform crop is how key content ends up outside the frame.</p>
+    <p>For print, remember that standard paper sizes do not match standard sensor ratios. A 3:2 photo does not fit an 8 × 10 inch print, which is 4:5 — something gets cropped, and it is better to decide what than to let a lab decide for you.</p>
+    <h3>How do I resize an image without distorting it?</h3>
+    <p>Keep the aspect ratio constant by multiplying both dimensions by the same factor. If you know one target dimension, divide or multiply by the ratio to get the other — new height = new width ÷ ratio. Scaling 1920 × 1080 to a width of 1280 gives a height of 720, because both are 16:9. Changing one dimension without the other is exactly what causes stretching.</p>
+    <h3>What does 16:9 mean?</h3>
+    <p>For every 16 units of width there are 9 of height, a decimal ratio of about 1.778. It is the standard for HD and 4K video and for most monitors and televisions. The numbers are a proportion, not a size — 1280 × 720, 1920 × 1080 and 3840 × 2160 are all 16:9 and differ only in how many pixels make up the same shape.</p>
+    <h3>Is 2560 × 1080 really 21:9?</h3>
+    <p>No. It reduces to 64:27, a decimal ratio of 2.370, where a true 21:9 would be 2.333. A 3440 × 1440 ultrawide is 43:18, or 2.389. Both are marketed as 21:9 because it reads as a tidy step up from 16:9, but neither is that ratio. If you are calculating a crop or a render size, use the real figure — this calculator reports it and names the marketing label alongside.</p>
+    <h3>What is the difference between aspect ratio and resolution?</h3>
+    <p>Aspect ratio is the shape; resolution is the number of pixels filling it. 1280 × 720 and 3840 × 2160 are the same shape at very different resolutions. Doubling both dimensions quadruples the pixel count, which is why 4K is about four times the data of 1080p rather than twice. Screens can differ in either dimension independently — an ultrawide is a different shape, a 4K panel is a finer grid.</p>
+    <h3>Why do videos have black bars?</h3>
+    <p>Because the content and the screen have different aspect ratios, and letterboxing preserves the entire frame rather than cutting into it. Cinema shot at 2.39:1 shown on a 16:9 television gets bars top and bottom; older 4:3 material on a widescreen gets bars at the sides. The alternatives are cropping, which removes content, or stretching, which distorts it — bars are the option that shows you exactly what was filmed.</p>
   </section>
 
+  <p style="font-size:13px;color:rgba(242,236,221,0.55);margin:0 0 24px;">Related: <a href="ratio-calculator.html">Ratio Calculator</a> · <a href="color-converter.html">Colour Converter</a> · <a href="percentage-calculator.html">Percentage Calculator</a> · <a href="gcf-calculator.html">GCF Calculator</a></p>
 
   <footer>
     <p>TALLYBENCH · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>

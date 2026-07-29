@@ -10,6 +10,7 @@
 # How it works: pages carry marker pairs:
 #   <!-- TB:NAV:START --> ... <!-- TB:NAV:END -->
 #   <!-- TB:COUNT:START --> ... <!-- TB:COUNT:END -->
+#   <!-- TB:COUNTINLINE:START -->N<!-- TB:COUNTINLINE:END --> (optional, prose)
 #   <!-- TB:HOMEGRID:START --> ... <!-- TB:HOMEGRID:END --> (index.html only)
 #   <!-- TB:SEARCHDATA:START --> ... <!-- TB:SEARCHDATA:END --> (index.html only)
 #   <!-- TB:ARTICLELIST:START --> ... <!-- TB:ARTICLELIST:END --> (articles.html only)
@@ -80,6 +81,14 @@ function New-NavBlock($indent) {
 
 function New-CountBlock($indent) {
     return "$($data.tools.Count) TOOLS " + [char]0x00B7 + " 0 SIGN-UP"
+}
+
+# Just the bare number, for prose that mentions the tool count mid-sentence.
+# This exists because hand-written body copy citing the count went stale at
+# 49, 60, 125, 137 and 196 — the generated header was right every time while
+# the sentence beneath it was wrong. Wrap any such mention in the markers.
+function New-CountInlineBlock($indent) {
+    return "$($data.tools.Count)"
 }
 
 # Maps a category id to the CSS modifier class used on homepage tool cards.
@@ -254,6 +263,10 @@ foreach ($f in $htmlFiles) {
 
     $countResult = Sync-Marker $content 'COUNT' { param($indent) New-CountBlock $indent }
     if ($null -ne $countResult) { $content = $countResult }
+
+    # Optional — only the few pages that cite the count in prose carry these.
+    $countInlineResult = Sync-Marker $content 'COUNTINLINE' { param($indent) New-CountInlineBlock $indent }
+    if ($null -ne $countInlineResult) { $content = $countInlineResult }
 
     $homeGridResult = Sync-Marker $content 'HOMEGRID' { param($indent) New-HomeGridBlock $indent }
     if ($null -ne $homeGridResult) { $content = $homeGridResult }

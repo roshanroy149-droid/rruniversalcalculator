@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Protein Calculator — Daily Protein Intake by Goal | TallyBench</title>
-<meta name="description" content="Free protein calculator. Get a daily protein range in grams from your body weight and training goal — maintenance, muscle gain, cutting, or endurance.">
-<link rel="canonical" href="https://tallybench.com/protein-calculator.html">
+<title>Cooking Measurement Converter — Cups to Grams by Ingredient | TallyBench</title>
+<meta name="description" content="Convert cups, spoons, millilitres, grams and ounces — with per-ingredient densities, because a cup of flour is not a cup of sugar.">
+<link rel="canonical" href="https://tallybench.com/cooking-measurement-converter.html">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.svg">
@@ -15,15 +15,15 @@
 <meta name="apple-mobile-web-app-title" content="TallyBench">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TallyBench">
-<meta property="og:title" content="Protein Calculator — Daily Protein Intake by Goal">
-<meta property="og:description" content="Free protein calculator. Get a daily protein range in grams from your body weight and training goal — maintenance, muscle gain, cutting, or endurance.">
-<meta property="og:url" content="https://tallybench.com/protein-calculator.html">
+<meta property="og:title" content="Cooking Measurement Converter — Cups to Grams by Ingredient">
+<meta property="og:description" content="Convert cups, spoons, millilitres, grams and ounces — with per-ingredient densities, because a cup of flour is not a cup of sugar.">
+<meta property="og:url" content="https://tallybench.com/cooking-measurement-converter.html">
 <meta property="og:image" content="https://tallybench.com/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Protein Calculator — Daily Protein Intake by Goal">
-<meta name="twitter:description" content="Free protein calculator. Get a daily protein range in grams from your body weight and training goal — maintenance, muscle gain, cutting, or endurance.">
+<meta name="twitter:title" content="Cooking Measurement Converter — Cups to Grams by Ingredient">
+<meta name="twitter:description" content="Convert cups, spoons, millilitres, grams and ounces — with per-ingredient densities, because a cup of flour is not a cup of sugar.">
 <meta name="twitter:image" content="https://tallybench.com/og-image.png">
 <link rel="stylesheet" href="fonts/fonts.css">
 <link rel="stylesheet" href="style.css">
@@ -35,35 +35,28 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "How much protein do I need per day?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "It depends on what you are doing with your body, not just how much you weigh. The baseline RDA for a sedentary adult is about 0.8 g per kg of body weight, which is a minimum to prevent deficiency rather than an optimum. People doing regular resistance training are commonly advised something closer to 1.6-2.2 g per kg, and people eating in a calorie deficit are often advised the high end or slightly above, because adequate protein helps preserve muscle while losing fat."
-      }
+      "name": "How many grams is one cup?",
+      "acceptedAnswer": { "@type": "Answer", "text": "It depends entirely on the ingredient, which is the whole point. A cup of rolled oats is 113 g, all-purpose flour 120 g, granulated sugar 198 g, butter 227 g, water 237 g and honey 336 g — a threefold spread for the identical volume. Any converter that gives a single cups-to-grams figure is right for at most one ingredient, which is why this one asks you to pick." }
     },
     {
       "@type": "Question",
-      "name": "Should I calculate protein from total body weight or lean body mass?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "For most people at a typical body composition, total body weight is simpler and close enough. Lean body mass becomes the more sensible basis at higher body-fat percentages, because fat tissue has little protein requirement — using total weight there can overstate the target substantially. This calculator offers both: enter body-fat percentage to switch to a lean-mass basis."
-      }
+      "name": "Why does my baking come out differently from the recipe?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Usually flour measurement. A cup scooped straight from the bag packs down and can hold 140 g or more; the same cup filled by spooning flour in loosely and levelling holds about 120 g. That 17% swing comes from technique alone, on the ingredient that most affects texture. It is the main reason the same recipe behaves differently for different people, and why serious baking recipes give weights." }
     },
     {
       "@type": "Question",
-      "name": "Can you eat too much protein?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "For healthy adults with normal kidney function, intakes in the ranges shown here are generally considered safe in the research literature, and there is no strong evidence that they harm healthy kidneys. Very high intakes mostly displace other nutrients and calories rather than causing direct harm. People with existing kidney or liver disease are a genuine exception and should have protein intake set by their doctor, not by a calculator."
-      }
+      "name": "Is a cup of water 227 g or 237 g?",
+      "acceptedAnswer": { "@type": "Answer", "text": "About 237 g. A US customary cup is 236.588 ml and water is essentially 1 g per ml. The 227 g figure comes from treating 8 fluid ounces as 8 ounces by weight, which is a tidy convention but about 4% off. Some charts use it for all liquids, which compounds the error. This converter uses real density for liquids and the standard baking chart figures for dry goods." }
     },
     {
       "@type": "Question",
-      "name": "Does protein timing matter?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Far less than total daily intake. Hitting your daily target is the thing that matters most; spreading it across roughly 3-5 meals of 25-40 g each is a reasonable practical default because it is easier to reach the total that way, not because a narrow post-workout window is critical. The old idea of a 30-minute anabolic window has been substantially walked back by later research."
-      }
+      "name": "Are cups the same size in every country?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No. A US customary cup is 236.6 ml, the US legal cup used on nutrition labels is 240 ml, the metric cup used in Australia, New Zealand, Canada and the UK is 250 ml, and a Japanese cup is 200 ml. The Australian tablespoon is also 20 ml against 15 ml elsewhere — four teaspoons rather than three. This tool uses the US customary cup, which is what most online recipes assume." }
+    },
+    {
+      "@type": "Question",
+      "name": "Should I use a scale instead of cups?",
+      "acceptedAnswer": { "@type": "Answer", "text": "For baking, yes. It is more consistent, since a weight does not depend on how you scooped; it is usually faster, because you can tare between additions and use one bowl; and it makes scaling a recipe up or down trivial. Cups remain fine for liquids and for cooking where precision matters less. Most experienced bakers switched to weight and did not go back." }
     }
   ]
 }
@@ -72,15 +65,11 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "Protein Calculator — TallyBench",
-  "applicationCategory": "HealthApplication",
+  "name": "Cooking Measurement Converter — TallyBench",
+  "applicationCategory": "UtilitiesApplication",
   "operatingSystem": "Any (runs in browser)",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "url": "https://tallybench.com/protein-calculator.html"
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "url": "https://tallybench.com/cooking-measurement-converter.html"
 }
 </script>
 <!-- TB:BREADCRUMB:START -->
@@ -98,15 +87,15 @@
                             {
                                 "@type":  "ListItem",
                                 "position":  2,
-                                "name":  "Protein Calculator",
-                                "item":  "https://tallybench.com/protein-calculator.html"
+                                "name":  "Cooking Measurement Converter",
+                                "item":  "https://tallybench.com/cooking-measurement-converter.html"
                             }
                         ]
 }
 </script>
 <!-- TB:BREADCRUMB:END -->
 </head>
-<body data-page-cat="health">
+<body data-page-cat="everyday">
 
 <header>
   <div class="wrap">
@@ -402,91 +391,132 @@
 <div class="nav-backdrop" id="navBackdrop"></div>
 
 <div class="wrap">
-  <div class="crumb"><a href="index.html">TallyBench</a> / Protein Calculator</div>
+  <div class="crumb"><a href="index.html">TallyBench</a> / Cooking Measurement Converter</div>
 
   <section class="hero">
-    <div class="hero-icon-row cat-health">
-      <div class="hero-icon"><svg><use href="icons.svg#icon-calorie"/></svg></div>
-      <div class="eyebrow">// PROTEIN CALCULATOR</div>
+    <div class="hero-icon-row cat-everyday">
+      <div class="hero-icon"><svg><use href="icons.svg#icon-units"/></svg></div>
+      <div class="eyebrow">// COOKING CONVERTER</div>
     </div>
-    <h1>How much protein should you actually eat a day?</h1>
-    <p>Enter your weight and what you're training for. Optionally switch to a lean-mass basis, which is the more sensible reference at higher body-fat percentages.</p>
+    <h1>Cooking Measurement Converter</h1>
+    <p>Cups to grams done properly — the conversion depends entirely on the ingredient, so this one asks which one you mean.</p>
   </section>
 
-  <section class="tool" id="protein">
-    <div class="disclaimer">
-      <strong>General nutrition estimate — not medical advice.</strong> These are population-level ranges from sports-nutrition guidance, not a prescription. Anyone with kidney or liver disease, or who is pregnant, should have protein intake set by a doctor or registered dietitian rather than a calculator.
-    </div>
+  <section class="tool" id="cookingconv">
     <div class="card">
       <div>
-        <div class="field"><label>Weight</label>
-          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
-            <input type="number" id="pcWeight" value="80" min="20" step="0.5" style="flex:1;min-width:100px;">
-            <div class="seg" id="pcWeightUnitSeg">
-              <button type="button" class="active" data-unit="kg">kg</button>
-              <button type="button" data-unit="lb">lb</button>
-            </div>
-          </div>
-        </div>
-        <div class="field"><label for="pcGoal">Goal / activity</label>
-          <select id="pcGoal">
-            <option value="sedentary">Sedentary — little or no exercise</option>
-            <option value="active">Generally active — light training</option>
-            <option value="strength" selected>Building muscle — resistance training</option>
-            <option value="cut">Cutting — fat loss, preserving muscle</option>
-            <option value="endurance">Endurance training — running, cycling</option>
+        <div class="field"><label>Ingredient</label><select id="ckIngredient"></select></div>
+        <div class="field"><label>Amount</label><input type="number" id="ckAmount" value="2" min="0" step="0.25"></div>
+        <div class="field"><label>From</label>
+          <select id="ckFrom">
+            <option value="cup">cups</option>
+            <option value="tbsp">tablespoons</option>
+            <option value="tsp">teaspoons</option>
+            <option value="ml">millilitres</option>
+            <option value="l">litres</option>
+            <option value="floz">fluid ounces (US)</option>
+            <option value="pint">pints (US)</option>
+            <option value="quart">quarts (US)</option>
+            <option value="g">grams</option>
+            <option value="kg">kilograms</option>
+            <option value="oz">ounces</option>
+            <option value="lb">pounds</option>
           </select>
         </div>
-        <div class="field"><label>Calculate from</label>
-          <div class="seg" id="pcBasisSeg">
-            <button type="button" class="active" data-basis="total">Total body weight</button>
-            <button type="button" data-basis="lean">Lean body mass</button>
-          </div>
+        <div class="field"><label>To</label>
+          <select id="ckTo">
+            <option value="g">grams</option>
+            <option value="kg">kilograms</option>
+            <option value="oz">ounces</option>
+            <option value="lb">pounds</option>
+            <option value="cup">cups</option>
+            <option value="tbsp">tablespoons</option>
+            <option value="tsp">teaspoons</option>
+            <option value="ml">millilitres</option>
+            <option value="l">litres</option>
+            <option value="floz">fluid ounces (US)</option>
+          </select>
         </div>
-        <div class="field" id="pcBodyFatWrap" style="display:none;"><label for="pcBodyFat">Body fat (%)</label><input type="number" id="pcBodyFat" value="20" min="3" max="60" step="0.5"></div>
       </div>
       <div class="readout">
-        <div class="r-row"><span class="r-label">Daily protein target</span><span class="r-value" id="pcRange">—</span></div>
-        <div class="r-row"><span class="r-label">Midpoint</span><span class="r-sub" id="pcMid">—</span></div>
-        <div class="r-row"><span class="r-label">Calories from protein (midpoint)</span><span class="r-sub" id="pcCals">—</span></div>
-        <div class="r-row"><span class="r-label">Basis used</span><span class="r-sub" id="pcBasisOut">—</span></div>
-        <div class="r-row"><span class="r-label">Per meal across 4 meals</span><span class="r-sub" id="pcPerMeal">—</span></div>
+        <div class="r-row"><span class="r-label">Result</span><span class="r-value" id="ckResult">—</span></div>
+        <div class="r-row"><span class="r-label">This ingredient</span><span class="r-value" id="ckDensity">—</span></div>
+        <p class="r-note" id="ckNote"></p>
       </div>
-      <div class="field-warning" id="pcWarning"></div>
     </div>
-  </section>
-
-  <section class="tool" id="reference">
-    <div class="tool-head"><span class="tool-num">//</span><div><h2>Protein ranges by goal</h2><p class="tool-sub">Grams per kilogram of body weight per day.</p></div></div>
-    <div class="table-scroll">
-      <table class="bracket-table">
-        <thead><tr><th scope="col">Goal</th><th scope="col">g/kg per day</th><th scope="col">Why</th></tr></thead>
-        <tbody>
-          <tr><td>Sedentary</td><td>0.8&ndash;1.0</td><td>RDA baseline — prevents deficiency, not an optimum</td></tr>
-          <tr><td>Generally active</td><td>1.2&ndash;1.4</td><td>Light training raises repair and turnover needs</td></tr>
-          <tr><td>Building muscle</td><td>1.6&ndash;2.2</td><td>Common resistance-training range in the literature</td></tr>
-          <tr><td>Cutting</td><td>1.8&ndash;2.4</td><td>Higher intake helps preserve muscle in a deficit</td></tr>
-          <tr><td>Endurance</td><td>1.2&ndash;1.6</td><td>Repair from high training volume, less hypertrophy demand</td></tr>
-        </tbody>
-      </table>
-    </div>
+    <table class="data-table" style="margin-top:20px;">
+      <thead><tr><th>Unit</th><th>Equivalent</th></tr></thead>
+      <tbody id="ckAll"></tbody>
+    </table>
   </section>
 
   <section class="article">
-    <h3>How much protein do I need per day?</h3>
-    <p>It depends on what you're doing with your body, not just how much you weigh. The baseline RDA for a sedentary adult is about <strong>0.8 g per kg of body weight</strong> — a minimum to prevent deficiency, not an optimum. People doing regular resistance training are commonly advised something closer to <strong>1.6&ndash;2.2 g per kg</strong>, and people eating in a calorie deficit are often advised the high end or slightly above, because adequate protein helps preserve muscle while losing fat.</p>
-    <h3>Should I calculate protein from total body weight or lean body mass?</h3>
-    <p>For most people at a typical body composition, total body weight is simpler and close enough. Lean body mass becomes the more sensible basis at higher body-fat percentages, because fat tissue has little protein requirement — using total weight there can overstate the target substantially. Switch the basis toggle above to use lean mass and enter your body-fat percentage.</p>
-    <h3>Can you eat too much protein?</h3>
-    <p>For healthy adults with normal kidney function, intakes in the ranges shown here are generally considered safe in the research literature, and there's no strong evidence they harm healthy kidneys. Very high intakes mostly displace other nutrients and calories rather than causing direct harm. People with existing kidney or liver disease are a genuine exception and should have protein intake set by their doctor, not by a calculator.</p>
-    <h3>Does protein timing matter?</h3>
-    <p>Far less than total daily intake. Hitting your daily target is what matters most; spreading it across roughly 3&ndash;5 meals of 25&ndash;40 g each is a reasonable practical default because it's easier to reach the total that way — not because a narrow post-workout window is critical. The old idea of a 30-minute "anabolic window" has been substantially walked back by later research.</p>
-    <h3>How does protein fit into total calories?</h3>
-    <p>Protein provides 4 calories per gram, so a 160 g daily target is 640 calories — a meaningful share of most people's intake, which is why protein is usually set first and carbs and fat fill the remainder. The calculator shows this figure so you can slot it into a wider calorie budget rather than treating protein in isolation.</p>
-    <p><strong>Worked example:</strong> an 80 kg person building muscle lands in the 1.6&ndash;2.2 g/kg band, so 128&ndash;176 g a day, with a midpoint of 152 g — about 608 calories from protein, or roughly 38 g at each of four meals. If that same person is 20% body fat and switches to a lean-mass basis, lean mass is 64 kg and the same band gives 102&ndash;141 g instead.</p>
-    <p style="font-size:13px;color:rgba(242,236,221,0.55);margin:0 0 24px;">Need the calorie budget this protein fits inside? Use the <a href="tdee-calculator.html">TDEE Calculator</a> for daily burn, or the <a href="macro-calculator.html">Macro Calculator</a> for a full protein/carb/fat split. To estimate the lean-mass figure this page can use as a basis, try the <a href="lean-body-mass-calculator.html">Lean Body Mass Calculator</a> or the <a href="body-fat-calculator.html">Body Fat Calculator</a>. For the other two macronutrients, see the <a href="fat-intake-calculator.html">Fat Intake Calculator</a> and the <a href="macro-calculator.html">Macro Calculator</a>.</p>
+    <h2>Why "1 cup = 240 g" is wrong</h2>
+    <p>A cup is a measure of <em>volume</em>. A gram is a measure of <em>mass</em>. Converting between them requires knowing the density of what you are measuring, and ingredients differ enormously.</p>
+    <table class="data-table">
+      <thead><tr><th>One US cup of…</th><th>Weighs</th></tr></thead>
+      <tbody>
+        <tr><td>Rolled oats</td><td>113 g</td></tr>
+        <tr><td>All-purpose flour</td><td>120 g</td></tr>
+        <tr><td>Granulated sugar</td><td>198 g</td></tr>
+        <tr><td>Butter</td><td>227 g</td></tr>
+        <tr><td>Water</td><td>237 g</td></tr>
+        <tr><td>Honey</td><td>336 g</td></tr>
+      </tbody>
+    </table>
+    <p>That is a threefold spread between oats and honey for the identical volume. Any converter offering a single cups-to-grams number is giving you the right answer for at most one ingredient. The dry-goods figures here follow the King Arthur Baking weight chart, which is the reference most English-language recipes are now standardised against.</p>
+
+    <h2>Flour is where recipes go wrong</h2>
+    <p>Flour is the most compressible common ingredient and the one where volume measurement fails worst. A cup scooped directly from the bag can hold 140 g or more, because the scooping action packs it. The same cup filled by spooning flour in loosely and levelling off holds about 120 g.</p>
+    <p>That is a <strong>17% difference from technique alone</strong>, on the ingredient that most determines whether a bake is tender or tough. It is the single biggest reason the same recipe turns out differently for different people, and it is why serious baking recipes give weights.</p>
+    <p>If a recipe gives only cups and you want to weigh, 120 g per cup of all-purpose flour is the standard assumption — but if the results come out dry, the recipe author was probably scooping, and 130 to 140 g is closer to what they meant.</p>
+
+    <h2>The water discrepancy</h2>
+    <p>You will find charts listing a cup of water as 227 g and others as 237 g. Both are defensible and they mean different things. A US customary cup is 236.588 ml, and water is very close to 1 g per ml, so a cup of water genuinely weighs about <strong>237 g</strong>. The 227 g figure comes from the convention that 8 fluid ounces equals 8 avoirdupois ounces — neat, memorable, and about 4% off. This converter uses real density for liquids.</p>
+
+    <h2>Cups are not the same everywhere</h2>
+    <table class="data-table">
+      <thead><tr><th>Cup</th><th>Volume</th><th>Where</th></tr></thead>
+      <tbody>
+        <tr><td>US customary</td><td>236.6 ml</td><td>US recipes — the default here</td></tr>
+        <tr><td>US legal</td><td>240 ml</td><td>US nutrition labelling</td></tr>
+        <tr><td>Metric</td><td>250 ml</td><td>Australia, NZ, Canada, UK</td></tr>
+        <tr><td>Japanese</td><td>200 ml</td><td>Japan</td></tr>
+      </tbody>
+    </table>
+    <p>The Australian tablespoon is also the odd one out at 20 ml, against 15 ml almost everywhere else — four teaspoons rather than three. In a recipe using several tablespoons of a strong ingredient, that difference is noticeable.</p>
+
+    <h2>Oven temperatures</h2>
+    <table class="data-table">
+      <thead><tr><th>°F</th><th>°C</th><th>Fan / convection °C</th><th>Gas mark</th></tr></thead>
+      <tbody>
+        <tr><td>275</td><td>140</td><td>120</td><td>1</td></tr>
+        <tr><td>300</td><td>150</td><td>130</td><td>2</td></tr>
+        <tr><td>325</td><td>160</td><td>140</td><td>3</td></tr>
+        <tr><td>350</td><td>180</td><td>160</td><td>4</td></tr>
+        <tr><td>375</td><td>190</td><td>170</td><td>5</td></tr>
+        <tr><td>400</td><td>200</td><td>180</td><td>6</td></tr>
+        <tr><td>425</td><td>220</td><td>200</td><td>7</td></tr>
+        <tr><td>450</td><td>230</td><td>210</td><td>8</td></tr>
+      </tbody>
+    </table>
+    <p>Fan ovens circulate air, so they cook faster at the same setting. The convention is to drop about 20 °C from the conventional figure, or reduce the time by roughly a fifth. Most domestic ovens are also several degrees off their dial — an oven thermometer costs very little and settles a lot of arguments about why things bake unevenly.</p>
+
+    <h2>Just weigh it</h2>
+    <p>A digital scale removes the entire problem. It is faster once you are used to it, since you can tare between additions and use one bowl instead of a stack of measuring cups. It is more consistent, because 120 g is 120 g regardless of how you scooped. And it makes scaling trivial — halving 187 g is arithmetic, while halving three-quarters of a cup is fiddly.</p>
+    <h3>How many grams is one cup?</h3>
+    <p>It depends entirely on the ingredient, which is the whole point. A cup of rolled oats is 113 g, all-purpose flour 120 g, granulated sugar 198 g, butter 227 g, water 237 g and honey 336 g — a threefold spread for the identical volume. Any converter that gives a single cups-to-grams figure is right for at most one ingredient, which is why this one asks you to pick.</p>
+    <h3>Why does my baking come out differently from the recipe?</h3>
+    <p>Usually flour measurement. A cup scooped straight from the bag packs down and can hold 140 g or more; the same cup filled by spooning flour in loosely and levelling holds about 120 g. That 17% swing comes from technique alone, on the ingredient that most affects texture. It is the main reason the same recipe behaves differently for different people, and why serious baking recipes give weights.</p>
+    <h3>Is a cup of water 227 g or 237 g?</h3>
+    <p>About 237 g. A US customary cup is 236.588 ml and water is essentially 1 g per ml. The 227 g figure comes from treating 8 fluid ounces as 8 ounces by weight, which is a tidy convention but about 4% off. Some charts use it for all liquids, which compounds the error. This converter uses real density for liquids and the standard baking chart figures for dry goods.</p>
+    <h3>Are cups the same size in every country?</h3>
+    <p>No. A US customary cup is 236.6 ml, the US legal cup used on nutrition labels is 240 ml, the metric cup used in Australia, New Zealand, Canada and the UK is 250 ml, and a Japanese cup is 200 ml. The Australian tablespoon is also 20 ml against 15 ml elsewhere — four teaspoons rather than three. This tool uses the US customary cup, which is what most online recipes assume.</p>
+    <h3>Should I use a scale instead of cups?</h3>
+    <p>For baking, yes. It is more consistent, since a weight does not depend on how you scooped; it is usually faster, because you can tare between additions and use one bowl; and it makes scaling a recipe up or down trivial. Cups remain fine for liquids and for cooking where precision matters less. Most experienced bakers switched to weight and did not go back.</p>
   </section>
 
+  <p style="font-size:13px;color:rgba(242,236,221,0.55);margin:0 0 24px;">Related: <a href="unit-converter.html">Unit Converter</a> · <a href="density-calculator.html">Density Calculator</a> · <a href="celsius-to-fahrenheit.html">Celsius to Fahrenheit</a> · <a href="calorie-calculator.html">Calorie Calculator</a></p>
 
   <footer>
     <p>TALLYBENCH · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
