@@ -428,6 +428,61 @@
       "date": "2026-07-29",
       "readTime": "8 min read",
       "topic": "studentloans"
+    },
+    {
+      "id": "fed-holds-july-2026-three-dissents",
+      "file": "fed-holds-july-2026-three-dissents.html",
+      "category": "finance",
+      "topic": "rates",
+      "tag": "US RATE DECISION",
+      "title": "The Fed Held Again — But Three Officials Voted to Raise Rates",
+      "dek": "The FOMC kept the federal funds rate at 3.50–3.75% on a 9–3 vote. All three dissenters wanted a hike, not a cut — and the statement blames supply shocks in energy, the same diagnosis the RBI gave six weeks ago.",
+      "date": "2026-07-29",
+      "readTime": "7 min read"
+    },
+    {
+      "id": "prepay-loan-or-invest",
+      "file": "prepay-loan-or-invest.html",
+      "category": "finance",
+      "topic": "borrowing",
+      "tag": "ORIGINAL ANALYSIS",
+      "title": "Prepay the Loan or Invest the Difference? We Found the Exact Crossover",
+      "dek": "We modelled both choices over a full loan term at every return from 1% to 25%, at six different loan rates. The break-even landed within 0.1 percentage points of the loan rate itself, every time.",
+      "date": "2026-07-29",
+      "readTime": "8 min read"
+    },
+    {
+      "id": "how-much-you-need-to-retire",
+      "file": "how-much-you-need-to-retire.html",
+      "category": "finance",
+      "topic": "retirement",
+      "tag": "RETIREMENT",
+      "title": "How Much Do You Actually Need to Retire? The 4% Rule Is Now 3.9%",
+      "dek": "Morningstar puts the 2026 safe withdrawal rate at 3.9% for fixed spending. Applied honestly with inflation, funding a ₹50,000-a-month lifestyle 25 years out needs ₹6.6 crore, not ₹1.5 crore.",
+      "date": "2026-07-29",
+      "readTime": "8 min read"
+    },
+    {
+      "id": "sip-vs-lump-sum",
+      "file": "sip-vs-lump-sum.html",
+      "category": "finance",
+      "topic": "retirement",
+      "tag": "INVESTING",
+      "title": "SIP vs Lump Sum: The Question Most People Are Actually Asking Is Different",
+      "dek": "Vanguard found lump-sum investing beat phasing in about two thirds of the time. That finding says nothing about a SIP funded from salary — and conflating the two is why this debate never resolves.",
+      "date": "2026-07-29",
+      "readTime": "7 min read"
+    },
+    {
+      "id": "what-moves-your-credit-score",
+      "file": "what-moves-your-credit-score.html",
+      "category": "finance",
+      "topic": "borrowing",
+      "tag": "CREDIT",
+      "title": "What Actually Moves Your Credit Score — and What Does Nothing",
+      "dek": "Payment history is 35% of a FICO score and amounts owed 30%. Most of the advice people follow targets the 10% categories, and closing an old card actively hurts two of them.",
+      "date": "2026-07-29",
+      "readTime": "7 min read"
     }
   ],
   "topics": [
