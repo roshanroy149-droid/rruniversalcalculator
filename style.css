@@ -498,8 +498,25 @@ body.nav-open .nav-backdrop{display:block;}
   color:var(--ink-dim);margin:0;
 }
 @media(max-width:640px){
-  .book-layout{flex-direction:column;gap:22px;}
+  /* align-items:stretch is REQUIRED here, not cosmetic. The base rule sets
+     align-items:flex-start, which in a column flex container makes each child
+     size to its MAX-CONTENT width. .book-intro-col contains the contents table
+     (min-width:420px), so on a 375px screen the column grew to 420px and its
+     right-hand side was cut off — html/body overflow-x:hidden clipped it
+     rather than letting it scroll, so the text was simply unreachable.
+     With stretch the column fills 327px and .table-scroll scrolls the wide
+     table inside itself, which is what it exists to do. */
+  .book-layout{flex-direction:column;gap:22px;align-items:stretch;}
   .book-cover-col{flex:1 1 auto;width:100%;max-width:260px;margin:0 auto;}
+  .book-intro-col{width:100%;min-width:0;}
+  /* The shared .bracket-table min-width:420px is right for numeric tables on
+     calculator pages — those must not reflow. The book contents list is prose
+     (chapter names and links) and wraps fine, so it drops the min-width and
+     fits the screen instead of hiding half of itself behind a sideways
+     scroller the reader has to discover. */
+  .bracket-table.book-contents{min-width:0;font-size:11.5px;}
+  .bracket-table.book-contents th,
+  .bracket-table.book-contents td{padding:8px 10px;}
 }
 
 /* PRODUCT LOCKUP — brand mark beside the product name, in the hero of a
