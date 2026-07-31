@@ -39,7 +39,9 @@
   --ink-strong:rgba(var(--cream),0.75);
   --ink-soft:rgba(var(--cream),0.6);
   --ink-muted:rgba(var(--cream),0.55);
-  --ink-dim:rgba(var(--cream),0.5);
+  /* 0.5 measured 4.45:1 on the page shell — just under AA, and the brighter
+     backdrop washes shipped with the glass push it further. 0.58 clears it. */
+  --ink-dim:rgba(var(--cream),0.58);
   --rule-strong:rgba(var(--cream),0.25);
   --rule-mid:rgba(var(--cream),0.15);
   --rule:rgba(var(--cream),0.1);
@@ -397,7 +399,11 @@ body.nav-open .nav-backdrop{display:block;}
   width:100vw;margin-left:calc(50% - 50vw);
   padding:54px 0 46px;border-bottom:none;
 }
-.article-hero.cat-finance{background:linear-gradient(135deg, var(--orange-dark), #6E4C1B);}
+/* Light stop darkened from --orange-dark #9C6E24: that stop gave even PURE
+   WHITE only 4.50:1, so every lighter-weight element on the finance banner
+   (dek, meta, tag) failed AA at the light end of the gradient. The other three
+   category bands are dark enough already and are unchanged. */
+.article-hero.cat-finance{background:linear-gradient(135deg, #7A5620, #5E4117);}
 .article-hero.cat-health{background:linear-gradient(135deg, var(--teal-dark), #15302C);}
 .article-hero.cat-education{background:linear-gradient(135deg, var(--plum), #46283C);}
 .article-hero.cat-everyday{background:linear-gradient(135deg, var(--steel), var(--steel-dark));}
@@ -558,7 +564,9 @@ body.nav-open .nav-backdrop{display:block;}
   font-size:14.5px;color:rgba(var(--cream),0.68);line-height:1.55;margin:0 0 12px;max-width:640px;
 }
 .article-card-meta{
-  display:flex;gap:8px;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:rgba(var(--cream),0.45);
+  /* 0.45 measured 3.85:1 on the page shell — under AA. --ink-muted (0.55)
+     gives 5.28:1, and reuses the token rather than inventing another alpha. */
+  display:flex;gap:8px;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--ink-muted);
 }
 
 /* AD SLOT */
@@ -682,13 +690,16 @@ textarea{resize:vertical;min-height:120px;font-family:'Inter',sans-serif;}
 button{
   font-family:'JetBrains Mono',monospace;
   font-size:12px;letter-spacing:0.05em;text-transform:uppercase;
-  background:var(--orange);color:#fff;
+  /* Same fix as .article-cta-btn: white on var(--orange) #C08A34 is only
+     3.03:1, under AA for 12px uppercase. #8A5C24 gives 5.77:1. Applies to
+     every primary button on the site, including the consent banner's Accept. */
+  background:#8A5C24;color:#fff;
   border:none;border-radius:var(--radius-sm);
   padding:11px 18px;cursor:pointer;
   transition:transform .12s, box-shadow .12s, background .15s;
-  box-shadow:0 2px 0 var(--orange-dark), var(--shadow-sm);
+  box-shadow:0 2px 0 #6B4619, var(--shadow-sm);
 }
-button:hover{background:#CE9A44;}
+button:hover{background:#9C6E24;}
 button:active{transform:translateY(2px);box-shadow:0 0 0 var(--orange-dark);}
 button.ghost{
   background:transparent;color:var(--teal-dark);border:1px solid var(--teal);
@@ -696,6 +707,13 @@ button.ghost{
 }
 button.ghost:hover{background:rgba(47,110,104,0.08);}
 button.ghost:active{transform:translateY(1px);}
+/* Ghost buttons inside the readout sit on the DARK display panel, so the
+   light-panel teal above renders at 1.96:1 there. Some readout buttons carried
+   a cream inline style and looked fine, which masked the ones that did not
+   (Reset / Copy result / Copy link in .result-actions). This covers all of
+   them from the stylesheet instead of relying on per-page inline styles. */
+.readout button.ghost{color:var(--ink-strong);border-color:var(--rule-strong);}
+.readout button.ghost:hover{background:rgba(var(--cream),0.08);}
 .btn-row{display:flex;gap:10px;margin-top:4px;flex-wrap:wrap;}
 
 footer{padding:40px 0 60px;text-align:center;}
@@ -831,7 +849,7 @@ footer a{color:var(--teal-light) !important;}
    banner, not an immersive band. Uses the exact same gradients as the
    homepage's zones so a Finance tool page and the Finance zone read as the
    same color. */
-.hero:has(.hero-icon-row.cat-finance){background:linear-gradient(135deg, var(--orange-dark), #6E4C1B);}
+.hero:has(.hero-icon-row.cat-finance){background:linear-gradient(135deg, #7A5620, #5E4117);}
 .hero:has(.hero-icon-row.cat-health){background:linear-gradient(135deg, var(--teal-dark), #15302C);}
 .hero:has(.hero-icon-row.cat-education){background:linear-gradient(135deg, var(--plum), #46283C);}
 .hero:has(.hero-icon-row.cat-utility),
@@ -936,9 +954,14 @@ footer a{color:var(--teal-light) !important;}
   overflow-x:auto;white-space:nowrap;text-align:right;
   text-shadow:0 0 18px rgba(242,217,160,0.2);
 }
-.sci-mode{display:flex;gap:8px;margin-bottom:10px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--graphite);}
+/* .sci-mode sits directly on the DARK page shell, not inside the light .card,
+   so it must not use --graphite: that is the muted grey for light panels and
+   renders at 1.76:1 here. --ink-muted is the cream equivalent, 5.28:1 on the
+   shell. (This rule also wins over button.ghost for the "Copy result" button,
+   which lives inside .sci-mode — same specificity, later in the file.) */
+.sci-mode{display:flex;gap:8px;margin-bottom:10px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-muted);}
 .sci-mode button{
-  background:transparent;color:var(--graphite);border:1px solid var(--paper-line);
+  background:transparent;color:var(--ink-muted);border:1px solid var(--paper-line);
   padding:5px 10px;font-size:10px;box-shadow:none;
 }
 .sci-mode button.active{background:var(--plum);color:#fff;border-color:var(--plum);}
@@ -953,7 +976,8 @@ footer a{color:var(--teal-light) !important;}
 .sci-grid button:hover{border-color:var(--plum);background:#fff;}
 .sci-grid button:active{transform:translateY(1px);}
 .sci-grid button.op{background:var(--plum);color:#fff;border-color:var(--plum);}
-.sci-grid button.eq{background:var(--orange);color:#fff;border-color:var(--orange);}
+/* #8A5C24 not var(--orange): white on #C08A34 is 3.03:1, under AA. 5.77:1 here. */
+.sci-grid button.eq{background:#8A5C24;color:#fff;border-color:#8A5C24;}
 .sci-grid button.wide{grid-column:span 2;}
 /* Basic calculator reuses the scientific keypad styling on a 4-column grid. */
 .sci-grid.cols-4{grid-template-columns:repeat(4,minmax(0,1fr));}
@@ -1048,7 +1072,7 @@ footer a{color:var(--teal-light) !important;}
    brighter base tones surface only as accents (chip border, bottom bar, icon
    tint on the floating white cards) so they don't fight the ground. */
 .zone{width:100vw;margin-left:calc(50% - 50vw);padding:54px 0 50px;}
-.zone-finance{background:linear-gradient(135deg, var(--orange-dark), #6E4C1B);}
+.zone-finance{background:linear-gradient(135deg, #7A5620, #5E4117);}
 .zone-health{background:linear-gradient(135deg, var(--teal-dark), #15302C);}
 .zone-education{background:linear-gradient(135deg, var(--plum), #46283C);}
 .zone-everyday{background:linear-gradient(135deg, var(--steel), var(--steel-dark));}
@@ -1250,6 +1274,13 @@ body.nav-open .tb-chat-panel{display:none;}
   display:flex;align-items:center;gap:14px;flex-wrap:wrap;
 }
 .tb-embed-hint{font-size:13px;color:var(--ink-soft);flex:1 1 220px;}
+/* This row sits on the DARK page shell, unlike every other ghost button, which
+   lives inside the light .card or the white embed modal. The base
+   button.ghost colour (--teal-dark #234F4A) is a dark teal meant for light
+   panels and renders at 1.61:1 here — effectively invisible, on a button
+   present on all 200 calculator pages. --teal-light is the dark-surface
+   counterpart. */
+.tb-embed-row button.ghost{color:var(--teal-light);border-color:var(--teal-light);}
 .tb-embed-row button{font-size:12px;}
 .tb-embed-backdrop{
   position:fixed;inset:0;z-index:300;
@@ -1372,3 +1403,232 @@ body.nav-open .tb-chat-panel{display:none;}
   padding:6px 13px;transition:color .15s,border-color .15s,background .15s;
 }
 .topic-nav a:hover{color:var(--copper);border-color:var(--copper);background:rgba(212,163,115,0.07);}
+
+/* ============================================================================
+   GLASS MATERIAL
+   ----------------------------------------------------------------------------
+   Shipped 2026-07-31. This block sits at the END of the file on purpose: every
+   rule here overrides an earlier base rule at matching specificity, and at
+   equal specificity source order decides (CLAUDE.md 2). Moving it above the
+   rules it overrides would silently do nothing.
+
+   The governing rule: CONTAINERS GET GLASS, CONTROLS STAY SOLID. Anything you
+   type into, tap, or read a number off keeps a hard opaque edge. Inputs,
+   selects, segmented toggles, buttons and the readout are deliberately
+   untouched.
+
+   Why this works without a palette change: the four category zones are already
+   saturated colour bands and the tool cards sit directly on them. Frosting a
+   card lets that colour bend through, which is what reads as glass. Glass needs
+   colour underneath; this page already had it in the right place.
+   ========================================================================= */
+
+:root{
+  /* 0.74/0.70 = 26-30% see-through. A notch back from the 36% maximum, which
+     keeps a contrast margin (5.15:1 against a 4.67:1 floor) while still
+     reading unmistakably as glass. */
+  --card-a-top:0.74;
+  --card-a-bot:0.70;
+
+  /* Two blur weights, no more. Past two the page stops reading as one material. */
+  --g-blur:blur(20px) saturate(1.6);
+  --g-blur-sm:blur(12px) saturate(1.3);
+
+  /* The specular top edge. This, not the blur, is what makes a translucent
+     panel read as a physical sheet of glass with a lit edge. */
+  --g-lip:inset 0 1px 0 rgba(255,255,255,0.75);
+  --g-lip-dark:inset 0 1px 0 rgba(var(--cream),0.20);
+
+  /* THE ONE COLOUR CHANGE, and it is the price of the glass.
+     --graphite is the muted body grey on light panels. It is the single number
+     capping how transparent a card can be: at #6E6455 the ceiling was 12%
+     see-through, which read as "slightly off-white card" rather than glass.
+     #4A4238 raises that ceiling to ~36%. There is no way to have both the old
+     grey and real frosting - the contrast maths forbids it. Every consumer of
+     --graphite was re-measured on its own background before this shipped. */
+  --graphite:#4A4238;
+}
+
+/* PAGE BACKDROP - the two washes already here are lifted from 0.05 to 0.26 and
+   a third added. At 0.05 there was effectively nothing behind the header for it
+   to refract, so the glass read as a flat grey bar at scroll-top. Same hues,
+   same positions, turned up until the material works. */
+body{
+  background:
+    radial-gradient(1100px 480px at 8% -10%, rgba(192,138,52,0.26), transparent 60%),
+    radial-gradient(900px 420px at 100% 0%, rgba(47,110,104,0.26), transparent 55%),
+    radial-gradient(900px 500px at 50% 120%, rgba(124,74,107,0.18), transparent 60%),
+    linear-gradient(180deg, var(--ink), #211E19);
+  background-attachment:fixed;
+}
+
+/* HEADER - alpha 0.78 -> 0.52 with saturation pushed. This is where the
+   material is most obvious: scroll a saturated category band underneath and the
+   whole bar takes that band's colour (measured: rgb(29,27,24) over the plain
+   page vs rgb(68,51,25) over the finance band). At 0.78 it stayed the same
+   near-black regardless of what was behind it. */
+header{
+  background:linear-gradient(165deg, rgba(33,30,25,0.46), rgba(28,26,23,0.56));
+  -webkit-backdrop-filter:blur(26px) saturate(2.1);
+  backdrop-filter:blur(26px) saturate(2.1);
+  box-shadow:var(--g-lip-dark), 0 4px 18px rgba(0,0,0,0.25);
+}
+.nav-drawer{
+  background:rgba(28,26,23,0.62);
+  -webkit-backdrop-filter:var(--g-blur);
+  backdrop-filter:var(--g-blur);
+}
+.nav-backdrop{-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);}
+
+/* TOOL CARDS - the heart of it. No backdrop-filter here, deliberately: a card
+   sits on a smooth zone gradient, which has no high-frequency detail to blur,
+   so the filter would cost one compositing layer per card (200 of them) for no
+   visible gain. The transparency and the lit edge do all the work. */
+.tool-card-link{
+  background:linear-gradient(180deg, rgba(255,255,255,var(--card-a-top)), rgba(255,255,255,var(--card-a-bot)));
+  border:1px solid rgba(255,255,255,0.55);
+  box-shadow:var(--g-lip), 0 1px 2px rgba(28,26,23,0.10), 0 4px 12px rgba(0,0,0,0.10);
+}
+.tool-card-link:hover{
+  background:linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,255,255,0.90));
+  border-color:rgba(255,255,255,0.85);
+  box-shadow:var(--g-lip), 0 16px 38px rgba(0,0,0,0.22), 0 4px 10px rgba(0,0,0,0.14);
+}
+
+.zone-chip{
+  background:rgba(255,255,255,0.22);
+  -webkit-backdrop-filter:var(--g-blur-sm);
+  backdrop-filter:var(--g-blur-sm);
+  border:1px solid rgba(255,255,255,0.42);
+  box-shadow:var(--g-lip);
+}
+.zone-viewall{
+  background:rgba(255,255,255,0.16);
+  -webkit-backdrop-filter:var(--g-blur-sm);
+  backdrop-filter:var(--g-blur-sm);
+  border-color:rgba(255,255,255,0.42);
+  box-shadow:var(--g-lip);
+}
+.zone-viewall:hover{background:rgba(255,255,255,0.30);}
+
+/* The search INPUT stays solid - only the results panel, which genuinely floats
+   over content, becomes glass. */
+.tb-search-results{
+  background:rgba(255,255,255,0.90);
+  -webkit-backdrop-filter:var(--g-blur);
+  backdrop-filter:var(--g-blur);
+  border:1px solid rgba(255,255,255,0.6);
+  box-shadow:var(--g-lip), 0 16px 38px rgba(0,0,0,0.28);
+}
+
+/* .card is the LIGHT panel holding every calculator's inputs - it carries
+   color:var(--ink). It must NOT get a dark background: an earlier attempt did
+   that and turned the panel dark while the text stayed dark ink, making field
+   labels like "Currency" unreadable. A light panel on a dark page is exactly a
+   tool card, so it takes exactly the tool card's frosting. */
+.card{
+  background:linear-gradient(180deg, rgba(255,255,255,var(--card-a-top)), rgba(255,255,255,var(--card-a-bot)));
+  border:1px solid rgba(255,255,255,0.55);
+  box-shadow:var(--g-lip), 0 4px 14px rgba(0,0,0,0.12);
+}
+#installBanner{
+  background:linear-gradient(165deg, rgba(33,30,25,0.70), rgba(28,26,23,0.78));
+  -webkit-backdrop-filter:var(--g-blur);
+  backdrop-filter:var(--g-blur);
+  border:1px solid var(--rule);
+  box-shadow:var(--g-lip-dark), var(--shadow-md);
+}
+/* Highest opacity of the three floating panels: a legal notice must stay fully
+   legible over whatever it happens to be above. */
+#cookieConsent{
+  background:linear-gradient(165deg, rgba(33,30,25,0.86), rgba(28,26,23,0.90));
+  -webkit-backdrop-filter:var(--g-blur);
+  backdrop-filter:var(--g-blur);
+  box-shadow:var(--g-lip-dark), 0 -8px 24px rgba(0,0,0,0.25);
+}
+
+/* CALCULATOR PAGES */
+.sub-ruler{
+  background:rgba(20,18,16,0.62);
+  -webkit-backdrop-filter:var(--g-blur);
+  backdrop-filter:var(--g-blur);
+}
+.sub-ruler[data-open-cat="finance"]  {background:linear-gradient(180deg, rgba(192,138,52,0.22), rgba(20,18,16,0.66) 65%);}
+.sub-ruler[data-open-cat="health"]   {background:linear-gradient(180deg, rgba(47,110,104,0.26), rgba(20,18,16,0.66) 65%);}
+.sub-ruler[data-open-cat="education"]{background:linear-gradient(180deg, rgba(124,74,107,0.26), rgba(20,18,16,0.66) 65%);}
+.sub-ruler[data-open-cat="everyday"] {background:linear-gradient(180deg, rgba(61,90,115,0.26), rgba(20,18,16,0.66) 65%);}
+
+/* Data tables and disclaimers are light panels on a dark page - same situation
+   as a tool card, same frosting, so the page reads as one material. */
+.bracket-table,
+.data-table{
+  background:linear-gradient(180deg, rgba(255,255,255,var(--card-a-top)), rgba(255,255,255,var(--card-a-bot)));
+}
+.bracket-table th,
+.data-table th{background:rgba(28,26,23,0.07);}
+.bracket-table tbody tr:hover,
+.data-table tbody tr:hover{background:rgba(192,138,52,0.10);}
+/* Links inside these tables inherit --teal-light, which is the DARK-surface
+   teal. On the frosted panel it drops to 1.26:1 — and frosting genuinely made
+   this worse than the old solid white (2.14:1), because the panel moved closer
+   to the link colour's own lightness. --teal-dark is the light-surface
+   counterpart: 4.72:1 here. Affects book.html's contents list and any data
+   table carrying links. */
+.bracket-table a,
+.data-table a{color:var(--teal-dark);}
+.disclaimer{
+  background:linear-gradient(180deg, rgba(255,255,255,var(--card-a-top)), rgba(255,255,255,var(--card-a-bot)));
+  box-shadow:var(--g-lip), 0 1px 2px rgba(28,26,23,0.10);
+}
+
+/* THE READOUT STAYS SOLID. It is the one lit display on the page - the thing
+   the calculator exists to produce. A display reads as a display because it is
+   opaque; frosting it would make the answer look like just another panel. Only
+   the specular edge is added, to tie it to the material around it. */
+.readout{
+  box-shadow:var(--shadow-inset), var(--g-lip-dark), 0 6px 20px rgba(0,0,0,0.28);
+}
+
+/* ARTICLE PAGES - the hero is already a saturated band; it needs no glass, it
+   IS the colour other things refract. It only gains a lit lower edge. */
+.article-hero{box-shadow:inset 0 -1px 0 rgba(255,255,255,0.16);}
+/* Tag alpha stays 0.16. Raising it for "more glass" was a regression: the text
+   is WHITE, so lightening its background LOWERS contrast (5.15:1 -> 4.44:1,
+   under AA). Light-on-light inverts the usual instinct - measure it separately.
+   The glass read here comes from blur and the lit border, which cost nothing. */
+.article-tag{
+  background:rgba(255,255,255,0.16);
+  -webkit-backdrop-filter:var(--g-blur-sm);
+  backdrop-filter:var(--g-blur-sm);
+  border:1px solid rgba(255,255,255,0.42);
+  box-shadow:var(--g-lip);
+}
+.article-body .callout{
+  background:rgba(var(--cream),0.09);
+  -webkit-backdrop-filter:var(--g-blur-sm);
+  backdrop-filter:var(--g-blur-sm);
+  box-shadow:var(--g-lip-dark);
+}
+/* Secondary CTA only - the primary stays solid so the asked-for action never
+   competes with the material. */
+.article-cta-btn.ghost{
+  background:rgba(95,187,176,0.10);
+  -webkit-backdrop-filter:var(--g-blur-sm);
+  backdrop-filter:var(--g-blur-sm);
+}
+
+/* ---------------------------------------------------------------------------
+   MOBILE RE-ASSERT - REQUIRED, NOT OPTIONAL.
+   Two earlier @media(max-width:640px) rules are overridden by the block above
+   purely because that block comes later in the file. They are restored here,
+   after it, so they win again at the breakpoint:
+     .tool-card-link box-shadow:none  - the mobile icon grid is deliberately
+       flat; without this every icon tile regains a desktop drop shadow.
+     .sub-ruler background            - the mobile sub-nav has its own much
+       lighter treatment; the blur is kept so it is still glass.
+   Verified at 375px after shipping, not assumed.
+------------------------------------------------------------------------------ */
+@media(max-width:640px){
+  .tool-card-link{box-shadow:none;}
+  .sub-ruler{background:rgba(0,0,0,0.15);}
+}
