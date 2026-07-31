@@ -68,6 +68,20 @@ That is roughly 30–40 diarisable pieces a year without inventing a single obli
   - **The workflow compares files with the `TB:` marker blocks stripped out, and this matters.** Adding one tool changes the count in the header of every page, so a plain `git diff` reports ~190 changed files when only a handful actually changed content. Before this filter existed, a single-tool push submitted 193 URLs to IndexNow of which 14 were real — repeatedly telling Bing the entire site had changed. If you ever touch this workflow, keep the strip-and-compare step; submitting the whole inventory on every push is worse than not submitting at all.
 - **`og-image.png`** (1200×630, rendered via a one-off Puppeteer + local Chrome script, not hand-drawn) is the shared social-preview image referenced by `og:image`/`twitter:image` on every page. If the brand visual identity changes meaningfully, regenerate it (a headless Chrome binary is already available locally for this — see git history for the render script) rather than leaving it stale.
 - Every page uses `twitter:card content="summary_large_image"` (not the smaller `summary` card) now that there's a real image to show.
+## 1.5 Alignment and symmetry — the owner's top visual priority
+
+**Stated 2026-07-30 as a standing rule for TallyBench and every other site built for this owner, not one-off feedback on one page:** *"alignments are very important to me. Where the line ends, where the line starts, boxes, everything. There needs to be a proper alignment. Symmetry is topmost important thing for me, visually."*
+
+Treat this as a hard acceptance criterion, at the same level as "the calculator returns the right number". Several visual directions were rejected as "just okay" before this surfaced, and misalignment is the most likely reason.
+
+- **One spacing scale, no exceptions.** Adopt an 8px base and take every padding, margin and gap from it. A one-off `13px` is a defect even if it looks fine. (`style.css` predates this rule and is not yet on a strict scale — apply it to new work and normalise opportunistically rather than in one sweep.)
+- **One container for every section**, so the left and right edges form an unbroken line from nav to footer. Verify by measuring, not by eye.
+- **Pick a column count and make the maths land on whole pixels.** With 12 columns and 16px gutters, `--container:1172px` gives content 1124px → columns of exactly 79px. Fractional column widths put box edges on sub-pixel boundaries, which is what makes a technically-correct grid still read as faintly ragged.
+- **Rows are uniform.** Use `grid-auto-rows:<fixed>` on card grids rather than letting content set each row's height — one row 18px taller than its neighbours breaks the rhythm visibly. Add `overflow:hidden` and check nothing clips.
+- **Side-by-side columns share a top AND a bottom edge.** `align-items:center` on a hero grid leaves both edges mismatched; use `stretch` and push the inner block down with `margin-top:auto`.
+- **Verify with `getBoundingClientRect()`, never by eye.** Collect the left edges of every major block, the right edges of every trailing element, and the heights within each grid row, then assert each set has exactly one distinct value. This is checkable, so check it before showing the work — a build-time grid overlay in a prototype is worth the ten minutes it costs.
+- **Light-on-light inverts the usual instinct.** Raising a translucent panel's white alpha *lowers* contrast for white text on it. Measure light-on-light separately from dark-on-light; a change that helps one can break the other (caught this way on `.article-tag`, 5.15:1 → 4.44:1).
+
 ## 2. CSS rules that have bitten us more than once
 
 - **Source order decides ties.** A media-query override and the base rule it overrides must have the override placed *after* the base rule in the file. Media queries don't add specificity — at equal specificity, whichever rule is later in the file wins, full stop, regardless of which one "sounds more specific." Placing an override before its base rule silently does nothing.

@@ -395,7 +395,9 @@ body.nav-open .nav-backdrop{display:block;}
 .article-dek{color:rgba(255,255,255,0.78);font-size:17px;line-height:1.6;max-width:640px;margin:0 0 22px;}
 .article-meta{
   display:flex;flex-wrap:wrap;align-items:center;gap:8px;
-  font-family:'JetBrains Mono',monospace;font-size:12px;color:rgba(255,255,255,0.62);
+  /* 0.62 measured 4.1:1 on the finance hero band — under the 4.5 AA bar for
+     12px text. 0.78 gives 5.19:1 on the same band, the tightest of the four. */
+  font-family:'JetBrains Mono',monospace;font-size:12px;color:rgba(255,255,255,0.78);
 }
 @media(max-width:480px){.article-hero{padding:36px 0 30px;}}
 
@@ -428,12 +430,23 @@ body.nav-open .nav-backdrop{display:block;}
 .article-cta-btn{
   font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.05em;text-transform:uppercase;
   text-decoration:none;display:inline-flex;align-items:center;gap:8px;
-  background:var(--orange);color:#fff;border-radius:var(--radius-sm);padding:11px 18px;
+  /* Background darkened from var(--orange) #C08A34: white on that is only
+     3.03:1, under AA for 12px uppercase text. #8A5C24 gives 5.77:1. */
+  background:#8A5C24;color:#fff;border-radius:var(--radius-sm);padding:11px 18px;
   transition:transform .12s, box-shadow .12s, background .15s;
 }
-.article-cta-btn:hover{background:var(--orange-dark);}
+.article-cta-btn:hover{background:#754D1E;}
 .article-cta-btn.ghost{background:transparent;color:var(--teal-light);border:1px solid var(--teal-light);}
 .article-cta-btn.ghost:hover{background:rgba(95,187,176,0.1);}
+
+/* These CTAs are <a> elements sitting inside .article-body, and
+   `.article-body a{color:var(--teal-light)}` has specificity (0,1,1) which
+   beats `.article-cta-btn` at (0,1,0). The white declared above therefore
+   never applied and the primary CTA rendered TEAL ON ORANGE at 1.33:1 —
+   effectively unreadable, on every article carrying a CTA row. Matching the
+   element part of the selector restores the intended colours. */
+.article-body a.article-cta-btn{color:#fff;}
+.article-body a.article-cta-btn.ghost{color:var(--teal-light);}
 
 /* BOOK PAGE — cover alongside intro copy on desktop, stacked on mobile.
    The cover is a fixed-aspect JPEG (440x704) with width/height attributes on

@@ -95,6 +95,14 @@ function New-CountInlineBlock($indent) {
     return "$($data.tools.Count)"
 }
 
+# Same idea for the article/guide count. Added because the hero SVG's second
+# readout said "65 new" under the label "UPDATED THIS WEEK" — a claim that was
+# both stale and unverifiable, since nothing recomputes it. Replaced with a
+# generated count of a thing that actually exists and can be checked.
+function New-ArticleCountInlineBlock($indent) {
+    return "$($articleData.articles.Count)"
+}
+
 # Maps a category id to the CSS modifier class used on homepage tool cards.
 # "everyday" historically used "cat-utility" rather than "cat-everyday", so
 # this isn't a straight "cat-$id" — kept as an explicit map to avoid guessing.
@@ -258,15 +266,39 @@ function Sync-Marker($content, $markerName, $generator) {
         return $null # marker not present in this file; caller decides whether that's ok
     }
 
+    # Replace EVERY occurrence, not just the first. index.html carries two
+    # COUNTINLINE blocks (the hero sentence and the hero SVG readout); when this
+    # only rewrote the first match, the second silently kept whatever number was
+    # typed the day it was written — which is how the SVG sat at "135" while the
+    # site had 200 tools. A marker that is only sometimes generated is worse
+    # than no marker, because it looks maintained.
     $pattern = [regex]::Escape($startTag) + '(?s).*?' + [regex]::Escape($endTag)
-    $m = [regex]::Match($content, $pattern)
+    $re = [regex]::new($pattern)
+    $searchFrom = 0
+    $found = $false
 
-    $indentMatch = [regex]::Match($content, '(?m)^([ \t]*)' + [regex]::Escape($startTag))
-    $indent = $indentMatch.Groups[1].Value
+    while ($true) {
+        $m = $re.Match($content, $searchFrom)
+        if (-not $m.Success) { break }
+        $found = $true
 
-    $body = & $generator $indent
-    $replacement = "$startTag$nl$body$nl$indent$endTag"
-    return $content.Substring(0, $m.Index) + $replacement + $content.Substring($m.Index + $m.Length)
+        # Indentation is resolved per occurrence: take the text between the
+        # start of this match's line and the match itself, and use it only if
+        # it is pure whitespace (i.e. the marker really does start a line).
+        # An inline marker mid-line correctly yields no indent.
+        $lineStart = $content.LastIndexOf("`n", $m.Index)
+        if ($lineStart -lt 0) { $lineStart = 0 } else { $lineStart++ }
+        $prefix = $content.Substring($lineStart, $m.Index - $lineStart)
+        $indent = if ($prefix -match '^[ \t]*$') { $prefix } else { '' }
+
+        $body = & $generator $indent
+        $replacement = "$startTag$nl$body$nl$indent$endTag"
+        $content = $content.Substring(0, $m.Index) + $replacement + $content.Substring($m.Index + $m.Length)
+        $searchFrom = $m.Index + $replacement.Length
+    }
+
+    if (-not $found) { return $null }
+    return $content
 }
 
 function Migrate-IfNeeded($content, $markerName, $legacyPattern) {
@@ -306,6 +338,9 @@ foreach ($f in $htmlFiles) {
     # Optional — only the few pages that cite the count in prose carry these.
     $countInlineResult = Sync-Marker $content 'COUNTINLINE' { param($indent) New-CountInlineBlock $indent }
     if ($null -ne $countInlineResult) { $content = $countInlineResult }
+
+    $articleCountInlineResult = Sync-Marker $content 'ARTICLECOUNTINLINE' { param($indent) New-ArticleCountInlineBlock $indent }
+    if ($null -ne $articleCountInlineResult) { $content = $articleCountInlineResult }
 
     $homeGridResult = Sync-Marker $content 'HOMEGRID' { param($indent) New-HomeGridBlock $indent }
     if ($null -ne $homeGridResult) { $content = $homeGridResult }
