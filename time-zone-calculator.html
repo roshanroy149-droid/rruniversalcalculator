@@ -413,10 +413,12 @@
         <p class="r-note" id="tzNote"></p>
       </div>
     </div>
+    <div class="table-scroll">
     <table class="data-table" style="margin-top:20px;">
       <thead><tr><th>City</th><th>Local time</th><th>Zone</th><th>Offset</th><th>Date</th></tr></thead>
       <tbody id="tzTable"></tbody>
     </table>
+    </div>
   </section>
 
   <section class="article">
@@ -425,6 +427,7 @@
     <p>This converter uses the browser's own IANA time zone database through the <code>Intl</code> API, which is why it gets the awkward cases right. It resolves the offset <strong>for the date you selected</strong>, not for today — so a meeting in January and a meeting in July between London and New York produce different answers, as they should.</p>
 
     <h2>The awkward offsets</h2>
+    <div class="table-scroll">
     <table class="data-table">
       <thead><tr><th>Place</th><th>Offset</th><th>Note</th></tr></thead>
       <tbody>
@@ -436,6 +439,7 @@
         <tr><td>China</td><td>UTC+8</td><td>One zone across five geographic zones' worth of longitude</td></tr>
       </tbody>
     </table>
+    </div>
     <p>China is the extreme case of political rather than solar time: the whole country runs on Beijing time, so in the far west of Xinjiang the sun can rise close to 10 am by the clock.</p>
 
     <h2>Daylight saving is not synchronised</h2>

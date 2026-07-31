@@ -447,6 +447,7 @@
     <p>The pattern generalises. Usable hosts equal <strong>2<sup>(32−prefix)</sup> − 2</strong>. A /25 gives 126, a /26 gives 62, a /27 gives 30, a /28 gives 14, a /30 gives 2. Every step up in prefix halves the block.</p>
 
     <h2>Reading the mask</h2>
+    <div class="table-scroll">
     <table class="data-table">
       <thead><tr><th>CIDR</th><th>Subnet mask</th><th>Usable hosts</th><th>Typical use</th></tr></thead>
       <tbody>
@@ -462,6 +463,7 @@
         <tr><td>/32</td><td>255.255.255.255</td><td>1</td><td>Single host route or ACL entry</td></tr>
       </tbody>
     </table>
+    </div>
     <p>Because the boundaries are powers of two, subnets always start at multiples of their own size. A /26 block is 64 addresses wide, so the four /26s inside a /24 start at .0, .64, .128 and .192 — never at .50. Getting that wrong is the most common subnetting error, and it is why 192.168.1.100/26 has a network address of 192.168.1.64 rather than 192.168.1.100.</p>
 
     <h2>A worked example</h2>

@@ -447,16 +447,19 @@
         <p class="r-note" id="tcNote"></p>
       </div>
     </div>
+    <div class="table-scroll">
     <table class="data-table" style="margin-top:20px;">
       <thead><tr><th>Day</th><th>Clock in</th><th>Clock out</th><th>Break (min)</th><th>Hours</th></tr></thead>
       <tbody id="tcBody"></tbody>
     </table>
+    </div>
   </section>
 
   <section class="article">
     <h2>The mistake that costs people money</h2>
     <p>Payroll runs on <strong>decimal hours</strong>, not on clock time, and the conversion is not what it looks like. Forty-five minutes is <strong>0.75 hours</strong>, not 0.45. Fifteen minutes is 0.25, not 0.15. Minutes have to be divided by 60, not simply moved after a decimal point.</p>
     <p>It sounds obvious written down and it is one of the most common timesheet errors there is. Somebody working 8 hours 45 minutes a day, five days a week, who writes 8.45 instead of 8.75, under-reports by an hour and a half every week. This calculator shows both forms for each day so the two never get confused.</p>
+    <div class="table-scroll">
     <table class="data-table">
       <thead><tr><th>Minutes</th><th>Decimal</th><th>Minutes</th><th>Decimal</th></tr></thead>
       <tbody>
@@ -468,6 +471,7 @@
         <tr><td>30</td><td>0.5</td><td>60</td><td>1.0</td></tr>
       </tbody>
     </table>
+    </div>
 
     <h2>Overnight shifts</h2>
     <p>If a clock-out time is earlier than the clock-in — say 22:00 to 06:00 — the calculator treats the shift as crossing midnight and adds 24 hours before subtracting, giving 8 hours rather than a negative number. It flags when it has done this so you can check it was intended.</p>
@@ -478,6 +482,7 @@
 
     <h2>Overtime</h2>
     <p>The threshold and premium vary widely, which is why both are adjustable here rather than fixed.</p>
+    <div class="table-scroll">
     <table class="data-table">
       <thead><tr><th>Where</th><th>Typical threshold</th><th>Premium</th></tr></thead>
       <tbody>
@@ -488,6 +493,7 @@
         <tr><td>EU (Working Time Directive)</td><td>48-hour average cap</td><td>Set nationally</td></tr>
       </tbody>
     </table>
+    </div>
     <p>Two points worth knowing. In the US, overtime is calculated on the workweek, not the pay period — averaging a 50-hour week against a 30-hour week to avoid paying it is not permitted. And the UK has no statutory overtime premium at all: unless your contract provides one, extra hours are paid at the normal rate, subject only to the requirement that average pay does not fall below minimum wage.</p>
 
     <h2>Rounding</h2>

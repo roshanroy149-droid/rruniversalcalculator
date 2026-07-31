@@ -673,7 +673,15 @@ textarea{resize:vertical;min-height:120px;font-family:'Inter',sans-serif;}
 @media(max-width:520px){.row3{grid-template-columns:1fr;}}
 
 /* Segmented toggle */
-.seg{display:inline-flex;border:1px solid var(--paper-line);border-radius:var(--radius-sm);overflow:hidden;background:#fff;}
+.seg{display:inline-flex;border:1px solid var(--paper-line);border-radius:var(--radius-sm);overflow:hidden;background:#fff;max-width:100%;}
+/* .seg combines nowrap with overflow:hidden, so on a very narrow screen the
+   second option is not merely squeezed — it is clipped away and unreachable
+   (caught on days-calculator's "Add (forward) / Subtract (back)" at 320px).
+   Letting it wrap and share the width keeps both options usable. */
+@media(max-width:400px){
+  .seg{flex-wrap:wrap;width:100%;}
+  .seg button{flex:1 1 auto;min-width:0;}
+}
 .seg button{
   background:transparent;color:var(--graphite);border:none;border-radius:0;
   padding:9px 14px;font-size:11px;box-shadow:none;
@@ -704,6 +712,12 @@ textarea{resize:vertical;min-height:120px;font-family:'Inter',sans-serif;}
   font-size:28px;font-weight:700;
   color:var(--readout-fg);
   line-height:1.2;
+  /* A result with no spaces in it — big-number-calculator returns exact
+     integers hundreds of digits long — has no break opportunity, so it ran
+     605px wide on a 375px screen and the tail was clipped away unreachably.
+     anywhere lets it wrap; min-width:0 stops it forcing the flex parent wide. */
+  overflow-wrap:anywhere;
+  min-width:0;
   text-shadow:0 0 18px rgba(242,217,160,0.2);
 }
 .readout .r-sub{font-size:12px;color:#9C9284;font-family:'JetBrains Mono',monospace;}

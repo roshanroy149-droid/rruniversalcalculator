@@ -438,6 +438,7 @@
     <p>The value <code>price &amp; tax = 50%</code> component-encodes to <code>price%20%26%20tax%20%3D%2050%25</code>. Every space becomes %20, the ampersand becomes %26, the equals becomes %3D, and — this one is easy to miss — the literal percent sign becomes %25. A percent sign that is not escaped is the most common cause of a decode failure, because the decoder tries to read the next two characters as hex and finds something else.</p>
 
     <h2>Reserved characters worth memorising</h2>
+    <div class="table-scroll">
     <table class="data-table">
       <thead><tr><th>Character</th><th>Encoded</th><th>Why it matters</th></tr></thead>
       <tbody>
@@ -451,6 +452,7 @@
         <tr><td>+</td><td>%2B</td><td>Otherwise read as a space by form decoders</td></tr>
       </tbody>
     </table>
+    </div>
     <p>The <code>#</code> row has a consequence people hit repeatedly: a fragment is handled entirely by the browser and never transmitted to the server. An unescaped <code>#</code> inside a parameter value silently truncates everything after it from the server’s point of view, and the request looks fine in the address bar while arriving incomplete.</p>
 
     <h2>Non-ASCII characters</h2>
