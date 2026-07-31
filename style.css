@@ -22,6 +22,27 @@
   --card:#FFFFFF;
   --card-hi:#FFFFFF;
   --text-on-dark:#F2ECDD;
+
+  /* The cream ink used for text and hairline rules on dark surfaces, stored as
+     a bare RGB triple so any alpha can be applied at the point of use.
+     Before this existed, that colour was written out longhand 270 times in
+     inline style attributes across 205 pages, plus 66 more times in this file
+     — 336 copies of one value. The inline ones were the real problem: an
+     inline style can only be overridden with !important, so no stylesheet
+     could retheme them. Redefining --cream now re-points every one. */
+  --cream:242,236,221;
+
+  /* Semantic aliases for the alphas that actually recur in page markup.
+     A theme should override THESE rather than --cream where it needs to change
+     the ramp as well as the hue — dark text on a light surface needs different
+     alphas, not just a different triple. */
+  --ink-strong:rgba(var(--cream),0.75);
+  --ink-soft:rgba(var(--cream),0.6);
+  --ink-muted:rgba(var(--cream),0.55);
+  --ink-dim:rgba(var(--cream),0.5);
+  --rule-strong:rgba(var(--cream),0.25);
+  --rule-mid:rgba(var(--cream),0.15);
+  --rule:rgba(var(--cream),0.1);
   --readout-bg:#14120F;
   --readout-bg-hi:#1E1B16;
   --readout-fg:#F2D9A0;
@@ -64,7 +85,7 @@ a{color:inherit;}
 header{
   position:sticky;top:0;z-index:50;
   background:linear-gradient(165deg, #211E19, var(--ink));
-  border-bottom:1px solid rgba(242,236,221,0.08);
+  border-bottom:1px solid rgba(var(--cream),0.08);
   box-shadow:0 4px 18px rgba(0,0,0,0.25);
 }
 header::after{
@@ -90,7 +111,7 @@ header::after{
 .tagline{
   font-family:'JetBrains Mono',monospace;
   font-size:11px;letter-spacing:0.08em;
-  color:rgba(242,236,221,0.5);
+  color:var(--ink-dim);
   white-space:nowrap;
 }
 @media(max-width:640px){
@@ -109,7 +130,7 @@ header::after{
 .nav-drawer{max-width:1240px;margin:0 auto;padding:0 24px;box-sizing:border-box;}
 .ruler{
   display:flex;overflow-x:auto;
-  border-top:1px solid rgba(242,236,221,0.08);
+  border-top:1px solid rgba(var(--cream),0.08);
   scrollbar-width:none;
 }
 .ruler::-webkit-scrollbar{display:none;}
@@ -120,19 +141,19 @@ header::after{
   font-family:'JetBrains Mono',monospace;
   font-size:11px;
   letter-spacing:0.04em;
-  color:rgba(242,236,221,0.55);
+  color:var(--ink-muted);
   text-decoration:none;
   white-space:nowrap;
-  border-right:1px solid rgba(242,236,221,0.08);
+  border-right:1px solid rgba(var(--cream),0.08);
   transition:color .15s, background .15s;
 }
 .tick::before{
   content:'';
   position:absolute;top:0;left:0;
   width:1px;height:6px;
-  background:rgba(242,236,221,0.18);
+  background:rgba(var(--cream),0.18);
 }
-.tick:hover{color:var(--text-on-dark);background:rgba(242,236,221,0.06);}
+.tick:hover{color:var(--text-on-dark);background:rgba(var(--cream),0.06);}
 .tick.active{color:var(--orange);background:rgba(192,138,52,0.12);}
 .tick.active::after{
   content:'';
@@ -159,7 +180,7 @@ header::after{
   box-shadow:none;
 }
 .cat-tab:active{transform:none;box-shadow:none;}
-.cat-tab.cat-open{background:rgba(242,236,221,0.08);}
+.cat-tab.cat-open{background:rgba(var(--cream),0.08);}
 .cat-tab.cat-open::after{
   content:'';
   position:absolute;bottom:0;left:0;right:0;height:2px;
@@ -195,7 +216,7 @@ header::after{
   flex-wrap:wrap;
   justify-content:space-between;
   background:#141210;
-  border-top:0 solid rgba(242,236,221,0.08);
+  border-top:0 solid rgba(var(--cream),0.08);
   transition:max-height .22s ease, background .2s ease;
 }
 /* Invisible gap-dividing spacers, see the comment in Sync-Nav.ps1's
@@ -289,9 +310,9 @@ body.nav-open .nav-backdrop{display:block;}
   .nav-drawer-head{
     display:flex;align-items:center;justify-content:space-between;
     padding:18px 20px;flex-shrink:0;
-    border-bottom:1px solid rgba(242,236,221,0.1);
+    border-bottom:1px solid var(--rule);
     font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.06em;
-    color:rgba(242,236,221,0.6);text-transform:uppercase;
+    color:var(--ink-soft);text-transform:uppercase;
   }
   .nav-close{
     background:transparent;border:none;box-shadow:none;color:var(--text-on-dark);
@@ -311,7 +332,7 @@ body.nav-open .nav-backdrop{display:block;}
     padding:13px 20px;
     font-size:12px;
     border-right:none;
-    border-bottom:1px solid rgba(242,236,221,0.06);
+    border-bottom:1px solid rgba(var(--cream),0.06);
     white-space:normal;
     box-sizing:border-box;
   }
@@ -320,7 +341,7 @@ body.nav-open .nav-backdrop{display:block;}
   .sub-ruler.open{
     max-height:3000px;
     overflow-y:visible;
-    border-top:1px solid rgba(242,236,221,0.06);
+    border-top:1px solid rgba(var(--cream),0.06);
   }
   /* Scoped to .sub-ruler (not just the bare .sub-tick class) so this ties in
      specificity with ".cat-ruler .tick" above rather than losing to it —
@@ -336,7 +357,7 @@ body.nav-open .nav-backdrop{display:block;}
    now gets one of those two bold overrides); kept in the light-on-dark shell
    palette so it never regresses to unreadable dark-on-dark if that ever
    happens. */
-.hero{padding:60px 0 42px;border-bottom:1px solid rgba(242,236,221,0.1);}
+.hero{padding:60px 0 42px;border-bottom:1px solid var(--rule);}
 .hero .eyebrow{
   font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--teal-light);
   text-transform:uppercase;letter-spacing:0.08em;margin-bottom:16px;
@@ -355,12 +376,12 @@ body.nav-open .nav-backdrop{display:block;}
   color:var(--text-on-dark);
 }
 .hero p{
-  color:rgba(242,236,221,0.68);font-size:16.5px;max-width:580px;line-height:1.65;margin:0;
+  color:rgba(var(--cream),0.68);font-size:16.5px;max-width:580px;line-height:1.65;margin:0;
 }
 
 /* BREADCRUMB */
 .crumb{
-  font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(242,236,221,0.5);
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-dim);
   padding:16px 0 0;letter-spacing:0.03em;
 }
 .crumb a{color:var(--teal-light);text-decoration:none;}
@@ -407,7 +428,7 @@ body.nav-open .nav-backdrop{display:block;}
    consistency with every calculator page's FAQ section.
    Like .article, this carries no max-width so the text column runs flush
    with the rest of the page rather than stopping short of it. */
-.article-body{color:rgba(242,236,221,0.82);line-height:1.75;font-size:16px;}
+.article-body{color:rgba(var(--cream),0.82);line-height:1.75;font-size:16px;}
 .article-body h2{
   font-family:'Space Grotesk',sans-serif;font-size:25px;letter-spacing:-0.015em;
   color:var(--text-on-dark);margin:40px 0 14px;
@@ -420,9 +441,9 @@ body.nav-open .nav-backdrop{display:block;}
 .article-body a:hover{color:#fff;}
 .article-body strong{color:var(--text-on-dark);}
 .article-body .callout{
-  background:rgba(242,236,221,0.06);border-left:3px solid var(--orange);
+  background:rgba(var(--cream),0.06);border-left:3px solid var(--orange);
   border-radius:0 var(--radius) var(--radius) 0;padding:16px 20px;margin:22px 0;
-  font-size:15px;color:rgba(242,236,221,0.85);
+  font-size:15px;color:rgba(var(--cream),0.85);
 }
 .article-body .callout p:last-child{margin-bottom:0;}
 .article-body .callout strong{color:#fff;}
@@ -462,7 +483,7 @@ body.nav-open .nav-backdrop{display:block;}
 .book-buy{justify-content:center;}
 .book-meta-note{
   font-family:'JetBrains Mono',monospace;font-size:11px;line-height:1.55;
-  color:rgba(242,236,221,0.5);margin:0;
+  color:var(--ink-dim);margin:0;
 }
 @media(max-width:640px){
   .book-layout{flex-direction:column;gap:22px;}
@@ -491,12 +512,12 @@ body.nav-open .nav-backdrop{display:block;}
 .product-shot{margin:6px 0 26px;}
 .product-shot img{
   width:100%;height:auto;display:block;border-radius:var(--radius);
-  border:1px solid rgba(242,236,221,0.12);
+  border:1px solid rgba(var(--cream),0.12);
   box-shadow:0 10px 30px rgba(0,0,0,0.45);
 }
 .product-shot figcaption{
   font-family:'JetBrains Mono',monospace;font-size:11px;line-height:1.55;
-  color:rgba(242,236,221,0.5);margin-top:10px;
+  color:var(--ink-dim);margin-top:10px;
 }
 
 /* ARTICLE LIST — the articles.html hub page, one row per article sorted
@@ -509,13 +530,13 @@ body.nav-open .nav-backdrop{display:block;}
 .article-list{display:flex;flex-direction:column;gap:14px;margin:24px 0 48px;}
 .article-card{
   display:block;text-decoration:none;
-  background:rgba(242,236,221,0.04);
-  border:1px solid rgba(242,236,221,0.1);
+  background:rgba(var(--cream),0.04);
+  border:1px solid var(--rule);
   border-radius:var(--radius);
   padding:22px 24px;
   transition:border-color .15s, background .15s, transform .15s;
 }
-.article-card:hover{background:rgba(242,236,221,0.07);transform:translateY(-2px);}
+.article-card:hover{background:rgba(var(--cream),0.07);transform:translateY(-2px);}
 .article-card-tag{
   display:inline-block;font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:700;
   letter-spacing:0.08em;text-transform:uppercase;margin-bottom:10px;
@@ -534,22 +555,22 @@ body.nav-open .nav-backdrop{display:block;}
   margin:0 0 8px;color:var(--text-on-dark);
 }
 .article-card p{
-  font-size:14.5px;color:rgba(242,236,221,0.68);line-height:1.55;margin:0 0 12px;max-width:640px;
+  font-size:14.5px;color:rgba(var(--cream),0.68);line-height:1.55;margin:0 0 12px;max-width:640px;
 }
 .article-card-meta{
-  display:flex;gap:8px;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:rgba(242,236,221,0.45);
+  display:flex;gap:8px;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:rgba(var(--cream),0.45);
 }
 
 /* AD SLOT */
 .ad-slot{
   margin:36px 0;
-  border:1px dashed rgba(242,236,221,0.18);
-  background:repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(242,236,221,0.03) 10px, rgba(242,236,221,0.03) 20px);
+  border:1px dashed rgba(var(--cream),0.18);
+  background:repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(var(--cream),0.03) 10px, rgba(var(--cream),0.03) 20px);
   padding:14px;
   text-align:center;
   font-family:'JetBrains Mono',monospace;
   font-size:10px;
-  color:rgba(242,236,221,0.5);
+  color:var(--ink-dim);
   letter-spacing:0.06em;
   border-radius:var(--radius-sm);
 }
@@ -557,7 +578,7 @@ body.nav-open .nav-backdrop{display:block;}
 /* TOOL SECTIONS */
 .tool{
   padding:48px 0;
-  border-bottom:1px solid rgba(242,236,221,0.1);
+  border-bottom:1px solid var(--rule);
   scroll-margin-top:90px;
 }
 /* Section sub-headers ("// Compare two scenarios" etc. within a tool page).
@@ -577,7 +598,7 @@ body:has(.hero-icon-row.cat-everyday) .tool-num{color:var(--steel-light);}
 .tool h2{
   font-family:'Space Grotesk',sans-serif;font-size:24px;margin:0;letter-spacing:-0.01em;
 }
-.tool-sub{color:rgba(242,236,221,0.55);font-size:14px;margin:2px 0 0;}
+.tool-sub{color:var(--ink-muted);font-size:14px;margin:2px 0 0;}
 
 .card{
   position:relative;
@@ -678,7 +699,7 @@ button.ghost:active{transform:translateY(1px);}
 .btn-row{display:flex;gap:10px;margin-top:4px;flex-wrap:wrap;}
 
 footer{padding:40px 0 60px;text-align:center;}
-footer p{font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(242,236,221,0.5);}
+footer p{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-dim);}
 /* Footer "About"/"Privacy Policy" links are hand-authored with an inline
    style="color:var(--teal-dark)" on every page (125+ files) predating the
    dark shell — !important overrides that legacy inline value in one place
@@ -700,7 +721,7 @@ footer a{color:var(--teal-light) !important;}
 /* No max-width: the FAQ deliberately runs the same width as the .tool section
    above it, so the column edge doesn't jump inward partway down the page.
    Overall line length is still bounded by .wrap's 1240px cap. */
-.article{color:rgba(242,236,221,0.78);line-height:1.7;font-size:15px;}
+.article{color:rgba(var(--cream),0.78);line-height:1.7;font-size:15px;}
 .article h3{font-family:'Space Grotesk',sans-serif;font-size:17px;margin:26px 0 8px;color:var(--text-on-dark);}
 .article a{color:var(--teal-light);}
 .article a:hover{color:#fff;}
@@ -852,7 +873,7 @@ footer a{color:var(--teal-light) !important;}
   font-size:clamp(38px,6.4vw,68px);
   text-wrap:balance;
 }
-.home-hero p{color:rgba(242,236,221,0.72);}
+.home-hero p{color:rgba(var(--cream),0.72);}
 .hero-flex{display:flex;align-items:center;gap:40px;justify-content:space-between;}
 .hero-flex .hero-copy{flex:1 1 420px;min-width:280px;}
 .hero-graphic{flex:0 0 auto;width:380px;max-width:42vw;filter:drop-shadow(0 20px 46px rgba(0,0,0,0.4));}
@@ -869,13 +890,13 @@ footer a{color:var(--teal-light) !important;}
 
 /* Search bar + featured row sit in the same dark hero band, so both need
    dark-appropriate treatments rather than the light-page defaults. */
-.home-hero .tb-search-input{background:rgba(255,255,255,0.06);border-color:rgba(242,236,221,0.2);color:#fff;}
-.home-hero .tb-search-input::placeholder{color:rgba(242,236,221,0.45);}
-.home-hero .tb-search-results{background:#211E19;border-color:rgba(242,236,221,0.15);}
+.home-hero .tb-search-input{background:rgba(255,255,255,0.06);border-color:rgba(var(--cream),0.2);color:#fff;}
+.home-hero .tb-search-input::placeholder{color:rgba(var(--cream),0.45);}
+.home-hero .tb-search-results{background:#211E19;border-color:var(--rule-mid);}
 .home-hero .tb-search-result{color:var(--text-on-dark);}
-.home-hero .tb-search-result:hover,.home-hero .tb-search-result.active{background:rgba(242,236,221,0.08);}
-.home-hero .tb-search-result-blurb{color:rgba(242,236,221,0.55);}
-.home-hero .tb-search-empty{color:rgba(242,236,221,0.55);}
+.home-hero .tb-search-result:hover,.home-hero .tb-search-result.active{background:rgba(var(--cream),0.08);}
+.home-hero .tb-search-result-blurb{color:var(--ink-muted);}
+.home-hero .tb-search-empty{color:var(--ink-muted);}
 
 /* HOMEPAGE CALCULATOR SEARCH */
 .tb-search{position:relative;margin-top:20px;max-width:420px;width:100%;}
@@ -955,7 +976,7 @@ footer a{color:var(--teal-light) !important;}
    own container on narrow screens rather than forcing the page to. */
 .chart-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;background:var(--card-hi);border-radius:var(--radius);box-shadow:var(--shadow-sm);margin-top:14px;padding:8px;}
 .cx-chart{display:block;width:100%;min-width:520px;height:auto;}
-.chart-note{font-size:12px;color:rgba(242,236,221,0.55);margin:8px 0 0;font-style:italic;}
+.chart-note{font-size:12px;color:var(--ink-muted);margin:8px 0 0;font-style:italic;}
 /* Matrix input grid — cells are generated by script.js, so the column count
    is set inline there rather than with a fixed rule here. */
 .matrix-grid{display:grid;gap:6px;margin-top:6px;}
@@ -986,7 +1007,7 @@ footer a{color:var(--teal-light) !important;}
 }
 /* Region qualifier in a book heading — same line, lighter weight, so
    "Paisa Playbook — India" reads as one title rather than two. */
-.book-region{color:rgba(242,236,221,0.5);font-weight:400;}
+.book-region{color:var(--ink-dim);font-weight:400;}
 .bracket-table tbody tr:hover{background:rgba(192,138,52,0.05);}
 .field-warning{
   display:none;
@@ -1003,7 +1024,7 @@ footer a{color:var(--teal-light) !important;}
 .section-label{
   font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--teal-light);
   text-transform:uppercase;letter-spacing:0.06em;margin:0 0 12px;
-  padding-bottom:8px;border-bottom:1px solid rgba(242,236,221,0.12);
+  padding-bottom:8px;border-bottom:1px solid rgba(var(--cream),0.12);
 }
 .summary-strip{
   display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;
@@ -1078,10 +1099,10 @@ footer a{color:var(--teal-light) !important;}
 }
 #about .tool-num{color:var(--amber);}
 #about .tool-head h2{color:#fff;}
-#about .tool-sub{color:rgba(242,236,221,0.6);}
-#about .article{color:rgba(242,236,221,0.8);}
+#about .tool-sub{color:var(--ink-soft);}
+#about .article{color:rgba(var(--cream),0.8);}
 #about .article h3{color:#fff;}
-#about .article p{color:rgba(242,236,221,0.7);}
+#about .article p{color:rgba(var(--cream),0.7);}
 
 /* PWA INSTALL BANNER */
 #installBanner{
@@ -1090,14 +1111,14 @@ footer a{color:var(--teal-light) !important;}
   color:var(--text-on-dark);border-radius:var(--radius);
   padding:16px 22px;margin:28px 0 0;box-shadow:var(--shadow-md);
 }
-#installBanner p{margin:0;font-size:13px;line-height:1.4;color:rgba(242,236,221,0.7);}
+#installBanner p{margin:0;font-size:13px;line-height:1.4;color:rgba(var(--cream),0.7);}
 #installBanner p strong{
   font-family:'Space Grotesk',sans-serif;display:block;font-size:16px;
   margin-bottom:2px;color:var(--text-on-dark);
 }
 #installBanner .btn-row{margin-top:0;flex-wrap:nowrap;}
 #installBanner button.ghost{
-  color:rgba(242,236,221,0.6);border-color:rgba(242,236,221,0.25);
+  color:var(--ink-soft);border-color:var(--rule-strong);
 }
 @media(max-width:640px){
   #installBanner{flex-direction:column;align-items:flex-start;}
@@ -1112,15 +1133,15 @@ footer a{color:var(--teal-light) !important;}
   color:var(--text-on-dark);
   padding:16px 24px;
   box-shadow:0 -8px 24px rgba(0,0,0,0.25);
-  border-top:1px solid rgba(242,236,221,0.1);
+  border-top:1px solid var(--rule);
 }
 #cookieConsent p{
-  margin:0;font-size:13px;line-height:1.5;color:rgba(242,236,221,0.75);
+  margin:0;font-size:13px;line-height:1.5;color:var(--ink-strong);
   max-width:640px;flex:1 1 320px;
 }
 #cookieConsent a{color:var(--amber);text-decoration:underline;}
 #cookieConsent .btn-row{margin-top:0;flex-wrap:nowrap;flex:0 0 auto;}
-#cookieConsent button.ghost{color:rgba(242,236,221,0.6);border-color:rgba(242,236,221,0.25);}
+#cookieConsent button.ghost{color:var(--ink-soft);border-color:var(--rule-strong);}
 @media(max-width:640px){
   #cookieConsent{flex-direction:column;align-items:flex-start;padding:16px 20px;}
   #cookieConsent .btn-row{width:100%;}
@@ -1157,9 +1178,9 @@ footer a{color:var(--teal-light) !important;}
   flex-shrink:0;
 }
 .tb-chat-head strong{font-family:'Space Grotesk',sans-serif;font-size:15px;}
-.tb-chat-head span{display:block;font-size:11px;color:rgba(242,236,221,0.6);margin-top:1px;}
+.tb-chat-head span{display:block;font-size:11px;color:var(--ink-soft);margin-top:1px;}
 .tb-chat-close{
-  background:transparent;box-shadow:none;color:rgba(242,236,221,0.7);
+  background:transparent;box-shadow:none;color:rgba(var(--cream),0.7);
   padding:4px 8px;font-size:14px;
 }
 .tb-chat-close:hover{color:#fff;background:rgba(255,255,255,0.08);}
@@ -1224,11 +1245,11 @@ body.nav-open .tb-chat-panel{display:none;}
    calculator-page embed button and the article-page one below it. */
 .tb-embed-row{
   margin:22px 0;padding:14px 18px;
-  border:1px solid rgba(242,236,221,0.14);border-radius:var(--radius);
-  background:rgba(242,236,221,0.03);
+  border:1px solid rgba(var(--cream),0.14);border-radius:var(--radius);
+  background:rgba(var(--cream),0.03);
   display:flex;align-items:center;gap:14px;flex-wrap:wrap;
 }
-.tb-embed-hint{font-size:13px;color:rgba(242,236,221,0.6);flex:1 1 220px;}
+.tb-embed-hint{font-size:13px;color:var(--ink-soft);flex:1 1 220px;}
 .tb-embed-row button{font-size:12px;}
 .tb-embed-backdrop{
   position:fixed;inset:0;z-index:300;
@@ -1247,7 +1268,7 @@ body.nav-open .tb-chat-panel{display:none;}
 }
 .tb-embed-modal-head strong{font-family:'Space Grotesk',sans-serif;font-size:15px;}
 .tb-embed-close{
-  background:transparent;box-shadow:none;color:rgba(242,236,221,0.7);
+  background:transparent;box-shadow:none;color:rgba(var(--cream),0.7);
   padding:4px 8px;font-size:14px;
 }
 .tb-embed-close:hover{color:#fff;background:rgba(255,255,255,0.08);}
@@ -1290,9 +1311,9 @@ body.nav-open .tb-chat-panel{display:none;}
 .tb-embed-credit{
   position:fixed;left:0;right:0;bottom:0;z-index:10;
   display:block;text-align:center;font-family:'JetBrains Mono',monospace;
-  font-size:10px;letter-spacing:0.05em;color:rgba(242,236,221,0.5);
+  font-size:10px;letter-spacing:0.05em;color:var(--ink-dim);
   text-decoration:none;padding:9px 0;
-  background:var(--ink);border-top:1px solid rgba(242,236,221,0.1);
+  background:var(--ink);border-top:1px solid var(--rule);
 }
 .tb-embed-credit:hover{color:var(--teal-light);text-decoration:underline;}
 
@@ -1342,12 +1363,12 @@ body.nav-open .tb-chat-panel{display:none;}
 .topic-nav{
   display:flex;flex-wrap:wrap;gap:8px;
   margin:0 0 34px;padding:0 0 22px;
-  border-bottom:1px solid rgba(242,236,221,0.1);
+  border-bottom:1px solid var(--rule);
 }
 .topic-nav a{
   font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:0.06em;
-  text-decoration:none;color:rgba(242,236,221,0.62);
-  border:1px solid rgba(242,236,221,0.16);border-radius:999px;
+  text-decoration:none;color:rgba(var(--cream),0.62);
+  border:1px solid rgba(var(--cream),0.16);border-radius:999px;
   padding:6px 13px;transition:color .15s,border-color .15s,background .15s;
 }
 .topic-nav a:hover{color:var(--copper);border-color:var(--copper);background:rgba(212,163,115,0.07);}
