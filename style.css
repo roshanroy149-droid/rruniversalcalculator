@@ -40,8 +40,10 @@
   --ink-soft:rgba(var(--cream),0.6);
   --ink-muted:rgba(var(--cream),0.55);
   /* 0.5 measured 4.45:1 on the page shell — just under AA, and the brighter
-     backdrop washes shipped with the glass push it further. 0.58 clears it. */
-  --ink-dim:rgba(var(--cream),0.58);
+     backdrop washes shipped with the glass push it further. 0.65 clears both
+     that and the header tagline, which sits on translucent glass over a
+     category band (5.74:1 at the worst stop). */
+  --ink-dim:rgba(var(--cream),0.65);
   --rule-strong:rgba(var(--cream),0.25);
   --rule-mid:rgba(var(--cream),0.15);
   --rule:rgba(var(--cream),0.1);
@@ -156,7 +158,11 @@ header::after{
   background:rgba(var(--cream),0.18);
 }
 .tick:hover{color:var(--text-on-dark);background:rgba(var(--cream),0.06);}
-.tick.active{color:var(--orange);background:rgba(192,138,52,0.12);}
+/* --amber, not --orange. The header is now translucent, so a saturated
+   category band scrolling underneath lightens it; --orange #C08A34 dropped to
+   3.70:1 there. --amber #D9A441 is the brighter sibling already in the palette
+   and holds 5.93:1 against the same worst case. */
+.tick.active{color:var(--amber);background:rgba(192,138,52,0.12);}
 .tick.active::after{
   content:'';
   position:absolute;bottom:0;left:0;right:0;height:2px;
@@ -1467,11 +1473,35 @@ body{
    whole bar takes that band's colour (measured: rgb(29,27,24) over the plain
    page vs rgb(68,51,25) over the finance band). At 0.78 it stayed the same
    near-black regardless of what was behind it. */
+/* THE BLUR MUST NOT LIVE ON <header> ITSELF.
+   backdrop-filter makes an element the containing block for its position:fixed
+   descendants — and .nav-drawer (the mobile hamburger panel) is a CHILD of
+   <header>. With the filter on header, the drawer's top:0/bottom:0 resolved
+   against the 64px header box instead of the viewport: it collapsed from 812px
+   to 63px and the menu rendered blank.
+
+   Putting the blur on a pseudo-element instead keeps header filter-free, so the
+   drawer measures against the viewport again. position:sticky and z-index do
+   NOT create a containing block for fixed elements — only transform, filter,
+   backdrop-filter, perspective, contain and will-change do. */
 header{
-  background:linear-gradient(165deg, rgba(33,30,25,0.46), rgba(28,26,23,0.56));
+  background:transparent;
+  box-shadow:var(--g-lip-dark), 0 4px 18px rgba(0,0,0,0.25);
+}
+header::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  z-index:-1;
+  pointer-events:none;
+  /* ~0.70 effective, not the 0.52 first shipped. At 0.52 the finance band
+     showing through lightened the bar enough to drop 11px nav text to 4.09:1
+     and the active tick to 3.70:1. 0.70 still shows a clear colour shift as a
+     band passes under (measured +28 on the red channel) while keeping every
+     header element above AA. Legibility set this number, not taste. */
+  background:linear-gradient(165deg, rgba(33,30,25,0.66), rgba(28,26,23,0.74));
   -webkit-backdrop-filter:blur(26px) saturate(2.1);
   backdrop-filter:blur(26px) saturate(2.1);
-  box-shadow:var(--g-lip-dark), 0 4px 18px rgba(0,0,0,0.25);
 }
 .nav-drawer{
   background:rgba(28,26,23,0.62);
@@ -1548,15 +1578,26 @@ header{
 }
 
 /* CALCULATOR PAGES */
+/* Opacity 0.82, tint 0.14-0.20 — NOT the 0.62/0.22-0.26 first shipped. That
+   combination made the panel translucent AND more strongly tinted at once, and
+   the two compounded: 11px sub-nav labels fell to 4.36:1 and the active one to
+   3.42:1 at the top of the gradient where the tint is strongest. Finance keeps
+   the lowest tint (0.10) because orange is far lighter than the other three;
+   at 0.14 its top stop still measured exactly 4.50, i.e. on the line. */
 .sub-ruler{
-  background:rgba(20,18,16,0.62);
+  background:rgba(20,18,16,0.82);
   -webkit-backdrop-filter:var(--g-blur);
   backdrop-filter:var(--g-blur);
 }
-.sub-ruler[data-open-cat="finance"]  {background:linear-gradient(180deg, rgba(192,138,52,0.22), rgba(20,18,16,0.66) 65%);}
-.sub-ruler[data-open-cat="health"]   {background:linear-gradient(180deg, rgba(47,110,104,0.26), rgba(20,18,16,0.66) 65%);}
-.sub-ruler[data-open-cat="education"]{background:linear-gradient(180deg, rgba(124,74,107,0.26), rgba(20,18,16,0.66) 65%);}
-.sub-ruler[data-open-cat="everyday"] {background:linear-gradient(180deg, rgba(61,90,115,0.26), rgba(20,18,16,0.66) 65%);}
+.sub-ruler[data-open-cat="finance"]  {background:linear-gradient(180deg, rgba(192,138,52,0.10), rgba(20,18,16,0.86) 65%);}
+.sub-ruler[data-open-cat="health"]   {background:linear-gradient(180deg, rgba(47,110,104,0.16), rgba(20,18,16,0.86) 65%);}
+.sub-ruler[data-open-cat="education"]{background:linear-gradient(180deg, rgba(124,74,107,0.16), rgba(20,18,16,0.86) 65%);}
+.sub-ruler[data-open-cat="everyday"] {background:linear-gradient(180deg, rgba(61,90,115,0.16), rgba(20,18,16,0.86) 65%);}
+/* Matches the .tick.active change above: --orange is too dark against a
+   translucent panel that a category band lightens. */
+.sub-tick[data-cat="finance"]:hover,
+.sub-tick[data-cat="finance"].active{color:var(--amber);}
+.sub-tick[data-cat="finance"].active::after{background:var(--amber);}
 
 /* Data tables and disclaimers are light panels on a dark page - same situation
    as a tool card, same frosting, so the page reads as one material. */
