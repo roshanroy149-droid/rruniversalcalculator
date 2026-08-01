@@ -103,6 +103,18 @@ function New-ArticleCountInlineBlock($indent) {
     return "$($articleData.articles.Count)"
 }
 
+# The AdSense site-verification tag. This is a STATIC meta tag rather than the
+# ad script on purpose: the ad script in script.js only injects after a visitor
+# clicks Accept on the consent banner, and Google's reviewer arrives with an
+# empty localStorage and clicks nothing — so before this existed there was no
+# way for Google to detect ad code on the site at all. The meta tag is served
+# in the HTML regardless of consent, which is what verification needs, while
+# the actual ad script stays behind the consent gate where it belongs.
+# Generated rather than hand-written so the publisher ID has one definition.
+function New-AdsenseBlock($indent) {
+    return "$indent<meta name=`"google-adsense-account`" content=`"ca-pub-7800403656727097`">"
+}
+
 # Renders the embeddable-calculator list for embed.html. Every tool is
 # embeddable — the widget keys off ?embed=1, which any tool page honours — so
 # this is a straight projection of tools.json grouped by category.
@@ -382,6 +394,9 @@ foreach ($f in $htmlFiles) {
     $breadcrumbResult = Sync-Marker $content 'BREADCRUMB' { param($indent) New-BreadcrumbBlock $indent $f.Name }
     if ($null -ne $breadcrumbResult) { $content = $breadcrumbResult }
 
+    $adsenseResult = Sync-Marker $content 'ADSENSE' { param($indent) New-AdsenseBlock $indent }
+    if ($null -ne $adsenseResult) { $content = $adsenseResult }
+
     # A page with no marker is silently skipped by Sync-Marker, so a page that
     # was created without one keeps shipping stale/absent generated content and
     # nothing here complains. That has bitten this project twice (16 article
@@ -392,11 +407,19 @@ foreach ($f in $htmlFiles) {
     # tallystock.html is a deliberate redirect stub left behind by the
     # VenStock rename — bare, no site chrome, and exempt for the same
     # reason as the verification file.
-    # Detected by the absence of a <header> rather than by name, so each new
-    # rename stub is covered automatically instead of being listed here.
-    $isVerificationFile = ($f.Name -like 'google*.html') -or ($content -notmatch '<header')
+    # Detected by shape rather than by name, so each new rename stub is covered
+    # automatically instead of being listed here.
+    #
+    # The shape test used to be "no <header>" alone, and that was too loose: five
+    # real pages (embed.html and three new calculators among them) shipped with
+    # the TB:NAV drawer sitting directly under <body> and no <header> wrapper at
+    # all — no logo, no tool count, and on mobile no hamburger to open the nav
+    # with. The very check meant to catch a page like that exempted them from it.
+    # A genuine stub has no nav marker either, so require both to be absent.
+    $isVerificationFile = ($f.Name -like 'google*.html') -or
+                          (($content -notmatch '<header') -and ($content -notmatch 'TB:NAV:START'))
     if (-not $isVerificationFile) {
-        foreach ($m in @('NAV', 'COUNT')) {
+        foreach ($m in @('NAV', 'COUNT', 'ADSENSE')) {
             if ($content -notmatch "TB:${m}:START") {
                 $missingMarkers += [PSCustomObject]@{ File = $f.Name; Marker = $m }
             }
