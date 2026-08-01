@@ -492,6 +492,8 @@
     <p>Decide how many hosts each segment needs, round up to the next power of two, then add two for the network and broadcast addresses. Fourteen hosts needs a /28 (16 addresses). Then allocate blocks on their natural boundaries — /28s inside a /24 start at .0, .16, .32 and so on. Allocate the largest subnets first to avoid fragmenting the space, which is the essence of variable-length subnet masking.</p>
     <h3>Does any of this apply to IPv6?</h3>
     <p>The prefix concept carries over directly and IPv6 uses the same slash notation, but the details differ. There is no broadcast address in IPv6, so nothing is subtracted for it, and the standard subnet size for a LAN is /64 regardless of how few devices are on it — which is a vastly larger block than anything in IPv4. This calculator handles IPv4 only.</p>
+    <h3>Do I need to read masks in binary and hex?</h3>
+    <p><strong>Reading masks in other bases.</strong> Subnet masks and IPv6 addresses are far easier to reason about once you can move between decimal, binary and hexadecimal fluently — a mask of 255.255.255.0 is 24 one-bits, and every IPv6 group is four hex digits. The <a href="hex-calculator.html">hex converter and calculator</a> converts between all three bases and does arithmetic directly in hex, which saves converting to decimal and back.</p>
   </section>
 
   <p style="font-size:13px;color:var(--ink-muted);margin:0 0 24px;">Related: <a href="bandwidth-calculator.html">Bandwidth Calculator</a> · <a href="base64-converter.html">Base64 Converter</a> · <a href="binary-calculator.html">Binary Calculator</a> · <a href="password-generator.html">Password Generator</a></p>
