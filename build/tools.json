@@ -572,6 +572,15 @@
       "blurb": "What a fund fee costs over time, and how two ratios compare."
     },
     {
+      "id": "dividend",
+      "file": "dividend-calculator.html",
+      "category": "finance",
+      "navLabel": "DIVIDEND",
+      "title": "Dividend Calculator",
+      "icon": "icon-investment",
+      "blurb": "Dividend income over time, with growth, tax, reinvestment and yield on cost."
+    },
+    {
       "id": "average-return-calculator",
       "file": "average-return-calculator.html",
       "category": "finance",

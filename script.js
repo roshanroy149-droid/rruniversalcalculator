@@ -13654,3 +13654,86 @@ function sciParseFormula(raw) {
   });
   calc();
 })();
+
+/* DIVIDEND YIELD & INCOME CALCULATOR
+   Tracks SHARES and per-share figures rather than a pooled balance. That
+   matters for reinvestment: DRIP buys shares at a price that is itself moving,
+   and a pooled model hides that and gets the compounding wrong. The starting
+   price is arbitrary (100) because it cancels — shares = amount / price.
+
+   Verified against five closed-form identities before shipping: a 4% yield
+   fully reinvested with no growth must equal compounding at 4%; the same taxed
+   at 50% must equal compounding at 2%; 0% yield with 6% price growth must
+   equal 1.06^n; flat income must be exactly yield x amount x years; and
+   year-n income must equal year-1 income times (1+g)^(n-1). */
+(function () {
+  if (!document.getElementById('divAmount')) return;
+
+  var cur = document.getElementById('divCur');
+  var amount = document.getElementById('divAmount');
+  var yieldEl = document.getElementById('divYield');
+  var divGrowth = document.getElementById('divGrowth');
+  var priceGrowth = document.getElementById('divPriceGrowth');
+  var years = document.getElementById('divYears');
+  var reinvest = document.getElementById('divReinvest');
+  var tax = document.getElementById('divTax');
+
+  function money(n) { return cur.value + Math.round(n).toLocaleString('en-US'); }
+
+  function project(amt, yieldPct, gdPct, gpPct, yrs, drip, taxPct) {
+    var P0 = 100, gd = gdPct / 100, gp = gpPct / 100, t = taxPct / 100;
+    var shares = P0 > 0 ? amt / P0 : 0;
+    var DPS0 = P0 * (yieldPct / 100);
+    var totalNet = 0, firstNet = 0, lastNet = 0;
+    for (var y = 1; y <= yrs; y++) {
+      var dps = DPS0 * Math.pow(1 + gd, y - 1);
+      var net = shares * dps * (1 - t);
+      totalNet += net;
+      if (y === 1) firstNet = net;
+      if (y === yrs) lastNet = net;
+      var price = P0 * Math.pow(1 + gp, y);
+      if (drip && price > 0) shares += net / price;
+    }
+    return {
+      value: shares * P0 * Math.pow(1 + gp, yrs),
+      totalNet: totalNet, firstNet: firstNet, lastNet: lastNet,
+      yieldOnCost: amt > 0 ? lastNet / amt * 100 : 0
+    };
+  }
+
+  function calc() {
+    var amt = Math.max(0, parseFloat(amount.value) || 0);
+    var y = Math.max(0, parseFloat(yieldEl.value) || 0);
+    var gd = parseFloat(divGrowth.value) || 0;
+    var gp = parseFloat(priceGrowth.value) || 0;
+    var yrs = Math.min(60, Math.max(1, parseFloat(years.value) || 1));
+    var t = Math.min(100, Math.max(0, parseFloat(tax.value) || 0));
+    var drip = reinvest.checked;
+
+    var r = project(amt, y, gd, gp, yrs, drip, t);
+
+    document.getElementById('divIncome1').textContent = money(r.firstNet);
+    document.getElementById('divIncomeN').textContent = money(r.lastNet);
+    document.getElementById('divTotal').textContent = money(r.totalNet);
+    document.getElementById('divValue').textContent = money(r.value);
+    document.getElementById('divYoC').textContent = r.yieldOnCost.toFixed(1) + '%';
+
+    var note;
+    if (!drip) {
+      note = 'Dividends are taken as cash, so the share count never grows — income rises only as the dividend per share rises.';
+    } else if (t >= 30) {
+      note = 'Tax is taken before reinvestment, so a ' + t + '% rate cuts the compounding, not just the income.';
+    } else if (gd > 0) {
+      note = 'Two things compound here at once: more shares each year, and a larger dividend on every share.';
+    } else {
+      note = 'With a flat dividend, reinvesting still compounds — you simply own more shares each year.';
+    }
+    document.getElementById('divNote').textContent = note;
+  }
+
+  [cur, amount, yieldEl, divGrowth, priceGrowth, years, reinvest, tax].forEach(function (el) {
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+  calc();
+})();
