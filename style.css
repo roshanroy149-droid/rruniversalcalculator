@@ -1737,3 +1737,9 @@ header::before{
   .emb-list li{flex-direction:column;align-items:stretch;gap:8px;}
   .emb-copy{width:100%;}
 }
+
+/* Source lines under articles. Without this the links inherit the paragraph's
+   muted colour and are indistinguishable from body text — a citation nobody
+   can see they can click is not really a citation. */
+.src-note a{color:var(--teal-light);text-decoration:underline;text-underline-offset:2px;}
+.src-note a:hover{color:var(--text-on-dark);}
