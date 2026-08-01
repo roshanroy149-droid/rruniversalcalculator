@@ -7690,7 +7690,13 @@ function tbMoney(n){
 
 // ---- Margin Calculator ----
 (function () {
-  if (!document.getElementById('mgCost')) return;
+  // Guard on mgCostOut, NOT mgCost. break-even-calculator.html has its own
+  // small margin panel that also uses the id "mgCost" (with mgSell/mgMargin,
+  // handled by its own IIFE further up), so guarding on mgCost let this block
+  // run there too — and it then threw on the first missing element, killing
+  // every IIFE after this point in the file on that page. mgCostOut exists
+  // only on margin-calculator.html.
+  if (!document.getElementById('mgCostOut')) return;
 
   var mgModeSeg = document.getElementById('mgModeSeg');
   var mgCost = document.getElementById('mgCost');
