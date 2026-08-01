@@ -491,4 +491,14 @@
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://tallybench.com/va-funding-fee-calculator.html</loc>
+    <lastmod>2026-08-01</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tallybench.com/embed.html</loc>
+    <lastmod>2026-08-01</lastmod>
+    <priority>0.6</priority>
+  </url>
 </urlset>

@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Embed a Free Calculator on Your Site | TallyBench</title>
+<meta name="description" content="Put any TallyBench calculator on your own site with one line of HTML. No sign-up, no API key, no tracking — just a credit link back.">
+<link rel="canonical" href="https://tallybench.com/embed.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.svg">
+<meta name="theme-color" content="#1C1A17">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="TallyBench">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TallyBench">
+<meta property="og:title" content="Embed a Free Calculator on Your Site">
+<meta property="og:description" content="Put any TallyBench calculator on your own site with one line of HTML. No sign-up, no API key, no tracking.">
+<meta property="og:url" content="https://tallybench.com/embed.html">
+<meta property="og:image" content="https://tallybench.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Embed a Free Calculator on Your Site">
+<meta name="twitter:description" content="Put any TallyBench calculator on your own site with one line of HTML. No sign-up, no API key, no tracking.">
+<meta name="twitter:image" content="https://tallybench.com/og-image.png">
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="style.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is embedding a TallyBench calculator free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. There is no charge, no sign-up and no API key. The only condition is that you keep the credit link back to TallyBench that appears under the embedded calculator."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does the embed track my visitors?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Every calculation runs in the visitor's own browser. Nothing typed into an embedded calculator is sent to TallyBench or to anyone else."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Will the embed resize to fit my page?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. The snippet includes a small listener that receives the calculator's height and resizes the iframe to match, so there is no internal scrollbar. If you strip the script the iframe still works, it just stays at its default height."
+      }
+    }
+  ]
+}
+</script>
+<!-- TB:BREADCRUMB:START -->
+<!-- no breadcrumb rule for this page -->
+<!-- TB:BREADCRUMB:END -->
+</head>
+<body data-page-cat="">
+
+<!-- TB:NAV:START -->
+<div class="nav-drawer" id="navDrawer">
+  <div class="nav-drawer-head">
+    <span>Menu</span>
+    <button class="nav-close" id="navClose" type="button" aria-label="Close menu">&#10005;</button>
+  </div>
+  <nav class="ruler cat-ruler" aria-label="Category">
+    <a class="tick" href="index.html">HOME</a>
+    <a class="tick" href="articles.html">ARTICLES</a>
+    <a class="tick" href="book.html">BOOK</a>
+    <button class="tick cat-tab" type="button" data-cat="finance">FINANCE</button>
+    <button class="tick cat-tab" type="button" data-cat="health">HEALTH</button>
+    <button class="tick cat-tab" type="button" data-cat="education">EDUCATION</button>
+    <button class="tick cat-tab" type="button" data-cat="everyday">EVERYDAY</button>
+  </nav>
+  <nav class="ruler sub-ruler" id="subRuler" aria-label="Tools">
+    <a class="tick sub-tick" data-cat="finance" href="currency-converter.html">CURRENCY</a>
+    <a class="tick sub-tick" data-cat="finance" href="loan-calculator.html">LOAN / EMI</a>
+    <a class="tick sub-tick" data-cat="finance" href="car-loan-calculator.html">CAR LOAN</a>
+    <a class="tick sub-tick" data-cat="finance" href="mortgage-calculator.html">MORTGAGE</a>
+    <a class="tick sub-tick" data-cat="finance" href="refinance-calculator.html">REFINANCE</a>
+    <a class="tick sub-tick" data-cat="finance" href="rent-vs-buy-calculator.html">RENT VS BUY</a>
+    <a class="tick sub-tick" data-cat="finance" href="tax-calculator.html">TAX</a>
+    <a class="tick sub-tick" data-cat="finance" href="paycheck-calculator.html">PAYCHECK</a>
+    <a class="tick sub-tick" data-cat="finance" href="freelancer-tax-calculator-india.html">FREELANCER TAX</a>
+    <a class="tick sub-tick" data-cat="finance" href="gst-vat-calculator.html">GST / VAT</a>
+    <a class="tick sub-tick" data-cat="finance" href="investment-calculator.html">INVESTMENT</a>
+    <a class="tick sub-tick" data-cat="finance" href="sip-calculator.html">SIP</a>
+    <a class="tick sub-tick" data-cat="finance" href="compound-interest-calculator.html">COMPOUND INT.</a>
+    <a class="tick sub-tick" data-cat="finance" href="savings-goal-calculator.html">SAVINGS GOAL</a>
+    <a class="tick sub-tick" data-cat="finance" href="retirement-calculator.html">RETIREMENT</a>
+    <a class="tick sub-tick" data-cat="finance" href="net-worth-calculator.html">NET WORTH</a>
+    <a class="tick sub-tick" data-cat="finance" href="discount-calculator.html">DISCOUNT</a>
+    <a class="tick sub-tick" data-cat="finance" href="tip-calculator.html">TIP</a>
+    <a class="tick sub-tick" data-cat="finance" href="fd-calculator.html">FD</a>
+    <a class="tick sub-tick" data-cat="finance" href="rd-calculator.html">RD</a>
+    <a class="tick sub-tick" data-cat="finance" href="ppf-calculator.html">PPF</a>
+    <a class="tick sub-tick" data-cat="finance" href="india-tax-regime-calculator.html">OLD VS NEW REGIME</a>
+    <a class="tick sub-tick" data-cat="finance" href="hra-calculator.html">HRA</a>
+    <a class="tick sub-tick" data-cat="finance" href="gratuity-calculator.html">GRATUITY</a>
+    <a class="tick sub-tick" data-cat="finance" href="epf-calculator.html">EPF</a>
+    <a class="tick sub-tick" data-cat="finance" href="fire-calculator.html">FIRE NUMBER</a>
+    <a class="tick sub-tick" data-cat="finance" href="rsu-vesting-calculator.html">RSU VESTING</a>
+    <a class="tick sub-tick" data-cat="finance" href="cross-country-salary-calculator.html">SALARY BY COUNTRY</a>
+    <a class="tick sub-tick" data-cat="finance" href="currency-fee-calculator.html">FX FEES</a>
+    <a class="tick sub-tick" data-cat="finance" href="zakat-calculator.html">ZAKAT</a>
+    <a class="tick sub-tick" data-cat="finance" href="break-even-calculator.html">BREAK-EVEN</a>
+    <a class="tick sub-tick" data-cat="finance" href="debt-payoff-calculator.html">DEBT PAYOFF</a>
+    <a class="tick sub-tick" data-cat="finance" href="salary-calculator.html">SALARY</a>
+    <a class="tick sub-tick" data-cat="finance" href="sales-tax-calculator.html">SALES TAX</a>
+    <a class="tick sub-tick" data-cat="finance" href="cd-calculator.html">CD</a>
+    <a class="tick sub-tick" data-cat="finance" href="amortization-schedule-calculator.html">AMORTIZATION</a>
+    <a class="tick sub-tick" data-cat="finance" href="401k-calculator.html">401(K)</a>
+    <a class="tick sub-tick" data-cat="finance" href="ira-calculator.html">IRA / ROTH</a>
+    <a class="tick sub-tick" data-cat="finance" href="house-affordability-calculator.html">AFFORDABILITY</a>
+    <a class="tick sub-tick" data-cat="finance" href="down-payment-calculator.html">DOWN PAYMENT</a>
+    <a class="tick sub-tick" data-cat="finance" href="debt-to-income-calculator.html">DTI RATIO</a>
+    <a class="tick sub-tick" data-cat="finance" href="simple-interest-calculator.html">SIMPLE INT.</a>
+    <a class="tick sub-tick" data-cat="finance" href="roi-calculator.html">ROI</a>
+    <a class="tick sub-tick" data-cat="finance" href="credit-card-payoff-calculator.html">CC PAYOFF</a>
+    <a class="tick sub-tick" data-cat="finance" href="mortgage-payoff-calculator.html">MTG PAYOFF</a>
+    <a class="tick sub-tick" data-cat="finance" href="rent-affordability-calculator.html">RENT AFFORD</a>
+    <a class="tick sub-tick" data-cat="finance" href="real-estate-investment-calculator.html">REAL ESTATE</a>
+    <a class="tick sub-tick" data-cat="finance" href="rental-property-calculator.html">RENTAL PROPERTY</a>
+    <a class="tick sub-tick" data-cat="finance" href="apr-calculator.html">APR</a>
+    <a class="tick sub-tick" data-cat="finance" href="fha-loan-calculator.html">FHA LOAN</a>
+    <a class="tick sub-tick" data-cat="finance" href="va-mortgage-calculator.html">VA LOAN</a>
+    <a class="tick sub-tick" data-cat="finance" href="va-funding-fee-calculator.html">VA FUNDING FEE</a>
+    <a class="tick sub-tick" data-cat="finance" href="home-equity-loan-calculator.html">HOME EQUITY</a>
+    <a class="tick sub-tick" data-cat="finance" href="heloc-calculator.html">HELOC</a>
+    <a class="tick sub-tick" data-cat="finance" href="cash-back-or-low-interest-calculator.html">CASH BACK/APR</a>
+    <a class="tick sub-tick" data-cat="finance" href="auto-lease-calculator.html">AUTO LEASE</a>
+    <a class="tick sub-tick" data-cat="finance" href="finance-calculator.html">TVM SOLVER</a>
+    <a class="tick sub-tick" data-cat="finance" href="interest-rate-calculator.html">INT. RATE</a>
+    <a class="tick sub-tick" data-cat="finance" href="bond-calculator.html">BOND</a>
+    <a class="tick sub-tick" data-cat="finance" href="mutual-fund-calculator.html">MUTUAL FUND</a>
+    <a class="tick sub-tick" data-cat="finance" href="average-return-calculator.html">AVG RETURN</a>
+    <a class="tick sub-tick" data-cat="finance" href="irr-calculator.html">IRR</a>
+    <a class="tick sub-tick" data-cat="finance" href="payback-period-calculator.html">PAYBACK PERIOD</a>
+    <a class="tick sub-tick" data-cat="finance" href="present-value-calculator.html">PRESENT VALUE</a>
+    <a class="tick sub-tick" data-cat="finance" href="future-value-calculator.html">FUTURE VALUE</a>
+    <a class="tick sub-tick" data-cat="finance" href="savings-calculator.html">SAVINGS</a>
+    <a class="tick sub-tick" data-cat="finance" href="pension-calculator.html">PENSION</a>
+    <a class="tick sub-tick" data-cat="finance" href="social-security-calculator.html">SOCIAL SECURITY</a>
+    <a class="tick sub-tick" data-cat="finance" href="annuity-calculator.html">ANNUITY</a>
+    <a class="tick sub-tick" data-cat="finance" href="annuity-payout-calculator.html">ANNUITY PAYOUT</a>
+    <a class="tick sub-tick" data-cat="finance" href="rmd-calculator.html">RMD</a>
+    <a class="tick sub-tick" data-cat="finance" href="marriage-tax-calculator.html">MARRIAGE TAX</a>
+    <a class="tick sub-tick" data-cat="finance" href="estate-tax-calculator.html">ESTATE TAX</a>
+    <a class="tick sub-tick" data-cat="finance" href="inflation-calculator.html">INFLATION</a>
+    <a class="tick sub-tick" data-cat="finance" href="debt-consolidation-calculator.html">DEBT CONSOLIDATION</a>
+    <a class="tick sub-tick" data-cat="finance" href="student-loan-repayment-calculator.html">REPAYMENT PLAN</a>
+    <a class="tick sub-tick" data-cat="finance" href="pslf-calculator.html">PSLF</a>
+    <a class="tick sub-tick" data-cat="finance" href="student-loan-calculator.html">STUDENT LOAN</a>
+    <a class="tick sub-tick" data-cat="finance" href="college-cost-calculator.html">COLLEGE COST</a>
+    <a class="tick sub-tick" data-cat="finance" href="depreciation-calculator.html">DEPRECIATION</a>
+    <a class="tick sub-tick" data-cat="finance" href="margin-calculator.html">MARGIN</a>
+    <a class="tick sub-tick" data-cat="finance" href="business-loan-calculator.html">BUSINESS LOAN</a>
+    <a class="tick sub-tick" data-cat="finance" href="personal-loan-calculator.html">PERSONAL LOAN</a>
+    <a class="tick sub-tick" data-cat="finance" href="boat-loan-calculator.html">BOAT LOAN</a>
+    <a class="tick sub-tick" data-cat="finance" href="lease-calculator.html">LEASE</a>
+    <a class="tick sub-tick" data-cat="finance" href="budget-calculator.html">BUDGET</a>
+    <a class="tick sub-tick" data-cat="finance" href="commission-calculator.html">COMMISSION</a>
+    <a class="tick sub-tick" data-cat="health" href="bmi-calculator.html">BMI</a>
+    <a class="tick sub-tick" data-cat="health" href="calorie-calculator.html">CALORIE</a>
+    <a class="tick sub-tick" data-cat="health" href="macro-calculator.html">MACROS</a>
+    <a class="tick sub-tick" data-cat="health" href="pregnancy-calculator.html">PREGNANCY</a>
+    <a class="tick sub-tick" data-cat="health" href="ovulation-calculator.html">OVULATION</a>
+    <a class="tick sub-tick" data-cat="health" href="ideal-weight-calculator.html">IDEAL WEIGHT</a>
+    <a class="tick sub-tick" data-cat="health" href="body-fat-calculator.html">BODY FAT</a>
+    <a class="tick sub-tick" data-cat="health" href="army-body-fat-calculator.html">ARMY BODY FAT</a>
+    <a class="tick sub-tick" data-cat="health" href="lean-body-mass-calculator.html">LEAN MASS</a>
+    <a class="tick sub-tick" data-cat="health" href="healthy-weight-calculator.html">HEALTHY WEIGHT</a>
+    <a class="tick sub-tick" data-cat="health" href="calories-burned-calculator.html">CAL BURNED</a>
+    <a class="tick sub-tick" data-cat="health" href="one-rep-max-calculator.html">1RM</a>
+    <a class="tick sub-tick" data-cat="health" href="target-heart-rate-calculator.html">HEART RATE</a>
+    <a class="tick sub-tick" data-cat="health" href="pregnancy-week-calculator.html">PREGNANCY WEEKS</a>
+    <a class="tick sub-tick" data-cat="health" href="pregnancy-weight-gain-calculator.html">PREG. WEIGHT GAIN</a>
+    <a class="tick sub-tick" data-cat="health" href="conception-calculator.html">CONCEPTION</a>
+    <a class="tick sub-tick" data-cat="health" href="sleep-cycle-calculator.html">SLEEP CYCLE</a>
+    <a class="tick sub-tick" data-cat="health" href="water-intake-calculator.html">WATER INTAKE</a>
+    <a class="tick sub-tick" data-cat="health" href="tdee-calculator.html">TDEE</a>
+    <a class="tick sub-tick" data-cat="health" href="protein-calculator.html">PROTEIN</a>
+    <a class="tick sub-tick" data-cat="education" href="gcf-calculator.html">GCF</a>
+    <a class="tick sub-tick" data-cat="education" href="lcm-calculator.html">LCM</a>
+    <a class="tick sub-tick" data-cat="education" href="factor-calculator.html">FACTORS</a>
+    <a class="tick sub-tick" data-cat="education" href="rounding-calculator.html">ROUNDING</a>
+    <a class="tick sub-tick" data-cat="education" href="scientific-notation-calculator.html">SCI. NOTATION</a>
+    <a class="tick sub-tick" data-cat="education" href="big-number-calculator.html">BIG NUMBERS</a>
+    <a class="tick sub-tick" data-cat="education" href="number-sequence-calculator.html">SEQUENCES</a>
+    <a class="tick sub-tick" data-cat="education" href="probability-calculator.html">PROBABILITY</a>
+    <a class="tick sub-tick" data-cat="education" href="matrix-calculator.html">MATRIX</a>
+    <a class="tick sub-tick" data-cat="education" href="circle-calculator.html">CIRCLE</a>
+    <a class="tick sub-tick" data-cat="education" href="area-calculator.html">AREA</a>
+    <a class="tick sub-tick" data-cat="education" href="volume-calculator.html">VOLUME</a>
+    <a class="tick sub-tick" data-cat="education" href="surface-area-calculator.html">SURFACE AREA</a>
+    <a class="tick sub-tick" data-cat="education" href="slope-calculator.html">SLOPE</a>
+    <a class="tick sub-tick" data-cat="education" href="coordinate-distance-calculator.html">COORDINATE DISTANCE</a>
+    <a class="tick sub-tick" data-cat="education" href="pythagorean-theorem-calculator.html">PYTHAGOREAN THEOREM</a>
+    <a class="tick sub-tick" data-cat="education" href="right-triangle-calculator.html">RIGHT TRIANGLE</a>
+    <a class="tick sub-tick" data-cat="education" href="triangle-calculator.html">TRIANGLE</a>
+    <a class="tick sub-tick" data-cat="education" href="gpa-calculator.html">GPA</a>
+    <a class="tick sub-tick" data-cat="education" href="grade-calculator.html">GRADE</a>
+    <a class="tick sub-tick" data-cat="education" href="scientific-calculator.html">SCIENTIFIC</a>
+    <a class="tick sub-tick" data-cat="education" href="fraction-calculator.html">FRACTION</a>
+    <a class="tick sub-tick" data-cat="education" href="statistics-calculator.html">STATISTICS</a>
+    <a class="tick sub-tick" data-cat="education" href="percent-error-calculator.html">% ERROR</a>
+    <a class="tick sub-tick" data-cat="education" href="exponent-calculator.html">EXPONENT</a>
+    <a class="tick sub-tick" data-cat="education" href="binary-calculator.html">BINARY</a>
+    <a class="tick sub-tick" data-cat="education" href="hex-calculator.html">HEX</a>
+    <a class="tick sub-tick" data-cat="education" href="half-life-calculator.html">HALF-LIFE</a>
+    <a class="tick sub-tick" data-cat="education" href="quadratic-formula-calculator.html">QUADRATIC</a>
+    <a class="tick sub-tick" data-cat="education" href="log-calculator.html">LOG</a>
+    <a class="tick sub-tick" data-cat="education" href="ratio-calculator.html">RATIO</a>
+    <a class="tick sub-tick" data-cat="education" href="root-calculator.html">ROOT</a>
+    <a class="tick sub-tick" data-cat="education" href="standard-deviation-calculator.html">STD DEVIATION</a>
+    <a class="tick sub-tick" data-cat="education" href="sample-size-calculator.html">SAMPLE SIZE</a>
+    <a class="tick sub-tick" data-cat="education" href="mean-median-mode-calculator.html">MEAN/MEDIAN/MODE</a>
+    <a class="tick sub-tick" data-cat="education" href="permutation-combination-calculator.html">PERM/COMBO</a>
+    <a class="tick sub-tick" data-cat="education" href="z-score-calculator.html">Z-SCORE</a>
+    <a class="tick sub-tick" data-cat="education" href="confidence-interval-calculator.html">CONFIDENCE INT.</a>
+    <a class="tick sub-tick" data-cat="everyday" href="basic-calculator.html">CALCULATOR</a>
+    <a class="tick sub-tick" data-cat="everyday" href="percentage-calculator.html">PERCENT</a>
+    <a class="tick sub-tick" data-cat="everyday" href="age-calculator.html">AGE</a>
+    <a class="tick sub-tick" data-cat="everyday" href="days-calculator.html">DAYS</a>
+    <a class="tick sub-tick" data-cat="everyday" href="time-calculator.html">TIME</a>
+    <a class="tick sub-tick" data-cat="everyday" href="unit-converter.html">UNITS</a>
+    <a class="tick sub-tick" data-cat="everyday" href="week-number-calculator.html">WEEK #</a>
+    <a class="tick sub-tick" data-cat="everyday" href="cm-to-inches.html">CM→IN</a>
+    <a class="tick sub-tick" data-cat="everyday" href="kg-to-pounds.html">KG→LB</a>
+    <a class="tick sub-tick" data-cat="everyday" href="celsius-to-fahrenheit.html">°C→°F</a>
+    <a class="tick sub-tick" data-cat="everyday" href="password-generator.html">PASSWORD</a>
+    <a class="tick sub-tick" data-cat="everyday" href="random-number-generator.html">RANDOM #</a>
+    <a class="tick sub-tick" data-cat="everyday" href="word-counter.html">WORD COUNT</a>
+    <a class="tick sub-tick" data-cat="everyday" href="pace-calculator.html">PACE</a>
+    <a class="tick sub-tick" data-cat="everyday" href="bill-split-calculator.html">BILL SPLIT</a>
+    <a class="tick sub-tick" data-cat="everyday" href="fuel-cost-calculator.html">FUEL COST</a>
+    <a class="tick sub-tick" data-cat="education" href="ohms-law-calculator.html">OHM’S LAW</a>
+    <a class="tick sub-tick" data-cat="education" href="resistor-color-code-calculator.html">RESISTOR CODE</a>
+    <a class="tick sub-tick" data-cat="education" href="roman-numeral-converter.html">ROMAN NUMERALS</a>
+    <a class="tick sub-tick" data-cat="everyday" href="voltage-drop-calculator.html">VOLTAGE DROP</a>
+    <a class="tick sub-tick" data-cat="everyday" href="electricity-cost-calculator.html">ELECTRICITY COST</a>
+    <a class="tick sub-tick" data-cat="everyday" href="ip-subnet-calculator.html">IP SUBNET</a>
+    <a class="tick sub-tick" data-cat="everyday" href="bandwidth-calculator.html">BANDWIDTH</a>
+    <a class="tick sub-tick" data-cat="everyday" href="base64-converter.html">BASE64</a>
+    <a class="tick sub-tick" data-cat="everyday" href="url-encoder.html">URL ENCODER</a>
+    <a class="tick sub-tick" data-cat="education" href="molecular-weight-calculator.html">MOLECULAR WEIGHT</a>
+    <a class="tick sub-tick" data-cat="education" href="molarity-calculator.html">MOLARITY</a>
+    <a class="tick sub-tick" data-cat="education" href="density-calculator.html">DENSITY</a>
+    <a class="tick sub-tick" data-cat="education" href="weight-on-planets-calculator.html">WEIGHT ON PLANETS</a>
+    <a class="tick sub-tick" data-cat="everyday" href="speed-calculator.html">SPEED</a>
+    <a class="tick sub-tick" data-cat="health" href="child-height-calculator.html">CHILD HEIGHT</a>
+    <a class="tick sub-tick" data-cat="health" href="gfr-calculator.html">eGFR</a>
+    <a class="tick sub-tick" data-cat="health" href="body-surface-area-calculator.html">BODY SURFACE AREA</a>
+    <a class="tick sub-tick" data-cat="health" href="bac-calculator.html">BLOOD ALCOHOL</a>
+    <a class="tick sub-tick" data-cat="health" href="fat-intake-calculator.html">FAT INTAKE</a>
+    <a class="tick sub-tick" data-cat="health" href="period-calculator.html">PERIOD</a>
+    <a class="tick sub-tick" data-cat="everyday" href="concrete-calculator.html">CONCRETE</a>
+    <a class="tick sub-tick" data-cat="everyday" href="square-footage-calculator.html">SQUARE FOOTAGE</a>
+    <a class="tick sub-tick" data-cat="everyday" href="btu-calculator.html">BTU / AC SIZE</a>
+    <a class="tick sub-tick" data-cat="everyday" href="stair-calculator.html">STAIRS</a>
+    <a class="tick sub-tick" data-cat="everyday" href="roofing-calculator.html">ROOFING</a>
+    <a class="tick sub-tick" data-cat="everyday" href="tile-calculator.html">TILE</a>
+    <a class="tick sub-tick" data-cat="everyday" href="mulch-calculator.html">MULCH</a>
+    <a class="tick sub-tick" data-cat="everyday" href="gravel-calculator.html">GRAVEL</a>
+    <a class="tick sub-tick" data-cat="everyday" href="wind-chill-calculator.html">WIND CHILL</a>
+    <a class="tick sub-tick" data-cat="everyday" href="heat-index-calculator.html">HEAT INDEX</a>
+    <a class="tick sub-tick" data-cat="everyday" href="dew-point-calculator.html">DEW POINT</a>
+    <a class="tick sub-tick" data-cat="everyday" href="gas-mileage-calculator.html">GAS MILEAGE</a>
+    <a class="tick sub-tick" data-cat="everyday" href="horsepower-calculator.html">HORSEPOWER</a>
+    <a class="tick sub-tick" data-cat="everyday" href="tire-size-calculator.html">TIRE SIZE</a>
+    <a class="tick sub-tick" data-cat="everyday" href="time-card-calculator.html">TIME CARD</a>
+    <a class="tick sub-tick" data-cat="everyday" href="time-zone-calculator.html">TIME ZONES</a>
+    <a class="tick sub-tick" data-cat="everyday" href="paint-calculator.html">PAINT</a>
+    <a class="tick sub-tick" data-cat="everyday" href="cooking-measurement-converter.html">COOKING UNITS</a>
+    <a class="tick sub-tick" data-cat="everyday" href="aspect-ratio-calculator.html">ASPECT RATIO</a>
+    <a class="tick sub-tick" data-cat="everyday" href="color-converter.html">COLOUR / CONTRAST</a>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+    <span class="sub-ruler-filler" aria-hidden="true"></span>
+  </nav>
+</div>
+<!-- TB:NAV:END -->
+
+<div class="wrap">
+
+  <div class="crumb"><a href="index.html">TallyBench</a> / Embed a calculator</div>
+
+  <section class="hero">
+    <div class="eyebrow">// FREE TO EMBED</div>
+    <h1>Put any of our calculators on your own site.</h1>
+    <p>One line of HTML. No sign-up, no API key, no tracking, no cost. Pick a calculator below, copy the code, paste it into your page. The only thing we ask is that you keep the credit link.</p>
+  </section>
+
+  <section class="tool" id="how">
+    <div class="tool-head"><span class="tool-num">//</span><div><h2>How it works</h2><p class="tool-sub">Three steps, about a minute.</p></div></div>
+    <div class="article">
+      <h3>1. Copy the code</h3>
+      <p>Find your calculator in the list below and press <strong>Copy embed code</strong>. You get an <code>&lt;iframe&gt;</code> plus a few lines of script that let the frame resize itself to the calculator's height, so your readers never see an internal scrollbar.</p>
+      <h3>2. Paste it into your page</h3>
+      <p>Anywhere in your HTML. It works in WordPress (use a Custom HTML block), Ghost, Squarespace, Webflow, plain HTML, or any CMS that lets you insert raw HTML. The iframe is capped at 640px wide and scales down on mobile.</p>
+      <h3>3. Keep the credit link</h3>
+      <p>A small "Calculator by TallyBench" line renders under the embedded tool. That link is the whole price of admission — leave it in place and you are free to use the calculator commercially, on as many pages as you like, forever.</p>
+    </div>
+  </section>
+
+  <section class="tool" id="terms">
+    <div class="tool-head"><span class="tool-num">//</span><div><h2>What you get, and what we ask</h2><p class="tool-sub">The short version of the licence.</p></div></div>
+    <div class="table-scroll">
+    <table class="data-table">
+      <thead><tr><th>Question</th><th>Answer</th></tr></thead>
+      <tbody>
+        <tr><td>Cost</td><td>Free, including commercial use</td></tr>
+        <tr><td>Sign-up or API key</td><td>Neither</td></tr>
+        <tr><td>Page limit</td><td>None</td></tr>
+        <tr><td>Visitor tracking</td><td>None — calculations run in the visitor's browser</td></tr>
+        <tr><td>Data sent to us</td><td>Nothing typed into the calculator ever leaves the browser</td></tr>
+        <tr><td>Condition</td><td>Keep the credit link under the calculator</td></tr>
+        <tr><td>Can you restyle it</td><td>Not currently — the embed renders in our styling</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </section>
+
+  <section class="tool" id="pick">
+    <div class="tool-head"><span class="tool-num">//</span><div><h2>Pick a calculator</h2><p class="tool-sub">Every tool on the site is embeddable. Filter by name below.</p></div></div>
+    <div class="field" style="max-width:420px;">
+      <label for="embFilter">Filter by name</label>
+      <input type="text" id="embFilter" placeholder="mortgage, BMI, GPA…" autocomplete="off">
+    </div>
+    <p id="embCount" style="font-size:13px;color:var(--ink-muted);margin:0 0 18px;"></p>
+
+    <div id="embOutput" hidden>
+      <p style="font-size:13px;color:var(--ink-soft);margin:0 0 8px;">Embed code for <strong id="embOutName"></strong> — paste this into your page:</p>
+      <textarea readonly id="embCode" rows="6" style="width:100%;font-family:'JetBrains Mono',monospace;font-size:12px;padding:12px;border-radius:6px;"></textarea>
+      <p style="font-size:12.5px;color:var(--ink-muted);margin:8px 0 0;" id="embCopied"></p>
+    </div>
+
+    <!-- TB:EMBEDLIST:START -->
+    <h3 class="emb-cat" id="emb-finance">Finance <span>87 tools</span></h3>
+    <ul class="emb-list">
+      <li><span class="emb-name">Currency Converter</span><button type="button" class="ghost emb-copy" data-file="currency-converter.html" data-name="Currency Converter">Copy embed code</button></li>
+      <li><span class="emb-name">Loan / EMI Calculator</span><button type="button" class="ghost emb-copy" data-file="loan-calculator.html" data-name="Loan / EMI Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Car Loan Calculator</span><button type="button" class="ghost emb-copy" data-file="car-loan-calculator.html" data-name="Car Loan Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Mortgage Calculator</span><button type="button" class="ghost emb-copy" data-file="mortgage-calculator.html" data-name="Mortgage Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Refinance Calculator</span><button type="button" class="ghost emb-copy" data-file="refinance-calculator.html" data-name="Refinance Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Rent vs. Buy Calculator</span><button type="button" class="ghost emb-copy" data-file="rent-vs-buy-calculator.html" data-name="Rent vs. Buy Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Tax Calculator</span><button type="button" class="ghost emb-copy" data-file="tax-calculator.html" data-name="Tax Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Paycheck Calculator</span><button type="button" class="ghost emb-copy" data-file="paycheck-calculator.html" data-name="Paycheck Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Freelancer Tax Calculator (India)</span><button type="button" class="ghost emb-copy" data-file="freelancer-tax-calculator-india.html" data-name="Freelancer Tax Calculator (India)">Copy embed code</button></li>
+      <li><span class="emb-name">GST / VAT Calculator</span><button type="button" class="ghost emb-copy" data-file="gst-vat-calculator.html" data-name="GST / VAT Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Investment Calculator</span><button type="button" class="ghost emb-copy" data-file="investment-calculator.html" data-name="Investment Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">SIP Calculator</span><button type="button" class="ghost emb-copy" data-file="sip-calculator.html" data-name="SIP Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Compound Interest Calculator</span><button type="button" class="ghost emb-copy" data-file="compound-interest-calculator.html" data-name="Compound Interest Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Savings Goal Calculator</span><button type="button" class="ghost emb-copy" data-file="savings-goal-calculator.html" data-name="Savings Goal Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Retirement Calculator</span><button type="button" class="ghost emb-copy" data-file="retirement-calculator.html" data-name="Retirement Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Net Worth Calculator</span><button type="button" class="ghost emb-copy" data-file="net-worth-calculator.html" data-name="Net Worth Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Discount Calculator</span><button type="button" class="ghost emb-copy" data-file="discount-calculator.html" data-name="Discount Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Tip Calculator</span><button type="button" class="ghost emb-copy" data-file="tip-calculator.html" data-name="Tip Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">FD Calculator</span><button type="button" class="ghost emb-copy" data-file="fd-calculator.html" data-name="FD Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">RD Calculator</span><button type="button" class="ghost emb-copy" data-file="rd-calculator.html" data-name="RD Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">PPF Calculator</span><button type="button" class="ghost emb-copy" data-file="ppf-calculator.html" data-name="PPF Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Old vs New Tax Regime Calculator</span><button type="button" class="ghost emb-copy" data-file="india-tax-regime-calculator.html" data-name="Old vs New Tax Regime Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">HRA Calculator</span><button type="button" class="ghost emb-copy" data-file="hra-calculator.html" data-name="HRA Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Gratuity Calculator</span><button type="button" class="ghost emb-copy" data-file="gratuity-calculator.html" data-name="Gratuity Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">EPF Calculator</span><button type="button" class="ghost emb-copy" data-file="epf-calculator.html" data-name="EPF Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">FIRE &amp;amp; Coast FIRE Calculator</span><button type="button" class="ghost emb-copy" data-file="fire-calculator.html" data-name="FIRE &amp;amp; Coast FIRE Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">RSU Vesting Calculator</span><button type="button" class="ghost emb-copy" data-file="rsu-vesting-calculator.html" data-name="RSU Vesting Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Cross-Country Salary Calculator</span><button type="button" class="ghost emb-copy" data-file="cross-country-salary-calculator.html" data-name="Cross-Country Salary Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">FX Hidden-Fee Calculator</span><button type="button" class="ghost emb-copy" data-file="currency-fee-calculator.html" data-name="FX Hidden-Fee Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Zakat Calculator</span><button type="button" class="ghost emb-copy" data-file="zakat-calculator.html" data-name="Zakat Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Break-Even &amp;amp; Profit Margin Calculator</span><button type="button" class="ghost emb-copy" data-file="break-even-calculator.html" data-name="Break-Even &amp;amp; Profit Margin Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Debt Payoff Calculator</span><button type="button" class="ghost emb-copy" data-file="debt-payoff-calculator.html" data-name="Debt Payoff Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Salary Calculator</span><button type="button" class="ghost emb-copy" data-file="salary-calculator.html" data-name="Salary Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Sales Tax Calculator</span><button type="button" class="ghost emb-copy" data-file="sales-tax-calculator.html" data-name="Sales Tax Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">CD Calculator</span><button type="button" class="ghost emb-copy" data-file="cd-calculator.html" data-name="CD Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Amortization Schedule Calculator</span><button type="button" class="ghost emb-copy" data-file="amortization-schedule-calculator.html" data-name="Amortization Schedule Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">401(k) Calculator</span><button type="button" class="ghost emb-copy" data-file="401k-calculator.html" data-name="401(k) Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">IRA &amp;amp; Roth IRA Calculator</span><button type="button" class="ghost emb-copy" data-file="ira-calculator.html" data-name="IRA &amp;amp; Roth IRA Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">House Affordability Calculator</span><button type="button" class="ghost emb-copy" data-file="house-affordability-calculator.html" data-name="House Affordability Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Down Payment Calculator</span><button type="button" class="ghost emb-copy" data-file="down-payment-calculator.html" data-name="Down Payment Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Debt-to-Income Ratio Calculator</span><button type="button" class="ghost emb-copy" data-file="debt-to-income-calculator.html" data-name="Debt-to-Income Ratio Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Simple Interest Calculator</span><button type="button" class="ghost emb-copy" data-file="simple-interest-calculator.html" data-name="Simple Interest Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">ROI Calculator</span><button type="button" class="ghost emb-copy" data-file="roi-calculator.html" data-name="ROI Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Credit Card Payoff Calculator</span><button type="button" class="ghost emb-copy" data-file="credit-card-payoff-calculator.html" data-name="Credit Card Payoff Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Mortgage Payoff Calculator</span><button type="button" class="ghost emb-copy" data-file="mortgage-payoff-calculator.html" data-name="Mortgage Payoff Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Rent Affordability Calculator</span><button type="button" class="ghost emb-copy" data-file="rent-affordability-calculator.html" data-name="Rent Affordability Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Real Estate Investment Calculator</span><button type="button" class="ghost emb-copy" data-file="real-estate-investment-calculator.html" data-name="Real Estate Investment Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Rental Property Calculator</span><button type="button" class="ghost emb-copy" data-file="rental-property-calculator.html" data-name="Rental Property Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">APR Calculator</span><button type="button" class="ghost emb-copy" data-file="apr-calculator.html" data-name="APR Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">FHA Loan Calculator</span><button type="button" class="ghost emb-copy" data-file="fha-loan-calculator.html" data-name="FHA Loan Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">VA Mortgage Calculator</span><button type="button" class="ghost emb-copy" data-file="va-mortgage-calculator.html" data-name="VA Mortgage Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">VA Funding Fee Calculator</span><button type="button" class="ghost emb-copy" data-file="va-funding-fee-calculator.html" data-name="VA Funding Fee Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Home Equity Loan Calculator</span><button type="button" class="ghost emb-copy" data-file="home-equity-loan-calculator.html" data-name="Home Equity Loan Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">HELOC Calculator</span><button type="button" class="ghost emb-copy" data-file="heloc-calculator.html" data-name="HELOC Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Cash Back or Low Interest Calculator</span><button type="button" class="ghost emb-copy" data-file="cash-back-or-low-interest-calculator.html" data-name="Cash Back or Low Interest Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Auto Lease Calculator</span><button type="button" class="ghost emb-copy" data-file="auto-lease-calculator.html" data-name="Auto Lease Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Finance Calculator (Time Value of Money)</span><button type="button" class="ghost emb-copy" data-file="finance-calculator.html" data-name="Finance Calculator (Time Value of Money)">Copy embed code</button></li>
+      <li><span class="emb-name">Interest Rate Calculator</span><button type="button" class="ghost emb-copy" data-file="interest-rate-calculator.html" data-name="Interest Rate Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Bond Calculator</span><button type="button" class="ghost emb-copy" data-file="bond-calculator.html" data-name="Bond Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Mutual Fund Calculator</span><button type="button" class="ghost emb-copy" data-file="mutual-fund-calculator.html" data-name="Mutual Fund Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Average Return Calculator</span><button type="button" class="ghost emb-copy" data-file="average-return-calculator.html" data-name="Average Return Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">IRR Calculator</span><button type="button" class="ghost emb-copy" data-file="irr-calculator.html" data-name="IRR Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Payback Period Calculator</span><button type="button" class="ghost emb-copy" data-file="payback-period-calculator.html" data-name="Payback Period Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Present Value Calculator</span><button type="button" class="ghost emb-copy" data-file="present-value-calculator.html" data-name="Present Value Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Future Value Calculator</span><button type="button" class="ghost emb-copy" data-file="future-value-calculator.html" data-name="Future Value Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Savings Calculator</span><button type="button" class="ghost emb-copy" data-file="savings-calculator.html" data-name="Savings Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Pension Calculator</span><button type="button" class="ghost emb-copy" data-file="pension-calculator.html" data-name="Pension Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Social Security Calculator</span><button type="button" class="ghost emb-copy" data-file="social-security-calculator.html" data-name="Social Security Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Annuity Calculator</span><button type="button" class="ghost emb-copy" data-file="annuity-calculator.html" data-name="Annuity Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Annuity Payout Calculator</span><button type="button" class="ghost emb-copy" data-file="annuity-payout-calculator.html" data-name="Annuity Payout Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">RMD Calculator</span><button type="button" class="ghost emb-copy" data-file="rmd-calculator.html" data-name="RMD Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Marriage Tax Calculator</span><button type="button" class="ghost emb-copy" data-file="marriage-tax-calculator.html" data-name="Marriage Tax Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Estate Tax Calculator</span><button type="button" class="ghost emb-copy" data-file="estate-tax-calculator.html" data-name="Estate Tax Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Inflation Calculator</span><button type="button" class="ghost emb-copy" data-file="inflation-calculator.html" data-name="Inflation Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Debt Consolidation Calculator</span><button type="button" class="ghost emb-copy" data-file="debt-consolidation-calculator.html" data-name="Debt Consolidation Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Income-Driven Repayment Calculator</span><button type="button" class="ghost emb-copy" data-file="student-loan-repayment-calculator.html" data-name="Income-Driven Repayment Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">PSLF Calculator</span><button type="button" class="ghost emb-copy" data-file="pslf-calculator.html" data-name="PSLF Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Student Loan Calculator</span><button type="button" class="ghost emb-copy" data-file="student-loan-calculator.html" data-name="Student Loan Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">College Cost Calculator</span><button type="button" class="ghost emb-copy" data-file="college-cost-calculator.html" data-name="College Cost Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Depreciation Calculator</span><button type="button" class="ghost emb-copy" data-file="depreciation-calculator.html" data-name="Depreciation Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Margin Calculator</span><button type="button" class="ghost emb-copy" data-file="margin-calculator.html" data-name="Margin Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Business Loan Calculator</span><button type="button" class="ghost emb-copy" data-file="business-loan-calculator.html" data-name="Business Loan Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Personal Loan Calculator</span><button type="button" class="ghost emb-copy" data-file="personal-loan-calculator.html" data-name="Personal Loan Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Boat Loan Calculator</span><button type="button" class="ghost emb-copy" data-file="boat-loan-calculator.html" data-name="Boat Loan Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Lease Calculator</span><button type="button" class="ghost emb-copy" data-file="lease-calculator.html" data-name="Lease Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Budget Calculator</span><button type="button" class="ghost emb-copy" data-file="budget-calculator.html" data-name="Budget Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Commission Calculator</span><button type="button" class="ghost emb-copy" data-file="commission-calculator.html" data-name="Commission Calculator">Copy embed code</button></li>
+    </ul>
+    <h3 class="emb-cat" id="emb-health">Health <span>26 tools</span></h3>
+    <ul class="emb-list">
+      <li><span class="emb-name">BMI Calculator</span><button type="button" class="ghost emb-copy" data-file="bmi-calculator.html" data-name="BMI Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Calorie / BMR Calculator</span><button type="button" class="ghost emb-copy" data-file="calorie-calculator.html" data-name="Calorie / BMR Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Macro Calculator</span><button type="button" class="ghost emb-copy" data-file="macro-calculator.html" data-name="Macro Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Pregnancy Due Date Calculator</span><button type="button" class="ghost emb-copy" data-file="pregnancy-calculator.html" data-name="Pregnancy Due Date Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Ovulation Calculator</span><button type="button" class="ghost emb-copy" data-file="ovulation-calculator.html" data-name="Ovulation Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Ideal Weight Calculator</span><button type="button" class="ghost emb-copy" data-file="ideal-weight-calculator.html" data-name="Ideal Weight Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Body Fat Calculator</span><button type="button" class="ghost emb-copy" data-file="body-fat-calculator.html" data-name="Body Fat Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Army Body Fat Calculator</span><button type="button" class="ghost emb-copy" data-file="army-body-fat-calculator.html" data-name="Army Body Fat Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Lean Body Mass Calculator</span><button type="button" class="ghost emb-copy" data-file="lean-body-mass-calculator.html" data-name="Lean Body Mass Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Healthy Weight Calculator</span><button type="button" class="ghost emb-copy" data-file="healthy-weight-calculator.html" data-name="Healthy Weight Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Calories Burned Calculator</span><button type="button" class="ghost emb-copy" data-file="calories-burned-calculator.html" data-name="Calories Burned Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">One Rep Max Calculator</span><button type="button" class="ghost emb-copy" data-file="one-rep-max-calculator.html" data-name="One Rep Max Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Target Heart Rate Calculator</span><button type="button" class="ghost emb-copy" data-file="target-heart-rate-calculator.html" data-name="Target Heart Rate Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Pregnancy Calculator</span><button type="button" class="ghost emb-copy" data-file="pregnancy-week-calculator.html" data-name="Pregnancy Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Pregnancy Weight Gain Calculator</span><button type="button" class="ghost emb-copy" data-file="pregnancy-weight-gain-calculator.html" data-name="Pregnancy Weight Gain Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Conception Calculator</span><button type="button" class="ghost emb-copy" data-file="conception-calculator.html" data-name="Conception Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Sleep Cycle Calculator</span><button type="button" class="ghost emb-copy" data-file="sleep-cycle-calculator.html" data-name="Sleep Cycle Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Water Intake Calculator</span><button type="button" class="ghost emb-copy" data-file="water-intake-calculator.html" data-name="Water Intake Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">TDEE Calculator</span><button type="button" class="ghost emb-copy" data-file="tdee-calculator.html" data-name="TDEE Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Protein Calculator</span><button type="button" class="ghost emb-copy" data-file="protein-calculator.html" data-name="Protein Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Child Height Predictor</span><button type="button" class="ghost emb-copy" data-file="child-height-calculator.html" data-name="Child Height Predictor">Copy embed code</button></li>
+      <li><span class="emb-name">eGFR Calculator</span><button type="button" class="ghost emb-copy" data-file="gfr-calculator.html" data-name="eGFR Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Body Surface Area Calculator</span><button type="button" class="ghost emb-copy" data-file="body-surface-area-calculator.html" data-name="Body Surface Area Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Blood Alcohol Calculator</span><button type="button" class="ghost emb-copy" data-file="bac-calculator.html" data-name="Blood Alcohol Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Fat Intake Calculator</span><button type="button" class="ghost emb-copy" data-file="fat-intake-calculator.html" data-name="Fat Intake Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Period Calculator</span><button type="button" class="ghost emb-copy" data-file="period-calculator.html" data-name="Period Calculator">Copy embed code</button></li>
+    </ul>
+    <h3 class="emb-cat" id="emb-education">Education <span>45 tools</span></h3>
+    <ul class="emb-list">
+      <li><span class="emb-name">GCF Calculator</span><button type="button" class="ghost emb-copy" data-file="gcf-calculator.html" data-name="GCF Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">LCM Calculator</span><button type="button" class="ghost emb-copy" data-file="lcm-calculator.html" data-name="LCM Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Factor Calculator</span><button type="button" class="ghost emb-copy" data-file="factor-calculator.html" data-name="Factor Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Rounding Calculator</span><button type="button" class="ghost emb-copy" data-file="rounding-calculator.html" data-name="Rounding Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Scientific Notation Calculator</span><button type="button" class="ghost emb-copy" data-file="scientific-notation-calculator.html" data-name="Scientific Notation Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Big Number Calculator</span><button type="button" class="ghost emb-copy" data-file="big-number-calculator.html" data-name="Big Number Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Number Sequence Calculator</span><button type="button" class="ghost emb-copy" data-file="number-sequence-calculator.html" data-name="Number Sequence Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Probability Calculator</span><button type="button" class="ghost emb-copy" data-file="probability-calculator.html" data-name="Probability Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Matrix Calculator</span><button type="button" class="ghost emb-copy" data-file="matrix-calculator.html" data-name="Matrix Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Circle Calculator</span><button type="button" class="ghost emb-copy" data-file="circle-calculator.html" data-name="Circle Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Area Calculator</span><button type="button" class="ghost emb-copy" data-file="area-calculator.html" data-name="Area Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Volume Calculator</span><button type="button" class="ghost emb-copy" data-file="volume-calculator.html" data-name="Volume Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Surface Area Calculator</span><button type="button" class="ghost emb-copy" data-file="surface-area-calculator.html" data-name="Surface Area Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Slope Calculator</span><button type="button" class="ghost emb-copy" data-file="slope-calculator.html" data-name="Slope Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Coordinate Distance Calculator</span><button type="button" class="ghost emb-copy" data-file="coordinate-distance-calculator.html" data-name="Coordinate Distance Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Pythagorean Theorem Calculator</span><button type="button" class="ghost emb-copy" data-file="pythagorean-theorem-calculator.html" data-name="Pythagorean Theorem Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Right Triangle Calculator</span><button type="button" class="ghost emb-copy" data-file="right-triangle-calculator.html" data-name="Right Triangle Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Triangle Calculator</span><button type="button" class="ghost emb-copy" data-file="triangle-calculator.html" data-name="Triangle Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">GPA Calculator</span><button type="button" class="ghost emb-copy" data-file="gpa-calculator.html" data-name="GPA Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Grade Calculator</span><button type="button" class="ghost emb-copy" data-file="grade-calculator.html" data-name="Grade Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Scientific Calculator</span><button type="button" class="ghost emb-copy" data-file="scientific-calculator.html" data-name="Scientific Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Fraction Calculator</span><button type="button" class="ghost emb-copy" data-file="fraction-calculator.html" data-name="Fraction Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Statistics Calculator</span><button type="button" class="ghost emb-copy" data-file="statistics-calculator.html" data-name="Statistics Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Percent Error Calculator</span><button type="button" class="ghost emb-copy" data-file="percent-error-calculator.html" data-name="Percent Error Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Exponent Calculator</span><button type="button" class="ghost emb-copy" data-file="exponent-calculator.html" data-name="Exponent Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Binary Calculator</span><button type="button" class="ghost emb-copy" data-file="binary-calculator.html" data-name="Binary Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Hex Calculator</span><button type="button" class="ghost emb-copy" data-file="hex-calculator.html" data-name="Hex Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Half-Life Calculator</span><button type="button" class="ghost emb-copy" data-file="half-life-calculator.html" data-name="Half-Life Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Quadratic Formula Calculator</span><button type="button" class="ghost emb-copy" data-file="quadratic-formula-calculator.html" data-name="Quadratic Formula Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Log Calculator</span><button type="button" class="ghost emb-copy" data-file="log-calculator.html" data-name="Log Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Ratio Calculator</span><button type="button" class="ghost emb-copy" data-file="ratio-calculator.html" data-name="Ratio Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Root Calculator</span><button type="button" class="ghost emb-copy" data-file="root-calculator.html" data-name="Root Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Standard Deviation Calculator</span><button type="button" class="ghost emb-copy" data-file="standard-deviation-calculator.html" data-name="Standard Deviation Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Sample Size Calculator</span><button type="button" class="ghost emb-copy" data-file="sample-size-calculator.html" data-name="Sample Size Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Mean, Median, Mode &amp;amp; Range Calculator</span><button type="button" class="ghost emb-copy" data-file="mean-median-mode-calculator.html" data-name="Mean, Median, Mode &amp;amp; Range Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Permutation and Combination Calculator</span><button type="button" class="ghost emb-copy" data-file="permutation-combination-calculator.html" data-name="Permutation and Combination Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Z-Score Calculator</span><button type="button" class="ghost emb-copy" data-file="z-score-calculator.html" data-name="Z-Score Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Confidence Interval Calculator</span><button type="button" class="ghost emb-copy" data-file="confidence-interval-calculator.html" data-name="Confidence Interval Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Ohm’s Law Calculator</span><button type="button" class="ghost emb-copy" data-file="ohms-law-calculator.html" data-name="Ohm’s Law Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Resistor Colour Code Calculator</span><button type="button" class="ghost emb-copy" data-file="resistor-color-code-calculator.html" data-name="Resistor Colour Code Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Roman Numeral Converter</span><button type="button" class="ghost emb-copy" data-file="roman-numeral-converter.html" data-name="Roman Numeral Converter">Copy embed code</button></li>
+      <li><span class="emb-name">Molecular Weight Calculator</span><button type="button" class="ghost emb-copy" data-file="molecular-weight-calculator.html" data-name="Molecular Weight Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Molarity Calculator</span><button type="button" class="ghost emb-copy" data-file="molarity-calculator.html" data-name="Molarity Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Density Calculator</span><button type="button" class="ghost emb-copy" data-file="density-calculator.html" data-name="Density Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Weight on Other Planets</span><button type="button" class="ghost emb-copy" data-file="weight-on-planets-calculator.html" data-name="Weight on Other Planets">Copy embed code</button></li>
+    </ul>
+    <h3 class="emb-cat" id="emb-everyday">Everyday <span>43 tools</span></h3>
+    <ul class="emb-list">
+      <li><span class="emb-name">Basic Calculator</span><button type="button" class="ghost emb-copy" data-file="basic-calculator.html" data-name="Basic Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Percentage Calculator</span><button type="button" class="ghost emb-copy" data-file="percentage-calculator.html" data-name="Percentage Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Age Calculator</span><button type="button" class="ghost emb-copy" data-file="age-calculator.html" data-name="Age Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Days Between Dates</span><button type="button" class="ghost emb-copy" data-file="days-calculator.html" data-name="Days Between Dates">Copy embed code</button></li>
+      <li><span class="emb-name">Time Calculator</span><button type="button" class="ghost emb-copy" data-file="time-calculator.html" data-name="Time Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Unit Converter</span><button type="button" class="ghost emb-copy" data-file="unit-converter.html" data-name="Unit Converter">Copy embed code</button></li>
+      <li><span class="emb-name">Week Number Calculator</span><button type="button" class="ghost emb-copy" data-file="week-number-calculator.html" data-name="Week Number Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">CM to Inches</span><button type="button" class="ghost emb-copy" data-file="cm-to-inches.html" data-name="CM to Inches">Copy embed code</button></li>
+      <li><span class="emb-name">KG to Pounds</span><button type="button" class="ghost emb-copy" data-file="kg-to-pounds.html" data-name="KG to Pounds">Copy embed code</button></li>
+      <li><span class="emb-name">Celsius to Fahrenheit</span><button type="button" class="ghost emb-copy" data-file="celsius-to-fahrenheit.html" data-name="Celsius to Fahrenheit">Copy embed code</button></li>
+      <li><span class="emb-name">Password Generator</span><button type="button" class="ghost emb-copy" data-file="password-generator.html" data-name="Password Generator">Copy embed code</button></li>
+      <li><span class="emb-name">Random Number Generator</span><button type="button" class="ghost emb-copy" data-file="random-number-generator.html" data-name="Random Number Generator">Copy embed code</button></li>
+      <li><span class="emb-name">Word Counter</span><button type="button" class="ghost emb-copy" data-file="word-counter.html" data-name="Word Counter">Copy embed code</button></li>
+      <li><span class="emb-name">Pace Calculator</span><button type="button" class="ghost emb-copy" data-file="pace-calculator.html" data-name="Pace Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Bill Split Calculator</span><button type="button" class="ghost emb-copy" data-file="bill-split-calculator.html" data-name="Bill Split Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Fuel Cost Calculator</span><button type="button" class="ghost emb-copy" data-file="fuel-cost-calculator.html" data-name="Fuel Cost Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Voltage Drop Calculator</span><button type="button" class="ghost emb-copy" data-file="voltage-drop-calculator.html" data-name="Voltage Drop Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Electricity Cost Calculator</span><button type="button" class="ghost emb-copy" data-file="electricity-cost-calculator.html" data-name="Electricity Cost Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">IP Subnet Calculator</span><button type="button" class="ghost emb-copy" data-file="ip-subnet-calculator.html" data-name="IP Subnet Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Bandwidth Calculator</span><button type="button" class="ghost emb-copy" data-file="bandwidth-calculator.html" data-name="Bandwidth Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Base64 Encoder and Decoder</span><button type="button" class="ghost emb-copy" data-file="base64-converter.html" data-name="Base64 Encoder and Decoder">Copy embed code</button></li>
+      <li><span class="emb-name">URL Encoder and Decoder</span><button type="button" class="ghost emb-copy" data-file="url-encoder.html" data-name="URL Encoder and Decoder">Copy embed code</button></li>
+      <li><span class="emb-name">Speed Calculator</span><button type="button" class="ghost emb-copy" data-file="speed-calculator.html" data-name="Speed Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Concrete Calculator</span><button type="button" class="ghost emb-copy" data-file="concrete-calculator.html" data-name="Concrete Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Square Footage Calculator</span><button type="button" class="ghost emb-copy" data-file="square-footage-calculator.html" data-name="Square Footage Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">BTU Calculator</span><button type="button" class="ghost emb-copy" data-file="btu-calculator.html" data-name="BTU Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Stair Calculator</span><button type="button" class="ghost emb-copy" data-file="stair-calculator.html" data-name="Stair Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Roofing Calculator</span><button type="button" class="ghost emb-copy" data-file="roofing-calculator.html" data-name="Roofing Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Tile Calculator</span><button type="button" class="ghost emb-copy" data-file="tile-calculator.html" data-name="Tile Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Mulch Calculator</span><button type="button" class="ghost emb-copy" data-file="mulch-calculator.html" data-name="Mulch Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Gravel Calculator</span><button type="button" class="ghost emb-copy" data-file="gravel-calculator.html" data-name="Gravel Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Wind Chill Calculator</span><button type="button" class="ghost emb-copy" data-file="wind-chill-calculator.html" data-name="Wind Chill Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Heat Index Calculator</span><button type="button" class="ghost emb-copy" data-file="heat-index-calculator.html" data-name="Heat Index Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Dew Point Calculator</span><button type="button" class="ghost emb-copy" data-file="dew-point-calculator.html" data-name="Dew Point Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Gas Mileage Calculator</span><button type="button" class="ghost emb-copy" data-file="gas-mileage-calculator.html" data-name="Gas Mileage Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Horsepower Calculator</span><button type="button" class="ghost emb-copy" data-file="horsepower-calculator.html" data-name="Horsepower Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Tire Size Calculator</span><button type="button" class="ghost emb-copy" data-file="tire-size-calculator.html" data-name="Tire Size Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Time Card Calculator</span><button type="button" class="ghost emb-copy" data-file="time-card-calculator.html" data-name="Time Card Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Time Zone Converter</span><button type="button" class="ghost emb-copy" data-file="time-zone-calculator.html" data-name="Time Zone Converter">Copy embed code</button></li>
+      <li><span class="emb-name">Paint Calculator</span><button type="button" class="ghost emb-copy" data-file="paint-calculator.html" data-name="Paint Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Cooking Measurement Converter</span><button type="button" class="ghost emb-copy" data-file="cooking-measurement-converter.html" data-name="Cooking Measurement Converter">Copy embed code</button></li>
+      <li><span class="emb-name">Aspect Ratio Calculator</span><button type="button" class="ghost emb-copy" data-file="aspect-ratio-calculator.html" data-name="Aspect Ratio Calculator">Copy embed code</button></li>
+      <li><span class="emb-name">Colour Converter</span><button type="button" class="ghost emb-copy" data-file="color-converter.html" data-name="Colour Converter">Copy embed code</button></li>
+    </ul>
+    <!-- TB:EMBEDLIST:END -->
+  </section>
+
+  <section class="article">
+    <h3>Does the embed slow my page down?</h3>
+    <p>The iframe is marked <code>loading="lazy"</code>, so browsers defer loading it until the reader scrolls near it. The calculator itself is plain HTML, CSS and JavaScript with no frameworks and no third-party requests, so once it does load it is a small download.</p>
+    <h3>What if I don't want the resize script?</h3>
+    <p>Drop it. The <code>&lt;iframe&gt;</code> alone works perfectly well — it simply stays at the default 640px height instead of shrinking to fit the calculator, which for most tools means some empty space at the bottom.</p>
+    <h3>Can I embed a calculator on a page that also runs ads?</h3>
+    <p>Yes. Commercial use is fine, ads included. We ask only that the credit link stays visible and is not marked <code>nofollow</code>, since that link is what makes this worth offering.</p>
+    <h3>Something is broken or you want a calculator that doesn't exist yet</h3>
+    <p>Both are worth telling us about — the contact route is on the <a href="about.html">About page</a>. A calculator that someone actually wants to embed is the best possible argument for building it.</p>
+  </section>
+
+  <p style="font-size:13px;color:var(--ink-muted);margin:0 0 24px;">Browse everything first on the <a href="index.html">homepage</a>, read the long-form guides in <a href="articles.html">Articles</a>, or see the reasoning behind the numbers in the <a href="book.html">books</a>.</p>
+
+
+  <footer>
+<p>TALLYBENCH · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a></p>
+</footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

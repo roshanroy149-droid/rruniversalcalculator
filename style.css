@@ -1709,3 +1709,31 @@ header::before{
   .tool-card-link{box-shadow:none;}
   .sub-ruler{background:rgba(0,0,0,0.15);}
 }
+
+/* EMBED DIRECTORY (embed.html) — a long list of every tool with a copy button.
+   Rows are uniform height and share one left and one right edge, per the
+   alignment rule in CLAUDE.md 1.5. */
+.emb-cat{
+  font-family:'Space Grotesk',sans-serif;font-size:15px;letter-spacing:-0.01em;
+  margin:28px 0 10px;padding-bottom:8px;
+  border-bottom:1px solid var(--rule);
+  display:flex;align-items:baseline;justify-content:space-between;gap:12px;
+}
+.emb-cat span{
+  font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:400;
+  color:var(--ink-muted);letter-spacing:0.06em;
+}
+.emb-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;}
+.emb-list li{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  padding:10px 14px;border-radius:var(--radius-sm);
+  background:rgba(var(--cream),0.04);
+  border:1px solid var(--rule);
+}
+.emb-list li:hover{background:rgba(var(--cream),0.07);}
+.emb-name{font-size:14px;color:var(--text-on-dark);min-width:0;overflow-wrap:anywhere;}
+.emb-copy{flex:0 0 auto;font-size:11px;padding:7px 12px;}
+@media(max-width:560px){
+  .emb-list li{flex-direction:column;align-items:stretch;gap:8px;}
+  .emb-copy{width:100%;}
+}

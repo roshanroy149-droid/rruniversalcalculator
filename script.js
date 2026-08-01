@@ -5122,7 +5122,9 @@ function amortizationToCSV(years, cur){
 
   const row = document.createElement('div');
   row.className = 'tb-embed-row';
-  row.innerHTML = '<span class="tb-embed-hint">Free to use on your own site — no attribution beyond the credit link required.</span><button type="button" class="ghost" id="tbEmbedOpen">&lt;/&gt; Embed this calculator</button>';
+  // The embed.html link is added here rather than hand-written into 201 pages:
+  // one string change gives every tool page an inbound link to the directory.
+  row.innerHTML = '<span class="tb-embed-hint">Free to use on your own site — no attribution beyond the credit link required. <a href="embed.html">See all embeddable calculators</a>.</span><button type="button" class="ghost" id="tbEmbedOpen">&lt;/&gt; Embed this calculator</button>';
   hero.insertAdjacentElement('afterend', row);
 
   const backdrop = document.createElement('div');
@@ -13416,4 +13418,159 @@ function sciParseFormula(raw) {
   }
   ['clHex', 'clHex2'].forEach(function (id) { g(id).addEventListener('input', calc); g(id).addEventListener('change', calc); });
   calc();
+})();
+
+/* VA FUNDING FEE CALCULATOR
+   Distinct from va-mortgage-calculator.html, which asks the user to TYPE a fee
+   percentage. This one derives the rate from the official VA table, because
+   picking the right rate is the actual difficulty — the schedule is not
+   uniform, and the commonest mistake is assuming first/subsequent use always
+   changes the rate. It does not: at 5% or more down, both pay the same.
+   Rates: va.gov/housing-assistance/home-loans/funding-fee-and-closing-costs
+   Schedule effective 7 April 2023. US-only by definition — VA loans are a
+   United States Department of Veterans Affairs programme, so no currency
+   selector here on purpose. */
+(function () {
+  if (!document.getElementById('vaffAmount')) return;
+
+  var amount = document.getElementById('vaffAmount');
+  var down = document.getElementById('vaffDown');
+  var type = document.getElementById('vaffType');
+  var use = document.getElementById('vaffUse');
+  var exempt = document.getElementById('vaffExempt');
+  var downField = document.getElementById('vaffDownField');
+
+  function rateFor(t, downPct, subsequent, isExempt) {
+    if (isExempt) return 0;
+    if (t === 'irrrl') return 0.5;
+    if (t === 'cashout') return subsequent ? 3.3 : 2.15;
+    if (downPct >= 10) return 1.25;
+    if (downPct >= 5) return 1.5;
+    return subsequent ? 3.3 : 2.15;
+  }
+
+  var usd = function (n) {
+    return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  };
+
+  function calc() {
+    var t = type.value;
+    var isPurchase = t === 'purchase';
+    // Down payment only exists on a purchase; a refinance has no purchase price.
+    downField.style.opacity = isPurchase ? '1' : '0.45';
+    down.disabled = !isPurchase;
+
+    var amt = Math.max(0, parseFloat(amount.value) || 0);
+    var d = isPurchase ? Math.min(100, Math.max(0, parseFloat(down.value) || 0)) : 0;
+    var subsequent = use.value === 'subsequent';
+    var isExempt = exempt.checked;
+
+    var rate = rateFor(t, d, subsequent, isExempt);
+    // The fee is charged on the LOAN amount, not the purchase price — so a
+    // down payment reduces the fee twice over: lower rate and smaller base.
+    var base = isPurchase ? amt * (1 - d / 100) : amt;
+    var fee = base * rate / 100;
+
+    document.getElementById('vaffRate').textContent = rate.toFixed(2) + '%';
+    document.getElementById('vaffBase').textContent = usd(base);
+    document.getElementById('vaffFee').textContent = usd(fee);
+    document.getElementById('vaffTotal').textContent = usd(base + fee);
+
+    var note;
+    if (isExempt) {
+      note = 'Exempt — no funding fee is charged.';
+    } else if (t === 'irrrl') {
+      note = 'IRRRL (streamline refinance) is a flat 0.50% regardless of use or equity.';
+    } else if (t === 'cashout') {
+      note = 'Cash-out refinance: ' + (subsequent ? 'subsequent use, 3.30%.' : 'first use, 2.15%.');
+    } else if (d >= 10) {
+      note = '10% or more down caps the rate at 1.25% — first and subsequent use pay the same.';
+    } else if (d >= 5) {
+      note = '5–9.99% down gives 1.50% — first and subsequent use pay the same.';
+    } else {
+      note = 'Under 5% down is the only tier where subsequent use costs more (3.30% vs 2.15%).';
+    }
+    document.getElementById('vaffNote').textContent = note;
+  }
+
+  [amount, down, type, use, exempt].forEach(function (el) {
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+  calc();
+})();
+
+/* EMBED DIRECTORY (embed.html)
+   Builds the iframe snippet on demand from a row's data attributes rather than
+   emitting 201 pre-rendered textareas into the page. The snippet format is
+   duplicated from the per-tool embed modal above deliberately kept identical —
+   if that format ever changes, both places must change together. */
+(function () {
+  var list = document.getElementById('embOutput');
+  if (!list || !document.getElementById('embFilter')) return;
+
+  var filter = document.getElementById('embFilter');
+  var countEl = document.getElementById('embCount');
+  var outName = document.getElementById('embOutName');
+  var codeEl = document.getElementById('embCode');
+  var copiedEl = document.getElementById('embCopied');
+  var rows = Array.prototype.slice.call(document.querySelectorAll('.emb-list li'));
+
+  function snippetFor(file, name) {
+    var url = 'https://tallybench.com/' + file;
+    var id = file.replace(/\.html$/, '');
+    var frameId = 'tb-embed-' + id;
+    return '<iframe id="' + frameId + '" src="' + url + '?embed=1" width="100%" height="640" ' +
+      'style="border:0;max-width:640px;" loading="lazy" title="' + name + ' — TallyBench"></iframe>\n' +
+      '<script>window.addEventListener("message",function(e){if(e.data&&e.data.tbEmbedId==="' + id + '"){' +
+      'var f=document.getElementById("' + frameId + '");if(f)f.style.height=e.data.tbEmbedHeight+"px";}});<' + '/script>';
+  }
+
+  document.querySelectorAll('.emb-copy').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var file = btn.getAttribute('data-file');
+      var name = btn.getAttribute('data-name');
+      var code = snippetFor(file, name);
+      outName.textContent = name;
+      codeEl.value = code;
+      list.hidden = false;
+      list.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      codeEl.focus();
+      codeEl.select();
+      var done = function (ok) {
+        copiedEl.textContent = ok
+          ? 'Copied to clipboard. Paste it anywhere in your page HTML.'
+          : 'Select the code above and copy it manually.';
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(code).then(function () { done(true); }, function () { done(false); });
+      } else {
+        try { done(document.execCommand('copy')); } catch (e) { done(false); }
+      }
+    });
+  });
+
+  function applyFilter() {
+    var q = filter.value.trim().toLowerCase();
+    var shown = 0;
+    rows.forEach(function (li) {
+      var name = (li.querySelector('.emb-name') || {}).textContent || '';
+      var hit = !q || name.toLowerCase().indexOf(q) > -1;
+      li.style.display = hit ? '' : 'none';
+      if (hit) shown++;
+    });
+    // hide a category heading whose whole list is filtered out
+    document.querySelectorAll('.emb-list').forEach(function (ul) {
+      var any = Array.prototype.some.call(ul.children, function (li) { return li.style.display !== 'none'; });
+      ul.style.display = any ? '' : 'none';
+      var h = ul.previousElementSibling;
+      if (h && h.classList.contains('emb-cat')) h.style.display = any ? '' : 'none';
+    });
+    countEl.textContent = q
+      ? shown + ' of ' + rows.length + ' calculators match "' + filter.value.trim() + '"'
+      : rows.length + ' calculators, all free to embed';
+  }
+
+  filter.addEventListener('input', applyFilter);
+  applyFilter();
 })();

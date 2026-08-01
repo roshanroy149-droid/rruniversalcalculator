@@ -482,6 +482,15 @@
       "blurb": "VA loan payment with funding fee, no PMI."
     },
     {
+      "id": "va-funding-fee",
+      "file": "va-funding-fee-calculator.html",
+      "category": "finance",
+      "navLabel": "VA FUNDING FEE",
+      "title": "VA Funding Fee Calculator",
+      "icon": "icon-mortgage",
+      "blurb": "Your exact VA funding fee rate by loan type, down payment and prior use."
+    },
+    {
       "id": "home-equity-loan-calculator",
       "file": "home-equity-loan-calculator.html",
       "category": "finance",

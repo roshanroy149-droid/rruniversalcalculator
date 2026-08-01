@@ -103,6 +103,31 @@ function New-ArticleCountInlineBlock($indent) {
     return "$($articleData.articles.Count)"
 }
 
+# Renders the embeddable-calculator list for embed.html. Every tool is
+# embeddable — the widget keys off ?embed=1, which any tool page honours — so
+# this is a straight projection of tools.json grouped by category.
+# The iframe snippet is deliberately NOT emitted per row: 201 textareas would
+# bloat the page, and the snippet format already has exactly one definition
+# site inside script.js. Each row carries only the filename and display name
+# as data attributes, and the page builds the code on click.
+function New-EmbedListBlock($indent) {
+    $lines = New-Object System.Collections.Generic.List[string]
+    $inner = "$indent  "
+    foreach ($cat in $data.categories) {
+        $toolsInCat = @($data.tools | Where-Object { $_.category -eq $cat.id })
+        if ($toolsInCat.Count -eq 0) { continue }
+        $label = (Get-Culture).TextInfo.ToTitleCase($cat.label.ToLower())
+        $lines.Add("$indent<h3 class=`"emb-cat`" id=`"emb-$($cat.id)`">$label <span>$($toolsInCat.Count) tools</span></h3>")
+        $lines.Add("$indent<ul class=`"emb-list`">")
+        foreach ($t in $toolsInCat) {
+            $safeTitle = $t.title -replace '&', '&amp;' -replace '"', '&quot;'
+            $lines.Add("$inner<li><span class=`"emb-name`">$safeTitle</span><button type=`"button`" class=`"ghost emb-copy`" data-file=`"$($t.file)`" data-name=`"$safeTitle`">Copy embed code</button></li>")
+        }
+        $lines.Add("$indent</ul>")
+    }
+    return ($lines -join $nl)
+}
+
 # Maps a category id to the CSS modifier class used on homepage tool cards.
 # "everyday" historically used "cat-utility" rather than "cat-everyday", so
 # this isn't a straight "cat-$id" — kept as an explicit map to avoid guessing.
@@ -344,6 +369,9 @@ foreach ($f in $htmlFiles) {
 
     $homeGridResult = Sync-Marker $content 'HOMEGRID' { param($indent) New-HomeGridBlock $indent }
     if ($null -ne $homeGridResult) { $content = $homeGridResult }
+
+    $embedListResult = Sync-Marker $content 'EMBEDLIST' { param($indent) New-EmbedListBlock $indent }
+    if ($null -ne $embedListResult) { $content = $embedListResult }
 
     $searchDataResult = Sync-Marker $content 'SEARCHDATA' { param($indent) New-SearchDataBlock $indent }
     if ($null -ne $searchDataResult) { $content = $searchDataResult }
