@@ -1,6 +1,17 @@
 {
   "articles": [
     {
+      "id": "spouse-income-idr",
+      "file": "spouse-income-idr-married-filing-separately.html",
+      "category": "finance",
+      "topic": "studentloans",
+      "tag": "US STUDENT LOANS",
+      "title": "Does Your Spouse's Income Count for Income-Driven Repayment?",
+      "dek": "Filing separately keeps a spouse income out of every current plan — but RAP narrowed the dependent rule, and separate filing costs six tax breaks.",
+      "date": "2026-08-01",
+      "readTime": "7 min read"
+    },
+    {
       "id": "debt-snowball-vs-avalanche",
       "file": "debt-snowball-vs-avalanche.html",
       "category": "finance",
