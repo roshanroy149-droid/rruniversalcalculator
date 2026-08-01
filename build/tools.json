@@ -563,6 +563,15 @@
       "blurb": "Projected value of a lump sum plus recurring investments, net of fees."
     },
     {
+      "id": "expense-ratio",
+      "file": "expense-ratio-calculator.html",
+      "category": "finance",
+      "navLabel": "EXPENSE RATIO",
+      "title": "Expense Ratio Calculator",
+      "icon": "icon-investment",
+      "blurb": "What a fund fee costs over time, and how two ratios compare."
+    },
+    {
       "id": "average-return-calculator",
       "file": "average-return-calculator.html",
       "category": "finance",

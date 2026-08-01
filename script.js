@@ -13574,3 +13574,83 @@ function sciParseFormula(raw) {
   filter.addEventListener('input', applyFilter);
   applyFilter();
 })();
+
+/* EXPENSE RATIO / FUND FEE CALCULATOR
+   Built because "mutual fund expense ratio calculator" and its variants are
+   the clearest market-side demand in Search Console, and no page covered it.
+
+   The modelling point: an expense ratio is levied on ASSETS every year, so it
+   must be compounded as (gross return - expense ratio). Subtracting a flat fee
+   at the end understates the damage badly, because the fee also removes the
+   growth that money would have produced. Verified against the closed form:
+   10,000 at 7% for 30y is 76,122.55, and at 6% (7% gross less a 1% ER) is
+   57,434.91 — so a 1% ratio costs 24.5% of final wealth. */
+(function () {
+  if (!document.getElementById('erInitial')) return;
+
+  var cur = document.getElementById('erCur');
+  var initial = document.getElementById('erInitial');
+  var annual = document.getElementById('erAnnual');
+  var years = document.getElementById('erYears');
+  var gross = document.getElementById('erGross');
+  var ratio = document.getElementById('erRatio');
+  var compare = document.getElementById('erCompare');
+
+  function money(n) {
+    var sym = cur.value;
+    return sym + Math.round(n).toLocaleString('en-US');
+  }
+
+  function project(init, contrib, yrs, grossPct, erPct) {
+    var g = grossPct / 100, net = (grossPct - erPct) / 100;
+    var withFee = init, noFee = init;
+    for (var y = 0; y < yrs; y++) {
+      withFee = withFee * (1 + net) + contrib;
+      noFee = noFee * (1 + g) + contrib;
+    }
+    return { withFee: withFee, noFee: noFee };
+  }
+
+  function calc() {
+    var init = Math.max(0, parseFloat(initial.value) || 0);
+    var contrib = Math.max(0, parseFloat(annual.value) || 0);
+    var yrs = Math.min(70, Math.max(1, parseFloat(years.value) || 1));
+    var g = parseFloat(gross.value) || 0;
+    var er = Math.max(0, parseFloat(ratio.value) || 0);
+    var cmpEr = Math.max(0, parseFloat(compare.value) || 0);
+
+    var a = project(init, contrib, yrs, g, er);
+    var cost = a.noFee - a.withFee;
+    var pctLost = a.noFee > 0 ? cost / a.noFee * 100 : 0;
+
+    document.getElementById('erFinal').textContent = money(a.withFee);
+    document.getElementById('erNoFee').textContent = money(a.noFee);
+    document.getElementById('erCost').textContent = money(cost);
+    document.getElementById('erPct').textContent = pctLost.toFixed(1) + '% of final wealth';
+
+    // Side-by-side against a cheaper fund — the decision people actually face.
+    var b = project(init, contrib, yrs, g, cmpEr);
+    var diff = b.withFee - a.withFee;
+    document.getElementById('erCmpFinal').textContent = money(b.withFee);
+    document.getElementById('erCmpDiff').textContent =
+      (diff >= 0 ? '+' : '\u2212') + money(Math.abs(diff));
+
+    var note;
+    if (er === 0) {
+      note = 'A zero expense ratio is rare outside a handful of index funds — check the fund factsheet rather than assuming.';
+    } else if (pctLost >= 20) {
+      note = 'Over ' + yrs + ' years this fee removes about a fifth of everything the money would have earned.';
+    } else if (pctLost >= 10) {
+      note = 'The fee compounds: it costs far more than ' + er + '% because it also removes the growth that money would have made.';
+    } else {
+      note = 'A low ratio still compounds, but at this level the drag stays modest over ' + yrs + ' years.';
+    }
+    document.getElementById('erNote').textContent = note;
+  }
+
+  [cur, initial, annual, years, gross, ratio, compare].forEach(function (el) {
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+  calc();
+})();
