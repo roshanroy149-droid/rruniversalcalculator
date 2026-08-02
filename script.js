@@ -51,146 +51,126 @@ window.__TB_EMBED__ = new URLSearchParams(window.location.search).get('embed') =
   }
 })();
 
-// ---- Two-tier category nav (category tabs + collapsible sub-row) ----
+// ---- Section nav with dropdown panels ----
+// Replaced the two-tier ruler + mobile drawer on 2026-08-02. The panels are
+// rendered into the page by Sync-Nav.ps1, so every link exists in the HTML
+// whether or not this runs — all this does is show and hide them.
 (function(){
-  const path = window.location.pathname.split('/').pop() || 'index.html';
-  const catTabs = document.querySelectorAll('.cat-tab');
-  const subRuler = document.getElementById('subRuler');
-  const subTicks = document.querySelectorAll('.sub-tick');
-  if(!catTabs.length || !subRuler) return;
+  const sections = document.getElementById('sections');
+  const panels = document.getElementById('navPanels');
+  if(!sections || !panels) return;
+  const header = document.querySelector('header');
+  const backdrop = document.getElementById('navBackdrop');
+  const secs = Array.from(sections.querySelectorAll('.sec[data-p]'));
 
-  // Mark the plain HOME link active if we're on the homepage
-  document.querySelectorAll('.tick[href]').forEach(t=>{
-    if(t.getAttribute('href') === path) t.classList.add('active');
-  });
+  let openKey = null;
+  // Which section the reader deliberately CLICKED, as opposed to merely
+  // hovered. A plain boolean is not enough: hover fires before click, so
+  // moving onto ARTICLES while FINANCE was pinned switched the panel first
+  // and the click then read "already open and pinned" and closed it.
+  let pinnedKey = null;
+  let openT = null, closeT = null;
 
-  // In the mobile drawer, categories are stacked vertically, so a tool list
-  // that always renders after the *last* category (below EVERYDAY) reads as
-  // disconnected from whichever category was actually tapped — tapping
-  // FINANCE near the top but seeing its tools appear at the very bottom.
-  // On mobile only, physically relocate the shared subRuler node to sit
-  // right after the tapped category button, so it expands as a true
-  // accordion in place. Desktop's horizontal ruler doesn't have this
-  // problem (categories run left-to-right, "below" is unambiguous there),
-  // so this is skipped entirely above the mobile breakpoint.
-  const subRulerHomeParent = subRuler.parentElement;
-  const subRulerHomeNext = subRuler.nextElementSibling;
-  const isMobileDrawer = () => window.matchMedia('(max-width:640px)').matches;
-
-  function openCategory(cat, scroll){
-    catTabs.forEach(tab=>tab.classList.toggle('cat-open', tab.dataset.cat === cat));
-    subTicks.forEach(tick=>tick.classList.toggle('cat-visible', tick.dataset.cat === cat));
-    if(isMobileDrawer()){
-      const tab = Array.from(catTabs).find(t=>t.dataset.cat === cat);
-      if(tab) tab.insertAdjacentElement('afterend', subRuler);
-    }
-    subRuler.classList.add('open');
-    subRuler.dataset.openCat = cat;
-    if(scroll) subRuler.scrollLeft = 0;
-  }
-
-  function closeAll(){
-    catTabs.forEach(tab=>tab.classList.remove('cat-open'));
-    subRuler.classList.remove('open');
-    subRulerHomeParent.insertBefore(subRuler, subRulerHomeNext);
-  }
-
-  // Mark the current page's sub-tick as active (works once its category is shown)
-  subTicks.forEach(tick=>{
-    if(tick.getAttribute('href') === path) tick.classList.add('active');
-  });
-
-  // Auto-open the category this page belongs to, so the current tool is visible on load.
-  // Article pages set data-page-cat="articles" (not a real tool category, so there's no
-  // matching .cat-tab/.sub-tick to open) purely so the plain ARTICLES nav link gets the
-  // same copper "you are here" highlight a calculator page's category tab gets, instead
-  // of staying its default muted color while you're reading an article.
-  // book.html does the same with data-page-cat="book" and the BOOK link,
-  // and venstock.html with data-page-cat="venstock" and the VENSTOCK link.
-  const pageCat = document.body.dataset.pageCat;
-  const PLAIN_LINKS = { articles: 'articles.html', book: 'book.html', venstock: 'venstock.html' };
-  if(PLAIN_LINKS[pageCat]){
-    const link = document.querySelector('.tick[href="' + PLAIN_LINKS[pageCat] + '"]');
-    if(link) link.classList.add('active');
-  } else if(pageCat){
-    openCategory(pageCat, false);
-  }
-
-  catTabs.forEach(tab=>{
-    tab.addEventListener('click', ()=>{
-      const cat = tab.dataset.cat;
-      const alreadyOpen = tab.classList.contains('cat-open');
-      if(alreadyOpen){
-        closeAll();
-      } else {
-        openCategory(cat, true);
-      }
+  function show(key){
+    let found = false;
+    panels.querySelectorAll('.npanel').forEach(p=>{
+      const match = p.dataset.p === key;
+      p.hidden = !match;
+      if(match) found = true;
     });
-  });
-
-  // Mobile hamburger menu: the same nav markup above becomes a slide-in
-  // drawer below the mobile breakpoint (see style.css), toggled by adding/
-  // removing a class on <body> — the hamburger and drawer are hidden
-  // entirely on desktop, so this is inert there.
-  const navToggle = document.getElementById('navToggle');
-  const navClose = document.getElementById('navClose');
-  const navBackdrop = document.getElementById('navBackdrop');
-
-  function openDrawer(){
-    document.body.classList.add('nav-open');
-    if(navToggle) navToggle.setAttribute('aria-expanded', 'true');
+    if(!found) return false;
+    secs.forEach(s=>{
+      const on = s.dataset.p === key;
+      s.classList.toggle('open', on);
+      s.setAttribute('aria-expanded', on ? 'true' : 'false');
+    });
+    // The scrim tracks PINNED state, not how this particular call was made.
+    // Deriving it from a "was this a hover?" argument meant a click's own
+    // pending hover timer fired ~90ms later and stripped the scrim off the
+    // panel just pinned, after which clicking away hit nothing.
+    document.body.classList.toggle('nav-open', pinnedKey === key);
+    openKey = key;
+    return true;
   }
-  function closeDrawer(){
+
+  function close(){
+    clearTimeout(openT); clearTimeout(closeT);
+    panels.querySelectorAll('.npanel').forEach(p=>{ p.hidden = true; });
+    secs.forEach(s=>{ s.classList.remove('open'); s.setAttribute('aria-expanded','false'); });
     document.body.classList.remove('nav-open');
-    if(navToggle) navToggle.setAttribute('aria-expanded', 'false');
+    openKey = null;
+    pinnedKey = null;
   }
-  if(navToggle){
-    navToggle.addEventListener('click', ()=>{
-      if(document.body.classList.contains('nav-open')) closeDrawer();
-      else openDrawer();
+
+  sections.addEventListener('click', e=>{
+    const s = e.target.closest('.sec[data-p]');
+    if(!s) return;
+    e.preventDefault();
+    clearTimeout(openT); clearTimeout(closeT);
+    if(pinnedKey === s.dataset.p){ close(); return; }
+    pinnedKey = s.dataset.p;
+    show(s.dataset.p);
+  });
+
+  if(backdrop) backdrop.addEventListener('click', close);
+  document.addEventListener('keydown', e=>{ if(e.key === 'Escape') close(); });
+
+  // ---- hover ----
+  // Only where hovering is real. A coarse pointer reports a phantom hover on
+  // tap, which would open a panel the reader then has to dismiss before their
+  // tap lands on what they were actually aiming at.
+  if(window.matchMedia('(hover:hover) and (pointer:fine)').matches){
+    secs.forEach(s=>{
+      s.addEventListener('mouseenter', ()=>{
+        clearTimeout(closeT); clearTimeout(openT);
+        if(s.dataset.p !== pinnedKey) pinnedKey = null;
+        // Switching between open panels must be instant; a delay there reads
+        // as lag. The delay only exists to stop a pointer travelling ACROSS
+        // the row from opening everything it brushes.
+        if(openKey){ show(s.dataset.p); return; }
+        openT = setTimeout(()=>show(s.dataset.p), 90);
+      });
     });
+    sections.addEventListener('mouseleave', ()=>{ if(!openKey) clearTimeout(openT); });
+    // Watch the whole <header>, not the section row: the search bar sits
+    // BETWEEN the sections and the panel, so a pointer travelling down into
+    // the panel leaves the row on the way. Watching the header means that
+    // journey never exits the element being watched.
+    header.addEventListener('mouseleave', ()=>{
+      clearTimeout(openT);
+      if(pinnedKey) return;           // clicked open — only another click closes it
+      closeT = setTimeout(close, 160);
+    });
+    header.addEventListener('mouseenter', ()=>clearTimeout(closeT));
   }
-  if(navClose) navClose.addEventListener('click', closeDrawer);
-  if(navBackdrop) navBackdrop.addEventListener('click', closeDrawer);
 
-  // Edge-swipe to open the drawer (mobile only). The drawer itself slides
-  // in from the right, so a swipe starting near the right edge and moving
-  // left is the natural gesture for it. On iOS/WebKit that same edge is
-  // reserved for the native "swipe forward" gesture, so the trigger zone
-  // there starts further in from the physical edge to reduce how often the
-  // two gestures compete for the same touch.
-  if(navToggle){
-    const isIOS = /iPhone|iPod|iPad/.test(navigator.userAgent) ||
-      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-    const edgeZone = isIOS ? 40 : 20;
-    const openThreshold = 60;
-    let touchStartX = null, touchStartY = null, tracking = false;
-
-    document.addEventListener('touchstart', (e)=>{
-      if(document.body.classList.contains('nav-open')) return;
-      if(getComputedStyle(navToggle).display === 'none') return; // desktop — hamburger hidden
-      const t = e.touches[0];
-      if(t.clientX < window.innerWidth - edgeZone) return;
-      touchStartX = t.clientX;
-      touchStartY = t.clientY;
-      tracking = true;
-    }, {passive:true});
-
-    document.addEventListener('touchmove', (e)=>{
-      if(!tracking) return;
-      const t = e.touches[0];
-      const dx = t.clientX - touchStartX;
-      const dy = t.clientY - touchStartY;
-      if(Math.abs(dy) > Math.abs(dx)){ tracking = false; return; } // vertical scroll, not our gesture
-      if(dx <= -openThreshold){
-        openDrawer();
-        tracking = false;
-      }
-    }, {passive:true});
-
-    document.addEventListener('touchend', ()=>{ tracking = false; });
-    document.addEventListener('touchcancel', ()=>{ tracking = false; });
+  // ---- "you are here" ----
+  // Calculator pages carry their real category in data-page-cat so the matching
+  // section lights up; article pages use "articles" and book.html "book", so the
+  // reader sees the section they are actually in highlighted rather than a
+  // category tab that has nothing to do with the page.
+  const path = window.location.pathname.split('/').pop() || 'index.html';
+  const pageCat = document.body.dataset.pageCat;
+  if(pageCat){
+    const match = secs.find(s=>s.dataset.p === pageCat);
+    if(match) match.classList.add('active');
   }
+  if(path === 'index.html' || path === ''){
+    const home = sections.querySelector('a.sec[href="index.html"]');
+    if(home) home.classList.add('active');
+  }
+
+  // "/" focuses search, as the key hint in the field promises.
+  document.addEventListener('keydown', e=>{
+    if(e.key !== '/' || e.metaKey || e.ctrlKey || e.altKey) return;
+    if(/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName)) return;
+    if(document.activeElement.isContentEditable) return;
+    const field = document.querySelector('.nav-search .tb-search-input');
+    if(!field) return;
+    e.preventDefault();
+    close();
+    field.focus();
+  });
 })();
 
 // ---- Tip ----
@@ -9417,13 +9397,19 @@ function tbMoney(n){
   calc();
 })();
 
-// ---- Homepage calculator search ----
-(function(){
-  var input = document.getElementById('tbSearchInput');
-  if(!input) return;
-  var resultsEl = document.getElementById('tbSearchResults');
-  var data = window.TB_SEARCH_DATA || [];
+// ---- Site search ----
+// Wires EVERY .tb-search container rather than one element by id. Search used
+// to live only in index.html's hero; it is now also in the header on all 256
+// pages, and two elements sharing #tbSearchInput would be a real bug.
+function tbWireSearch(box){
+  var input = box.querySelector('.tb-search-input');
+  var resultsEl = box.querySelector('.tb-search-results');
+  if(!input || !resultsEl) return;
   var activeIndex = -1;
+  // Read the index lazily: search-data.js is loaded with defer, so it has not
+  // executed yet when this file runs. Capturing it here would freeze an empty
+  // array and every search would return nothing.
+  function getData(){ return window.TB_SEARCH_DATA || []; }
 
   function updateActive(items){
     items.forEach(function(el, i){ el.classList.toggle('active', i === activeIndex); });
@@ -9433,7 +9419,7 @@ function tbMoney(n){
   function render(matches){
     activeIndex = -1;
     if(matches.length === 0){
-      resultsEl.innerHTML = '<div class="tb-search-empty">No calculators match that search.</div>';
+      resultsEl.innerHTML = '<div class="tb-search-empty">Nothing matches that search.</div>';
       resultsEl.hidden = false;
       input.setAttribute('aria-expanded','true');
       return;
@@ -9458,7 +9444,7 @@ function tbMoney(n){
   function search(query){
     query = query.trim().toLowerCase();
     if(query === ''){ close(); return; }
-    var matches = data.filter(function(item){
+    var matches = getData().filter(function(item){
       return item.t.toLowerCase().indexOf(query) !== -1
           || item.b.toLowerCase().indexOf(query) !== -1
           || item.c.toLowerCase().indexOf(query) !== -1;
@@ -9492,10 +9478,15 @@ function tbMoney(n){
     }
   });
 
+  // Clicking outside ANY search box closes this one. Scoped to the box that
+  // owns the click so the header search and the homepage hero search do not
+  // close each other while you are typing in one of them.
   document.addEventListener('click', function(e){
-    if(!e.target.closest('.tb-search')) close();
+    if(e.target.closest('.tb-search') !== box) close();
   });
-})();
+}
+
+document.querySelectorAll('.tb-search').forEach(tbWireSearch);
 
 
 // ---- Homepage hero readout cycle ----

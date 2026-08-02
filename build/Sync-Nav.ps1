@@ -32,59 +32,161 @@ $toolsJsonText = [System.IO.File]::ReadAllText((Join-Path $PSScriptRoot 'tools.j
 $data = $toolsJsonText | ConvertFrom-Json
 $articlesJsonText = [System.IO.File]::ReadAllText((Join-Path $PSScriptRoot 'articles.json'), [System.Text.Encoding]::UTF8)
 $articleData = $articlesJsonText | ConvertFrom-Json
+# The header panels group tools under editorial sub-headings ("Borrowing",
+# "Investing", ...). tools.json only has four flat categories, so that grouping
+# needs a home; it is data, not markup, and lives here.
+$navGroupsJsonText = [System.IO.File]::ReadAllText((Join-Path $PSScriptRoot 'nav-groups.json'), [System.Text.Encoding]::UTF8)
+$navGroups = $navGroupsJsonText | ConvertFrom-Json
 $nl = "`r`n"
 
+# Section row + search + the six dropdown panels.
+#
+# This replaced the two-tier ruler on 2026-08-02. The old one put all 203 tool
+# links in the DOM of every page and, opened, stood 322px tall showing 89 links
+# at once; its tab row also stopped at x=595 inside a container running to 1236,
+# leaving 641px of ruled dead space, which is what made it read as misaligned.
+#
+# The panels are rendered STATICALLY here rather than built by JS: the links
+# then exist for crawlers and for anyone with JS off, and there are ~104 of them
+# per page instead of 203 — fewer sitewide nav links means less dilution of the
+# pages we are deliberately concentrating authority on.
+#
+# The 99 tools not surfaced in a panel are not orphaned: each panel foot links
+# to that category's zone on the homepage grid (#cat-<id>), which lists all of
+# them, and the header search covers every tool and article.
 function New-NavBlock($indent) {
     $lines = New-Object System.Collections.Generic.List[string]
-    $lines.Add("$indent<div class=`"nav-drawer`" id=`"navDrawer`">")
-    $lines.Add("$indent  <div class=`"nav-drawer-head`">")
-    $lines.Add("$indent    <span>Menu</span>")
-    $lines.Add("$indent    <button class=`"nav-close`" id=`"navClose`" type=`"button`" aria-label=`"Close menu`">&#10005;</button>")
-    $lines.Add("$indent  </div>")
-    $lines.Add("$indent  <nav class=`"ruler cat-ruler`" aria-label=`"Category`">")
-    $lines.Add("$indent    <a class=`"tick`" href=`"index.html`">HOME</a>")
-    $lines.Add("$indent    <a class=`"tick`" href=`"articles.html`">ARTICLES</a>")
+    $i2 = "$indent  "
+    $i3 = "$indent    "
+
+    $lines.Add("$indent<div class=`"rule`"></div>")
+    $lines.Add("$indent<nav class=`"sections`" id=`"sections`" aria-label=`"Sections`">")
+    $lines.Add("$i2<a class=`"sec`" href=`"index.html`">HOME</a>")
+    $lines.Add("$i2<button class=`"sec`" type=`"button`" data-p=`"articles`" aria-expanded=`"false`">ARTICLES</button>")
     # BOOK stays because the books are finance content — same subject as the
     # site. VENSTOCK was removed 2026-07-29 and moved to venrostech.com: it is
     # inventory software, and carrying an unrelated product in the primary nav
     # muddies what TallyBench is topically about. The rule going forward is
     # "anything topically finance stays; anything else lives on the studio site".
-    $lines.Add("$indent    <a class=`"tick`" href=`"book.html`">BOOK</a>")
+    $lines.Add("$i2<button class=`"sec`" type=`"button`" data-p=`"book`" aria-expanded=`"false`">BOOK</button>")
     foreach ($cat in $data.categories) {
-        $lines.Add("$indent    <button class=`"tick cat-tab`" type=`"button`" data-cat=`"$($cat.id)`">$($cat.label)</button>")
+        $lines.Add("$i2<button class=`"sec`" type=`"button`" data-p=`"$($cat.id)`" aria-expanded=`"false`">$($cat.label)</button>")
     }
-    $lines.Add("$indent  </nav>")
-    $lines.Add("$indent  <nav class=`"ruler sub-ruler`" id=`"subRuler`" aria-label=`"Tools`">")
-    foreach ($tool in $data.tools) {
-        $lines.Add("$indent    <a class=`"tick sub-tick`" data-cat=`"$($tool.category)`" href=`"$($tool.file)`">$($tool.navLabel)</a>")
-    }
-    # .sub-ruler wraps onto as many rows as a category needs and uses
-    # justify-content:space-between so every row spans the full width instead
-    # of a real row hugging the left edge with a dead gap on the right. That
-    # works per-line automatically for any row with enough items — but a
-    # sparse last row (few items) would get the exact same treatment and end
-    # up scattered across the whole width with huge gaps between just a
-    # handful of words. These 60 invisible, zero-size filler items sit after
-    # every real tool link — only one category's real .sub-tick links are
-    # ever display:none-toggled visible at a time, so the fillers always
-    # attach directly after whichever category's own last visible link ends,
-    # landing on that category's actual last row. Because space-between
-    # distributes leftover space per gap regardless of an item's own size, a
-    # sparse last row with 60 extra (invisible) gap-dividing points keeps its
-    # real items tightly clustered near the left, while every fuller row
-    # above it is completely unaffected and keeps justifying normally — a
-    # single style toggled in JS can't do both at once since justify-content
-    # is one value for the whole wrapped container, not per-row.
-    for ($i = 0; $i -lt 60; $i++) {
-        $lines.Add("$indent    <span class=`"sub-ruler-filler`" aria-hidden=`"true`"></span>")
-    }
-    $lines.Add("$indent  </nav>")
+    $lines.Add("$indent</nav>")
+    $lines.Add("$indent<div class=`"rule`"></div>")
+
+    # Search, on every page. It previously existed on index.html alone, so on
+    # the other 254 pages there was no way to reach the other 202 tools except
+    # the category ruler. No ids here: index.html's hero search already owns
+    # #tbSearchInput, and two elements sharing an id is a real bug, so the
+    # script wires every .tb-search container by class instead.
+    $lines.Add("$indent<div class=`"searchline`">")
+    $lines.Add("$i2<div class=`"tb-search nav-search`" role=`"search`">")
+    $lines.Add("$i3<div class=`"sfield`">")
+    $lines.Add("$i3  <svg class=`"sicon`" width=`"14`" height=`"14`" viewBox=`"0 0 24 24`" fill=`"none`" stroke=`"currentColor`" stroke-width=`"2.5`" aria-hidden=`"true`"><circle cx=`"11`" cy=`"11`" r=`"7`"/><path d=`"M20 20l-3.5-3.5`"/></svg>")
+    $lines.Add("$i3  <input class=`"tb-search-input`" type=`"text`" placeholder=`"Search $($data.tools.Count) calculators and $($articleData.articles.Count) guides`" autocomplete=`"off`" aria-label=`"Search calculators and guides`">")
+    $lines.Add("$i3  <kbd>/</kbd>")
+    $lines.Add("$i3</div>")
+    $lines.Add("$i3<div class=`"tb-search-results`" hidden></div>")
+    $lines.Add("$i2</div>")
     $lines.Add("$indent</div>")
+
+    # ---- the panels ----
+    $lines.Add("$indent<div class=`"nav-panels`" id=`"navPanels`">")
+
+    foreach ($cat in $data.categories) {
+        $cols = $navGroups.groups.($cat.id)
+        if ($null -eq $cols) { continue }
+        $count = @($data.tools | Where-Object { $_.category -eq $cat.id }).Count
+        $lines.Add("$i2<div class=`"npanel`" data-p=`"$($cat.id)`" hidden>")
+        $lines.Add("$i3<div class=`"wrap`">")
+        $lines.Add("$i3  <div class=`"npanel-grid`">")
+        foreach ($col in $cols) {
+            $lines.Add("$i3    <div class=`"npcol`">")
+            $lines.Add("$i3      <h4>$([System.Net.WebUtility]::HtmlEncode($col.h))</h4>")
+            foreach ($id in $col.items) {
+                $t = $data.tools | Where-Object { $_.file -eq "$id.html" } | Select-Object -First 1
+                if ($null -eq $t) { throw "nav-groups.json references unknown tool '$id'" }
+                # tools.json titles already carry HTML entities ("FIRE &amp;
+                # Coast FIRE"), so encoding here produced "&amp;amp;". Emit the
+                # title as stored; only the column heading below needs encoding,
+                # because those are written as plain text in nav-groups.json.
+                $label = $t.title -replace ' Calculator$', '' -replace ' Converter$', ''
+                $lines.Add("$i3      <a href=`"$($t.file)`">$label</a>")
+            }
+            $lines.Add("$i3    </div>")
+        }
+        $lines.Add("$i3  </div>")
+        $lines.Add("$i3  <div class=`"npanel-foot`"><a href=`"index.html#cat-$($cat.id)`">See all $count $($cat.label.ToLower()) tools &#8594;</a></div>")
+        $lines.Add("$i3</div>")
+        $lines.Add("$i2</div>")
+    }
+
+    # ARTICLES panel — grouped by the topics articles.json already defines, so
+    # the structure is the site's own rather than invented here.
+    $lines.Add("$i2<div class=`"npanel`" data-p=`"articles`" hidden>")
+    $lines.Add("$i3<div class=`"wrap`">")
+    $lines.Add("$i3  <div class=`"npanel-grid`">")
+    $topicCols = @(
+        @{ h = 'Tax &amp; filing'; t = @('tax') },
+        @{ h = 'Rates &amp; central banks'; t = @('rates') },
+        @{ h = 'Borrowing &amp; student loans'; t = @('borrowing', 'studentloans') },
+        @{ h = 'Retirement, markets &amp; health'; t = @('retirement', 'markets', 'health') }
+    )
+    foreach ($col in $topicCols) {
+        $lines.Add("$i3    <div class=`"npcol`">")
+        $lines.Add("$i3      <h4>$($col.h)</h4>")
+        foreach ($topicId in $col.t) {
+            $inTopic = @($articleData.articles | Where-Object { $_.topic -eq $topicId } |
+                Sort-Object -Property date -Descending | Select-Object -First 3)
+            foreach ($a in $inTopic) {
+                $lines.Add("$i3      <a href=`"$($a.file)`">$($a.title)</a>")
+            }
+        }
+        $lines.Add("$i3    </div>")
+    }
+    $lines.Add("$i3  </div>")
+    $lines.Add("$i3  <div class=`"npanel-foot`"><a href=`"articles.html`">See all $($articleData.articles.Count) guides &#8594;</a></div>")
+    $lines.Add("$i3</div>")
+    $lines.Add("$i2</div>")
+
+    # BOOK panel — two columns, because there are two books; four would leave
+    # half the grid empty.
+    $lines.Add("$i2<div class=`"npanel npanel-2`" data-p=`"book`" hidden>")
+    $lines.Add("$i3<div class=`"wrap`">")
+    $lines.Add("$i3  <div class=`"npanel-grid`">")
+    $lines.Add("$i3    <div class=`"npcol`">")
+    $lines.Add("$i3      <h4>The books</h4>")
+    $lines.Add("$i3      <a href=`"book.html`">From Paycheck to Portfolio</a>")
+    $lines.Add("$i3      <a href=`"book.html`">Paisa Playbook (India)</a>")
+    $lines.Add("$i3    </div>")
+    $lines.Add("$i3    <div class=`"npcol`">")
+    $lines.Add("$i3      <h4>Start here</h4>")
+    $lines.Add("$i3      <a href=`"how-much-you-need-to-retire.html`">How much do you need to retire?</a>")
+    $lines.Add("$i3      <a href=`"debt-snowball-vs-avalanche.html`">Debt snowball vs avalanche</a>")
+    $lines.Add("$i3      <a href=`"what-moves-your-credit-score.html`">What moves your credit score</a>")
+    $lines.Add("$i3    </div>")
+    $lines.Add("$i3  </div>")
+    $lines.Add("$i3  <div class=`"npanel-foot`"><a href=`"book.html`">Read more about the books &#8594;</a></div>")
+    $lines.Add("$i3</div>")
+    $lines.Add("$i2</div>")
+
+    $lines.Add("$indent</div>")
+
+    # Search index as an external file so it is fetched and cached once for the
+    # whole site rather than inlined into all 256 pages. deferred, so the search
+    # code in script.js must read window.TB_SEARCH_DATA lazily, not at init.
+    $lines.Add("$indent<script src=`"search-data.js`" defer></script>")
+
     return ($lines -join $nl)
 }
 
 function New-CountBlock($indent) {
-    return "$($data.tools.Count) TOOLS " + [char]0x00B7 + " 0 SIGN-UP"
+    # This line now sits under the wordmark in the masthead rather than beside
+    # it, so it leads with what the site IS before quoting a number. Still
+    # generated: a hand-typed count here went stale at 49, 60, 125, 137 and 196.
+    $dot = [char]0x00B7
+    return "PERSONAL FINANCE $dot $($data.tools.Count) TOOLS $dot 0 SIGN-UP"
 }
 
 # Just the bare number, for prose that mentions the tool count mid-sentence.
@@ -153,7 +255,10 @@ function New-HomeGridBlock($indent) {
         $toolsInCat = @($data.tools | Where-Object { $_.category -eq $cat.id })
         if ($toolsInCat.Count -eq 0) { continue }
         $label = (Get-Culture).TextInfo.ToTitleCase($cat.label.ToLower())
-        $lines.Add("$indent<section class=`"zone zone-$($cat.id)`">")
+        # id anchor so the header panel's "See all N tools" can land on this
+        # zone. The panels surface 104 of the 203 tools; the rest stay one
+        # click away through here rather than being unreachable from the nav.
+        $lines.Add("$indent<section class=`"zone zone-$($cat.id)`" id=`"cat-$($cat.id)`">")
         $lines.Add("$innerIndent<div class=`"wrap`">")
         $lines.Add("$innerIndent<div class=`"zone-head`">")
         $lines.Add("$innerIndent<div class=`"zone-head-left`">")
@@ -185,12 +290,38 @@ function New-HomeGridBlock($indent) {
     return ($lines -join $nl)
 }
 
+# The index itself now lives in search-data.js (written by Write-SearchDataFile
+# below) and is loaded by every page from the nav block, so the browser fetches
+# it once for the whole site. Inlining it here as well would repeat ~24KB on
+# the site's most important page for no benefit.
 function New-SearchDataBlock($indent) {
-    $items = @($data.tools | ForEach-Object {
-        [PSCustomObject]@{ t = $_.title; f = $_.file; c = $_.category; b = $_.blurb }
-    })
-    $json = ConvertTo-Json -InputObject $items -Compress -Depth 3
-    return "$indent<script>window.TB_SEARCH_DATA = $json;</script>"
+    return "$indent<!-- search index is served from search-data.js, loaded by the nav block -->"
+}
+
+# Articles are in the index too. Search that only covered calculators sent
+# anyone looking for "RAP vs IBR" or "HRA exemption" to a dead end, even though
+# the site has a piece on each.
+function Write-SearchDataFile($root) {
+    $items = New-Object System.Collections.Generic.List[object]
+    foreach ($t in $data.tools) {
+        $items.Add([PSCustomObject]@{ t = $t.title; f = $t.file; c = $t.category; b = $t.blurb })
+    }
+    foreach ($a in $articleData.articles) {
+        $items.Add([PSCustomObject]@{ t = $a.title; f = $a.file; c = 'guide'; b = $a.dek })
+    }
+    # .ToArray() first: passing the generic List straight to ConvertTo-Json
+    # throws "Argument types do not match" on Windows PowerShell 5.1.
+    $json = ConvertTo-Json -InputObject $items.ToArray() -Compress -Depth 3
+    $body = "/* Generated by build/Sync-Nav.ps1 from tools.json + articles.json." + $nl +
+            "   Do not edit by hand. */" + $nl +
+            "window.TB_SEARCH_DATA = $json;" + $nl
+    $path = Join-Path $root 'search-data.js'
+    $existing = if (Test-Path $path) { [System.IO.File]::ReadAllText($path, [System.Text.Encoding]::UTF8) } else { '' }
+    if ($existing -ne $body) {
+        [System.IO.File]::WriteAllText($path, $body, (New-Object System.Text.UTF8Encoding $false))
+        return $true
+    }
+    return $false
 }
 
 # Articles render grouped by topic rather than as one flat reverse-chronological
@@ -445,7 +576,10 @@ foreach ($f in $htmlFiles) {
     }
 }
 
+$searchDataChanged = Write-SearchDataFile $root
+
 Write-Host "Synced $($htmlFiles.Count) pages. Changed: $($changed.Count)"
+if ($searchDataChanged) { Write-Host "  search-data.js rewritten" }
 $changed | ForEach-Object { Write-Host "  $_" }
 
 if ($missingMarkers.Count -gt 0) {

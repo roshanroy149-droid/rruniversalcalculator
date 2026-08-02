@@ -1,0 +1,196 @@
+{
+  "groups": {
+    "finance": [
+      {
+        "h": "Borrowing",
+        "items": [
+          "loan-calculator",
+          "mortgage-calculator",
+          "refinance-calculator",
+          "car-loan-calculator",
+          "personal-loan-calculator",
+          "student-loan-repayment-calculator",
+          "debt-payoff-calculator"
+        ]
+      },
+      {
+        "h": "Investing",
+        "items": [
+          "investment-calculator",
+          "compound-interest-calculator",
+          "sip-calculator",
+          "present-value-calculator",
+          "dividend-calculator",
+          "mutual-fund-calculator",
+          "bond-calculator"
+        ]
+      },
+      {
+        "h": "Tax & salary",
+        "items": [
+          "tax-calculator",
+          "paycheck-calculator",
+          "salary-calculator",
+          "hra-calculator",
+          "india-tax-regime-calculator",
+          "gratuity-calculator",
+          "epf-calculator"
+        ]
+      },
+      {
+        "h": "Planning",
+        "items": [
+          "retirement-calculator",
+          "net-worth-calculator",
+          "budget-calculator",
+          "fire-calculator",
+          "401k-calculator",
+          "savings-goal-calculator",
+          "pension-calculator"
+        ]
+      }
+    ],
+    "health": [
+      {
+        "h": "Body & weight",
+        "items": [
+          "bmi-calculator",
+          "body-fat-calculator",
+          "lean-body-mass-calculator",
+          "ideal-weight-calculator",
+          "healthy-weight-calculator",
+          "body-surface-area-calculator"
+        ]
+      },
+      {
+        "h": "Nutrition",
+        "items": [
+          "calorie-calculator",
+          "macro-calculator",
+          "protein-calculator",
+          "tdee-calculator",
+          "water-intake-calculator",
+          "fat-intake-calculator"
+        ]
+      },
+      {
+        "h": "Fitness",
+        "items": [
+          "calories-burned-calculator",
+          "one-rep-max-calculator",
+          "target-heart-rate-calculator",
+          "pace-calculator",
+          "army-body-fat-calculator"
+        ]
+      },
+      {
+        "h": "Women's health",
+        "items": [
+          "pregnancy-calculator",
+          "pregnancy-week-calculator",
+          "ovulation-calculator",
+          "conception-calculator",
+          "period-calculator",
+          "pregnancy-weight-gain-calculator"
+        ]
+      }
+    ],
+    "education": [
+      {
+        "h": "Maths",
+        "items": [
+          "scientific-calculator",
+          "fraction-calculator",
+          "exponent-calculator",
+          "root-calculator",
+          "log-calculator",
+          "quadratic-formula-calculator",
+          "ratio-calculator"
+        ]
+      },
+      {
+        "h": "Geometry",
+        "items": [
+          "circle-calculator",
+          "area-calculator",
+          "volume-calculator",
+          "surface-area-calculator",
+          "triangle-calculator",
+          "right-triangle-calculator",
+          "pythagorean-theorem-calculator"
+        ]
+      },
+      {
+        "h": "Statistics",
+        "items": [
+          "statistics-calculator",
+          "standard-deviation-calculator",
+          "mean-median-mode-calculator",
+          "z-score-calculator",
+          "confidence-interval-calculator",
+          "probability-calculator",
+          "sample-size-calculator"
+        ]
+      },
+      {
+        "h": "Science & numbers",
+        "items": [
+          "molecular-weight-calculator",
+          "molarity-calculator",
+          "density-calculator",
+          "half-life-calculator",
+          "binary-calculator",
+          "hex-calculator",
+          "roman-numeral-converter"
+        ]
+      }
+    ],
+    "everyday": [
+      {
+        "h": "Time & date",
+        "items": [
+          "age-calculator",
+          "days-calculator",
+          "time-calculator",
+          "week-number-calculator",
+          "time-card-calculator",
+          "time-zone-calculator"
+        ]
+      },
+      {
+        "h": "Conversion",
+        "items": [
+          "unit-converter",
+          "cm-to-inches",
+          "kg-to-pounds",
+          "celsius-to-fahrenheit",
+          "cooking-measurement-converter",
+          "aspect-ratio-calculator"
+        ]
+      },
+      {
+        "h": "Home & build",
+        "items": [
+          "concrete-calculator",
+          "square-footage-calculator",
+          "paint-calculator",
+          "tile-calculator",
+          "roofing-calculator",
+          "stair-calculator",
+          "btu-calculator"
+        ]
+      },
+      {
+        "h": "Tech & travel",
+        "items": [
+          "password-generator",
+          "random-number-generator",
+          "ip-subnet-calculator",
+          "base64-converter",
+          "fuel-cost-calculator",
+          "gas-mileage-calculator"
+        ]
+      }
+    ]
+  }
+}

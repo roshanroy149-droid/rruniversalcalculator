@@ -83,281 +83,208 @@ a{color:inherit;}
   *{animation-duration:0.01ms !important;transition-duration:0.01ms !important;}
 }
 
-/* HEADER — dark charcoal band, closed with a thin multi-color strip tying it
-   to the four category colors used everywhere else on the homepage (zones,
-   tab/sub-tick accents below) rather than reading as a plain flat bar. */
+/* ============================================================
+   HEADER — masthead + section row + search + dropdown panels
+   Replaced the two-tier ruler on 2026-08-02. Measured faults in the
+   old one: the six category tabs ended at x=595 inside a container
+   running to x=1236, so the row's rule carried on for another 641px
+   past the last tab; opened, it stood 322px tall and listed 89 links;
+   its ticks used 11px 16px 12px padding, vertically asymmetric and on
+   no spacing scale. Everything below takes its spacing from --s1..--s6.
+   ============================================================ */
+/* background stays transparent on purpose: the glass skin paints the bar on
+   header::before further down this file, so a category band scrolling
+   underneath tints it. Setting an opaque background here would hide that
+   pseudo-element entirely and flatten the header back out.
+   position:sticky is also what makes <header> the containing block for the
+   absolutely-positioned .nav-panels below. */
 header{
   position:sticky;top:0;z-index:50;
-  background:linear-gradient(165deg, #211E19, var(--ink));
-  border-bottom:1px solid rgba(var(--cream),0.08);
+  background:transparent;
   box-shadow:0 4px 18px rgba(0,0,0,0.25);
 }
-header::after{
-  content:'';display:block;height:3px;
-  background:linear-gradient(90deg, var(--orange), var(--teal-light), var(--plum-light), var(--steel-light));
-}
+
+/* The masthead. .headbar keeps its markup (logo, tagline, hamburger) on
+   all 256 pages — only the axis changes, so this needed no page edits. */
 .headbar{
-  display:flex;align-items:center;justify-content:space-between;
-  flex-wrap:wrap;gap:8px 16px;
-  padding:16px 0 10px;
+  display:flex;flex-direction:column;align-items:center;
+  gap:7px;
+  padding:var(--s3) 0 var(--s2);
 }
 .logo{
   font-family:'Space Grotesk',sans-serif;
-  font-weight:700;font-size:26px;letter-spacing:-0.02em;
-  text-decoration:none;
-  color:var(--text-on-dark);
+  font-weight:700;font-size:31px;letter-spacing:0.02em;
+  text-decoration:none;line-height:1;
   display:inline-flex;align-items:center;
 }
-@media(max-width:480px){
-  .logo{font-size:19px;}
-}
+/* Qualified past a bare .logo: a generic "header a{color:inherit}" is
+   (0,1,1) and beats (0,1,0) regardless of source order, which is exactly
+   how a wordmark ends up inheriting body ink onto a near-black bar. */
+header a.logo{color:var(--text-on-dark);}
 .logo span{color:var(--orange);}
 .tagline{
   font-family:'JetBrains Mono',monospace;
   font-size:11px;letter-spacing:0.08em;
-  color:var(--ink-dim);
-  white-space:nowrap;
-}
-@media(max-width:640px){
-  .tagline{display:none;}
-}
-
-/* RULER NAV */
-/* .nav-drawer (holding both ruler rows) sits directly under <header>, not
-   inside a .wrap like every other section of every page — so without this,
-   its ticks start flush at the raw viewport edge (offset only by each
-   tick's own small internal padding) while the logo above and all page
-   content below align to .wrap's centered 1240px column with 24px gutters.
-   Mirroring .wrap's own max-width/margin/padding here (rather than adding
-   plain padding) keeps this correct even on ultra-wide viewports, where
-   .wrap's content is centered well inside the raw viewport edge. */
-.nav-drawer{max-width:1240px;margin:0 auto;padding:0 24px;box-sizing:border-box;}
-.ruler{
-  display:flex;overflow-x:auto;
-  border-top:1px solid rgba(var(--cream),0.08);
-  scrollbar-width:none;
-}
-.ruler::-webkit-scrollbar{display:none;}
-.tick{
-  flex:0 0 auto;
-  position:relative;
-  padding:11px 16px 12px;
-  font-family:'JetBrains Mono',monospace;
-  font-size:11px;
-  letter-spacing:0.04em;
   color:var(--ink-muted);
-  text-decoration:none;
   white-space:nowrap;
-  border-right:1px solid rgba(var(--cream),0.08);
-  transition:color .15s, background .15s;
 }
-.tick::before{
-  content:'';
-  position:absolute;top:0;left:0;
-  width:1px;height:6px;
-  background:rgba(var(--cream),0.18);
-}
-.tick:hover{color:var(--text-on-dark);background:rgba(var(--cream),0.06);}
-/* --amber, not --orange. The header is now translucent, so a saturated
-   category band scrolling underneath lightens it; --orange #C08A34 dropped to
-   3.70:1 there. --amber #D9A441 is the brighter sibling already in the palette
-   and holds 5.93:1 against the same worst case. */
-.tick.active{color:var(--amber);background:rgba(192,138,52,0.12);}
-.tick.active::after{
-  content:'';
-  position:absolute;bottom:0;left:0;right:0;height:2px;
-  background:var(--orange);
-  box-shadow:0 0 10px rgba(192,138,52,0.6);
-}
+/* No drawer any more — every section is visible at every width, and the
+   panels open in place. The button stays in the markup (it is hand-written
+   into all 256 pages) but has no job. */
+.nav-toggle{display:none;}
 
-/* Category tabs (buttons, reset from default button styling) — each category
-   gets its own hover/active accent (matching its zone color on the homepage
-   and its sub-tick color below) instead of every tab defaulting to orange. */
-.cat-tab{
-  cursor:pointer;
-  appearance:none;-webkit-appearance:none;
-  /* .cat-tab is a real <button>, and only :hover/.cat-open ever override the
-     generic button{background:var(--orange);color:#fff;box-shadow:...} rule
-     below — its resting/unopened state was never reset, so FINANCE/HEALTH/
-     EDUCATION/EVERYDAY rendered as solid copper blocks while the plain <a>
-     nav ticks (HOME, ARTICLES) never had that base button style to begin
-     with. Reset to a plain tab here so all six nav items match at rest. */
-  background:transparent;
-  border:none;
-  border-radius:0;
-  box-shadow:none;
-}
-.cat-tab:active{transform:none;box-shadow:none;}
-.cat-tab.cat-open{background:rgba(var(--cream),0.08);}
-.cat-tab.cat-open::after{
-  content:'';
-  position:absolute;bottom:0;left:0;right:0;height:2px;
-}
-.cat-tab[data-cat="finance"]:hover,.cat-tab[data-cat="finance"].cat-open{color:var(--orange);}
-.cat-tab[data-cat="finance"].cat-open::after{background:var(--orange);box-shadow:0 0 10px rgba(192,138,52,0.55);}
-.cat-tab[data-cat="health"]:hover,.cat-tab[data-cat="health"].cat-open{color:var(--teal-light);}
-.cat-tab[data-cat="health"].cat-open::after{background:var(--teal-light);box-shadow:0 0 10px rgba(95,187,176,0.5);}
-.cat-tab[data-cat="education"]:hover,.cat-tab[data-cat="education"].cat-open{color:var(--plum-light);}
-.cat-tab[data-cat="education"].cat-open::after{background:var(--plum-light);box-shadow:0 0 10px rgba(201,139,184,0.5);}
-.cat-tab[data-cat="everyday"]:hover,.cat-tab[data-cat="everyday"].cat-open{color:var(--steel-light);}
-.cat-tab[data-cat="everyday"].cat-open::after{background:var(--steel-light);box-shadow:0 0 10px rgba(143,176,204,0.5);}
+.rule{height:1px;background:var(--rule-mid);}
 
-/* Sub-ruler: second-tier row, collapses closed by default. Wraps onto as
-   many lines as needed instead of horizontally scrolling — a category like
-   Finance has 20+ tools, far more than fit in one line, and a scrollable
-   strip hid most of them with no visible affordance to scroll. Tints toward
-   whichever category is open (data-open-cat, set in script.js) instead of
-   staying flat charcoal regardless of category.
-   justify-content:space-between is what fixes the last (ragged) row: with
-   fixed-width, non-growing ticks (flex:0 0 auto) and the default flex-start
-   alignment, a wrapped row that doesn't happen to fill exactly to the
-   container's edge just left-aligns and leaves a big blank gap on the
-   right — most visible on whichever row is shortest (usually the last one,
-   but any category can have this on any row depending on its tool count and
-   label lengths). justify-content applies per flex line when wrapping, so
-   this spreads every row's ticks out to the full row width instead, on
-   every category, without needing a per-category fix. */
-.sub-ruler{
-  max-height:0;
-  overflow-x:visible;
-  overflow-y:hidden;
-  flex-wrap:wrap;
-  justify-content:space-between;
-  background:#141210;
-  border-top:0 solid rgba(var(--cream),0.08);
-  transition:max-height .22s ease, background .2s ease;
+/* ---- section row ---- */
+.sections{
+  display:flex;align-items:center;justify-content:center;
+  height:44px;gap:var(--s5);
+  max-width:1240px;margin:0 auto;padding:0 var(--s3);
 }
-/* Invisible gap-dividing spacers, see the comment in Sync-Nav.ps1's
-   New-NavBlock — they only ever affect whichever row they land on (always
-   the current category's actual last row), never the fuller rows above. */
-.sub-ruler-filler{width:0;height:0;flex:0 0 auto;}
-.sub-ruler.open{
-  max-height:220px;
-  border-top-width:1px;
+.sections .sec{
+  position:relative;
+  display:flex;align-items:center;height:44px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:0.1em;
+  color:var(--ink-muted);white-space:nowrap;
+  background:none;border:0;padding:0;cursor:pointer;
+  text-decoration:none;
+  transition:color .15s;
 }
-.sub-ruler[data-open-cat="finance"]{background:linear-gradient(180deg, rgba(192,138,52,0.12), #141210 65%);}
-.sub-ruler[data-open-cat="health"]{background:linear-gradient(180deg, rgba(47,110,104,0.16), #141210 65%);}
-.sub-ruler[data-open-cat="education"]{background:linear-gradient(180deg, rgba(124,74,107,0.16), #141210 65%);}
-.sub-ruler[data-open-cat="everyday"]{background:linear-gradient(180deg, rgba(61,90,115,0.16), #141210 65%);}
-.sub-tick{display:none;}
-.sub-tick.cat-visible{display:flex;}
-.sub-tick[data-cat="finance"]:hover,.sub-tick[data-cat="finance"].active{color:var(--orange);}
-.sub-tick[data-cat="finance"].active::after{background:var(--orange);}
-.sub-tick[data-cat="health"]:hover,.sub-tick[data-cat="health"].active{color:var(--teal-light);}
-.sub-tick[data-cat="health"].active::after{background:var(--teal-light);}
-.sub-tick[data-cat="education"]:hover,.sub-tick[data-cat="education"].active{color:var(--plum-light);}
-.sub-tick[data-cat="education"].active::after{background:var(--plum-light);}
-.sub-tick[data-cat="everyday"]:hover,.sub-tick[data-cat="everyday"].active{color:var(--steel-light);}
-.sub-tick[data-cat="everyday"].active::after{background:var(--steel-light);}
-.sub-tick.active::after{
-  content:'';
-  position:absolute;bottom:0;left:0;right:0;height:2px;
+.sections .sec:hover{color:var(--text-on-dark);}
+.sections .sec.open,.sections .sec.active{color:var(--c,var(--amber));}
+.sections .sec.open::after,.sections .sec.active::after{
+  content:'';position:absolute;left:-4px;right:-4px;bottom:0;
+  height:2px;background:var(--c,var(--amber));
 }
+.sec[data-p="finance"]{--c:var(--amber);}
+.sec[data-p="health"]{--c:var(--teal-light);}
+.sec[data-p="education"]{--c:var(--plum-light);}
+.sec[data-p="everyday"]{--c:var(--steel-light);}
 
-/* Hamburger button — hidden on desktop; the ruler nav shows inline there as
-   normal. Only appears below the mobile breakpoint, where the nav becomes
-   an off-canvas drawer instead (see the media query below). */
-.nav-toggle{
-  display:none;
-  flex-direction:column;justify-content:center;align-items:stretch;gap:5px;
-  width:34px;height:34px;padding:0;flex-shrink:0;
-  background:transparent;border:none;box-shadow:none;
-  cursor:pointer;
+/* ---- search, below the sections ---- */
+.searchline{
+  display:flex;justify-content:center;
+  padding:var(--s2) var(--s3) var(--s3);
 }
-.nav-toggle span{
-  display:block;width:100%;height:2px;background:var(--text-on-dark);
-  border-radius:1px;transition:transform .2s ease, opacity .2s ease;
+.nav-search{margin-top:0;max-width:520px;}
+.nav-search .sfield{
+  display:flex;align-items:center;gap:var(--s1);
+  height:40px;padding:0 var(--s2);
+  background:rgba(var(--cream),0.07);
+  border:1px solid var(--rule-mid);border-radius:4px;
+  transition:border-color .15s, background .15s;
 }
-body.nav-open .nav-toggle span:nth-child(1){transform:translateY(7px) rotate(45deg);}
-body.nav-open .nav-toggle span:nth-child(2){opacity:0;}
-body.nav-open .nav-toggle span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+.nav-search .sfield:focus-within{border-color:var(--amber);background:rgba(var(--cream),0.10);}
+.nav-search .sicon{flex:0 0 auto;opacity:0.55;color:var(--text-on-dark);}
+.nav-search .tb-search-input{
+  flex:1;min-width:0;
+  background:none;border:0;outline:none;padding:0;
+  font-family:'JetBrains Mono',monospace;font-size:12.5px;
+  color:var(--text-on-dark);
+}
+.nav-search .tb-search-input::placeholder{color:var(--ink-muted);}
+.nav-search kbd{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  border:1px solid var(--rule-mid);border-radius:3px;
+  padding:2px 5px;color:var(--ink-muted);
+}
+/* The results panel is a light card by default (it was built for the
+   cream homepage hero); in the dark header it needs the dark treatment. */
+.nav-search .tb-search-results{
+  z-index:70;
+  background:#211E19;border-color:var(--rule-mid);
+  box-shadow:0 14px 38px rgba(0,0,0,0.5);
+}
+.nav-search .tb-search-result{color:var(--text-on-dark);}
+.nav-search .tb-search-result:hover,
+.nav-search .tb-search-result.active{background:rgba(var(--cream),0.08);}
+.nav-search .tb-search-result-blurb{color:var(--ink-muted);}
+.nav-search .tb-search-empty{color:var(--ink-muted);}
 
-/* z-index must stay below header's own (50) — .nav-drawer lives inside
-   <header>, which is position:sticky with z-index:50 and so establishes its
-   own stacking context. A fixed-position element nested inside it can't
-   escape that context just by having a bigger z-index of its own; the whole
-   header (drawer included) is compared against this backdrop as one unit at
-   header's z-index. A backdrop z-index higher than 50 paints over the
-   entire header — drawer included — silently swallowing every tap on it. */
+/* ---- dropdown panels ----
+   Absolutely positioned so opening one floats over the page instead of
+   shoving the article down ~250px every time a section is touched. The
+   header's own height therefore never changes. */
+.nav-panels{position:absolute;top:100%;left:0;right:0;z-index:60;}
+.npanel{
+  background:rgba(16,14,12,0.985);
+  -webkit-backdrop-filter:var(--g-blur);
+  backdrop-filter:var(--g-blur);
+  border-top:1px solid var(--rule-mid);
+  box-shadow:0 18px 40px rgba(0,0,0,0.45);
+  padding:var(--s4) 0;
+}
+.npanel[hidden]{display:none;}
+.npanel-grid{
+  display:grid;
+  /* minmax(0,1fr), never a bare 1fr: 1fr means minmax(auto,1fr), whose
+     minimum is the content's max-content width — long article headlines
+     dragged four equal columns out to 469/512/504/495px and pushed links
+     outside the container. */
+  grid-template-columns:repeat(4,minmax(0,1fr));
+}
+.npanel-2 .npanel-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+.npcol{padding:0 var(--s3);border-right:1px solid var(--rule);}
+.npcol:first-child{padding-left:0;}
+.npcol:last-child{border-right:0;padding-right:0;}
+.npcol h4{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:0.12em;font-weight:700;
+  color:var(--amber);margin:0 0 var(--s2);
+}
+.npanel[data-p="health"] .npcol h4{color:var(--teal-light);}
+.npanel[data-p="education"] .npcol h4{color:var(--plum-light);}
+.npanel[data-p="everyday"] .npcol h4{color:var(--steel-light);}
+.npcol a{
+  display:block;padding:6px 0;
+  /* line-height in px, not a ratio: 13 x 1.3 = 16.9 put every row edge on
+     a sub-pixel boundary. 20 + 12 = 32 exactly. */
+  font-size:13px;line-height:20px;
+  color:var(--ink-muted);text-decoration:none;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.npcol a:hover{color:var(--text-on-dark);}
+.npanel-foot{
+  margin-top:var(--s3);padding-top:var(--s2);
+  border-top:1px solid var(--rule);
+}
+.npanel-foot a{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10.5px;letter-spacing:0.06em;
+  color:var(--ink-dim);text-decoration:none;
+}
+.npanel-foot a:hover{color:var(--amber);}
+
+/* Reused as the panel scrim. Below the header (50) but above the page. */
 .nav-backdrop{
+  position:fixed;inset:0;z-index:40;
+  background:rgba(0,0,0,0.35);
   display:none;
-  position:fixed;inset:0;
-  background:rgba(20,18,15,0.55);
-  z-index:40;
 }
 body.nav-open .nav-backdrop{display:block;}
 
-/* Drawer-only close button — hidden by default since on desktop the nav
-   isn't a drawer at all, it's the normal inline ruler. Only the mobile
-   media query below turns it back on. */
-.nav-drawer-head{display:none;}
-
-/* Below the mobile breakpoint, the two-tier ruler nav (which works fine as a
-   horizontal strip on desktop) stops trying to fit categories + 40 tools
-   into a thin top bar, and instead becomes a slide-in drawer opened by the
-   hamburger button — the same markup, just a vertical list in an off-canvas
-   panel instead of a horizontal ruler. */
+@media(max-width:900px){
+  .sections{gap:var(--s3);}
+  .npanel-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .npcol{border-right:0;padding:0 var(--s2);}
+  .npcol:first-child{padding-left:0;}
+}
 @media(max-width:640px){
-  .nav-toggle{display:flex;}
-
-  .nav-drawer{
-    max-width:none;margin:0;padding:0;box-sizing:content-box;
-    position:fixed;top:0;right:0;bottom:0;
-    width:min(84vw, 320px);
-    background:linear-gradient(165deg, #211E19, var(--ink));
-    z-index:200;
-    display:flex;flex-direction:column;
-    transform:translateX(100%);
-    transition:transform .28s ease;
-    overflow-y:auto;
-    box-shadow:-8px 0 30px rgba(0,0,0,0.35);
+  .logo{font-size:24px;}
+  .headbar{padding:var(--s2) 0 var(--s1);}
+  .tagline{font-size:10px;letter-spacing:0.06em;}
+  /* Wrap rather than scroll sideways: a masthead that scrolls horizontally
+     stops reading as a masthead. */
+  .sections{
+    flex-wrap:wrap;height:auto;
+    gap:var(--s2) var(--s3);padding:var(--s2) var(--s3);
   }
-  body.nav-open .nav-drawer{transform:translateX(0);}
-  body.nav-open{overflow:hidden;}
-
-  .nav-drawer-head{
-    display:flex;align-items:center;justify-content:space-between;
-    padding:18px 20px;flex-shrink:0;
-    border-bottom:1px solid var(--rule);
-    font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.06em;
-    color:var(--ink-soft);text-transform:uppercase;
-  }
-  .nav-close{
-    background:transparent;border:none;box-shadow:none;color:var(--text-on-dark);
-    font-size:16px;padding:4px 10px;cursor:pointer;
-  }
-
-  .cat-ruler, .sub-ruler{
-    display:flex;flex-direction:column;
-    overflow-x:visible;
-    border-top:none;
-    flex-shrink:0;
-  }
-  .cat-ruler .tick, .sub-tick{
-    flex:0 0 auto;
-    width:100%;
-    text-align:left;
-    padding:13px 20px;
-    font-size:12px;
-    border-right:none;
-    border-bottom:1px solid rgba(var(--cream),0.06);
-    white-space:normal;
-    box-sizing:border-box;
-  }
-  .cat-ruler .tick::before{display:none;}
-  .sub-ruler{background:rgba(0,0,0,0.15);}
-  .sub-ruler.open{
-    max-height:3000px;
-    overflow-y:visible;
-    border-top:1px solid rgba(var(--cream),0.06);
-  }
-  /* Scoped to .sub-ruler (not just the bare .sub-tick class) so this ties in
-     specificity with ".cat-ruler .tick" above rather than losing to it —
-     once a category is open, subRuler gets relocated to be a DOM descendant
-     of .cat-ruler (see script.js), which would otherwise let the more
-     general rule override this indent/font-size on tie-breaking by
-     specificity alone. Being last in the file wins the tie. */
-  .sub-ruler .sub-tick{padding-left:34px;font-size:11.5px;}
+  .sections .sec{height:22px;}
+  .sections .sec.open::after,.sections .sec.active::after{bottom:-4px;}
+  .searchline{padding:var(--s1) var(--s3) var(--s2);}
+  .npanel-grid{grid-template-columns:minmax(0,1fr);}
+  .npanel{padding:var(--s3) 0;max-height:70vh;overflow-y:auto;}
 }
 
 /* HERO — base fallback for any hero lacking both .home-hero and a
@@ -1509,21 +1436,6 @@ body{
    whole bar takes that band's colour (measured: rgb(29,27,24) over the plain
    page vs rgb(68,51,25) over the finance band). At 0.78 it stayed the same
    near-black regardless of what was behind it. */
-/* THE BLUR MUST NOT LIVE ON <header> ITSELF.
-   backdrop-filter makes an element the containing block for its position:fixed
-   descendants — and .nav-drawer (the mobile hamburger panel) is a CHILD of
-   <header>. With the filter on header, the drawer's top:0/bottom:0 resolved
-   against the 64px header box instead of the viewport: it collapsed from 812px
-   to 63px and the menu rendered blank.
-
-   Putting the blur on a pseudo-element instead keeps header filter-free, so the
-   drawer measures against the viewport again. position:sticky and z-index do
-   NOT create a containing block for fixed elements — only transform, filter,
-   backdrop-filter, perspective, contain and will-change do. */
-header{
-  background:transparent;
-  box-shadow:var(--g-lip-dark), 0 4px 18px rgba(0,0,0,0.25);
-}
 header::before{
   content:'';
   position:absolute;
@@ -1538,11 +1450,6 @@ header::before{
   background:linear-gradient(165deg, rgba(33,30,25,0.66), rgba(28,26,23,0.74));
   -webkit-backdrop-filter:blur(26px) saturate(2.1);
   backdrop-filter:blur(26px) saturate(2.1);
-}
-.nav-drawer{
-  background:rgba(28,26,23,0.62);
-  -webkit-backdrop-filter:var(--g-blur);
-  backdrop-filter:var(--g-blur);
 }
 .nav-backdrop{-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);}
 
@@ -1613,27 +1520,6 @@ header::before{
   box-shadow:var(--g-lip-dark), 0 -8px 24px rgba(0,0,0,0.25);
 }
 
-/* CALCULATOR PAGES */
-/* Opacity 0.82, tint 0.14-0.20 — NOT the 0.62/0.22-0.26 first shipped. That
-   combination made the panel translucent AND more strongly tinted at once, and
-   the two compounded: 11px sub-nav labels fell to 4.36:1 and the active one to
-   3.42:1 at the top of the gradient where the tint is strongest. Finance keeps
-   the lowest tint (0.10) because orange is far lighter than the other three;
-   at 0.14 its top stop still measured exactly 4.50, i.e. on the line. */
-.sub-ruler{
-  background:rgba(20,18,16,0.82);
-  -webkit-backdrop-filter:var(--g-blur);
-  backdrop-filter:var(--g-blur);
-}
-.sub-ruler[data-open-cat="finance"]  {background:linear-gradient(180deg, rgba(192,138,52,0.10), rgba(20,18,16,0.86) 65%);}
-.sub-ruler[data-open-cat="health"]   {background:linear-gradient(180deg, rgba(47,110,104,0.16), rgba(20,18,16,0.86) 65%);}
-.sub-ruler[data-open-cat="education"]{background:linear-gradient(180deg, rgba(124,74,107,0.16), rgba(20,18,16,0.86) 65%);}
-.sub-ruler[data-open-cat="everyday"] {background:linear-gradient(180deg, rgba(61,90,115,0.16), rgba(20,18,16,0.86) 65%);}
-/* Matches the .tick.active change above: --orange is too dark against a
-   translucent panel that a category band lightens. */
-.sub-tick[data-cat="finance"]:hover,
-.sub-tick[data-cat="finance"].active{color:var(--amber);}
-.sub-tick[data-cat="finance"].active::after{background:var(--amber);}
 
 /* Data tables and disclaimers are light panels on a dark page - same situation
    as a tool card, same frosting, so the page reads as one material. */
@@ -1701,14 +1587,11 @@ header::before{
    after it, so they win again at the breakpoint:
      .tool-card-link box-shadow:none  - the mobile icon grid is deliberately
        flat; without this every icon tile regains a desktop drop shadow.
-     .sub-ruler background            - the mobile sub-nav has its own much
-       lighter treatment; the blur is kept so it is still glass.
    Verified at 375px after shipping, not assumed.
 ------------------------------------------------------------------------------ */
 @media(max-width:640px){
   .tool-card-link{box-shadow:none;}
-  .sub-ruler{background:rgba(0,0,0,0.15);}
-}
+  }
 
 /* EMBED DIRECTORY (embed.html) — a long list of every tool with a copy button.
    Rows are uniform height and share one left and one right edge, per the
