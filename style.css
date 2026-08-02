@@ -32,6 +32,13 @@
      could retheme them. Redefining --cream now re-points every one. */
   --cream:242,236,221;
 
+  /* One spacing scale. Every padding, margin and gap in the header is taken
+     from it — a one-off 13px is a defect even if it looks fine (CLAUDE.md 1.5).
+     These MUST live here, not only in a prototype: the header shipped once with
+     26 var(--s1..--s6) references and no definitions, so every gap resolved to
+     0 and the section row rendered as HOMEARTICLESBOOKFINANCE... run together. */
+  --s1:8px; --s2:16px; --s3:24px; --s4:32px; --s5:40px; --s6:48px;
+
   /* Semantic aliases for the alphas that actually recur in page markup.
      A theme should override THESE rather than --cream where it needs to change
      the ramp as well as the hue — dark text on a light surface needs different
@@ -147,10 +154,18 @@ header a.logo{color:var(--text-on-dark);}
   font-family:'JetBrains Mono',monospace;
   font-size:11px;letter-spacing:0.1em;
   color:var(--ink-muted);white-space:nowrap;
+  /* Six of these seven are real <button>s, so the generic button{} rule
+     applies to them and HOME (an <a>) alone escapes it. Resetting only
+     background/border/padding left button{box-shadow:0 2px 0 #6B4619}
+     intact, which drew a dim brown bar under every section label — the
+     exact same trap .cat-tab fell into before it. Reset the lot. */
   background:none;border:0;padding:0;cursor:pointer;
+  box-shadow:none;border-radius:0;
   text-decoration:none;
   transition:color .15s;
 }
+.sections .sec:hover{box-shadow:none;}
+.sections .sec:active{transform:none;box-shadow:none;}
 .sections .sec:hover{color:var(--text-on-dark);}
 .sections .sec.open,.sections .sec.active{color:var(--c,var(--amber));}
 .sections .sec.open::after,.sections .sec.active::after{
@@ -1371,7 +1386,9 @@ body.nav-open .tb-chat-panel{display:none;}
   border:1px solid rgba(var(--cream),0.16);border-radius:999px;
   padding:6px 13px;transition:color .15s,border-color .15s,background .15s;
 }
-.topic-nav a:hover{color:var(--copper);border-color:var(--copper);background:rgba(212,163,115,0.07);}
+/* --copper was never defined, so this hover did nothing at all. --amber is
+   the token actually used for hover accents on dark surfaces here. */
+.topic-nav a:hover{color:var(--amber);border-color:var(--amber);background:rgba(217,164,65,0.07);}
 
 /* ============================================================================
    GLASS MATERIAL
