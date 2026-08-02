@@ -115,8 +115,8 @@ header{
    all 256 pages — only the axis changes, so this needed no page edits. */
 .headbar{
   display:flex;flex-direction:column;align-items:center;
-  gap:7px;
-  padding:var(--s3) 0 var(--s2);
+  gap:var(--s1);
+  padding:var(--s2) 0 var(--s1);
 }
 .logo{
   font-family:'Space Grotesk',sans-serif;
@@ -145,12 +145,12 @@ header a.logo{color:var(--text-on-dark);}
 /* ---- section row ---- */
 .sections{
   display:flex;align-items:center;justify-content:center;
-  height:44px;gap:var(--s5);
+  height:40px;gap:var(--s5);
   max-width:1240px;margin:0 auto;padding:0 var(--s3);
 }
 .sections .sec{
   position:relative;
-  display:flex;align-items:center;height:44px;
+  display:flex;align-items:center;height:40px;
   font-family:'JetBrains Mono',monospace;
   font-size:11px;letter-spacing:0.1em;
   color:var(--ink-muted);white-space:nowrap;
@@ -180,12 +180,16 @@ header a.logo{color:var(--text-on-dark);}
 /* ---- search, below the sections ---- */
 .searchline{
   display:flex;justify-content:center;
-  padding:var(--s2) var(--s3) var(--s3);
+  padding:var(--s1) var(--s3) var(--s2);
 }
-.nav-search{margin-top:0;max-width:520px;}
+/* .tb-search{margin-top:20px} is defined LATER in this file, and at equal
+   specificity the later rule wins — so a bare .nav-search{margin-top:0}
+   silently did nothing and left 20px of dead space under the rules.
+   Qualifying it with the parent outranks the base rule regardless of order. */
+.searchline .nav-search{margin-top:0;max-width:520px;}
 .nav-search .sfield{
   display:flex;align-items:center;gap:var(--s1);
-  height:40px;padding:0 var(--s2);
+  height:36px;padding:0 var(--s2);
   background:rgba(var(--cream),0.07);
   border:1px solid var(--rule-mid);border-radius:4px;
   transition:border-color .15s, background .15s;
@@ -286,18 +290,22 @@ body.nav-open .nav-backdrop{display:block;}
   .npcol:first-child{padding-left:0;}
 }
 @media(max-width:640px){
+  /* Mobile gets its own tightening rather than inheriting desktop's: most of
+     the site's search traffic is mobile, and at desktop values the seven
+     labels wrapped to THREE rows, giving a 223px header on an 812px screen.
+     Smaller type and a 16px column gap fit them into two. */
   .logo{font-size:24px;}
-  .headbar{padding:var(--s2) 0 var(--s1);}
+  .headbar{padding:var(--s1) 0;}
   .tagline{font-size:10px;letter-spacing:0.06em;}
   /* Wrap rather than scroll sideways: a masthead that scrolls horizontally
      stops reading as a masthead. */
   .sections{
     flex-wrap:wrap;height:auto;
-    gap:var(--s2) var(--s3);padding:var(--s2) var(--s3);
+    gap:var(--s1) var(--s2);padding:var(--s1) var(--s3);
   }
-  .sections .sec{height:22px;}
-  .sections .sec.open::after,.sections .sec.active::after{bottom:-4px;}
-  .searchline{padding:var(--s1) var(--s3) var(--s2);}
+  .sections .sec{height:22px;font-size:10px;letter-spacing:0.08em;}
+  .sections .sec.open::after,.sections .sec.active::after{bottom:-3px;}
+  .searchline{padding:var(--s1) var(--s3);}
   .npanel-grid{grid-template-columns:minmax(0,1fr);}
   .npanel{padding:var(--s3) 0;max-height:70vh;overflow-y:auto;}
 }
