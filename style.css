@@ -182,10 +182,9 @@ header a.logo{color:var(--text-on-dark);}
   display:flex;justify-content:center;
   padding:var(--s1) var(--s3) var(--s2);
 }
-/* .tb-search{margin-top:20px} is defined LATER in this file, and at equal
-   specificity the later rule wins — so a bare .nav-search{margin-top:0}
-   silently did nothing and left 20px of dead space under the rules.
-   Qualifying it with the parent outranks the base rule regardless of order. */
+/* Kept qualified rather than a bare .nav-search: .tb-search is defined later
+   in this file, so at equal specificity it would win the tie on source order.
+   It no longer sets a margin, but this stays correct if one is ever added. */
 .searchline .nav-search{margin-top:0;max-width:520px;}
 .nav-search .sfield{
   display:flex;align-items:center;gap:var(--s1);
@@ -900,16 +899,12 @@ footer a{color:var(--teal-light) !important;}
 
 /* Search bar + featured row sit in the same dark hero band, so both need
    dark-appropriate treatments rather than the light-page defaults. */
-.home-hero .tb-search-input{background:rgba(255,255,255,0.06);border-color:rgba(var(--cream),0.2);color:#fff;}
-.home-hero .tb-search-input::placeholder{color:rgba(var(--cream),0.45);}
-.home-hero .tb-search-results{background:#211E19;border-color:var(--rule-mid);}
-.home-hero .tb-search-result{color:var(--text-on-dark);}
-.home-hero .tb-search-result:hover,.home-hero .tb-search-result.active{background:rgba(var(--cream),0.08);}
-.home-hero .tb-search-result-blurb{color:var(--ink-muted);}
-.home-hero .tb-search-empty{color:var(--ink-muted);}
+/* The .home-hero .tb-search* overrides were removed with the hero search
+   field itself — the header search is the only one now, and it carries its
+   own dark treatment under .nav-search. */
 
 /* HOMEPAGE CALCULATOR SEARCH */
-.tb-search{position:relative;margin-top:20px;max-width:420px;width:100%;}
+.tb-search{position:relative;max-width:420px;width:100%;}
 .tb-search-input{
   font-family:'JetBrains Mono',monospace;font-size:14px;
   padding:12px 14px;
