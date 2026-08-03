@@ -42,7 +42,14 @@ jobs:
           # tells Bing the whole site changed, every time. Compare each file with
           # the generated marker blocks stripped out, and keep only the ones whose
           # real content moved.
-          STRIP='s/<!-- TB:(NAV|COUNT|HOMEGRID|ARTICLELIST|SEARCHDATA|BREADCRUMB):START -->.*?<!-- TB:\1:END -->//gs'
+          # KEEP THIS LIST IN SYNC WITH Sync-Nav.ps1. Four markers were added
+          # after this filter was written — ADSENSE, COUNTINLINE,
+          # ARTICLECOUNTINLINE and EMBEDLIST — and were not being stripped, so
+          # the push that added the AdSense meta tag to every page counted as a
+          # real content change on all 256 and submitted the entire site to
+          # IndexNow. That is precisely what this filter exists to prevent.
+          # Adding a marker to the generator means adding it here too.
+          STRIP='s/<!-- TB:(NAV|COUNT|COUNTINLINE|ARTICLECOUNTINLINE|HOMEGRID|EMBEDLIST|ARTICLELIST|SEARCHDATA|BREADCRUMB|ADSENSE):START -->.*?<!-- TB:\1:END -->//gs'
           REAL=""
           for f in $CHANGED; do
             if ! git cat-file -e "${BEFORE_SHA}:${f}" 2>/dev/null; then
