@@ -5092,19 +5092,33 @@ function amortizationToCSV(years, cur){
   const embedUrl = canonicalUrl + '?embed=1';
   const iframeId = 'tb-embed-' + toolId;
 
+  // The credit line is part of the ONE snippet, not a separate optional step.
+  //
+  // It used to be step 2 with its own textarea and copy button, and that made
+  // it effectively optional — most people paste the first box and stop. That
+  // matters more than it sounds: the "Powered by TallyBench" bar rendered
+  // inside the iframe is on tallybench.com, not on the host's page, and the
+  // embed view is noindex, so it is a self-link worth nothing. This credit
+  // line, sitting in the host's own HTML, is the only thing an embed
+  // contributes back. One box, one button, credit included by default.
+  const creditSnippet = '<p style="font-size:13px;margin:8px 0 0;">Calculator by ' +
+    '<a href="' + canonicalUrl + '" rel="noopener">TallyBench</a></p>';
+
   const iframeSnippet =
     '<iframe id="' + iframeId + '" src="' + embedUrl + '" width="100%" height="640" ' +
     'style="border:0;max-width:640px;" loading="lazy" title="' + toolName + ' — TallyBench"></iframe>\n' +
     '<script>window.addEventListener("message",function(e){if(e.data&&e.data.tbEmbedId==="' + toolId + '"){' +
-    'var f=document.getElementById("' + iframeId + '");if(f)f.style.height=e.data.tbEmbedHeight+"px";}});<' + '/script>';
-
-  const creditSnippet = 'Calculator by <a href="' + canonicalUrl + '" rel="noopener">TallyBench</a>';
+    'var f=document.getElementById("' + iframeId + '");if(f)f.style.height=e.data.tbEmbedHeight+"px";}});<' + '/script>\n' +
+    creditSnippet;
 
   const row = document.createElement('div');
   row.className = 'tb-embed-row';
   // The embed.html link is added here rather than hand-written into 201 pages:
   // one string change gives every tool page an inbound link to the directory.
-  row.innerHTML = '<span class="tb-embed-hint">Free to use on your own site — no attribution beyond the credit link required. <a href="embed.html">See all embeddable calculators</a>.</span><button type="button" class="ghost" id="tbEmbedOpen">&lt;/&gt; Embed this calculator</button>';
+  // The old wording — "no attribution beyond the credit link required" — read
+  // as though the bar inside the widget was the attribution. It is not; the
+  // credit link in the snippet is.
+  row.innerHTML = '<span class="tb-embed-hint">Free to use on your own site, including commercially — just keep the credit line that comes with the code. <a href="embed.html">See all embeddable calculators</a>.</span><button type="button" class="ghost" id="tbEmbedOpen">&lt;/&gt; Embed this calculator</button>';
   hero.insertAdjacentElement('afterend', row);
 
   const backdrop = document.createElement('div');
@@ -5115,20 +5129,16 @@ function amortizationToCSV(years, cur){
       '<div class="tb-embed-modal-head"><strong>Embed <span id="tbEmbedToolName"></span></strong>' +
         '<button type="button" class="tb-embed-close" aria-label="Close">&#10005;</button></div>' +
       '<div class="tb-embed-modal-body">' +
-        '<label>1. Paste this where you want the calculator to appear</label>' +
+        '<label>Paste this where you want the calculator to appear</label>' +
         '<textarea readonly id="tbEmbedIframeCode"></textarea>' +
         '<button type="button" class="ghost tb-embed-copy" data-target="tbEmbedIframeCode">Copy code</button>' +
-        '<label>2. Paste this directly below it — required, this is what credits TallyBench</label>' +
-        '<textarea readonly id="tbEmbedCreditCode"></textarea>' +
-        '<button type="button" class="ghost tb-embed-copy" data-target="tbEmbedCreditCode">Copy credit link</button>' +
-        '<p class="tb-chat-hint">The widget reports its own height automatically as visitors use it — no need to guess a size.</p>' +
+        '<p class="tb-chat-hint">Includes the credit line — please keep it, it is the only thing we ask in return. The widget reports its own height automatically as visitors use it, so there is no size to guess.</p>' +
       '</div>' +
     '</div>';
   document.body.appendChild(backdrop);
 
   document.getElementById('tbEmbedToolName').textContent = toolName;
   document.getElementById('tbEmbedIframeCode').value = iframeSnippet;
-  document.getElementById('tbEmbedCreditCode').value = creditSnippet;
 
   document.getElementById('tbEmbedOpen').addEventListener('click', ()=>{ backdrop.hidden = false; });
   backdrop.querySelector('.tb-embed-close').addEventListener('click', ()=>{ backdrop.hidden = true; });
@@ -5192,13 +5202,19 @@ function amortizationToCSV(years, cur){
   const toolId = targetFile.replace(/\.html$/, '');
   const iframeId = 'tb-embed-' + toolId;
 
+  // Same single-snippet rule as the calculator-page embed above: the credit
+  // link ships inside the one block people copy, because a separate "step 2"
+  // is a step most people skip, and it is the only part of an embed that
+  // actually links back from the host's domain.
+  const creditSnippet = '<p style="font-size:13px;margin:8px 0 0;">Calculator by ' +
+    '<a href="' + targetUrl + '" rel="noopener">TallyBench</a></p>';
+
   const iframeSnippet =
     '<iframe id="' + iframeId + '" src="' + embedUrl + '" width="100%" height="640" ' +
     'style="border:0;max-width:640px;" loading="lazy" title="' + targetName + ' — TallyBench"></iframe>\n' +
     '<script>window.addEventListener("message",function(e){if(e.data&&e.data.tbEmbedId==="' + toolId + '"){' +
-    'var f=document.getElementById("' + iframeId + '");if(f)f.style.height=e.data.tbEmbedHeight+"px";}});<' + '/script>';
-
-  const creditSnippet = 'Calculator by <a href="' + targetUrl + '" rel="noopener">TallyBench</a>';
+    'var f=document.getElementById("' + iframeId + '");if(f)f.style.height=e.data.tbEmbedHeight+"px";}});<' + '/script>\n' +
+    creditSnippet;
 
   const row = document.createElement('div');
   row.className = 'tb-embed-row';
@@ -5214,20 +5230,16 @@ function amortizationToCSV(years, cur){
       '<div class="tb-embed-modal-head"><strong>Embed <span id="tbArticleEmbedToolName"></span></strong>' +
         '<button type="button" class="tb-embed-close" aria-label="Close">&#10005;</button></div>' +
       '<div class="tb-embed-modal-body">' +
-        '<label>1. Paste this where you want the calculator to appear</label>' +
+        '<label>Paste this where you want the calculator to appear</label>' +
         '<textarea readonly id="tbArticleEmbedIframeCode"></textarea>' +
         '<button type="button" class="ghost tb-embed-copy" data-target="tbArticleEmbedIframeCode">Copy code</button>' +
-        '<label>2. Paste this directly below it — required, this is what credits TallyBench</label>' +
-        '<textarea readonly id="tbArticleEmbedCreditCode"></textarea>' +
-        '<button type="button" class="ghost tb-embed-copy" data-target="tbArticleEmbedCreditCode">Copy credit link</button>' +
-        '<p class="tb-chat-hint">The widget reports its own height automatically as visitors use it — no need to guess a size.</p>' +
+        '<p class="tb-chat-hint">Includes the credit line — please keep it, it is the only thing we ask in return. The widget reports its own height automatically as visitors use it, so there is no size to guess.</p>' +
       '</div>' +
     '</div>';
   document.body.appendChild(backdrop);
 
   document.getElementById('tbArticleEmbedToolName').textContent = targetName;
   document.getElementById('tbArticleEmbedIframeCode').value = iframeSnippet;
-  document.getElementById('tbArticleEmbedCreditCode').value = creditSnippet;
 
   document.getElementById('tbArticleEmbedOpen').addEventListener('click', ()=>{ backdrop.hidden = false; });
   backdrop.querySelector('.tb-embed-close').addEventListener('click', ()=>{ backdrop.hidden = true; });
