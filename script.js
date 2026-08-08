@@ -4107,6 +4107,189 @@ function amortizationToCSV(years, cur){
   calc();
 })();
 
+// ---- ITR form selector (India, AY 2026-27 / income year FY 2025-26) ----
+// Conditions from the Income Tax Department's own ITR-1 and ITR-4 FAQs.
+// Two changes for AY 2026-27 that most older guidance still has wrong:
+//   - ITR-1 and ITR-4 now take up to TWO house properties (was one)
+//   - both now take LTCG under s.112A up to Rs 1,25,000 (any capital gain
+//     previously forced you to ITR-2 or ITR-3)
+// Tie-break rule: when a case is ambiguous, return the FULLER form. ITR-2
+// accepts everything ITR-1 does and ITR-3 everything ITR-4 does, so
+// over-routing costs the filer extra schedules, while under-routing makes the
+// return defective under s.139(9). The two errors are not the same size, so
+// the tie-break is not neutral either.
+(function(){
+  if(!document.getElementById('itrFiler')) return;
+  const CEILING = 5000000;
+  let status = 'ror', biz = 'none', houses = 'upto2', gains = 'none';
+
+  const L44AD  = 'Turnover is above the s.44AD limit (₹2 crore, or ₹3 crore where cash receipts are 5% or less).';
+  const L44ADA = 'Professional receipts are above the s.44ADA limit (₹50 lakh, or ₹75 lakh where cash receipts are 5% or less).';
+  const L44AE  = 'More than ten goods carriages, so s.44AE does not apply.';
+
+  function selectForm(o){
+    const f = o.flags;
+    if(o.filer === 'company') return {form:'ITR-6', why:'Companies file ITR-6, unless claiming exemption under s.11, which is ITR-7.', blocks:[], track:'audit'};
+    if(o.filer === 'trust')   return {form:'ITR-7', why:'Trusts, political parties, research institutions and similar entities claiming exemption file ITR-7.', blocks:[], track:'audit'};
+    // ITR-5 is not an ITR-3/ITR-4 form, so the Finance Act 2026 extension to
+    // 31 August does not reach it — 'nonbiz' keeps it on the general 31 July
+    // date, and the audit flag still lifts it to 31 October.
+    if(o.filer === 'llp')     return {form:'ITR-5', why:'An LLP files ITR-5. ITR-4 is open to firms but explicitly excludes LLPs.', blocks:[], track:'nonbiz'};
+
+    const blocks = [];
+    if(o.status !== 'ror') blocks.push('Only a Resident and Ordinarily Resident can use the simplified forms — RNOR and non-resident cannot.');
+    if(o.income > CEILING) blocks.push('Total income is above ₹50,00,000.');
+    if(o.houses === 'more') blocks.push('Income from more than two house properties.');
+    if(o.gains === 'other') blocks.push('Capital gains other than LTCG under s.112A within ₹1,25,000 — any short-term gain, or 112A gains above the limit.');
+    if(f.agri)     blocks.push('Agricultural income above ₹5,000.');
+    if(f.director) blocks.push('You were a director in a company.');
+    if(f.unlisted) blocks.push('You held unlisted equity shares at any time in the year.');
+    if(f.foreign)  blocks.push('Foreign assets, foreign income, or signing authority in a foreign account.');
+    if(f.special)  blocks.push('Lottery, racehorse or other special-rate income under s.115BBDA or s.115BBE.');
+    if(f.esop)     blocks.push('Tax on ESOPs deferred by an eligible start-up employer.');
+    if(f.losses)   blocks.push('A brought-forward loss, or a loss to be carried forward.');
+    // s.194N is listed against ITR-1 in the department's FAQ. Applied to ITR-4
+    // too: if it does bar ITR-4 the answer is right, and if it does not, the
+    // filer is only sent to ITR-3, which accepts the same data anyway.
+    if(f.s194n)    blocks.push('Tax deducted under s.194N on large cash withdrawals.');
+
+    const over = [];
+    if(f.over44AD)  over.push(L44AD);
+    if(f.over44ADA) over.push(L44ADA);
+    if(f.over44AE)  over.push(L44AE);
+    const clean = blocks.length === 0;
+
+    // A firm has only two possible answers: ITR-4 when presumptive and inside
+    // every limit, otherwise ITR-5. ITR-1/2/3 are individuals and HUFs only.
+    if(o.filer === 'firm'){
+      if(o.biz === 'presumptive' && !over.length && clean)
+        return {form:'ITR-4', why:'A partnership firm other than an LLP, on presumptive taxation and inside every ITR-4 limit.', blocks:[], track:'business'};
+      return {form:'ITR-5',
+        why: o.biz === 'presumptive'
+          ? 'A firm on presumptive taxation, but outside the ITR-4 conditions. ITR-3 is not open to firms, so the return goes on ITR-5.'
+          : 'A partnership firm files ITR-5. ITR-1, ITR-2 and ITR-3 are for individuals and HUFs only.',
+        blocks: over.concat(o.biz === 'presumptive' ? blocks : []), track:'nonbiz'};
+    }
+
+    if(o.biz === 'none'){
+      if(o.filer === 'huf')
+        return {form:'ITR-2', why:'A HUF cannot file ITR-1 at all. With no business or professional income, ITR-2 is the form.', blocks:blocks, track:'nonbiz'};
+      if(clean)
+        return {form:'ITR-1', why:'Salary, pension, interest and up to two house properties, all inside the ITR-1 limits.', blocks:[], track:'nonbiz'};
+      return {form:'ITR-2', why:'No business or professional income, but ITR-1 is ruled out.', blocks:blocks, track:'nonbiz'};
+    }
+
+    if(o.biz === 'presumptive'){
+      if(over.length)
+        return {form:'ITR-3', why:'Presumptive taxation does not apply at this size, so the return goes on ITR-3 with regular books.', blocks:over.concat(blocks), track:'business'};
+      if(clean)
+        return {form:'ITR-4', why:'Presumptive business or professional income under s.44AD, s.44ADA or s.44AE, inside every ITR-4 limit.', blocks:[], track:'business'};
+      return {form:'ITR-3', why:'Presumptive income, but ITR-4 is ruled out.', blocks:blocks, track:'business'};
+    }
+
+    return {form:'ITR-3', why:'Business or professional income on regular books of account, rather than presumptive.', blocks:blocks, track:'business'};
+  }
+
+  // The deadline follows the audit position, not the form — the part most
+  // people get wrong. s.139(1) as amended by the Finance Act 2026.
+  function deadlineFor(track, audited){
+    if(audited) return {date:'31 October 2026', label:'Accounts liable to audit under s.44AB'};
+    if(track === 'audit') return {date:'31 October 2026', label:'Audit case'};
+    if(track === 'business') return {date:'31 August 2026', label:'Non-audit business or professional income'};
+    return {date:'31 July 2026', label:'No business income, not liable to audit'};
+  }
+
+  function setWarning(msg){
+    const el = document.getElementById('itrWarning');
+    if(!el) return;
+    if(msg){ el.textContent = msg; el.classList.add('show'); }
+    else { el.textContent = ''; el.classList.remove('show'); }
+  }
+
+  const chk = id => !!(document.getElementById(id)||{}).checked;
+
+  function calc(){
+    const filer = document.getElementById('itrFiler').value;
+    const o = {
+      filer: filer, status: status, biz: biz, houses: houses, gains: gains,
+      income: Math.max(0, parseFloat(document.getElementById('itrIncome').value)||0),
+      flags: {
+        director: chk('itrDirector'), unlisted: chk('itrUnlisted'), foreign: chk('itrForeign'),
+        agri: chk('itrAgri'), special: chk('itrSpecial'), esop: chk('itrEsop'),
+        losses: chk('itrLosses'), s194n: chk('itr194n'), audited: chk('itrAudited'),
+        over44AD: chk('itrOver44AD'), over44ADA: chk('itrOver44ADA'), over44AE: chk('itrOver44AE')
+      }
+    };
+
+    if(filer === 'company' || filer === 'trust' || filer === 'llp'){
+      setWarning('For this filer type the answer comes from the entity, so the income and personal questions below do not change it.');
+    } else if(o.biz !== 'presumptive' && (o.flags.over44AD || o.flags.over44ADA || o.flags.over44AE)){
+      setWarning('The presumptive limit boxes only matter when "Presumptive" is selected above — they have been ignored.');
+    } else if(o.status !== 'ror' && filer === 'individual'){
+      setWarning('RNOR and non-resident filers cannot use ITR-1 or ITR-4 at all, whatever the rest of the answers say. Not sure which you are? Work it out with the residential status calculator.');
+    } else {
+      setWarning(null);
+    }
+
+    const r = selectForm(o);
+    const d = deadlineFor(r.track, o.flags.audited);
+    const belated = d.date === '31 July 2026';
+
+    document.getElementById('itrForm').textContent = r.form;
+    document.getElementById('itrWhy').textContent = r.why;
+    document.getElementById('itrDeadline').textContent = d.date;
+    document.getElementById('itrDeadlineWhy').textContent = d.label;
+    const row = document.getElementById('itrBelatedRow');
+    if(row){
+      row.hidden = !belated;
+      document.getElementById('itrBelated').textContent = belated
+        ? 'That date has passed. A belated return under s.139(4) is open until 31 December 2026, with a s.234F fee and s.234A interest, but losses can no longer be carried forward.'
+        : '';
+    }
+
+    const list = document.getElementById('itrReasonList');
+    if(list){
+      list.innerHTML = '';
+      if(!r.blocks.length){
+        const li = document.createElement('li');
+        li.textContent = 'Nothing — no condition pushed you up from the simpler form.';
+        list.appendChild(li);
+      } else {
+        r.blocks.forEach(b=>{
+          const li = document.createElement('li');
+          li.textContent = b;
+          list.appendChild(li);
+        });
+      }
+    }
+  }
+
+  function wireSeg(id, fn){
+    const seg = document.getElementById(id);
+    if(!seg) return;
+    seg.addEventListener('click',(e)=>{
+      const btn = e.target.closest('button'); if(!btn) return;
+      fn(btn);
+      seg.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      calc();
+    });
+  }
+  wireSeg('itrStatusSeg', b => { status = b.dataset.status; });
+  wireSeg('itrBizSeg',    b => { biz = b.dataset.biz; });
+  wireSeg('itrHouseSeg',  b => { houses = b.dataset.houses; });
+  wireSeg('itrGainsSeg',  b => { gains = b.dataset.gains; });
+
+  document.getElementById('itrFiler').addEventListener('change', calc);
+  document.getElementById('itrIncome').addEventListener('input', calc);
+  ['itrDirector','itrUnlisted','itrForeign','itrAgri','itrSpecial','itrEsop','itrLosses',
+   'itr194n','itrAudited','itrOver44AD','itrOver44ADA','itrOver44AE'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.addEventListener('change', calc);
+  });
+  calc();
+})();
+
 // ---- Universal Reset + Copy Result + Deep-linkable URL state ----
 // Adds "Reset", "Copy result", and "Copy link" buttons to every calculator
 // card that has a .readout, using only the inputs/segmented-controls that

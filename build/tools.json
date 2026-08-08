@@ -221,6 +221,15 @@
       "blurb": "Which India regime wins, given your actual deductions."
     },
     {
+      "id": "itr-form-selector",
+      "file": "itr-form-selector.html",
+      "category": "finance",
+      "navLabel": "ITR FORM",
+      "title": "ITR Form Selector",
+      "icon": "icon-tax",
+      "blurb": "Which ITR form you must file for AY 2026-27, and your real deadline (India)."
+    },
+    {
       "id": "residential-status-calculator",
       "file": "residential-status-calculator.html",
       "category": "finance",
