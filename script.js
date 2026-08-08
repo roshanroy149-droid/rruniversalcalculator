@@ -3776,62 +3776,14 @@ function amortizationToCSV(years, cur){
   update();
 })();
 
-// ---- Generic: copy-result + share-link buttons on every readout ----
-(function(){
-  const readouts = document.querySelectorAll('.readout');
-  if(!readouts.length) return;
-
-  // Restore inputs from URL params on load
-  const params = new URLSearchParams(window.location.search);
-  let restored = false;
-  params.forEach((val, key)=>{
-    const el = document.getElementById(key);
-    if(el && (el.tagName==='INPUT' || el.tagName==='SELECT')){
-      el.value = val; restored = true;
-    }
-  });
-  if(restored){
-    document.querySelectorAll('input,select').forEach(el=>{
-      el.dispatchEvent(new Event('input',{bubbles:true}));
-      el.dispatchEvent(new Event('change',{bubbles:true}));
-    });
-  }
-
-  readouts.forEach(r=>{
-    const bar = document.createElement('div');
-    bar.style.cssText = 'display:flex;gap:8px;margin-top:12px;';
-    const copyBtn = document.createElement('button');
-    copyBtn.type='button'; copyBtn.className='ghost';
-    copyBtn.style.cssText='font-size:10px;padding:6px 10px;border-color:rgba(242,236,221,0.3);color:rgba(242,236,221,0.7);';
-    copyBtn.textContent='Copy result';
-    copyBtn.addEventListener('click',()=>{
-      const text = Array.from(r.querySelectorAll('.r-row')).map(row=>{
-        const l=row.querySelector('.r-label'), v=row.querySelector('.r-value');
-        return (l?l.textContent+': ':'')+(v?v.textContent:'');
-      }).filter(Boolean).join('\n') || r.textContent.trim();
-      navigator.clipboard.writeText(text).then(()=>{
-        copyBtn.textContent='Copied!'; setTimeout(()=>copyBtn.textContent='Copy result',1500);
-      });
-    });
-    const shareBtn = document.createElement('button');
-    shareBtn.type='button'; shareBtn.className='ghost';
-    shareBtn.style.cssText=copyBtn.style.cssText;
-    shareBtn.textContent='Share link';
-    shareBtn.addEventListener('click',()=>{
-      const p = new URLSearchParams();
-      document.querySelectorAll('input[id],select[id]').forEach(el=>{
-        if(el.type==='checkbox'||el.type==='range') return;
-        if(el.value!=='') p.set(el.id, el.value);
-      });
-      const url = window.location.origin + window.location.pathname + '?' + p.toString();
-      navigator.clipboard.writeText(url).then(()=>{
-        shareBtn.textContent='Link copied!'; setTimeout(()=>shareBtn.textContent='Share link',1500);
-      });
-    });
-    bar.appendChild(copyBtn); bar.appendChild(shareBtn);
-    r.appendChild(bar);
-  });
-})();
+// A "Generic: copy-result + share-link buttons on every readout" IIFE used to
+// sit here. It added a second Copy result button, plus a Share link that
+// duplicated Copy link, to every readout — so each results panel rendered
+// "Copy result | Share link | Reset | Copy result | Copy link". The Universal
+// Reset + Copy Result block further down does the same job better (it walks
+// r-label/r-value pairs rather than only .r-row, and it keeps real URL state),
+// so this one was removed and that block extended to cover the readouts only
+// this one used to reach. See the notes there.
 
 // ---- FD calculator ----
 (function(){
@@ -4174,6 +4126,38 @@ function amortizationToCSV(years, cur){
   const pageInputs = [];
   const pageSegs = [];
 
+  // Shared by the per-card rows below and by the fallback sweep after them, so
+  // every readout on the site copies its result the same way.
+  function wireCopy(readout, btn){
+    btn.addEventListener('click', () => {
+      const labels = Array.from(readout.querySelectorAll('.r-label'));
+      const lines = [];
+      labels.forEach(label => {
+        const val = label.nextElementSibling;
+        if(val && (val.classList.contains('r-value') || val.classList.contains('r-sub'))){
+          const text = val.textContent.trim();
+          if(text) lines.push(label.textContent.trim() + ': ' + text);
+        }
+      });
+      const text = lines.length ? lines.join('\n') : readout.textContent.replace(/\s+/g,' ').trim();
+      if(!text) return;
+      navigator.clipboard.writeText(text).then(() => {
+        const orig = btn.textContent;
+        btn.textContent = 'Copied!';
+        setTimeout(() => { btn.textContent = orig; }, 1500);
+      }).catch(() => {});
+    });
+  }
+  function wireLink(btn){
+    btn.addEventListener('click', () => {
+      navigator.clipboard.writeText(window.location.href).then(() => {
+        const orig = btn.textContent;
+        btn.textContent = 'Link copied!';
+        setTimeout(() => { btn.textContent = orig; }, 1500);
+      }).catch(() => {});
+    });
+  }
+
   cards.forEach(card => {
     const readout = card.querySelector('.readout');
     if(!readout) return; // output-only or input-only card with nothing to attach to
@@ -4246,8 +4230,8 @@ function amortizationToCSV(years, cur){
     readout.appendChild(row);
 
     const resetBtn = row.querySelector('.result-reset');
-    const copyBtn = row.querySelector('.result-copy');
-    const linkBtn = row.querySelector('.result-link');
+    wireCopy(readout, row.querySelector('.result-copy'));
+    wireLink(row.querySelector('.result-link'));
 
     resetBtn.addEventListener('click', () => {
       defaults.forEach(d => {
@@ -4260,32 +4244,50 @@ function amortizationToCSV(years, cur){
       if(calcBtn) calcBtn.click();
     });
 
-    copyBtn.addEventListener('click', () => {
-      const labels = Array.from(readout.querySelectorAll('.r-label'));
-      const lines = [];
-      labels.forEach(label => {
-        const val = label.nextElementSibling;
-        if(val && (val.classList.contains('r-value') || val.classList.contains('r-sub'))){
-          const text = val.textContent.trim();
-          if(text) lines.push(label.textContent.trim() + ': ' + text);
-        }
-      });
-      const text = lines.length ? lines.join('\n') : readout.textContent.replace(/\s+/g,' ').trim();
-      if(!text) return;
-      navigator.clipboard.writeText(text).then(() => {
-        const orig = copyBtn.textContent;
-        copyBtn.textContent = 'Copied!';
-        setTimeout(() => { copyBtn.textContent = orig; }, 1500);
-      }).catch(() => {});
-    });
+  });
 
-    linkBtn.addEventListener('click', () => {
-      navigator.clipboard.writeText(window.location.href).then(() => {
-        const orig = linkBtn.textContent;
-        linkBtn.textContent = 'Link copied!';
-        setTimeout(() => { linkBtn.textContent = orig; }, 1500);
-      }).catch(() => {});
-    });
+  // Fallback: any readout the card loop above did not reach still needs a copy
+  // control, because the removed generic block was the only thing giving those
+  // ones a button. Two kinds are affected — the compare-scenario panels on
+  // loan-calculator and mortgage-calculator plus tax-calculator's second card,
+  // which sit outside .tool .card entirely; and pages whose only input is a
+  // <textarea> (word-counter, gpa-calculator, the statistics group), which the
+  // loop skips because it counts input/select. No Reset here: there is nothing
+  // registered to reset back to.
+  document.querySelectorAll('.readout').forEach(readout => {
+    if(readout.querySelector('.result-actions')) return;
+    const row = document.createElement('div');
+    row.className = 'result-actions';
+    row.style.cssText = 'display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;';
+    row.innerHTML =
+      '<button type="button" class="ghost result-copy" style="font-size:12px;padding:8px 14px;">Copy result</button>'+
+      '<button type="button" class="ghost result-link" style="font-size:12px;padding:8px 14px;">Copy link</button>';
+    readout.appendChild(row);
+    wireCopy(readout, row.querySelector('.result-copy'));
+    wireLink(row.querySelector('.result-link'));
+  });
+
+  // The removed block restored any id'd input from the query string, which was
+  // the only thing pre-filling inputs outside .tool .card (the compare panels
+  // again). Register those here so a shared link still round-trips, rather than
+  // silently dropping them. Header/footer and the search box are excluded so
+  // site chrome never lands in the URL; textareas stay out deliberately, since
+  // a word-counter essay in a query string is not a shareable link.
+  document.querySelectorAll('input[id], select[id]').forEach(el => {
+    if(pageInputs.some(p => p.el === el)) return;
+    if(el.closest('header, footer, .tb-search')) return;
+    if(el.type === 'range') return;
+    let kind = 'value', defaultValue;
+    if(el.tagName === 'SELECT'){
+      const opts = Array.from(el.options);
+      const defOpt = opts.find(o => o.defaultSelected) || opts[0];
+      defaultValue = defOpt ? defOpt.value : '';
+    } else if(el.type === 'checkbox' || el.type === 'radio'){
+      kind = 'checkbox'; defaultValue = el.defaultChecked;
+    } else {
+      defaultValue = el.defaultValue;
+    }
+    pageInputs.push({el, id: el.id, kind, defaultValue});
   });
 
   // Top-level tab groups (discount, investment) sit outside .card, as
