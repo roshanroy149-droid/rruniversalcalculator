@@ -221,6 +221,15 @@
       "blurb": "Which India regime wins, given your actual deductions."
     },
     {
+      "id": "residential-status-calculator",
+      "file": "residential-status-calculator.html",
+      "category": "finance",
+      "navLabel": "RESIDENTIAL STATUS",
+      "title": "Residential Status Calculator",
+      "icon": "icon-tax",
+      "blurb": "Resident, RNOR or non-resident under the Income-tax Act 2025 (India)."
+    },
+    {
       "id": "hra-calculator",
       "file": "hra-calculator.html",
       "category": "finance",

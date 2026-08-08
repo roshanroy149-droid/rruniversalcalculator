@@ -3963,6 +3963,198 @@ function amortizationToCSV(years, cur){
   calc();
 })();
 
+// ---- Residential status (India, Income-tax Act 2025 s.6) ----
+// Substance carries over unchanged from s.6 of the 1961 Act; only the
+// numbering and the "tax year" wording changed. Tests, in order:
+//   6(2)(a) 182+ days this tax year
+//   6(2)(b) 60+ days this year AND 365+ across the four preceding years
+//   6(3)    Indian citizen leaving for employment abroad / crew of an Indian
+//           ship: read that 60 as 182
+//   6(4)    Indian citizen or PIO visiting India: read that 60 as 182
+//   6(5)    ...unless their non-foreign-source income tops Rs 15 lakh, when it
+//           is 120 instead
+//   6(7)    Indian citizen over Rs 15 lakh who is liable to tax nowhere else is
+//           deemed resident whatever the day count
+//   6(13)   a resident is "not ordinarily resident" if non-resident in 9 of the
+//           last 10 tax years, or in India 729 days or fewer over the last 7,
+//           or resident only via the 120-day route, or deemed resident
+(function(){
+  if(!document.getElementById('resDays')) return;
+  const THRESHOLD = 1500000;
+  let who = 'citizen', why = 'resident', taxedAbroad = true;
+
+  function determine(o, noMargin){
+    const days = o.days, days4 = o.days4, days7 = o.days7, nrOf10 = o.nrOf10;
+    const highIncome = o.income > THRESHOLD;
+    const isCitizen = o.who === 'citizen', isPio = o.who === 'pio';
+
+    let limitB = 60, limitRef = 's.6(2)(b)';
+    if(isCitizen && o.why === 'employment'){ limitB = 182; limitRef = 's.6(3)'; }
+    else if((isCitizen || isPio) && o.why === 'visiting'){
+      if(highIncome){ limitB = 120; limitRef = 's.6(5)'; }
+      else { limitB = 182; limitRef = 's.6(4)'; }
+    }
+
+    const condA = days >= 182;
+    const condB = days >= limitB && days4 >= 365;
+    const via120 = !condA && condB && limitB === 120;
+
+    let resident = condA || condB, deemed = false;
+    if(!resident && isCitizen && highIncome && !o.taxedAbroad){ resident = true; deemed = true; }
+
+    const tests = [
+      {label:'182 days or more in India this tax year', ref:'s.6(2)(a)',
+       got:days+' days', pass:condA},
+      {label:limitB+' days this year, and 365 or more across the last four', ref:limitRef,
+       got:days+' days / '+days4+' days', pass:condB},
+      {label:'Indian citizen over ₹15 lakh and taxed in no other country', ref:'s.6(7)',
+       got:deemed?'applies':'does not apply', pass:deemed}
+    ];
+
+    if(!resident){
+      return {status:'NR', title:'Non-Resident',
+        rule:'Neither day-count test in s.6(2) is met'+(limitB!==60?', on the '+limitB+'-day threshold':''),
+        scope:'Only income received, accruing or arising in India. Foreign income is outside the net.',
+        tests:tests, deemed:false, via120:via120,
+        margin: noMargin ? '' : margin(o, days, false)};
+    }
+
+    const nrTest = nrOf10 >= 9, dayTest = days7 <= 729;
+    const rnor = nrTest || dayTest || via120 || deemed;
+
+    tests.push({label:'Non-resident in 9 or more of the last 10 tax years', ref:'s.6(13)',
+      got:nrOf10+' of 10', pass:nrTest});
+    tests.push({label:'729 days or fewer in India across the last 7 tax years', ref:'s.6(13)',
+      got:days7+' days', pass:dayTest});
+    if(via120) tests.push({label:'Resident only via the 120-day visiting route', ref:'s.6(13)',
+      got:'applies', pass:true});
+    if(deemed) tests.push({label:'A deemed resident is always not ordinarily resident', ref:'s.6(13)',
+      got:'applies', pass:true});
+
+    let rule;
+    if(deemed) rule = 'Deemed resident under s.6(7)';
+    else if(via120) rule = 'The 120-day visiting route, s.6(5)';
+    else if(condA) rule = '182 days or more in India, s.6(2)(a)';
+    else rule = limitB+' days here plus 365 over four years, '+limitRef;
+    if(rnor && !deemed && !via120){
+      rule += nrTest && dayTest ? '; RNOR on both s.6(13) tests'
+            : nrTest ? '; RNOR (9 of 10 years non-resident)'
+            : '; RNOR (729 days or fewer in seven years)';
+    }
+
+    return {status:rnor?'RNOR':'ROR',
+      title:rnor?'Resident but Not Ordinarily Resident':'Resident and Ordinarily Resident',
+      rule:rule,
+      scope: rnor
+        ? 'Indian income, plus foreign income only from a business controlled in, or profession set up in, India.'
+        : 'Your worldwide income, wherever it arises.',
+      tests:tests, deemed:deemed, via120:via120,
+      margin: noMargin ? '' : margin(o, days, true)};
+  }
+
+  // How far the day count sits from flipping the answer. Re-runs the whole test
+  // at each day count rather than doing arithmetic on whichever threshold looks
+  // binding: the thresholds interact, so a visiting NRI who drops below 120 days
+  // can still land on s.6(7) and stay resident. Reasoning from one threshold
+  // produced a sentence that was simply untrue in that case.
+  function margin(o, days, isResident){
+    const at = d => determine(Object.assign({}, o, {days:d}), true).status;
+    if(isResident){
+      for(let d = days - 1; d >= 0; d--){
+        if(at(d) === 'NR'){
+          const n = days - d;
+          return n+' fewer day'+(n===1?'':'s')+' in India and you would have been non-resident.';
+        }
+      }
+      return 'Not your day count — you stay resident even at zero days in India.';
+    }
+    for(let d = days + 1; d <= 366; d++){
+      if(at(d) !== 'NR'){
+        const n = d - days;
+        return n+' more day'+(n===1?'':'s')+' in India would make you resident.';
+      }
+    }
+    return 'No day count this year would make you resident on these figures.';
+  }
+
+  function setWarning(msg){
+    const el = document.getElementById('resWarning');
+    if(!el) return;
+    if(msg){ el.textContent = msg; el.classList.add('show'); }
+    else { el.textContent = ''; el.classList.remove('show'); }
+  }
+
+  function num(id, max){
+    const v = Math.floor(parseFloat(document.getElementById(id).value)||0);
+    return Math.max(0, max === undefined ? v : Math.min(v, max));
+  }
+
+  function calc(){
+    const o = {
+      who: who, why: why, taxedAbroad: taxedAbroad,
+      days: num('resDays', 366), days4: num('resDays4', 1461),
+      days7: num('resDays7', 2557), nrOf10: num('resNr10', 10),
+      income: num('resIncome')
+    };
+
+    // The seven-year window contains the four-year one, so days4 above days7 is
+    // arithmetically impossible and would otherwise produce a confident wrong answer.
+    if(o.days7 < o.days4){
+      setWarning('Days across seven years cannot be fewer than days across four — the four-year window sits inside the seven-year one.');
+    } else if(who === 'foreign' && why === 'employment'){
+      setWarning('The substituted 182-day threshold in s.6(3) is for Indian citizens leaving India for employment. A foreign national keeps the 60-day threshold, which is what has been applied.');
+    } else if(who === 'foreign' && why === 'visiting'){
+      setWarning('The visiting relaxation in s.6(4) covers Indian citizens and persons of Indian origin. A foreign national keeps the 60-day threshold, which is what has been applied.');
+    } else if(o.days > 365){
+      setWarning('A tax year runs 1 April to 31 March, so the count cannot exceed 365 days (366 in a leap year).');
+    } else {
+      setWarning(null);
+    }
+
+    const r = determine(o, false);
+    document.getElementById('resStatus').textContent = r.status;
+    document.getElementById('resStatusFull').textContent = r.title;
+    document.getElementById('resRule').textContent = r.rule;
+    document.getElementById('resScope').textContent = r.scope;
+    document.getElementById('resMargin').textContent = r.margin || '—';
+
+    const body = document.getElementById('resTraceBody');
+    if(body){
+      body.innerHTML = '';
+      r.tests.forEach(t=>{
+        const tr = document.createElement('tr');
+        [t.label, t.ref, t.got, t.pass ? 'Met' : 'Not met'].forEach((cell,i)=>{
+          const td = document.createElement('td');
+          td.textContent = cell;
+          if(i === 3) td.style.color = t.pass ? 'var(--teal-dark)' : 'var(--ink-muted)';
+          tr.appendChild(td);
+        });
+        body.appendChild(tr);
+      });
+    }
+  }
+
+  function wireSeg(id, fn){
+    const seg = document.getElementById(id);
+    if(!seg) return;
+    seg.addEventListener('click',(e)=>{
+      const btn = e.target.closest('button'); if(!btn) return;
+      fn(btn);
+      seg.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      calc();
+    });
+  }
+  wireSeg('resWhoSeg', b => { who = b.dataset.who; });
+  wireSeg('resWhySeg', b => { why = b.dataset.why; });
+  wireSeg('resTaxedSeg', b => { taxedAbroad = b.dataset.taxed === 'yes'; });
+
+  ['resDays','resDays4','resDays7','resNr10','resIncome'].forEach(id=>{
+    document.getElementById(id).addEventListener('input',calc);
+  });
+  calc();
+})();
+
 // ---- Universal Reset + Copy Result + Deep-linkable URL state ----
 // Adds "Reset", "Copy result", and "Copy link" buttons to every calculator
 // card that has a .readout, using only the inputs/segmented-controls that
