@@ -1,6 +1,39 @@
 {
   "articles": [
     {
+      "id": "freelancer-gst-export-services",
+      "file": "freelancer-gst-export-of-services-india.html",
+      "category": "finance",
+      "topic": "tax",
+      "tag": "FREELANCE TAX · INDIA",
+      "title": "Do Freelancers Exporting Services Need GST Registration?",
+      "dek": "You will be told that invoicing a foreign client compels registration from the first rupee. Notification 10/2017 says otherwise for services under ₹20 lakh.",
+      "date": "2026-08-09",
+      "readTime": "8 min read"
+    },
+    {
+      "id": "direct-vs-regular-plan-india",
+      "file": "direct-vs-regular-mutual-fund-plans-india.html",
+      "category": "finance",
+      "topic": "retirement",
+      "tag": "INVESTING · INDIA",
+      "title": "Direct vs Regular Mutual Fund Plans: What the Gap Actually Costs",
+      "dek": "Same fund, same manager, same portfolio — one costs about 1.2 points a year more. Over 25 years at ₹10,000 a month that gap came to ₹32.80 lakh, more than the total invested.",
+      "date": "2026-08-09",
+      "readTime": "8 min read"
+    },
+    {
+      "id": "marginal-relief-12-lakh-2026",
+      "file": "marginal-relief-12-lakh-2026.html",
+      "category": "finance",
+      "topic": "tax",
+      "tag": "TAX · INDIA",
+      "title": "Marginal Relief Above ₹12 Lakh: The Band Where a Raise Earns You Nothing",
+      "dek": "Cross ₹12,00,000 of taxable income by ₹10,000 and you owe ₹10,400, not ₹63,960. Marginal relief removes the cliff — but leaves a ₹71,000 band taxed at 104%.",
+      "date": "2026-08-09",
+      "readTime": "7 min read"
+    },
+    {
       "id": "spouse-income-idr",
       "file": "spouse-income-idr-married-filing-separately.html",
       "category": "finance",
@@ -351,6 +384,17 @@
       "date": "2026-07-29",
       "readTime": "8 min read",
       "topic": "studentloans"
+    },
+    {
+      "id": "advance-tax-september-2026",
+      "file": "advance-tax-15-september-2026.html",
+      "category": "finance",
+      "tag": "INDIA TAX",
+      "title": "The Advance Tax Cliff: Why ₹100 Short on 15 September Costs ₹1,083",
+      "dek": "At 1% a month, deferring advance tax costs a reasonable 12% a year. But s.234C attaches a 36% trigger to the September instalment, and missing it by ₹100 costs ₹1,083 on a ₹4 lakh liability.",
+      "date": "2026-08-09",
+      "readTime": "8 min read",
+      "topic": "tax"
     },
     {
       "id": "itr-deadlines-split-2026",

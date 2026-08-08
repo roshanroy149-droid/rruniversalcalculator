@@ -153,7 +153,6 @@
 <url><loc>https://tallybench.com/japan-china-diverging-interest-rates-2026.html</loc><lastmod>2026-07-27</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
 <url><loc>https://tallybench.com/brazil-selic-rate-inflation-2026.html</loc><lastmod>2026-07-27</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
 <url><loc>https://tallybench.com/us-aca-medicare-changes-2026.html</loc><lastmod>2026-08-03</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-<url><loc>https://tallybench.com/brazil-selic-rate-inflation-2026.html</loc><lastmod>2026-08-03</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
 <url><loc>https://tallybench.com/aca-premiums-2027-rate-filings.html</loc><lastmod>2026-08-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
 <url><loc>https://tallybench.com/uk-nhs-modernisation-bill-2026.html</loc><lastmod>2026-07-27</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
 <url><loc>https://tallybench.com/india-ayushman-bharat-pmjay-2026.html</loc><lastmod>2026-07-27</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
@@ -167,11 +166,6 @@
 <url><loc>https://tallybench.com/uk-stock-market-trends-2026.html</loc><lastmod>2026-07-27</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
 <url><loc>https://tallybench.com/protein-calculator.html</loc><lastmod>2026-08-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
 <url><loc>https://tallybench.com/tdee-calculator.html</loc><lastmod>2026-08-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-
-
-
-
-
 <url><loc>https://tallybench.com/how-credit-card-interest-is-calculated.html</loc><lastmod>2026-07-29</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
 <url><loc>https://tallybench.com/fed-holds-rates-july-2026.html</loc><lastmod>2026-07-29</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
 <url><loc>https://tallybench.com/irs-2026-retirement-limits-tax-brackets.html</loc><lastmod>2026-08-03</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
@@ -181,11 +175,11 @@
 <url><loc>https://tallybench.com/ctc-vs-in-hand-salary-india-2026.html</loc><lastmod>2026-08-04</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
 <url><loc>https://tallybench.com/terms.html</loc><lastmod>2026-08-01</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>
 <url><loc>https://tallybench.com/rap-vs-ibr-crossover-study.html</loc><lastmod>2026-07-29</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-<url><loc>https://tallybench.com/terms.html</loc><lastmod>2026-08-04</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>
 <url><loc>https://tallybench.com/old-vs-new-regime-crossover-2026.html</loc><lastmod>2026-07-29</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
 <url><loc>https://tallybench.com/basic-calculator.html</loc><lastmod>2026-08-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
 <url><loc>https://tallybench.com/cross-country-salary-calculator.html</loc><lastmod>2026-08-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
 <url><loc>https://tallybench.com/india-tax-regime-calculator.html</loc><lastmod>2026-08-04</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+<url><loc>https://tallybench.com/advance-tax-15-september-2026.html</loc><lastmod>2026-08-09</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
 <url><loc>https://tallybench.com/advance-tax-calculator.html</loc><lastmod>2026-08-09</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
 <url><loc>https://tallybench.com/itr-form-selector.html</loc><lastmod>2026-08-09</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
 <url><loc>https://tallybench.com/residential-status-calculator.html</loc><lastmod>2026-08-08</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
@@ -209,317 +203,320 @@
 <url><loc>https://tallybench.com/number-sequence-calculator.html</loc><lastmod>2026-08-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
 <url><loc>https://tallybench.com/probability-calculator.html</loc><lastmod>2026-07-29</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
 <url><loc>https://tallybench.com/matrix-calculator.html</loc><lastmod>2026-07-29</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url>
+<url>
     <loc>https://tallybench.com/ohms-law-calculator.html</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://tallybench.com/resistor-color-code-calculator.html</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://tallybench.com/voltage-drop-calculator.html</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://tallybench.com/electricity-cost-calculator.html</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://tallybench.com/ip-subnet-calculator.html</loc>
     <lastmod>2026-08-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://tallybench.com/bandwidth-calculator.html</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://tallybench.com/base64-converter.html</loc>
     <lastmod>2026-08-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://tallybench.com/url-encoder.html</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://tallybench.com/roman-numeral-converter.html</loc>
     <lastmod>2026-08-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://tallybench.com/molecular-weight-calculator.html</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://tallybench.com/molarity-calculator.html</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://tallybench.com/density-calculator.html</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://tallybench.com/speed-calculator.html</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://tallybench.com/weight-on-planets-calculator.html</loc>
     <lastmod>2026-08-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://tallybench.com/child-height-calculator.html</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://tallybench.com/gfr-calculator.html</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://tallybench.com/body-surface-area-calculator.html</loc>
     <lastmod>2026-08-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://tallybench.com/bac-calculator.html</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://tallybench.com/fat-intake-calculator.html</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://tallybench.com/period-calculator.html</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://tallybench.com/concrete-calculator.html</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://tallybench.com/square-footage-calculator.html</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://tallybench.com/btu-calculator.html</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://tallybench.com/stair-calculator.html</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://tallybench.com/roofing-calculator.html</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://tallybench.com/tile-calculator.html</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://tallybench.com/mulch-calculator.html</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://tallybench.com/gravel-calculator.html</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://tallybench.com/wind-chill-calculator.html</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://tallybench.com/heat-index-calculator.html</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://tallybench.com/dew-point-calculator.html</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://tallybench.com/gas-mileage-calculator.html</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://tallybench.com/horsepower-calculator.html</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://tallybench.com/tire-size-calculator.html</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://tallybench.com/time-card-calculator.html</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://tallybench.com/time-zone-calculator.html</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://tallybench.com/paint-calculator.html</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://tallybench.com/cooking-measurement-converter.html</loc>
     <lastmod>2026-08-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://tallybench.com/aspect-ratio-calculator.html</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://tallybench.com/color-converter.html</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://tallybench.com/itr-deadlines-split-2026.html</loc>
     <lastmod>2026-08-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://tallybench.com/rbi-mpc-august-2026-preview.html</loc>
     <lastmod>2026-08-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://tallybench.com/idr-transition-deadlines-2027-2028.html</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://tallybench.com/fed-holds-july-2026-three-dissents.html</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://tallybench.com/prepay-loan-or-invest.html</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://tallybench.com/how-much-you-need-to-retire.html</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://tallybench.com/sip-vs-lump-sum.html</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://tallybench.com/what-moves-your-credit-score.html</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://tallybench.com/va-funding-fee-calculator.html</loc>
     <lastmod>2026-08-01</lastmod>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://tallybench.com/embed.html</loc>
     <lastmod>2026-08-01</lastmod>
     <priority>0.6</priority>
   </url>
-  <url>
+<url>
     <loc>https://tallybench.com/expense-ratio-calculator.html</loc>
     <lastmod>2026-08-01</lastmod>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://tallybench.com/dividend-calculator.html</loc>
     <lastmod>2026-08-01</lastmod>
     <priority>0.8</priority>
   </url>
-  <url>
+<url>
     <loc>https://tallybench.com/spouse-income-idr-married-filing-separately.html</loc>
     <lastmod>2026-08-01</lastmod>
     <priority>0.7</priority>
   </url>
+<url><loc>https://tallybench.com/marginal-relief-12-lakh-2026.html</loc><lastmod>2026-08-09</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+<url><loc>https://tallybench.com/direct-vs-regular-mutual-fund-plans-india.html</loc><lastmod>2026-08-09</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+<url><loc>https://tallybench.com/freelancer-gst-export-of-services-india.html</loc><lastmod>2026-08-09</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
 </urlset>
