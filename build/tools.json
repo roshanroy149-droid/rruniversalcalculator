@@ -221,6 +221,15 @@
       "blurb": "Which India regime wins, given your actual deductions."
     },
     {
+      "id": "advance-tax-calculator",
+      "file": "advance-tax-calculator.html",
+      "category": "finance",
+      "navLabel": "ADVANCE TAX",
+      "title": "Advance Tax Calculator",
+      "icon": "icon-tax",
+      "blurb": "Instalment schedule with s.234B and s.234C interest (India)."
+    },
+    {
       "id": "itr-form-selector",
       "file": "itr-form-selector.html",
       "category": "finance",

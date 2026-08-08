@@ -4290,6 +4290,148 @@ function amortizationToCSV(years, cur){
   calc();
 })();
 
+// ---- Advance tax schedule + s.234B / s.234C interest (India, FY 2026-27) ----
+// The part most calculators get wrong sits in s.234C(1): the 12% and 36%
+// figures on the first two instalments are TRIGGERS, not the base. Clear them
+// and no interest arises; fall below and interest runs on the shortfall from
+// FIFTEEN and FORTY-FIVE per cent. Using the trigger as the base understates it.
+// Rule 119A also applies — the amount interest is computed on is rounded DOWN
+// to the nearest Rs 100, so a shortfall under Rs 100 costs nothing.
+(function(){
+  if(!document.getElementById('atTax')) return;
+  const THRESHOLD = 10000;   // s.208
+  const RATE = 0.01;         // 1% a month, simple
+  const SCHEDULE = [
+    {date:'15 June 2026',      req:0.15, trigger:0.12, months:3},
+    {date:'15 September 2026', req:0.45, trigger:0.36, months:3},
+    {date:'15 December 2026',  req:0.75, trigger:0.75, months:3},
+    {date:'15 March 2027',     req:1.00, trigger:1.00, months:1}
+  ];
+  const r119a = n => Math.max(0, Math.floor(n/100)*100);
+  const num = id => Math.max(0, parseFloat(document.getElementById(id).value)||0);
+  const chk = id => !!(document.getElementById(id)||{}).checked;
+  const rs = n => '₹' + Math.round(n).toLocaleString('en-IN');
+
+  function setWarning(msg){
+    const el = document.getElementById('atWarning');
+    if(!el) return;
+    if(msg){ el.textContent = msg; el.classList.add('show'); }
+    else { el.textContent = ''; el.classList.remove('show'); }
+  }
+
+  function calc(){
+    const totalTax = num('atTax'), tds = num('atTds');
+    const paid = [num('atP1'), num('atP2'), num('atP3'), num('atP4')];
+    const months = Math.max(0, Math.floor(num('atMonths')));
+    const senior = chk('atSenior'), presumptive = chk('atPresumptive'), excluded = chk('atExcluded');
+
+    const liability = Math.max(0, totalTax - tds);
+    const totalPaid = paid.reduce((a,b)=>a+b, 0);
+    const rows = [];
+    let i234C = 0, exempt = false, note = '';
+
+    if(senior){
+      exempt = true;
+      note = 'A resident aged 60 or above with no business or professional income is outside advance tax under s.207, so no 234B or 234C interest can arise.';
+    } else if(liability < THRESHOLD){
+      exempt = true;
+      note = 'Advance tax is payable only where the liability after TDS is ₹10,000 or more (s.208). Below that nothing is due and no interest arises.';
+    } else if(presumptive){
+      const shortfall = Math.max(0, liability - totalPaid);
+      const base = excluded ? 0 : r119a(shortfall);
+      const int = base * RATE * 1;
+      i234C = int;
+      rows.push({date:'15 March 2027', required:liability, cumPaid:totalPaid,
+        shortfall:shortfall, months:1, interest:int, waived:shortfall<=0,
+        note:'Presumptive filers under s.44AD or s.44ADA may pay in one instalment by 15 March.'});
+    } else {
+      let cum = 0;
+      SCHEDULE.forEach((s, idx)=>{
+        cum += paid[idx];
+        const required = liability * s.req;
+        const met = cum >= liability * s.trigger - 0.005;
+        const shortfall = Math.max(0, required - cum);
+        const base = (met || excluded) ? 0 : r119a(shortfall);
+        const int = base * RATE * s.months;
+        i234C += int;
+        rows.push({date:s.date, required:required, cumPaid:cum, shortfall:shortfall,
+          months:s.months, interest:int, waived:met,
+          note: met && shortfall > 0
+            ? 'At or above the ' + Math.round(s.trigger*100) + '% trigger'
+            : ''});
+      });
+    }
+
+    const ninety = liability * 0.90;
+    const b234bApplies = !exempt && totalPaid < ninety - 0.005;
+    const b234bBase = b234bApplies ? r119a(liability - totalPaid) : 0;
+    const i234B = b234bBase * RATE * months;
+    const total = Math.round(i234C) + Math.round(i234B);
+
+    if(totalTax > 0 && tds > totalTax){
+      setWarning('TDS is larger than the total tax, so there is nothing left to pay in advance — you are likely due a refund rather than owing advance tax.');
+    } else if(!exempt && senior === false && presumptive && (paid[0] || paid[1] || paid[2])){
+      setWarning('Under the presumptive schemes only the position at 15 March matters, so earlier payments have been added to the total but no quarterly interest is charged on them.');
+    } else if(excluded && !exempt){
+      setWarning('The s.234C proviso has been applied: shortfall traced to capital gains, lottery winnings, dividend, or first-time business income carries no 234C — provided the tax is paid in the next instalment or by 31 March. Section 234B still applies to the total.');
+    } else {
+      setWarning(null);
+    }
+
+    document.getElementById('atTotal').textContent = rs(total);
+    document.getElementById('atTotalSub').textContent = exempt
+      ? 'No advance tax obligation this year'
+      : 's.234C ' + rs(i234C) + ' + s.234B ' + rs(i234B);
+    document.getElementById('atLiability').textContent = rs(liability);
+    document.getElementById('atPaid').textContent = rs(totalPaid);
+    document.getElementById('atBalance').textContent = rs(Math.max(0, liability - totalPaid));
+    document.getElementById('at234c').textContent = rs(i234C);
+    document.getElementById('at234b').textContent = b234bApplies
+      ? rs(i234B) + '  (' + months + ' mo)'
+      : rs(0) + '  (90% met)';
+    const nr = document.getElementById('atNoteRow');
+    if(nr){
+      nr.hidden = !note;
+      document.getElementById('atNote').textContent = note;
+    }
+
+    const body = document.getElementById('atScheduleBody');
+    if(body){
+      body.innerHTML = '';
+      if(!rows.length){
+        const tr = document.createElement('tr');
+        const td = document.createElement('td');
+        td.colSpan = 6;
+        td.textContent = 'No advance tax is payable, so there is no schedule.';
+        tr.appendChild(td); body.appendChild(tr);
+        return;
+      }
+      rows.forEach(r=>{
+        const tr = document.createElement('tr');
+        [r.date, rs(r.required), rs(r.cumPaid),
+         r.shortfall > 0 ? rs(r.shortfall) : '—',
+         String(r.months), r.interest > 0 ? rs(r.interest) : (r.note || '—')
+        ].forEach((cell,idx)=>{
+          const td = document.createElement('td');
+          td.textContent = cell;
+          if(idx === 5) td.style.color = r.interest > 0 ? 'var(--orange-dark)' : 'var(--teal-dark)';
+          tr.appendChild(td);
+        });
+        body.appendChild(tr);
+      });
+    }
+  }
+
+  ['atTax','atTds','atP1','atP2','atP3','atP4','atMonths'].forEach(id=>{
+    document.getElementById(id).addEventListener('input', calc);
+  });
+  ['atSenior','atPresumptive','atExcluded'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.addEventListener('change', calc);
+  });
+  calc();
+})();
+
 // ---- Universal Reset + Copy Result + Deep-linkable URL state ----
 // Adds "Reset", "Copy result", and "Copy link" buttons to every calculator
 // card that has a .readout, using only the inputs/segmented-controls that
@@ -11022,6 +11164,12 @@ document.querySelectorAll('.tb-search').forEach(tbWireSearch);
     var rg = isNew ? taxIndiaRegimes['new'] : taxIndiaRegimes.old;
     if (taxable <= rg.rebateThreshold) return { total: 0 };   // Section 87A
     var base = slabTax(taxable, isNew);
+    // Section 87A marginal relief, new regime only: income tax cannot exceed the
+    // amount by which taxable income exceeds the rebate threshold. Without this,
+    // taxable income of ₹12,10,000 shows ₹63,960 instead of ₹10,400. Cess is
+    // still charged on top, so the effective marginal rate in this band is 104%.
+    // The old regime's ₹12,500 rebate carries no equivalent relief provision.
+    if (isNew) base = Math.min(base, taxable - rg.rebateThreshold);
     var sur = surcharge(taxable, base, isNew);
     return { total: (base + sur) * 1.04 };                    // + 4% cess
   }
