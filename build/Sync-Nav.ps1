@@ -432,13 +432,29 @@ function New-FeaturedBlock($indent) {
     foreach ($art in $featured) {
         $cssClass = $catCssClass[$art.category]
         $lines.Add("$inner<a class=`"article-card $cssClass`" href=`"$($art.file)`">")
-        $lines.Add("$inner  <span class=`"article-card-tag`">$($art.tag)</span>")
-        $lines.Add("$inner  <h3>$($art.title)</h3>")
-        $lines.Add("$inner  <p>$($art.dek)</p>")
+        $lines.Add((New-ArticleThumb "$inner  " $art))
+        $lines.Add("$inner  <div class=`"article-card-body`">")
+        $lines.Add("$inner    <span class=`"article-card-tag`">$($art.tag)</span>")
+        $lines.Add("$inner    <h3>$($art.title)</h3>")
+        $lines.Add("$inner    <p>$($art.dek)</p>")
+        $lines.Add("$inner  </div>")
         $lines.Add("$inner</a>")
     }
     $lines.Add("$indent</div>")
     return ($lines -join $nl)
+}
+
+# The thumbnail an article card shows, from social/thumb/ (800x420, written by
+# build/gen-cards.js). alt is deliberately empty: the card's own <h3> is the
+# accessible name of the same link, so describing the picture as well makes a
+# screen reader announce the article twice. The illustration carries no
+# information that the heading does not.
+# width/height are the intrinsic pixel dimensions so the browser reserves the
+# right box before the image arrives — without them a lazy-loaded strip reflows
+# as it scrolls.
+function New-ArticleThumb($indent, $art) {
+    $img = 'social/thumb/' + ($art.file -replace '\.html$', '.jpg')
+    return "$indent<img class=`"article-card-img`" src=`"$img`" alt=`"`" width=`"800`" height=`"420`" loading=`"lazy`" decoding=`"async`">"
 }
 
 function New-ArticleCard($indent, $art) {
@@ -447,10 +463,13 @@ function New-ArticleCard($indent, $art) {
     $niceDate = ([datetime]$art.date).ToString('MMMM d, yyyy')
     $card = New-Object System.Collections.Generic.List[string]
     $card.Add("$indent<a class=`"article-card $cssClass`" href=`"$($art.file)`">")
-    $card.Add("$inner<span class=`"article-card-tag`">$($art.tag)</span>")
-    $card.Add("$inner<h3>$($art.title)</h3>")
-    $card.Add("$inner<p>$($art.dek)</p>")
-    $card.Add("$inner<div class=`"article-card-meta`"><span>$niceDate</span><span>&middot;</span><span>$($art.readTime)</span></div>")
+    $card.Add((New-ArticleThumb $inner $art))
+    $card.Add("$inner<div class=`"article-card-body`">")
+    $card.Add("$inner  <span class=`"article-card-tag`">$($art.tag)</span>")
+    $card.Add("$inner  <h3>$($art.title)</h3>")
+    $card.Add("$inner  <p>$($art.dek)</p>")
+    $card.Add("$inner  <div class=`"article-card-meta`"><span>$niceDate</span><span>&middot;</span><span>$($art.readTime)</span></div>")
+    $card.Add("$inner</div>")
     $card.Add("$indent</a>")
     return ($card -join $nl)
 }

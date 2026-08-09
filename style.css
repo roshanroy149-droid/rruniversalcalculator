@@ -505,16 +505,73 @@ body.nav-open .nav-backdrop{display:block;}
    cat-finance/health/education/utility classes the homepage tool grid
    already uses, so an article and a calculator in the same category read
    as the same family. */
-.article-list{display:flex;flex-direction:column;gap:14px;margin:24px 0 48px;}
+/* Stays a flex column. It is NOT the cards' container — it holds the
+   hand-written .topic-nav plus eight .topic-block sections, and the cards sit
+   inside those. Making this a grid with grid-auto-rows:1fr stretched all nine
+   children to a common 2128px, which turned the jump-link pills into
+   full-height arches. Card heights are equalised on the card itself instead. */
+.article-list{display:flex;flex-direction:column;gap:var(--s2);margin:var(--s3) 0 var(--s6);}
 .article-card{
   display:block;text-decoration:none;
   background:rgba(var(--cream),0.04);
   border:1px solid var(--rule);
   border-radius:var(--radius);
-  padding:22px 24px;
+  /* Padding moved to .article-card-body: the thumbnail sits flush against the
+     card's own edges, so the card itself can carry none. overflow:hidden is what
+     makes the image respect the border-radius. */
+  padding:0;overflow:hidden;
   transition:border-color .15s, background .15s, transform .15s;
 }
 .article-card:hover{background:rgba(var(--cream),0.07);transform:translateY(-2px);}
+.article-card-body{padding:var(--s3);}
+/* The illustration generated for each article by build/gen-cards.js — the same
+   image Discover and the social platforms use as the preview, at 800x420 from
+   social/thumb/. Shown here so the work is visible to someone actually reading
+   the site, not only to a crawler reading og:image. */
+.article-card-img{
+  display:block;width:100%;height:100%;object-fit:cover;
+  background:rgba(var(--cream),0.05);
+}
+/* List cards run horizontal: fixed image column so every card's text starts on
+   the same vertical line, image stretched to the card's full height so the two
+   columns share a top AND a bottom edge.
+   The column width is not arbitrary. object-fit:cover crops whichever axis does
+   not fit, so at 264px against a ~222px card the box was 1.44:1 against a 1.90:1
+   image and Chrome cropped 24% off each SIDE — removing the label on the left
+   and half the drawing on the right. 444px is the width at which the box ratio
+   matches the card's (a 233px content height x 1200/630), so nothing is cropped
+   at all. It is checked by measurement, not by eye: verify-cards.js asserts the
+   rendered ratio is within 2% of 1200/630. If the text block's height changes,
+   that assertion fails and this number has to move with it. */
+.article-list .article-card{
+  display:grid;grid-template-columns:444px minmax(0,1fr);align-items:stretch;
+}
+/* Fixed line budget rather than a fixed pixel height: two lines of title and
+   three of dek give every card an identical body height without a magic number,
+   and both are comfortably above the longest actual title (75 chars) and dek
+   (224 chars) at this column width, so nothing is truncated in practice — the
+   clamp is a guard, not an active crop. */
+.article-list .article-card h3{
+  line-height:1.25;height:2.5em;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+.article-list .article-card p{
+  line-height:1.55;height:4.65em;margin-bottom:var(--s2);
+  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;
+}
+/* Below 900px a 424px image column leaves too little for the text, so the card
+   stacks: image full width above, at its own 16:9 ratio rather than the card's
+   height, since there is no second column left to match.
+   The line clamps are released here too — on a narrow single column a fixed
+   two-line title would truncate real headlines, and full titles matter more on
+   an index page than equal heights do in a stack nothing sits beside. */
+@media(max-width:900px){
+  .article-list .article-card{grid-template-columns:1fr;}
+  .article-list .article-card-img{aspect-ratio:1200/630;height:auto;}
+  .article-list .article-card h3{height:auto;-webkit-line-clamp:none;display:block;}
+  .article-list .article-card p{height:auto;-webkit-line-clamp:none;display:block;}
+  .article-card-body{padding:var(--s2);}
+}
 .article-card-tag{
   display:inline-block;font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:700;
   letter-spacing:0.08em;text-transform:uppercase;margin-bottom:10px;
@@ -554,15 +611,25 @@ body.nav-open .nav-backdrop{display:block;}
   display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
   gap:var(--s2);grid-auto-rows:1fr;margin:var(--s3) 0 var(--s6);
 }
-.featured-grid .article-card{display:flex;flex-direction:column;padding:20px;}
+.featured-grid .article-card{display:flex;flex-direction:column;padding:0;}
+/* Image on top here, not beside: these cards are a third of the width of a list
+   row, and a side-by-side split at that size leaves neither column usable.
+   flex-shrink:0 because a flex child with the default 1 will compress to fit
+   the row height and silently crop its own aspect ratio (CLAUDE.md 2). */
+.featured-grid .article-card-img{aspect-ratio:1200/630;height:auto;flex-shrink:0;}
+.featured-grid .article-card-body{padding:var(--s2);}
 .featured-grid .article-card h3{font-size:17px;line-height:1.3;margin:0 0 8px;}
 .featured-grid .article-card p{
   font-size:13.5px;margin:0;max-width:none;
   /* Clamp rather than let the longest dek set every row's height. */
-  display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;
+  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;
 }
 @media(max-width:900px){.featured-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
-@media(max-width:620px){.featured-grid{grid-template-columns:1fr;grid-auto-rows:auto;}}
+/* Single column, but rows stay 1fr. Letting them size to content put a 22px
+   height difference between stacked cards, which is exactly the raggedness the
+   uniform-row rule exists to prevent; six cards means the dead space that buys
+   is at most one line. */
+@media(max-width:620px){.featured-grid{grid-template-columns:1fr;}}
 
 /* AD SLOT */
 .ad-slot{

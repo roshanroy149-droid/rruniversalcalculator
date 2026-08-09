@@ -92,8 +92,18 @@ body{width:1200px;height:630px;overflow:hidden;}
 </div></body></html>`;
 }
 
+/* The same card at 800x420, written to social/thumb/.
+   The on-page article cards show these at roughly 230-370px wide, so serving
+   the full 1200x630 there would ship ~1.7MB of pixels to render a strip of
+   thumbnails. 800px still covers a 370px slot on a 2x display. The 1200px
+   original stays exactly as it is — Discover and the social platforms want the
+   large one, and they read it from og:image, not from the page. */
+const THUMB = path.join(OUT, 'thumb');
+const THUMB_SCALE = 2 / 3;
+
 (async () => {
   if (!fs.existsSync(OUT)) fs.mkdirSync(OUT, { recursive: true });
+  if (!fs.existsSync(THUMB)) fs.mkdirSync(THUMB, { recursive: true });
   const only = process.argv[2];
   const list = only ? articles.filter(a => a.id === only) : articles;
   if (!list.length) { console.log('no article matched "' + only + '"'); process.exit(1); }
@@ -105,17 +115,31 @@ body{width:1200px;height:630px;overflow:hidden;}
   const page = await browser.newPage();
   await page.setViewport({ width: 1200, height: 630, deviceScaleFactor: 1 });
 
-  let bytes = 0;
+  let bytes = 0, thumbBytes = 0;
   for (const a of list) {
-    const file = path.join(OUT, a.file.replace(/\.html$/, '.jpg'));
+    const name = a.file.replace(/\.html$/, '.jpg');
+    const file = path.join(OUT, name);
+    await page.setViewport({ width: 1200, height: 630, deviceScaleFactor: 1 });
     await page.setContent(card(a), { waitUntil: 'load' });
     await page.evaluate(() => document.fonts.ready);
     await new Promise(r => setTimeout(r, 70));
     await page.screenshot({ path: file, type: 'jpeg', quality: 88 });
     bytes += fs.statSync(file).size;
-    if (only) console.log('  ' + path.basename(file) + '  ' + a.cardArt + '  ' + (a.cardFigure || '(no figure)'));
+
+    // Re-rendered rather than downscaled, so the type is rasterised at the
+    // target size instead of being resampled — text this small goes mushy if
+    // you shrink a 1200px bitmap.
+    const thumb = path.join(THUMB, name);
+    await page.setViewport({ width: 1200, height: 630, deviceScaleFactor: THUMB_SCALE });
+    await new Promise(r => setTimeout(r, 60));
+    await page.screenshot({ path: thumb, type: 'jpeg', quality: 82 });
+    thumbBytes += fs.statSync(thumb).size;
+
+    if (only) console.log('  ' + name + '  ' + a.cardArt + '  ' + (a.cardFigure || '(no figure)'));
   }
   await browser.close();
   console.log(list.length + ' cards, ' + (bytes / 1024 / 1024).toFixed(1) + 'MB, avg ' +
     (bytes / list.length / 1024).toFixed(0) + 'KB');
+  console.log(list.length + ' thumbs, ' + (thumbBytes / 1024 / 1024).toFixed(2) + 'MB, avg ' +
+    (thumbBytes / list.length / 1024).toFixed(0) + 'KB');
 })();
