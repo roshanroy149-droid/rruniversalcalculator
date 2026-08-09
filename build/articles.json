@@ -9,7 +9,8 @@
       "title": "Do Freelancers Exporting Services Need GST Registration?",
       "dek": "You will be told that invoicing a foreign client compels registration from the first rupee. Notification 10/2017 says otherwise for services under ₹20 lakh.",
       "date": "2026-08-09",
-      "readTime": "8 min read"
+      "readTime": "8 min read",
+      "cardFigure": "₹20 lakh"
     },
     {
       "id": "direct-vs-regular-plan-india",
@@ -20,7 +21,9 @@
       "title": "Direct vs Regular Mutual Fund Plans: What the Gap Actually Costs",
       "dek": "Same fund, same manager, same portfolio — one costs about 1.2 points a year more. Over 25 years at ₹10,000 a month that gap came to ₹32.80 lakh, more than the total invested.",
       "date": "2026-08-09",
-      "readTime": "8 min read"
+      "readTime": "8 min read",
+      "cardFigure": "₹32.8 lakh",
+      "featured": 6
     },
     {
       "id": "marginal-relief-12-lakh-2026",
@@ -31,7 +34,9 @@
       "title": "Marginal Relief Above ₹12 Lakh: The Band Where a Raise Earns You Nothing",
       "dek": "Cross ₹12,00,000 of taxable income by ₹10,000 and you owe ₹10,400, not ₹63,960. Marginal relief removes the cliff — but leaves a ₹71,000 band taxed at 104%.",
       "date": "2026-08-09",
-      "readTime": "7 min read"
+      "readTime": "7 min read",
+      "cardFigure": "₹12 lakh",
+      "featured": 4
     },
     {
       "id": "spouse-income-idr",
@@ -75,7 +80,8 @@
       "dek": "If you're 50 or older and earned more than $150,000 last year, your 401(k) catch-up contributions just lost their upfront tax deduction. Here's exactly how the new rule works.",
       "date": "2026-07-19",
       "readTime": "7 min read",
-      "topic": "retirement"
+      "topic": "retirement",
+      "cardFigure": "$150,000"
     },
     {
       "id": "credit-card-rates-record-high-2026",
@@ -86,7 +92,8 @@
       "dek": "The Fed has cut its benchmark rate three times since 2025, but the average credit card still charges close to 21% — near an all-time high. Here's why, and what actually lowers your cost.",
       "date": "2026-07-19",
       "readTime": "6 min read",
-      "topic": "borrowing"
+      "topic": "borrowing",
+      "cardFigure": "21%"
     },
     {
       "id": "mortgage-rates-housing-law-2026",
@@ -97,7 +104,8 @@
       "dek": "Rates aren't expected to move much for the rest of the year. A sweeping new housing bill became law anyway, aimed at a different problem entirely: how many homes actually get built.",
       "date": "2026-07-19",
       "readTime": "7 min read",
-      "topic": "borrowing"
+      "topic": "borrowing",
+      "cardFigure": "6.5%"
     },
     {
       "id": "india-income-tax-act-2025-changes",
@@ -108,7 +116,8 @@
       "dek": "India's Income Tax Act 2025 takes effect April 1, 2026. Here's the new-regime slab structure, how the ₹12.75 lakh tax-free threshold actually works, and what it means for your filing.",
       "date": "2026-07-20",
       "readTime": "7 min read",
-      "topic": "tax"
+      "topic": "tax",
+      "cardFigure": "₹12.75 lakh"
     },
     {
       "id": "ecb-interest-rate-hike-2026",
@@ -152,7 +161,8 @@
       "dek": "The Bank of Canada held its policy rate at 2.25% for a sixth straight decision in July 2026, while cutting its growth forecast. Here's what that means for variable-rate mortgages.",
       "date": "2026-07-21",
       "readTime": "6 min read",
-      "topic": "rates"
+      "topic": "rates",
+      "cardFigure": "2.25%"
     },
     {
       "id": "australia-rba-rate-hike-2026",
@@ -163,7 +173,8 @@
       "dek": "The RBA has already hiked three times in 2026, taking the cash rate to 4.35%. Economists are split on whether August brings a fourth hike toward a possible 4.85% peak.",
       "date": "2026-07-21",
       "readTime": "6 min read",
-      "topic": "rates"
+      "topic": "rates",
+      "cardFigure": "4.35%"
     },
     {
       "id": "japan-china-diverging-interest-rates-2026",
@@ -185,7 +196,8 @@
       "dek": "Brazil's central bank has cut the Selic rate three times in 2026 to 14.25%, even as its own inflation forecast rose to 5.2% — well above target. Here's the tension driving the disconnect.",
       "date": "2026-07-21",
       "readTime": "6 min read",
-      "topic": "rates"
+      "topic": "rates",
+      "cardFigure": "14.25%"
     },
     {
       "id": "us-aca-medicare-changes-2026",
@@ -196,7 +208,8 @@
       "dek": "Enhanced ACA premium tax credits expired at the end of 2025. Subsidized enrollees now pay 114% more on average — here's what changed, why, and how to check where you land.",
       "date": "2026-07-21",
       "readTime": "7 min read",
-      "topic": "health"
+      "topic": "health",
+      "cardFigure": "114%"
     },
     {
       "id": "uk-nhs-modernisation-bill-2026",
@@ -218,7 +231,8 @@
       "dek": "Ayushman Bharat's Vay Vandana Card now gives every senior citizen 70+ a free ₹5 lakh top-up — ₹10 lakh total family cover. Here's how PM-JAY's 2026 expansion actually works.",
       "date": "2026-07-21",
       "readTime": "7 min read",
-      "topic": "health"
+      "topic": "health",
+      "cardFigure": "₹10 lakh"
     },
     {
       "id": "who-glp1-obesity-guideline-2026",
@@ -273,7 +287,8 @@
       "dek": "Hong Kong's Hang Seng is up almost 30% in 2026, household savings are pouring out of bank deposits into stocks, and an AI chip IPO just surged 120% on debut. Here's what's actually driving China's market this year.",
       "date": "2026-07-22",
       "readTime": "7 min read",
-      "topic": "markets"
+      "topic": "markets",
+      "cardFigure": "120%"
     },
     {
       "id": "japan-stock-market-trends-2026",
@@ -328,7 +343,8 @@
       "dek": "The federal funds rate has sat at 3.50–3.75% since December under new chair Kevin Warsh — yet the 30-year mortgage just hit its highest level since August 2025. Why those aren't a contradiction.",
       "date": "2026-07-27",
       "readTime": "7 min read",
-      "topic": "rates"
+      "topic": "rates",
+      "cardFigure": "3.75%"
     },
     {
       "id": "irs-2026-retirement-limits-tax-brackets",
@@ -339,7 +355,8 @@
       "dek": "You can put $24,500 in a 401(k) this year, and $35,750 if you're 60 to 63. Every number that changed, the four-year window most people miss, and what the extra room is worth once it compounds.",
       "date": "2026-07-27",
       "readTime": "7 min read",
-      "topic": "tax"
+      "topic": "tax",
+      "cardFigure": "$24,500"
     },
     {
       "id": "hra-exemption-8-metro-cities-2026",
@@ -350,7 +367,8 @@
       "dek": "Bengaluru, Hyderabad, Pune and Ahmedabad became metros for House Rent Allowance on 1 April 2026. Because the exemption is the lowest of three figures, whether you save anything depends entirely on which one was limiting you.",
       "date": "2026-07-28",
       "readTime": "7 min read",
-      "topic": "tax"
+      "topic": "tax",
+      "cardFigure": "50%"
     },
     {
       "id": "epf-ppf-nps-india-2026",
@@ -383,7 +401,8 @@
       "dek": "We computed both income-driven repayment plans across every income from $0 to $300,000 and 20 household types. RAP is cheaper in three of them, and never by more than $50.50 a month — while IBR can win by $554.50.",
       "date": "2026-07-29",
       "readTime": "8 min read",
-      "topic": "studentloans"
+      "topic": "studentloans",
+      "featured": 2
     },
     {
       "id": "advance-tax-september-2026",
@@ -394,7 +413,9 @@
       "dek": "At 1% a month, deferring advance tax costs a reasonable 12% a year. But s.234C attaches a 36% trigger to the September instalment, and missing it by ₹100 costs ₹1,083 on a ₹4 lakh liability.",
       "date": "2026-08-09",
       "readTime": "8 min read",
-      "topic": "tax"
+      "topic": "tax",
+      "cardFigure": "₹1,083",
+      "featured": 3
     },
     {
       "id": "itr-deadlines-split-2026",
@@ -405,7 +426,8 @@
       "dek": "The Finance Act 2026 amended Section 139(1) so non-audit ITR-3 and ITR-4 filers now have until 31 August. Salaried filers still face 31 July — and the deciding factor is not your form, it is your audit position.",
       "date": "2026-08-09",
       "readTime": "7 min read",
-      "topic": "tax"
+      "topic": "tax",
+      "cardFigure": "31 August"
     },
     {
       "id": "rbi-mpc-august-2026-preview",
@@ -416,7 +438,8 @@
       "dek": "On 5 August the MPC held again and kept the stance neutral — while cutting FY27 inflation to 5.0% and lifting growth to 6.7%. Better numbers, same decision, and there is a reason for that.",
       "date": "2026-08-09",
       "readTime": "7 min read",
-      "topic": "rates"
+      "topic": "rates",
+      "cardFigure": "5.25%"
     },
     {
       "id": "idr-transition-deadlines-2027-2028",
@@ -438,7 +461,8 @@
       "title": "The Fed Held Again — But Three Officials Voted to Raise Rates",
       "dek": "The FOMC kept the federal funds rate at 3.50–3.75% on a 9–3 vote. All three dissenters wanted a hike, not a cut — and the statement blames supply shocks in energy, the same diagnosis the RBI gave six weeks ago.",
       "date": "2026-07-29",
-      "readTime": "7 min read"
+      "readTime": "7 min read",
+      "cardFigure": "3.75%"
     },
     {
       "id": "prepay-loan-or-invest",
@@ -449,7 +473,8 @@
       "title": "Prepay the Loan or Invest the Difference? We Found the Exact Crossover",
       "dek": "We modelled both choices over a full loan term at every return from 1% to 25%, at six different loan rates. The break-even landed within 0.1 percentage points of the loan rate itself, every time.",
       "date": "2026-07-29",
-      "readTime": "8 min read"
+      "readTime": "8 min read",
+      "featured": 5
     },
     {
       "id": "how-much-you-need-to-retire",
@@ -460,7 +485,8 @@
       "title": "How Much Do You Actually Need to Retire? The 4% Rule Is Now 3.9%",
       "dek": "Morningstar puts the 2026 safe withdrawal rate at 3.9% for fixed spending. Applied honestly with inflation, funding a ₹50,000-a-month lifestyle 25 years out needs ₹6.6 crore, not ₹1.5 crore.",
       "date": "2026-07-29",
-      "readTime": "8 min read"
+      "readTime": "8 min read",
+      "cardFigure": "3.9%"
     },
     {
       "id": "sip-vs-lump-sum",
@@ -482,7 +508,8 @@
       "title": "What Actually Moves Your Credit Score — and What Does Nothing",
       "dek": "Payment history is 35% of a FICO score and amounts owed 30%. Most of the advice people follow targets the 10% categories, and closing an old card actively hurts two of them.",
       "date": "2026-07-29",
-      "readTime": "7 min read"
+      "readTime": "7 min read",
+      "cardFigure": "35%"
     },
     {
       "id": "aca-premiums-2027-rate-filings",
@@ -493,7 +520,8 @@
       "dek": "Preliminary filings point to a second consecutive double-digit rise, on top of the 20% finalised for 2026. What that does to your bill, and the one lever most households still have.",
       "date": "2026-08-03",
       "readTime": "7 min read",
-      "topic": "health"
+      "topic": "health",
+      "cardFigure": "14%"
     },
     {
       "id": "old-vs-new-regime-crossover-2026",
@@ -504,7 +532,8 @@
       "dek": "We computed the actual boundaries rather than working an example. The old regime wins in two separate salary bands, not one — and between them the new regime wins even with deductions maxed.",
       "date": "2026-08-04",
       "readTime": "9 min read",
-      "topic": "tax"
+      "topic": "tax",
+      "featured": 1
     }
   ],
   "topics": [

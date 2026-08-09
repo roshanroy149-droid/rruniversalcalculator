@@ -217,6 +217,46 @@ function New-AdsenseBlock($indent) {
     return "$indent<meta name=`"google-adsense-account`" content=`"ca-pub-7800403656727097`">"
 }
 
+# Social/preview image + the image-preview directive, per page.
+#
+# Two things gate Google Discover, and before this block the site failed both.
+# Discover is a push feed rather than a query ranking, which makes it the one
+# channel not gated on the domain authority this site does not yet have — but
+# Google cannot show a large preview without max-image-preview:large, and it
+# will not surface a page whose image is the same generic asset as every other
+# page's. All 259 pages pointed at one shared og-image.png.
+#
+# Articles now get their own 1200x630 card, generated from articles.json by
+# build/gen-cards.js so it cannot drift from the article it represents (the
+# Discover policy requires the preview to reflect the page). Tools keep the
+# shared brand image — they are not Discover material and a per-tool card
+# would be 206 files of noise.
+#
+# The declared dimensions are the real ones. They previously said 1200x630 for
+# an asset that is actually 2400x1260.
+#
+# Not emitted on the three redirect stubs: they carry their own
+# "noindex, follow" robots tag and have no marker, so Sync-Marker skips them.
+function New-SocialBlock($indent, $fileName) {
+    $article = $articleData.articles | Where-Object { $_.file -eq $fileName } | Select-Object -First 1
+
+    if ($article) {
+        $img = 'https://tallybench.com/social/' + ($fileName -replace '\.html$', '.jpg')
+        $w = '1200'; $h = '630'
+    } else {
+        $img = 'https://tallybench.com/og-image.png'
+        $w = '2400'; $h = '1260'
+    }
+
+    $lines = New-Object System.Collections.Generic.List[string]
+    $lines.Add("$indent<meta name=`"robots`" content=`"max-image-preview:large`">")
+    $lines.Add("$indent<meta property=`"og:image`" content=`"$img`">")
+    $lines.Add("$indent<meta property=`"og:image:width`" content=`"$w`">")
+    $lines.Add("$indent<meta property=`"og:image:height`" content=`"$h`">")
+    $lines.Add("$indent<meta name=`"twitter:image`" content=`"$img`">")
+    return ($lines -join $nl)
+}
+
 # Renders the embeddable-calculator list for embed.html. Every tool is
 # embeddable — the widget keys off ?embed=1, which any tool page honours — so
 # this is a straight projection of tools.json grouped by category.
@@ -361,6 +401,43 @@ function New-ArticleListBlock($indent) {
         }
         $lines.Add("$indent</div>")
     }
+    return ($lines -join $nl)
+}
+
+# The homepage's featured strip: the pieces where we computed something that
+# does not exist elsewhere.
+#
+# Added because the homepage went hero -> 206 calculator tiles -> about, with no
+# route to any of it. That buries the only work that can rank now: the generic
+# calculators compete on domain authority against Calculator.net and lose, while
+# the crossover studies and the India tax cluster compete on being the only good
+# answer to a specific question. Same site, two different games, and the winnable
+# one was invisible.
+#
+# Curated via a "featured" rank in articles.json rather than inferred from date
+# or tag — "most recent" and "most differentiated" are not the same set, and the
+# ordering here is an editorial judgement.
+#
+# Deliberately text-only. The social cards were tried here and the result read
+# as a bug: each card already renders its tag and title into the image, so the
+# strip showed both twice. The images exist for Discover and social, where they
+# appear alone with no surrounding text; on-page the heading has to be real
+# text anyway — selectable, scalable, and still there if the image does not
+# load. Two image variants was not worth 46 more renders.
+function New-FeaturedBlock($indent) {
+    $inner = "$indent  "
+    $featured = $articleData.articles | Where-Object { $_.featured } | Sort-Object { [int]$_.featured }
+    $lines = New-Object System.Collections.Generic.List[string]
+    $lines.Add("$indent<div class=`"featured-grid`">")
+    foreach ($art in $featured) {
+        $cssClass = $catCssClass[$art.category]
+        $lines.Add("$inner<a class=`"article-card $cssClass`" href=`"$($art.file)`">")
+        $lines.Add("$inner  <span class=`"article-card-tag`">$($art.tag)</span>")
+        $lines.Add("$inner  <h3>$($art.title)</h3>")
+        $lines.Add("$inner  <p>$($art.dek)</p>")
+        $lines.Add("$inner</a>")
+    }
+    $lines.Add("$indent</div>")
     return ($lines -join $nl)
 }
 
@@ -527,6 +604,12 @@ foreach ($f in $htmlFiles) {
 
     $adsenseResult = Sync-Marker $content 'ADSENSE' { param($indent) New-AdsenseBlock $indent }
     if ($null -ne $adsenseResult) { $content = $adsenseResult }
+
+    $socialResult = Sync-Marker $content 'SOCIAL' { param($indent) New-SocialBlock $indent $f.Name }
+    if ($null -ne $socialResult) { $content = $socialResult }
+
+    $featuredResult = Sync-Marker $content 'FEATURED' { param($indent) New-FeaturedBlock $indent }
+    if ($null -ne $featuredResult) { $content = $featuredResult }
 
     # A page with no marker is silently skipped by Sync-Marker, so a page that
     # was created without one keeps shipping stale/absent generated content and

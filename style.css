@@ -541,6 +541,29 @@ body.nav-open .nav-backdrop{display:block;}
   display:flex;gap:8px;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--ink-muted);
 }
 
+/* Homepage featured strip. Reuses .article-card wholesale rather than defining
+   a second card, so the two stay in visual sync; this only lays them out in a
+   grid and gives the card an image slot.
+   grid-auto-rows:1fr forces every row to one height regardless of dek length —
+   without it a card with a longer dek makes its whole row taller and the grid
+   reads as ragged even though it is technically correct (CLAUDE.md 1.5).
+   minmax(0,1fr) not 1fr: a bare 1fr is minmax(auto,1fr), whose minimum is the
+   content's max-content width, which is what made the nav panel columns come
+   out at four different widths. */
+.featured-grid{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:var(--s2);grid-auto-rows:1fr;margin:var(--s3) 0 var(--s6);
+}
+.featured-grid .article-card{display:flex;flex-direction:column;padding:20px;}
+.featured-grid .article-card h3{font-size:17px;line-height:1.3;margin:0 0 8px;}
+.featured-grid .article-card p{
+  font-size:13.5px;margin:0;max-width:none;
+  /* Clamp rather than let the longest dek set every row's height. */
+  display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;
+}
+@media(max-width:900px){.featured-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+@media(max-width:620px){.featured-grid{grid-template-columns:1fr;grid-auto-rows:auto;}}
+
 /* AD SLOT */
 .ad-slot{
   margin:36px 0;
