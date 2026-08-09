@@ -41,7 +41,7 @@
       "readTime": "7 min read",
       "cardFigure": "104%",
       "featured": 4,
-      "cardArt": "cliff",
+      "cardArt": "band",
       "cardLabel": "The band where a raise earns you nothing"
     },
     {
@@ -67,7 +67,7 @@
       "date": "2026-07-18",
       "readTime": "7 min read",
       "topic": "borrowing",
-      "cardArt": "fork",
+      "cardArt": "snowball",
       "cardLabel": "Which debt gets the next spare rupee"
     },
     {
@@ -136,7 +136,7 @@
       "readTime": "7 min read",
       "topic": "tax",
       "cardFigure": "₹12.75 lakh",
-      "cardArt": "document",
+      "cardArt": "lawbook",
       "cardLabel": "Where salary stops being taxed under the new regime"
     },
     {
@@ -175,7 +175,7 @@
       "date": "2026-07-21",
       "readTime": "7 min read",
       "topic": "tax",
-      "cardArt": "document",
+      "cardArt": "briefcase",
       "cardLabel": "No single hike — a dividend rise and frozen bands"
     },
     {
@@ -203,7 +203,7 @@
       "readTime": "6 min read",
       "topic": "rates",
       "cardFigure": "4.35%",
-      "cardArt": "rise",
+      "cardArt": "arrowUp",
       "cardLabel": "Three hikes in, economists split on a fourth"
     },
     {
@@ -216,7 +216,7 @@
       "date": "2026-07-21",
       "readTime": "6 min read",
       "topic": "rates",
-      "cardArt": "fork",
+      "cardArt": "diverge",
       "cardLabel": "Japan hikes while China holds at record lows"
     },
     {
@@ -244,7 +244,7 @@
       "readTime": "7 min read",
       "topic": "health",
       "cardFigure": "114%",
-      "cardArt": "rise",
+      "cardArt": "receipt",
       "cardLabel": "What expiring enhanced subsidies did to premiums"
     },
     {
@@ -257,7 +257,7 @@
       "date": "2026-07-21",
       "readTime": "7 min read",
       "topic": "health",
-      "cardArt": "shield",
+      "cardArt": "hospital",
       "cardLabel": "What the Modernisation Bill actually changes"
     },
     {
@@ -297,7 +297,7 @@
       "date": "2026-07-21",
       "readTime": "6 min read",
       "topic": "health",
-      "cardArt": "shield",
+      "cardArt": "stethoscope",
       "cardLabel": "What changed for bulk billing from July"
     },
     {
@@ -310,7 +310,7 @@
       "date": "2026-07-21",
       "readTime": "8 min read",
       "topic": "health",
-      "cardArt": "pill",
+      "cardArt": "priceTags",
       "cardLabel": "The same drug, four countries, four prices"
     },
     {
@@ -337,7 +337,7 @@
       "readTime": "7 min read",
       "topic": "markets",
       "cardFigure": "120%",
-      "cardArt": "rise",
+      "cardArt": "chip",
       "cardLabel": "What Biren did on its first day of trading"
     },
     {
@@ -363,7 +363,7 @@
       "date": "2026-07-22",
       "readTime": "7 min read",
       "topic": "markets",
-      "cardArt": "board",
+      "cardArt": "candles",
       "cardLabel": "A record Sensex, and the wait for Jio"
     },
     {
@@ -376,7 +376,7 @@
       "date": "2026-07-22",
       "readTime": "7 min read",
       "topic": "markets",
-      "cardArt": "peak",
+      "cardArt": "turbine",
       "cardLabel": "FTSE records and the Rolls-Royce turnaround"
     },
     {
@@ -389,7 +389,7 @@
       "date": "2026-07-27",
       "readTime": "8 min read",
       "topic": "borrowing",
-      "cardArt": "card",
+      "cardArt": "percentCircle",
       "cardLabel": "Why the balance is not what you are charged on"
     },
     {
@@ -403,7 +403,7 @@
       "readTime": "7 min read",
       "topic": "rates",
       "cardFigure": "3.75%",
-      "cardArt": "hold",
+      "cardArt": "pillars",
       "cardLabel": "Held all year, and what that means for you"
     },
     {
@@ -417,7 +417,7 @@
       "readTime": "7 min read",
       "topic": "tax",
       "cardFigure": "$24,500",
-      "cardArt": "vault",
+      "cardArt": "ladder",
       "cardLabel": "The 2026 401(k) contribution limit"
     },
     {
@@ -431,7 +431,7 @@
       "readTime": "7 min read",
       "topic": "tax",
       "cardFigure": "50%",
-      "cardArt": "house",
+      "cardArt": "skyline",
       "cardLabel": "Four more cities joined the higher band"
     },
     {
@@ -444,7 +444,7 @@
       "date": "2026-07-28",
       "readTime": "8 min read",
       "topic": "retirement",
-      "cardArt": "balance",
+      "cardArt": "threeJars",
       "cardLabel": "Three schemes, three very different guarantees"
     },
     {
@@ -457,7 +457,7 @@
       "date": "2026-07-28",
       "readTime": "8 min read",
       "topic": "tax",
-      "cardArt": "steps",
+      "cardArt": "funnel",
       "cardLabel": "Where the gap between CTC and pay actually goes"
     },
     {
@@ -471,7 +471,7 @@
       "readTime": "8 min read",
       "topic": "studentloans",
       "featured": 2,
-      "cardArt": "fork",
+      "cardArt": "crossover",
       "cardLabel": "Every income, twenty household types, computed"
     },
     {
@@ -514,7 +514,7 @@
       "readTime": "7 min read",
       "topic": "rates",
       "cardFigure": "5.25%",
-      "cardArt": "hold",
+      "cardArt": "rupeeSeal",
       "cardLabel": "Held for a fourth consecutive meeting"
     },
     {
@@ -527,7 +527,7 @@
       "date": "2026-07-29",
       "readTime": "8 min read",
       "topic": "studentloans",
-      "cardArt": "calendar",
+      "cardArt": "hourglass",
       "cardLabel": "The dates that move you into RAP automatically"
     },
     {
@@ -541,7 +541,7 @@
       "date": "2026-07-29",
       "readTime": "7 min read",
       "cardFigure": "3.75%",
-      "cardArt": "hold",
+      "cardArt": "votes",
       "cardLabel": "Held again — but three officials dissented"
     },
     {
@@ -555,7 +555,7 @@
       "date": "2026-07-29",
       "readTime": "8 min read",
       "featured": 5,
-      "cardArt": "balance",
+      "cardArt": "twoDoors",
       "cardLabel": "The break-even is closer to the loan rate than you think"
     },
     {
@@ -582,7 +582,7 @@
       "dek": "Vanguard found lump-sum investing beat phasing in about two thirds of the time. That finding says nothing about a SIP funded from salary — and conflating the two is why this debate never resolves.",
       "date": "2026-07-29",
       "readTime": "7 min read",
-      "cardArt": "clock",
+      "cardArt": "drip",
       "cardLabel": "The question most people are actually asking"
     },
     {
@@ -596,7 +596,7 @@
       "date": "2026-07-29",
       "readTime": "7 min read",
       "cardFigure": "35%",
-      "cardArt": "steps",
+      "cardArt": "gauge",
       "cardLabel": "Payment history, and the advice that does nothing"
     },
     {
@@ -610,7 +610,7 @@
       "readTime": "7 min read",
       "topic": "health",
       "cardFigure": "14%",
-      "cardArt": "rise",
+      "cardArt": "fileStack",
       "cardLabel": "What insurers have asked for next year"
     },
     {
@@ -624,7 +624,7 @@
       "readTime": "9 min read",
       "topic": "tax",
       "featured": 1,
-      "cardArt": "balance",
+      "cardArt": "toggle",
       "cardLabel": "The old regime wins in two bands, not one"
     }
   ],

@@ -25,27 +25,38 @@ const OUT = path.join(ROOT, 'social');
 const MOTIFS = require('./art-motifs.js');
 const articles = JSON.parse(fs.readFileSync(path.join(__dirname, 'articles.json'), 'utf8')).articles;
 
-/* Deeper than the .article-hero gradients so white illustration reads cleanly
-   on top; same hues, so the card and the page still look like one family. */
+/* Palette is keyed to TOPIC, not category.
+   Category gave only two colours — 39 of 46 cards came out the same brown, and
+   in a feed the eye reads colour before it reads the drawing, so the whole set
+   looked identical no matter how different the illustrations were. Seven topics
+   means seven genuinely different cards, and it is also what stops a repeated
+   shape from reading as a repeat.
+   All are deep, saturated grounds with one light accent, so they still read as
+   one family rather than seven unrelated designs. */
 const PAL = {
-  finance:   { g: ['#7A5620', '#4A3212'], accent: '#E8B65A', deep: '#3A2610' },
-  health:    { g: ['#234F4A', '#112824'], accent: '#6FD0C3', deep: '#0D201D' },
-  education: { g: ['#6B4060', '#3A2032'], accent: '#D79CC6', deep: '#2C1826' },
-  everyday:  { g: ['#39566E', '#22364A'], accent: '#9CC0DC', deep: '#1A2A3A' }
+  tax:          { g: ['#7A5620', '#4A3212'], accent: '#E8B65A', deep: '#3A2610' },
+  rates:        { g: ['#2A4A6B', '#16293D'], accent: '#7FB2E0', deep: '#101E2C' },
+  borrowing:    { g: ['#7A3327', '#4A1C14'], accent: '#F0937A', deep: '#38140E' },
+  retirement:   { g: ['#2C5A3A', '#16301F'], accent: '#7FCB96', deep: '#0F2416' },
+  markets:      { g: ['#463A78', '#241E45'], accent: '#A79BE8', deep: '#1B1636' },
+  health:       { g: ['#234F4A', '#112824'], accent: '#6FD0C3', deep: '#0D201D' },
+  studentloans: { g: ['#6B4060', '#3A2032'], accent: '#D79CC6', deep: '#2C1826' }
 };
+const FALLBACK = PAL.tax;
 
 const esc = s => String(s == null ? '' : s)
   .replace(/&amp;/g, '&').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 function card(a) {
-  const c = PAL[a.category] || PAL.finance;
+  const c = PAL[a.topic] || FALLBACK;
   const draw = MOTIFS[a.cardArt];
   if (!draw) throw new Error('no motif "' + a.cardArt + '" for ' + a.id);
   const fig = a.cardFigure;
-  // A long figure ("₹12.75 lakh") needs to come down or it collides with the
-  // illustration; a short one ("21%") can run big.
-  const figSize = !fig ? 0 : fig.length > 10 ? 76 : fig.length > 7 ? 92 : 118;
-  const labelSize = fig ? 27 : 38;
+  // Bigger than the first pass. A thumbnail competes against photographs in the
+  // feed, and restraint is the wrong instinct there — the figure is the thing
+  // that has to carry at 300px wide.
+  const figSize = !fig ? 0 : fig.length > 10 ? 88 : fig.length > 7 ? 106 : 138;
+  const labelSize = fig ? 28 : 42;
 
   return `<!doctype html><html><head><meta charset="utf-8"><style>
 @font-face{font-family:'Space Grotesk';src:url('file:///${ROOT.replace(/\\/g, '/')}/fonts/space-grotesk-latin.woff2') format('woff2');font-weight:400 700;font-display:block;}
