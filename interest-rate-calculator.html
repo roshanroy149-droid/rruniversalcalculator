@@ -456,6 +456,31 @@ PERSONAL FINANCE · 206 TOOLS · 0 SIGN-UP
   </section>
 
   <section class="article">
+    <h2>Why this one has to be solved by search</h2>
+    <p>Every other loan calculator runs the amortisation formula forwards: give it a balance, a rate and a term, and it returns a payment. This one runs it backwards, and that turns out to be a genuinely harder problem — the rate appears inside the formula twice, once linearly and once inside a power, and there is <strong>no closed-form way to rearrange it</strong> to put the rate on its own.</p>
+    <p>So the calculator does what lenders' own software does: it guesses. It brackets the answer between 0% and 600% a year, tries the midpoint, sees whether the resulting payment is too high or too low, and discards half the range. A hundred rounds of that narrows the answer far beyond the precision anyone needs. The result is exact to display precision, but it is found by converging on it rather than by deriving it.</p>
+
+    <h2>A worked example: $20,000 over 60 months at $400</h2>
+    <p>These are the figures the calculator returns for its defaults:</p>
+    <ul>
+      <li>You will pay <strong>$24,000</strong> in total — 60 payments of $400.</li>
+      <li>$20,000 of that is the money you borrowed, so <strong>$4,000 is interest</strong>.</li>
+      <li>The rate that produces exactly this payment is <strong>0.6183% a month, or 7.42% a year</strong>.</li>
+    </ul>
+    <p>A useful sanity check sits underneath: at 0% interest the payment on $20,000 over 60 months would be $333.33. The gap between that and $400 — $66.67 a month — <em>is</em> the interest, averaged across the term. If a quoted payment is only a little above the zero-interest figure, the rate is low no matter what the paperwork implies.</p>
+
+    <h2>When you actually need this</h2>
+    <p>Any time someone quotes you a payment instead of a rate, which is more often than it should be:</p>
+    <ul>
+      <li><strong>Dealer and in-store finance</strong>, where the conversation is steered to "how much a month can you manage" and the rate never comes up.</li>
+      <li><strong>Buy-now-pay-later and instalment plans</strong> that describe themselves as fee-based rather than interest-bearing. Convert the fee into an annual rate and the number is often startling.</li>
+      <li><strong>Leases and rent-to-own</strong>, where the implicit rate is buried in the residual value.</li>
+      <li><strong>A loan from family</strong>, where you have agreed an amount and a repayment and want to know what rate you have informally settled on.</li>
+      <li><strong>Checking a lender's arithmetic</strong> against the rate they quoted you.</li>
+    </ul>
+    <p>One limit worth stating plainly: what comes back is the <strong>nominal interest rate</strong> implied by those three numbers, not an APR. APR additionally folds in arrangement fees, broker fees and compulsory insurance, so where such fees exist the APR will be higher than the figure here. Two offers are only comparable on this basis if their fee structures match.</p>
+
+    <h2>Common questions</h2>
     <h3>When would I need to solve for the rate instead of the payment?</h3>
     <p>Whenever you already know the loan amount, the monthly payment, and the term, but the lender never told you the rate directly — a seller-financed sale, a private family loan, or a rent-to-own arrangement quoted purely as "this much per month for this many months" are all common cases. Working backward from those three numbers reveals the rate you're actually paying, which is exactly what this tool does.</p>
     <h3>Is this the same as APR?</h3>
