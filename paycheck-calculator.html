@@ -498,6 +498,37 @@ PERSONAL FINANCE · 206 TOOLS · 0 SIGN-UP
   </section>
 
   <section class="article">
+    <h2>How the calculation works</h2>
+    <p>Take-home pay is not your salary divided by the number of paydays minus a flat percentage. Three separate steps run in order, and each uses a different base:</p>
+    <ol>
+      <li><strong>Subtract the standard deduction to get taxable income.</strong> Income tax is charged on what is left, not on gross pay. For a single US filer the deduction applied here is $16,100.</li>
+      <li><strong>Run taxable income through the brackets.</strong> Each band taxes only the income that falls inside it. Someone in the 22% bracket does not pay 22% on everything — they pay 10% on the first slice, 12% on the next, and 22% only on the part above that threshold. This is why your effective rate is always well below your top bracket.</li>
+      <li><strong>Add payroll tax, calculated on gross pay.</strong> This is the step most estimates get wrong. Social Security, National Insurance, EPF and CPP are charged on <em>gross</em> salary, not on taxable income, so the standard deduction gives you no relief from them at all.</li>
+    </ol>
+    <p>Only then is the annual net divided by the number of pay periods.</p>
+
+    <h2>A worked example: $75,000, single, paid biweekly</h2>
+    <p>These are the figures this calculator returns for its default settings, so you can check the tool against its own arithmetic:</p>
+    <ul>
+      <li>Gross $75,000 minus the $16,100 standard deduction leaves <strong>$58,900</strong> taxable.</li>
+      <li>Through the brackets, federal income tax comes to <strong>$7,670</strong> — an average of 10.2% of gross, even though the last dollar is taxed at 22%.</li>
+      <li>Social Security (6.2%) plus Medicare (1.45%) on the full $75,000 adds <strong>$5,738</strong>.</li>
+      <li>Net annual pay is <strong>$61,593</strong>, an effective deduction rate of <strong>17.9%</strong>.</li>
+      <li>Across 26 biweekly paychecks: $2,885 gross, $295 income tax, $221 payroll tax, <strong>$2,369 net</strong>.</li>
+    </ul>
+    <p>Changing frequency changes the size of each cheque but not the annual total: the same salary is $1,184 net weekly, $2,369 biweekly, or $5,133 monthly.</p>
+
+    <h2>The payroll figures this tool applies</h2>
+    <p>Published rather than buried, so you can see exactly what is being modelled and where it stops:</p>
+    <ul>
+      <li><strong>United States</strong> — Social Security at 6.2% up to the 2026 contribution and benefit base of $184,500, plus Medicare at 1.45% with no cap. The Additional Medicare Tax on high earners is not modelled. Earn above $184,500 and Social Security stops entirely for the rest of the year, which is why high earners see their take-home rise part-way through it.</li>
+      <li><strong>United Kingdom</strong> — National Insurance at 8% on earnings between the £12,570 primary threshold and the £50,270 upper earnings limit, then 2% above it.</li>
+      <li><strong>Canada</strong> — CPP at 5.95% up to $68,500 of pensionable earnings, plus EI at 1.64% up to $63,200.</li>
+      <li><strong>India</strong> — a simplified 12% EPF employee contribution on gross, which is a deliberate approximation: real EPF is calculated on basic plus dearness allowance rather than on total salary, so treat this as an upper bound.</li>
+      <li><strong>Germany, France, Australia, Singapore and the UAE</strong> — income tax only. Their social contribution systems are structured differently enough that one simplified number would mislead more than it helps, so nothing is shown rather than something wrong.</li>
+    </ul>
+
+    <h2>Common questions</h2>
     <h3>Why doesn't this match my actual paycheck exactly?</h3>
     <p>This models national/federal income tax plus the single largest payroll deduction for supported countries (US Social Security + Medicare, UK National Insurance, India EPF, Canada CPP + EI). It doesn't include state or provincial tax, health insurance premiums, retirement plan contributions, or other benefits deductions your actual paystub may include — treat this as a solid baseline estimate, not a payroll-office figure.</p>
     <h3>What's the difference between the pay frequencies?</h3>

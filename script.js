@@ -1413,7 +1413,11 @@ function computeTaxFromScheme(scheme, gross){
 // other countries get income tax only, disclosed as such on the page.
 const payrollTaxes = {
   us: (annualGross)=>{
-    const ssWageBase = 168600;
+    // 2026 contribution and benefit base (SSA, announced Oct 2025). Was 168600,
+    // which was the 2024 figure and two years stale — it understated the tax for
+    // anyone earning over 168600. Check this every January; SSA reindexes it to
+    // average wages annually.
+    const ssWageBase = 184500;
     const ss = Math.min(annualGross, ssWageBase) * 0.062;
     const medicare = annualGross * 0.0145;
     return ss + medicare;
