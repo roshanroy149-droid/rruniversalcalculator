@@ -79,6 +79,39 @@
   ]
 }
 </script>
+<!-- TB:PUBLISHER:START -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://tallybench.com/#publisher",
+      "name": "TallyBench",
+      "legalName": "Venros Tech",
+      "url": "https://tallybench.com/",
+      "logo": "https://tallybench.com/icon-192.svg",
+      "email": "helpdesktallybench@gmail.com",
+      "description": "An independent personal finance resource: free calculators and researched guides on loans, mortgages, tax, investing and debt, plus health, education and everyday tools.",
+      "publishingPrinciples": "https://tallybench.com/methodology.html",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "editorial",
+        "email": "helpdesktallybench@gmail.com",
+        "url": "https://tallybench.com/contact.html"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://tallybench.com/#website",
+      "url": "https://tallybench.com/",
+      "name": "TallyBench",
+      "publisher": { "@id": "https://tallybench.com/#publisher" }
+    }
+  ]
+}
+</script>
+<!-- TB:PUBLISHER:END -->
 <!-- TB:BREADCRUMB:START -->
 <script type="application/ld+json">
 {
@@ -518,7 +551,9 @@ PERSONAL FINANCE · 206 TOOLS · 0 SIGN-UP
   <p class="src-note" style="font-size:13px;color:var(--ink-muted);margin:0 0 24px;"><strong>Method and sources:</strong> registration thresholds and the inter-state services exemption are set out in the CGST Act, the IGST Act and Notification 10/2017-Integrated Tax, published on <a href="https://www.gst.gov.in/" rel="noopener">the GST portal</a>; Sections 44ADA, 194J, 234B and 234C are administered by <a href="https://www.incometax.gov.in/iec/foportal/" rel="noopener">the Income Tax Department</a>. Tax figures are computed from the FY 2026-27 new-regime slabs and reproducible in <a href="freelancer-tax-calculator-india.html">TallyBench's freelancer tax calculator</a>. The GST treatment of service exports below the threshold is a genuinely contested area where official guidance has been inconsistent — this page sets out the position we believe the notification supports, and is general information rather than professional advice. Confirm your own position with a chartered accountant.</p>
 
   <footer>
-<p>TALLYBENCH · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a> · <a href="terms.html" style="color:var(--teal-dark);">Terms</a></p>
+<p>TALLYBENCH · built for quick answers · no data leaves your browser · <!-- TB:FOOTERNAV:START -->
+<a href="about.html" style="color:var(--teal-dark);">About</a> &middot; <a href="methodology.html" style="color:var(--teal-dark);">Methodology</a> &middot; <a href="contact.html" style="color:var(--teal-dark);">Contact</a> &middot; <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a> &middot; <a href="terms.html" style="color:var(--teal-dark);">Terms</a>
+<!-- TB:FOOTERNAV:END --></p>
 </footer>
 </div>
 

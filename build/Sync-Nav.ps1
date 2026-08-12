@@ -217,6 +217,77 @@ function New-AdsenseBlock($indent) {
     return "$indent<meta name=`"google-adsense-account`" content=`"ca-pub-7800403656727097`">"
 }
 
+# Publisher identity, on every page.
+#
+# Added 2026-08-12 after AdSense rejected the site for "Low value content". The
+# site had no machine-readable statement of who publishes it anywhere: no
+# Organization, no WebSite, no author, no publisher. For a site whose subject is
+# money and health -- the categories Google scrutinises hardest -- an anonymous
+# publisher is a trust problem on its own, quite separate from how good any
+# individual page is.
+#
+# publishingPrinciples points at methodology.html, which is the specific
+# property Google's own structured-data guidance names for "where this
+# publisher states how it works". It is only worth emitting because that page
+# genuinely exists and genuinely describes the process; pointing it at a stub
+# would be worse than omitting it.
+function New-PublisherBlock($indent) {
+    $lines = New-Object System.Collections.Generic.List[string]
+    $lines.Add("$indent<script type=`"application/ld+json`">")
+    $lines.Add("$indent{")
+    $lines.Add("$indent  `"@context`": `"https://schema.org`",")
+    $lines.Add("$indent  `"@graph`": [")
+    $lines.Add("$indent    {")
+    $lines.Add("$indent      `"@type`": `"Organization`",")
+    $lines.Add("$indent      `"@id`": `"https://tallybench.com/#publisher`",")
+    $lines.Add("$indent      `"name`": `"TallyBench`",")
+    $lines.Add("$indent      `"legalName`": `"Venros Tech`",")
+    $lines.Add("$indent      `"url`": `"https://tallybench.com/`",")
+    $lines.Add("$indent      `"logo`": `"https://tallybench.com/icon-192.svg`",")
+    $lines.Add("$indent      `"email`": `"helpdesktallybench@gmail.com`",")
+    $lines.Add("$indent      `"description`": `"An independent personal finance resource: free calculators and researched guides on loans, mortgages, tax, investing and debt, plus health, education and everyday tools.`",")
+    $lines.Add("$indent      `"publishingPrinciples`": `"https://tallybench.com/methodology.html`",")
+    $lines.Add("$indent      `"contactPoint`": {")
+    $lines.Add("$indent        `"@type`": `"ContactPoint`",")
+    $lines.Add("$indent        `"contactType`": `"editorial`",")
+    $lines.Add("$indent        `"email`": `"helpdesktallybench@gmail.com`",")
+    $lines.Add("$indent        `"url`": `"https://tallybench.com/contact.html`"")
+    $lines.Add("$indent      }")
+    $lines.Add("$indent    },")
+    $lines.Add("$indent    {")
+    $lines.Add("$indent      `"@type`": `"WebSite`",")
+    $lines.Add("$indent      `"@id`": `"https://tallybench.com/#website`",")
+    $lines.Add("$indent      `"url`": `"https://tallybench.com/`",")
+    $lines.Add("$indent      `"name`": `"TallyBench`",")
+    $lines.Add("$indent      `"publisher`": { `"@id`": `"https://tallybench.com/#publisher`" }")
+    $lines.Add("$indent    }")
+    $lines.Add("$indent  ]")
+    $lines.Add("$indent}")
+    $lines.Add("$indent</script>")
+    return ($lines -join $nl)
+}
+
+# The footer link row.
+#
+# Contact and Methodology are new here, and the reason they are generated rather
+# than hand-added is that the footer is otherwise identical on 249 pages and
+# would drift the moment one of them changed. Only the link run is inside the
+# markers -- the per-page notes that a couple of pages carry ("estimates only,
+# not tax advice" on tax-calculator.html) sit outside and are untouched.
+function New-FooterNavBlock($indent) {
+    $links = @(
+        @('about.html', 'About'),
+        @('methodology.html', 'Methodology'),
+        @('contact.html', 'Contact'),
+        @('privacy-policy.html', 'Privacy Policy'),
+        @('terms.html', 'Terms')
+    )
+    $rendered = $links | ForEach-Object {
+        "<a href=`"$($_[0])`" style=`"color:var(--teal-dark);`">$($_[1])</a>"
+    }
+    return "$indent" + ($rendered -join ' &middot; ')
+}
+
 # Social/preview image + the image-preview directive, per page.
 #
 # Two things gate Google Discover, and before this block the site failed both.
@@ -501,6 +572,12 @@ function New-BreadcrumbBlock($indent, $fileName) {
         $crumbs.Add(@{ name = 'About'; item = 'https://tallybench.com/about.html' })
     } elseif ($fileName -eq 'privacy-policy.html') {
         $crumbs.Add(@{ name = 'Privacy Policy'; item = 'https://tallybench.com/privacy-policy.html' })
+    } elseif ($fileName -eq 'methodology.html') {
+        $crumbs.Add(@{ name = 'Methodology'; item = 'https://tallybench.com/methodology.html' })
+    } elseif ($fileName -eq 'contact.html') {
+        $crumbs.Add(@{ name = 'Contact'; item = 'https://tallybench.com/contact.html' })
+    } elseif ($fileName -eq 'terms.html') {
+        $crumbs.Add(@{ name = 'Terms'; item = 'https://tallybench.com/terms.html' })
     } else {
         return "$indent<!-- no breadcrumb rule for this page -->"
     }
@@ -627,6 +704,12 @@ foreach ($f in $htmlFiles) {
     $socialResult = Sync-Marker $content 'SOCIAL' { param($indent) New-SocialBlock $indent $f.Name }
     if ($null -ne $socialResult) { $content = $socialResult }
 
+    $publisherResult = Sync-Marker $content 'PUBLISHER' { param($indent) New-PublisherBlock $indent }
+    if ($null -ne $publisherResult) { $content = $publisherResult }
+
+    $footerNavResult = Sync-Marker $content 'FOOTERNAV' { param($indent) New-FooterNavBlock $indent }
+    if ($null -ne $footerNavResult) { $content = $footerNavResult }
+
     $featuredResult = Sync-Marker $content 'FEATURED' { param($indent) New-FeaturedBlock $indent }
     if ($null -ne $featuredResult) { $content = $featuredResult }
 
@@ -652,7 +735,7 @@ foreach ($f in $htmlFiles) {
     $isVerificationFile = ($f.Name -like 'google*.html') -or
                           (($content -notmatch '<header') -and ($content -notmatch 'TB:NAV:START'))
     if (-not $isVerificationFile) {
-        foreach ($m in @('NAV', 'COUNT', 'ADSENSE')) {
+        foreach ($m in @('NAV', 'COUNT', 'ADSENSE', 'PUBLISHER', 'FOOTERNAV')) {
             if ($content -notmatch "TB:${m}:START") {
                 $missingMarkers += [PSCustomObject]@{ File = $f.Name; Marker = $m }
             }

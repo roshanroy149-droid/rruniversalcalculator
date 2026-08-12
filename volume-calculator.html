@@ -73,6 +73,39 @@
   "url": "https://tallybench.com/volume-calculator.html"
 }
 </script>
+<!-- TB:PUBLISHER:START -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://tallybench.com/#publisher",
+      "name": "TallyBench",
+      "legalName": "Venros Tech",
+      "url": "https://tallybench.com/",
+      "logo": "https://tallybench.com/icon-192.svg",
+      "email": "helpdesktallybench@gmail.com",
+      "description": "An independent personal finance resource: free calculators and researched guides on loans, mortgages, tax, investing and debt, plus health, education and everyday tools.",
+      "publishingPrinciples": "https://tallybench.com/methodology.html",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "editorial",
+        "email": "helpdesktallybench@gmail.com",
+        "url": "https://tallybench.com/contact.html"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://tallybench.com/#website",
+      "url": "https://tallybench.com/",
+      "name": "TallyBench",
+      "publisher": { "@id": "https://tallybench.com/#publisher" }
+    }
+  ]
+}
+</script>
+<!-- TB:PUBLISHER:END -->
 <!-- TB:BREADCRUMB:START -->
 <script type="application/ld+json">
 {
@@ -445,7 +478,9 @@ PERSONAL FINANCE · 206 TOOLS · 0 SIGN-UP
   <p style="font-size:13px;color:var(--ink-muted);margin:0 0 24px;">For the outside rather than the inside, use the <a href="surface-area-calculator.html">Surface Area Calculator</a>. Two-dimensional shapes are covered by the <a href="area-calculator.html">Area Calculator</a> and the <a href="circle-calculator.html">Circle Calculator</a>. To switch between cubic units and litres or gallons, use the <a href="unit-converter.html">Unit Converter</a>. Once you have a volume, the <a href="density-calculator.html">Density Calculator</a> converts it to mass for any material, and the <a href="molarity-calculator.html">Molarity Calculator</a> does the same for a solution. For material ordering rather than pure geometry, the <a href="concrete-calculator.html">Concrete Calculator</a>, <a href="mulch-calculator.html">Mulch Calculator</a> and <a href="gravel-calculator.html">Gravel Calculator</a> convert volume into cubic yards, bags and tonnage. Landscaping volumes specifically: the <a href="mulch-calculator.html">Mulch Calculator</a> and <a href="gravel-calculator.html">Gravel Calculator</a> convert an area and depth straight into cubic yards and bags.</p>
 
   <footer>
-    <p>TALLYBENCH · built for quick answers · no data leaves your browser · <a href="about.html" style="color:var(--teal-dark);">About</a> · <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a> · <a href="terms.html" style="color:var(--teal-dark);">Terms</a></p>
+    <p>TALLYBENCH · built for quick answers · no data leaves your browser · <!-- TB:FOOTERNAV:START -->
+<a href="about.html" style="color:var(--teal-dark);">About</a> &middot; <a href="methodology.html" style="color:var(--teal-dark);">Methodology</a> &middot; <a href="contact.html" style="color:var(--teal-dark);">Contact</a> &middot; <a href="privacy-policy.html" style="color:var(--teal-dark);">Privacy Policy</a> &middot; <a href="terms.html" style="color:var(--teal-dark);">Terms</a>
+<!-- TB:FOOTERNAV:END --></p>
   </footer>
 </div>
 
