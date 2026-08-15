@@ -1337,21 +1337,66 @@ window.__TB_EMBED__ = new URLSearchParams(window.location.search).get('embed') =
 // ---- Tax calculator: shared bracket data + pure calculation helpers ----
 // Hoisted out of the main calculator IIFE so the comparison-mode module below
 // can reuse the exact same numbers — one source of truth, not a duplicated copy.
+// Every threshold below carries the source and the tax year it comes from, so a
+// future audit can tell at a glance what is stale without re-deriving it. These
+// were last verified end-to-end against primary sources on 2026-08-13.
 const taxFlatSchemes = {
-  ca: { symbol:'C$', brackets:[[57375,0.15],[114750,0.205],[177882,0.26],[253414,0.29],[Infinity,0.33]], dedLabel:'RRSP contributions & other deductions' },
+  // Canada 2026 federal brackets (CRA, "Current year tax rates and income
+  // brackets (2026)"). The bottom rate is 14%, not the long-standing 15% — it
+  // was cut effective 2026. Thresholds are indexed annually; recheck each January.
+  ca: { symbol:'C$', brackets:[[58523,0.14],[117045,0.205],[181440,0.26],[258482,0.29],[Infinity,0.33]], dedLabel:'RRSP contributions & other deductions' },
+  // UK 2026/27 (gov.uk "Rates and thresholds for employers 2026 to 2027").
+  // The personal allowance and higher-rate threshold are frozen, so these are
+  // unchanged from prior years by design — verified, not assumed.
   uk: { symbol:'£', brackets:[[12570,0],[50270,0.20],[125140,0.40],[Infinity,0.45]], dedLabel:'Pension contributions & Gift Aid' },
-  de: { symbol:'€', brackets:[[11604,0],[66760,0.30],[277825,0.42],[Infinity,0.45]], dedLabel:'Werbungskosten & other deductions (simplified)' },
-  fr: { symbol:'€', brackets:[[11497,0],[29315,0.11],[83823,0.30],[180294,0.41],[Infinity,0.45]], dedLabel:'Deductible expenses & abatements' },
-  au: { symbol:'A$', brackets:[[18200,0],[45000,0.16],[135000,0.30],[190000,0.37],[Infinity,0.45]], dedLabel:'Work-related & other deductions' },
-  sg: { symbol:'S$', brackets:[[20000,0],[30000,0.02],[40000,0.035],[80000,0.07],[120000,0.115],[160000,0.15],[200000,0.18],[240000,0.19],[280000,0.195],[320000,0.20],[Infinity,0.24]], dedLabel:'Reliefs (CPF, course fees, etc.)' },
+  // Germany, Veranlagungszeitraum 2026 (§32a EStG). Grundfreibetrag €12,348;
+  // the 42% zone starts at €69,879 and the 45% "Reichensteuer" at €277,826.
+  // NOTE: the 30% band is NOT statutory — German tax is a continuous formula
+  // rising from 14% to 42% across the progression zone, and 30% is this site's
+  // flat approximation of it. Don't "correct" it against a source; only the
+  // 12348 / 69878 / 277825 boundaries and the 42% / 45% rates are official.
+  de: { symbol:'€', brackets:[[12348,0],[69878,0.30],[277825,0.42],[Infinity,0.45]], dedLabel:'Werbungskosten & other deductions (simplified)' },
+  // France, barème 2026 applied to 2025 income (service-public.gouv.fr; fixed by
+  // the loi de finances pour 2026). Thresholds are indexed most years.
+  // The thresholds are official, but note they apply per *part* of the quotient
+  // familial, and this tool applies them to the whole income — i.e. it models a
+  // single person with one part. A couple or a household with children pays less
+  // than shown. That is a modelling limit, not a stale number.
+  fr: { symbol:'€', brackets:[[11600,0],[29579,0.11],[84577,0.30],[181917,0.41],[Infinity,0.45]], dedLabel:'Deductible expenses & abatements' },
+  // Australia 2026-27 income year, which began 1 July 2026 (ATO; Treasury Laws
+  // Amendment (More Cost of Living Relief) Act 2025). The second-band rate fell
+  // from 16% to 15% on 1 July 2026 and is legislated to fall again to 14% on
+  // 1 July 2027 — diarise that. The thresholds themselves are unchanged.
+  au: { symbol:'A$', brackets:[[18200,0],[45000,0.15],[135000,0.30],[190000,0.37],[Infinity,0.45]], dedLabel:'Work-related & other deductions' },
+  // Singapore resident rates, YA 2024 onwards and still current (IRAS).
+  // The three bands above S$320,000 (22% / 23% / 24%) were previously missing —
+  // everything over S$320,000 was taxed at the top 24% rate, which overstated
+  // the bill by up to S$3,600 for incomes between S$320,000 and S$1,000,000.
+  sg: { symbol:'S$', brackets:[[20000,0],[30000,0.02],[40000,0.035],[80000,0.07],[120000,0.115],[160000,0.15],[200000,0.18],[240000,0.19],[280000,0.195],[320000,0.20],[500000,0.22],[1000000,0.23],[Infinity,0.24]], dedLabel:'Reliefs (CPF, course fees, etc.)' },
+  // The UAE levies no personal income tax on employment income.
   ae: { symbol:'AED ', brackets:[[Infinity,0]], dedLabel:'Not applicable' }
 };
-// Tax year 2026 (IRS Rev. Proc. inflation adjustments, incl. OBBB amendments).
+// US tax year 2026 — IRS Rev. Proc. 2025-32 §4.01 (rate tables) and §4.14
+// (standard deduction), which incorporate the OBBBA amendments. Reissued each
+// autumn for the following year, so recheck every October/November.
+// Watch the head-of-household row: its 24% ceiling is $201,750, twenty-five
+// dollars below the single filer's $201,775. They are genuinely different
+// numbers in the statute, and copying single's value into hoh is exactly the
+// error this table carried until 2026-08-13.
 const taxUsFiling = {
   single: { standardDeduction:16100, brackets:[[12400,0.10],[50400,0.12],[105700,0.22],[201775,0.24],[256225,0.32],[640600,0.35],[Infinity,0.37]] },
   mfj:    { standardDeduction:32200, brackets:[[24800,0.10],[100800,0.12],[211400,0.22],[403550,0.24],[512450,0.32],[768700,0.35],[Infinity,0.37]] },
-  hoh:    { standardDeduction:24150, brackets:[[17700,0.10],[67450,0.12],[105700,0.22],[201775,0.24],[256200,0.32],[640600,0.35],[Infinity,0.37]] }
+  hoh:    { standardDeduction:24150, brackets:[[17700,0.10],[67450,0.12],[105700,0.22],[201750,0.24],[256200,0.32],[640600,0.35],[Infinity,0.37]] }
 };
+// India FY 2026-27 / AY 2027-28 (Income Tax Department, incometax.gov.in tax
+// slabs for salaried individuals). The Finance Act 2026 left the Budget 2025
+// structure untouched, so these are unchanged from FY 2025-26 — confirmed
+// current, not merely un-updated.
+// New regime: standard deduction ₹75,000, §87A rebate of up to ₹60,000 wiping
+// out the bill entirely where taxable income is ≤ ₹12,00,000.
+// Old regime: standard deduction ₹50,000, §87A rebate up to ₹12,500 at
+// ≤ ₹5,00,000. Both regimes then carry a 4% health & education cess, applied in
+// computeTaxFromScheme below. Surcharge above ₹50 lakh is not modelled.
 const taxIndiaRegimes = {
   new: { standardDeduction:75000, brackets:[[400000,0],[800000,0.05],[1200000,0.10],[1600000,0.15],[2000000,0.20],[2400000,0.25],[Infinity,0.30]], rebateThreshold:1200000 },
   old: { standardDeduction:50000, brackets:[[250000,0],[500000,0.05],[1000000,0.20],[Infinity,0.30]], rebateThreshold:500000 }
@@ -1422,8 +1467,18 @@ const payrollTaxes = {
     const medicare = annualGross * 0.0145;
     return ss + medicare;
   },
-  in: (annualGross)=> annualGross * 0.12, // simplified EPF employee contribution
+  // EPF employee contribution, 12% (EPFO statutory rate, unchanged). The RATE is
+  // official; the BASE here is not — real EPF is 12% of basic wages + dearness
+  // allowance, and this applies it to total gross, so it reads high for anyone
+  // whose basic is less than their whole salary. That is a deliberate
+  // simplification disclosed on paycheck-calculator.html as an upper bound, not
+  // a stale figure to "fix" against a source.
+  in: (annualGross)=> annualGross * 0.12,
   uk: (annualGross)=>{
+    // Class 1 employee NI, 2026/27 (gov.uk "Rates and thresholds for employers
+    // 2026 to 2027"). The primary threshold and upper earnings limit are frozen,
+    // so they match earlier years — checked against the current table rather
+    // than assumed to have carried over.
     const primaryThreshold = 12570, upperLimit = 50270;
     let ni = 0;
     if(annualGross > primaryThreshold) ni += (Math.min(annualGross, upperLimit) - primaryThreshold) * 0.08;
@@ -1431,15 +1486,30 @@ const payrollTaxes = {
     return ni;
   },
   ca: (annualGross)=>{
-    const cppMax = 68500, eiMax = 63200;
-    return Math.min(annualGross, cppMax)*0.0595 + Math.min(annualGross, eiMax)*0.0164;
+    // 2026 CPP and EI (CRA payroll tables). Every figure here was two years
+    // stale until 2026-08-13 — it held the 2024 maximums.
+    // CPP: YMPE $74,600, basic exemption $3,500, rate 5.95% → max $4,230.45.
+    // The exemption was previously ignored, which overstated CPP by $208.25 at
+    // the cap; contributions start on the first dollar above $3,500, not $0.
+    const cppYmpe = 74600, cppExemption = 3500, cppRate = 0.0595;
+    // CPP2: a second contribution on earnings between the YMPE and $85,000 at
+    // 4% → max $416. Phased in from 2024 and previously not modelled at all, so
+    // anyone over the YMPE was under-deducted.
+    const cpp2Ceiling = 85000, cpp2Rate = 0.04;
+    // EI: maximum insurable earnings $68,900 at 1.63% → max premium $1,123.07.
+    const eiMax = 68900, eiRate = 0.0163;
+    // All three are reset every January; recheck then.
+    const cpp = Math.min(Math.max(annualGross - cppExemption, 0), cppYmpe - cppExemption) * cppRate;
+    const cpp2 = Math.max(Math.min(annualGross, cpp2Ceiling) - cppYmpe, 0) * cpp2Rate;
+    const ei = Math.min(annualGross, eiMax) * eiRate;
+    return cpp + cpp2 + ei;
   }
 };
 function getPayrollTax(country, annualGross){
   const fn = payrollTaxes[country];
   return fn ? fn(annualGross) : 0;
 }
-const payrollTaxLabels = { us:'Social Security + Medicare', in:'EPF contribution (simplified)', uk:'National Insurance', ca:'CPP + EI' };
+const payrollTaxLabels = { us:'Social Security + Medicare', in:'EPF contribution (simplified)', uk:'National Insurance', ca:'CPP + CPP2 + EI' };
 
 // ---- Tax calculator ----
 (function(){
