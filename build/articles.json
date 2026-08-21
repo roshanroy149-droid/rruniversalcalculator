@@ -626,6 +626,20 @@
       "featured": 1,
       "cardArt": "toggle",
       "cardLabel": "The old regime wins in two bands, not one"
+    },
+    {
+      "id": "itr-missed-deadline-2026",
+      "file": "itr-missed-deadline-2026.html",
+      "category": "finance",
+      "tag": "INDIA TAX",
+      "title": "Missing the 31 August ITR Deadline: What It Actually Costs",
+      "dek": "The ₹5,000 late fee is the small part. The warning that you lose the old regime is true and, below ₹12 lakh, worth nothing. The permanent loss is Section 80 — capital and business losses you can never carry forward.",
+      "date": "2026-08-21",
+      "readTime": "8 min read",
+      "topic": "tax",
+      "cardFigure": "₹5,000",
+      "cardArt": "coins",
+      "cardLabel": "The late fee is the cheapest thing you lose"
     }
   ],
   "topics": [
