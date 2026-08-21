@@ -640,6 +640,20 @@
       "cardFigure": "₹5,000",
       "cardArt": "coins",
       "cardLabel": "The late fee is the cheapest thing you lose"
+    },
+    {
+      "id": "cash-back-vs-low-apr-crossover",
+      "file": "cash-back-vs-low-apr-crossover.html",
+      "category": "finance",
+      "tag": "ORIGINAL ANALYSIS",
+      "title": "Cash Back or Low APR? We Computed the Break-Even Rebate",
+      "dek": "The rebate only wins above a fixed share of the price — 15.8% on a 60-month loan against a 7% alternative rate. That threshold is identical at every price, which makes it one number you can carry into the showroom.",
+      "date": "2026-08-21",
+      "readTime": "8 min read",
+      "topic": "borrowing",
+      "cardFigure": "15.8%",
+      "cardArt": "steps",
+      "cardLabel": "The rebate a 0% offer has to beat"
     }
   ],
   "topics": [
