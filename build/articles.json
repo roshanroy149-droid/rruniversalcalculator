@@ -654,6 +654,20 @@
       "cardFigure": "15.8%",
       "cardArt": "steps",
       "cardLabel": "The rebate a 0% offer has to beat"
+    },
+    {
+      "id": "affordability-dti-what-it-buys",
+      "file": "affordability-dti-what-it-buys.html",
+      "category": "finance",
+      "tag": "ORIGINAL ANALYSIS",
+      "title": "How Much House Can You Afford? One Input Swings It 84%",
+      "dek": "Every affordability calculator asks for a debt-to-income ratio and none explain it. On $90,000 the same tool returns $252,390 at 28% and $465,641 at 50% — and because DTI is measured on gross, that 50% is really 62% of your take-home.",
+      "date": "2026-08-24",
+      "readTime": "9 min read",
+      "topic": "borrowing",
+      "cardFigure": "84%",
+      "cardArt": "twoHouses",
+      "cardLabel": "How far one dropdown moves the answer"
     }
   ],
   "topics": [
