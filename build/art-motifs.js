@@ -143,17 +143,23 @@ module.exports = {
   // the same income, two very different answers — a conservative house beside
   // the one a lender would stretch to. Drawn for the affordability piece, where
   // the whole finding is the size of the gap between the two.
-  twoHouses: c => `<g transform="translate(30,110)">
+  // Geometry rule for both houses, learned by getting it wrong: the body must be
+  // centred on the roof apex. Walls at apex +/- w, roof at apex +/- (w+8) so the
+  // eaves overhang evenly. Getting the body 24px off-centre makes the left slope
+  // overshoot the wall by 56px and the house reads as broken.
+  //   small: apex 112, walls  24..200, roof  16..208, base 290
+  //   large: apex 372, walls 260..484, roof 252..492, base 290
+  twoHouses: c => `<g transform="translate(14,110)">
     <path d="M112 96 L200 168 v122 a10 10 0 0 1 -10 10 H34 a10 10 0 0 1 -10 -10 V168 z" fill="${c.deep}" opacity="0.5" transform="translate(12,12)"/>
     <path d="M112 86 L200 158 v122 a10 10 0 0 1 -10 10 H34 a10 10 0 0 1 -10 -10 V158 z" fill="#F6F1E6" opacity="0.88"/>
-    <path d="M112 86 L206 163 L196 176 L112 107 L28 176 L18 163 z" fill="${c.accent}"/>
-    <rect x="92" y="220" width="40" height="70" rx="5" fill="${c.accent}"/>
-    <path d="M348 8 L484 122 v168 a12 12 0 0 1 -12 12 H272 a12 12 0 0 1 -12 -12 V122 z" fill="${c.deep}" opacity="0.5" transform="translate(14,14)"/>
-    <path d="M348 0 L484 114 v168 a12 12 0 0 1 -12 12 H272 a12 12 0 0 1 -12 -12 V114 z" fill="#F6F1E6"/>
-    <path d="M348 0 L492 120 L480 136 L348 24 L216 136 L204 120 z" fill="${c.accent}"/>
-    <rect x="322" y="206" width="52" height="96" rx="6" fill="${c.accent}"/>
-    <rect x="396" y="160" width="46" height="46" rx="5" fill="${c.g[0]}" opacity="0.32"/>
-    <rect x="0" y="318" width="500" height="9" rx="4" fill="${c.accent}" opacity="0.7"/></g>`,
+    <path d="M112 86 L208 164 L197 178 L112 108 L27 178 L16 164 z" fill="${c.accent}"/>
+    <rect x="92" y="222" width="40" height="68" rx="5" fill="${c.accent}"/>
+    <path d="M372 12 L484 124 v166 a12 12 0 0 1 -12 12 H272 a12 12 0 0 1 -12 -12 V124 z" fill="${c.deep}" opacity="0.5" transform="translate(14,14)"/>
+    <path d="M372 0 L484 112 v166 a12 12 0 0 1 -12 12 H272 a12 12 0 0 1 -12 -12 V112 z" fill="#F6F1E6"/>
+    <path d="M372 0 L492 120 L480 134 L372 22 L264 134 L252 120 z" fill="${c.accent}"/>
+    <rect x="346" y="196" width="52" height="94" rx="6" fill="${c.accent}"/>
+    <rect x="410" y="152" width="46" height="46" rx="5" fill="${c.g[0]}" opacity="0.32"/>
+    <rect x="0" y="300" width="500" height="9" rx="4" fill="${c.accent}" opacity="0.7"/></g>`,
 
   house: c => `<g transform="translate(70,86)">
     <path d="M196 20 L384 178 v212 a16 16 0 0 1 -16 16 H24 a16 16 0 0 1 -16 -16 V178 z" fill="${c.deep}" opacity="0.5" transform="translate(18,18)"/>

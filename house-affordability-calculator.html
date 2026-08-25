@@ -466,16 +466,29 @@ PERSONAL FINANCE · 206 TOOLS · 0 SIGN-UP
           <div class="field"><label>Property tax rate (%/yr of home value)</label><input type="number" id="affTaxRate" value="1.2" step="0.1" min="0"></div>
           <div class="field"><label>Home insurance rate (%/yr of home value)</label><input type="number" id="affInsRate" value="0.5" step="0.1" min="0"></div>
         </div>
-        <div class="field"><label>Monthly HOA fee ($)</label><input type="number" id="affHoa" value="0" step="10" min="0"></div>
+        <div class="row2">
+          <div class="field"><label>Monthly HOA fee ($)</label><input type="number" id="affHoa" value="0" step="10" min="0"></div>
+          <div class="field"><label>Monthly take-home pay ($)</label><input type="number" id="affTakeHome" value="6012" step="100" min="0"></div>
+        </div>
       </div>
+      <div style="display:grid;gap:16px;align-content:start;">
       <div class="readout">
         <div class="r-row"><span class="r-label">Max home price</span><span class="r-value" id="affMaxPrice">$0</span></div>
         <div class="r-row"><span class="r-label">Max loan amount</span><span class="r-value" id="affMaxLoan">$0</span></div>
         <div class="r-row"><span class="r-label">Estimated monthly payment</span><span class="r-value" id="affMonthly">$0</span></div>
         <div class="r-row"><span class="r-label">Down payment as % of price</span><span class="r-value" id="affDownPct" style="font-size:20px;">0%</span></div>
       </div>
+      <div class="readout" style="background:linear-gradient(160deg, var(--readout-bg-hi), var(--readout-bg));">
+        <div class="r-label" style="text-transform:uppercase;font-size:11px;margin-bottom:8px;color:#9C9284;">What it leaves you</div>
+        <div class="r-row"><span class="r-label">Housing + existing debts</span><span class="r-value" id="affCommitted">$0</span></div>
+        <div class="r-row"><span class="r-label">Share of take-home pay</span><span class="r-value" id="affTakeHomePct">0%</span></div>
+        <div class="r-row"><span class="r-label">Left for everything else</span><span class="r-value" id="affLeftOver" style="font-size:22px;">$0</span></div>
+        <div class="r-sub" id="affComfort" style="margin-top:10px;line-height:1.45;"></div>
+      </div>
+      </div>
       <div class="field-warning" id="affWarning"></div>
     </div>
+    <p style="font-size:13px;color:var(--ink-muted);margin:14px 0 0;">The debt-to-income limit above is measured against <strong>gross</strong> income, but the payment comes out of take-home. That gap is why the second panel exists &mdash; enter your real monthly take-home (the <a href="paycheck-calculator.html">paycheck calculator</a> works it out) to see what the maximum actually leaves you. We computed <a href="affordability-dti-what-it-buys.html">what each DTI is worth across incomes</a>, and the spread between 28% and 50% is 84% more house.</p>
   </section>
 
   <section class="article">

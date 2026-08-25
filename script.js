@@ -6073,9 +6073,49 @@ function amortizationToCSV(years, cur){
     document.getElementById('affMaxLoan').textContent = money(maxLoan);
     document.getElementById('affMonthly').textContent = money(monthlyPayment);
     document.getElementById('affDownPct').textContent = downPct.toFixed(1)+'%';
+
+    // The DTI limit above is applied to GROSS income, but the payment leaves a
+    // take-home account. Re-expressing the same maximum against real net pay is
+    // the whole point of this panel: a 50% DTI approval is ~62% of take-home for
+    // a typical single filer, which the "50%" label does not suggest.
+    const takeHomeEl = document.getElementById('affTakeHome');
+    if(takeHomeEl){
+      const takeHome = parseFloat(takeHomeEl.value)||0;
+      const committed = monthlyPayment + debts;
+      const pctEl = document.getElementById('affTakeHomePct');
+      const leftEl = document.getElementById('affLeftOver');
+      const noteEl = document.getElementById('affComfort');
+      document.getElementById('affCommitted').textContent = money(committed);
+
+      if(takeHome <= 0){
+        pctEl.textContent = '—';
+        leftEl.textContent = '—';
+        if(noteEl) noteEl.textContent = 'Enter your monthly take-home pay to see what this maximum would leave you.';
+      } else {
+        const pct = (committed/takeHome)*100;
+        const left = takeHome - committed;
+        pctEl.textContent = pct.toFixed(0)+'%';
+        leftEl.textContent = money(left);
+        if(noteEl){
+          let note;
+          if(left <= 0){
+            note = 'This payment exceeds your take-home pay entirely. Nothing is left for food, utilities, transport or saving.';
+          } else if(pct >= 55){
+            note = 'Over half your take-home is committed before a single other bill. Retirement saving and an emergency fund are unlikely to survive this.';
+          } else if(pct >= 45){
+            note = 'A stretch. Workable with a stable dual income and an emergency fund already in place, uncomfortable without one.';
+          } else if(pct >= 35){
+            note = 'Within the range most households can carry while still saving.';
+          } else {
+            note = 'Comfortable. This leaves room to save, absorb a surprise, and keep the retirement contribution running.';
+          }
+          noteEl.textContent = note + ' That remainder still has to cover food, utilities, transport, healthcare and every repair.';
+        }
+      }
+    }
   }
 
-  ['affIncome','affDebts','affDown','affRate','affTerm','affDTI','affTaxRate','affInsRate','affHoa'].forEach(id=>{
+  ['affIncome','affDebts','affDown','affRate','affTerm','affDTI','affTaxRate','affInsRate','affHoa','affTakeHome'].forEach(id=>{
     const el = document.getElementById(id);
     if(!el) return;
     el.addEventListener('input', calc);
