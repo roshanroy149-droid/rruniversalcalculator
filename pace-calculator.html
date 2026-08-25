@@ -514,6 +514,31 @@ PERSONAL FINANCE · 206 TOOLS · 0 SIGN-UP
   </section>
 
   <section class="article">
+    <h2>Pace and speed are the same fact, inverted</h2>
+    <p>Speed answers "how far per hour"; pace answers "how long per unit of distance". They carry identical information and one is simply the reciprocal of the other, but pace is what runners actually use — because a race is a fixed distance, and minutes-per-kilometre translates directly into a finish time by multiplication.</p>
+    <p>That is the whole engine of this calculator. Give it any two of pace, time and distance and it solves for the third, because <strong>time = pace &times; distance</strong> rearranges three ways. A 25:00 5K is 5:00 per kilometre; 5:00 per kilometre over 10 km is 50:00.</p>
+
+    <h2>Where the race predictions stop being reliable — and by how much</h2>
+    <p>The predicted times on this page scale your pace linearly: hold 5:00/km and a marathon comes out at 5:00 &times; 42.195, or <strong>3:30:59</strong>. That is arithmetically correct and physiologically optimistic, because nobody holds their 5K pace for 42 kilometres. Fatigue is not linear, and neither is the real relationship.</p>
+    <p>The standard correction is <strong>Riegel's formula</strong>, which raises the distance ratio to the power 1.06 rather than 1. Against a 25:00 5K the two disagree like this:</p>
+    <div class="table-scroll">
+      <table class="data-table">
+        <thead><tr><th>Distance</th><th>Linear (shown here)</th><th>Riegel</th><th>Difference</th></tr></thead>
+        <tbody>
+          <tr><td>10K</td><td>50:00</td><td>52:07</td><td>+2:07</td></tr>
+          <tr><td>Half marathon</td><td>1:45:29</td><td>1:55:00</td><td>+9:31</td></tr>
+          <tr><td>Marathon</td><td>3:30:59</td><td>3:59:47</td><td><strong>+28:48</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Nearly <strong>29 minutes</strong> on a marathon. At 10K the gap is small enough to ignore; by the marathon it is the difference between a plan that works and one that blows up at 30 km. <strong>Treat the longer predictions here as a floor — the fastest you could theoretically go — not as a target.</strong> Doubling the distance costs you roughly 4% of pace, which is a useful thing to hold in your head at a start line.</p>
+    <p>Riegel also assumes you have trained for the distance. A 25:00 5K runner who has never run beyond 10 km will not run a four-hour marathon either; the formula predicts what your current fitness supports, not what your longest run supports.</p>
+
+    <h2>Miles or kilometres: it only matters that you are consistent</h2>
+    <p>The unit toggle converts everything, so the underlying answer is identical. What changes is the arithmetic you can do in your head, and the mental anchors differ enough to be worth knowing: <strong>6:00/km is 9:39/mile</strong>, and <strong>8:00/mile is 4:58/km</strong>. A useful approximation in either direction is that a mile is roughly 1.6 km, so per-mile pace is about 1.6 times per-kilometre pace.</p>
+    <p>The one genuine trap is mixing them — reading a per-mile pace off a watch set to kilometres. A 5:00 figure means a 25-minute 5K in one unit and a 31-minute 5K in the other, and the mistake is invisible until race day.</p>
+
+    <h2>Common questions</h2>
     <h3>How do I calculate my running pace?</h3>
     <p>Divide your total time by the distance covered: convert your time to total seconds, divide by the distance, then convert the result back to minutes and seconds per unit. Running 5 km in 25 minutes works out to 1,500 seconds ÷ 5 km = 300 seconds per km, or 5:00/km.</p>
     <h3>What's a good pace for a beginner runner?</h3>

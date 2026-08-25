@@ -459,6 +459,28 @@ PERSONAL FINANCE · 206 TOOLS · 0 SIGN-UP
   </section>
 
   <section class="article">
+    <h2>The factor, and how exact it actually is</h2>
+    <p>One kilogram is <strong>2.20462262185</strong> pounds. Unusually for a unit conversion, that is not an approximation of anything — it is exact by definition, running the other way: since 1959 the international pound has been <em>defined</em> as exactly 0.45359237 kg. Every pound figure in the world is derived from the kilogram.</p>
+    <p>So the arithmetic is simply <strong>pounds = kilograms &times; 2.20462</strong>, and <strong>kilograms = pounds &divide; 2.20462</strong>. Seventy kilograms is 154.32 lb. The reverse division is where people slip: dividing by 2.2 rather than multiplying by 0.4536 is the same operation, but mixing the two up inverts the answer entirely, and a 154 kg human is a more obvious error than a 70 lb one.</p>
+
+    <h2>Doing it in your head, and how far off you land</h2>
+    <p>Multiplying by 2.2 is close enough for almost anything and easy to hold: <strong>double it, then add 10%</strong>. Seventy kilograms doubles to 140, plus 14 gives 154 &mdash; against a true 154.32, an error of 0.2%.</p>
+    <p>Going the other way, <strong>halve it, then subtract 10%</strong>. A hundred and fifty pounds halves to 75, minus 7.5 gives 67.5 kg &mdash; the true figure is 68.04, so about 0.8% out. Both shortcuts are well inside the accuracy of a bathroom scale, and both fail exactly where precision matters, which is the next point.</p>
+
+    <h2>Stone, and why the UK is its own case</h2>
+    <p>British body weight is usually spoken in <strong>stone and pounds</strong>, where one stone is 14 pounds. It is a two-step conversion and the second step is the one that goes wrong: 70 kg is 154.32 lb, which is 154.32 &divide; 14 = 11.02 stone &mdash; but that is <strong>11 stone 0.3 lb</strong>, not "11.02 stone", because the remainder is in pounds rather than decimal.</p>
+    <p>The rule: take the whole number of stone, then multiply the decimal part by 14 to get the leftover pounds. Someone at 80 kg is 176.37 lb, which is 12 stone 8 lb. Reading the decimal as pounds directly would make that 12 stone 6 &mdash; wrong by two pounds, and wrong in a way nobody catches.</p>
+
+    <h2>Where rounding is not acceptable</h2>
+    <p>For groceries, luggage and bodyweight, 2.2 is fine. Three situations need the full factor:</p>
+    <ul>
+      <li><strong>Medication dosing.</strong> Many drugs are prescribed per kilogram of body weight, and paediatric doses in particular have narrow margins. A 5% rounding error is a 5% dosing error.</li>
+      <li><strong>Freight and aviation.</strong> Charges and load limits sit at hard thresholds, and rounding across one costs money or breaches a limit. Confusion between the two units has caused real aviation incidents.</li>
+      <li><strong>Anything that compounds.</strong> Convert once at the end, not at every step &mdash; repeated rounding accumulates, and converting back and forth through both units drifts further each round trip.</li>
+    </ul>
+    <p>A last distinction worth holding: kilograms measure <em>mass</em> and pounds are commonly used for both mass and force. On Earth the difference never shows up. It is why a "pound-force" exists as a separate unit, and why the <a href="weight-on-planets-calculator.html">weight on other planets calculator</a> can give you a different pound figure for an unchanged kilogram mass.</p>
+
+    <h2>Common questions</h2>
     <h3>How do I convert kg to pounds?</h3>
     <p>Multiply the kilogram value by 2.20462: <strong>pounds = kg × 2.20462</strong>. 1 kilogram is defined as exactly 2.20462... pounds (the pound itself is defined as exactly 0.45359237 kg).</p>
     <h3>How do I convert pounds to kg?</h3>

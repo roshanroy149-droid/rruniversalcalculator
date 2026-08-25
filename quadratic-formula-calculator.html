@@ -456,6 +456,30 @@ PERSONAL FINANCE · 206 TOOLS · 0 SIGN-UP
   </section>
 
   <section class="article">
+    <h2>What the formula is doing</h2>
+    <p>For any equation of the form <strong>ax&sup2; + bx + c = 0</strong>, the roots are given by <strong>x = (&minus;b &plusmn; &radic;(b&sup2; &minus; 4ac)) &divide; 2a</strong>. With the values this page opens with — a = 1, b = &minus;3, c = 2 — the discriminant is 9 &minus; 8 = 1, and the roots come out as <strong>x = 2</strong> and <strong>x = 1</strong>.</p>
+    <p>It is worth seeing where it comes from, because the structure stops looking arbitrary once you do. The formula is just <em>completing the square</em>, carried out once in general rather than every time. Divide through by a, move the constant across, add (b&divide;2a)&sup2; to both sides to make the left a perfect square, take the square root, and solve for x. Every piece of the formula is a residue of that process: the &minus;b&divide;2a is the axis of symmetry, and the square-root term is the distance from that axis out to each root.</p>
+    <p>That reading also explains the &plusmn;. A parabola is symmetric about its vertex, so the two roots sit equally far either side of &minus;b&divide;2a. They are never at unrelated positions.</p>
+
+    <h2>The discriminant decides everything before you solve</h2>
+    <p>The quantity under the root, <strong>b&sup2; &minus; 4ac</strong>, determines the character of the solutions on its own — which is why the calculator reports it separately:</p>
+    <ul>
+      <li><strong>Positive:</strong> two distinct real roots. The parabola crosses the x-axis twice.</li>
+      <li><strong>Zero:</strong> one repeated real root. The parabola touches the axis at its vertex and turns away — the two roots have converged onto the same point.</li>
+      <li><strong>Negative:</strong> two complex conjugate roots. The parabola never meets the axis at all.</li>
+    </ul>
+    <p>A perfect square discriminant (1, 4, 9, 16…) additionally means the roots are rational, which is the sign that the expression would have factored — a = 1, b = &minus;3, c = 2 gives a discriminant of 1, and indeed x&sup2; &minus; 3x + 2 factors cleanly as (x &minus; 1)(x &minus; 2).</p>
+
+    <h2>Complex roots are answers, not failures</h2>
+    <p>When the discriminant is negative the roots take the form p &plusmn; qi, always as a conjugate pair — if one root is 2 + 3i, the other is necessarily 2 &minus; 3i. They cannot appear singly for an equation with real coefficients.</p>
+    <p>Whether that constitutes a solution depends on what you were modelling. For "at what time does the projectile hit the ground", complex roots mean it never does — the answer is that the situation has no real solution, which is genuine information rather than an error. In electrical engineering and signal processing, complex roots are the normal case and describe oscillation directly.</p>
+
+    <h2>Two cases that trip the formula up</h2>
+    <p><strong>If a = 0 the equation is not quadratic</strong> and the formula divides by zero. What you have is the linear equation bx + c = 0, solved directly as x = &minus;c &divide; b. The calculator flags this rather than returning nonsense. It matters most when a is not a number you typed but the output of an earlier step that happened to vanish.</p>
+    <p><strong>When b&sup2; is much larger than 4ac</strong>, the formula is numerically fragile in a way that rarely gets taught. The square root comes out very close to |b|, so one of the two roots is computed as a subtraction of two nearly equal numbers — and floating-point arithmetic loses most of its significant digits doing that. The standard fix is to compute the well-conditioned root first, then obtain the other from the fact that the two roots multiply to c &divide; a. If you are implementing this in code rather than solving by hand, that is the version to write.</p>
+    <p>Need the vertex or the shape rather than the roots? The <a href="slope-calculator.html">slope calculator</a> and the <a href="scientific-calculator.html">scientific calculator</a> cover the surrounding work.</p>
+
+    <h2>Common questions</h2>
     <h3>What is the quadratic formula?</h3>
     <p>For any equation in the form <strong>ax² + bx + c = 0</strong> (with a ≠ 0), the solutions are <strong>x = (−b ± √(b² − 4ac)) / (2a)</strong>. It works for every quadratic equation, unlike factoring, which only comes out cleanly when the roots happen to be nice whole numbers.</p>
     <h3>What does the discriminant tell you?</h3>

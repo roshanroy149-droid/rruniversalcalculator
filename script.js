@@ -8835,7 +8835,10 @@ function tbMoney(n){
     const weight = parseFloat(weightEl.value)||0;
     let reps = parseInt(repsEl.value,10)||0;
     reps = Math.min(Math.max(reps,1),15);
-    const oneRM = weight*(1+reps/30);
+    // Epley. At one rep the formula returns weight*(31/30) — 3% above a weight
+    // the lifter demonstrably just lifted once, which is their 1RM by
+    // definition. Return it unchanged rather than inflating it.
+    const oneRM = reps === 1 ? weight : weight*(1+reps/30);
     document.getElementById('ormResult').textContent = oneRM.toFixed(1);
     const tableEl = document.getElementById('ormTable');
     if(tableEl){

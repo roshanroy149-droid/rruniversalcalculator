@@ -454,6 +454,28 @@ PERSONAL FINANCE · 206 TOOLS · 0 SIGN-UP
   </section>
 
   <section class="article">
+    <h2>The formula, and what each part is doing</h2>
+    <p>Percent error is <strong>|experimental &minus; true| &divide; true &times; 100</strong>. With the values this page opens with — a measurement of 48 against a true value of 50 — the absolute error is <strong>&minus;2</strong> and the percent error is <strong>4.000%</strong>.</p>
+    <p>The division is the entire point. An error of 2 means very different things depending on what you were measuring: 2 grams out of 50 is a sloppy result, 2 grams out of 50,000 is excellent. Dividing by the true value strips out the scale and leaves something comparable across experiments, instruments and units.</p>
+    <p>Note which value sits on the bottom. It is the <em>true</em> or accepted value, never your measurement — that is what makes the result a statement about your error rather than about your equipment's opinion of itself. Dividing by the experimental value produces a different number, and it is a common enough slip that it is worth checking in any formula you are handed.</p>
+
+    <h2>Why the absolute value, and when to drop it</h2>
+    <p>Percent error is conventionally reported unsigned because the question is usually "how far off was I", not "in which direction". Two labs at +3% and &minus;3% are equally accurate and the sign would obscure that.</p>
+    <p>But the sign carries real diagnostic information, which is why this page shows the raw error separately. <strong>Random error scatters either side of the true value; systematic error lands consistently on one side.</strong> A dozen trials all reading low is not bad luck — it is a mis-calibrated instrument, a consistent parallax, an uncorrected buoyancy effect. If every run has the same sign, stop repeating the measurement and go and find the bias.</p>
+
+    <h2>Three things this is often confused with</h2>
+    <ul>
+      <li><strong>Percent difference</strong> compares two measurements when neither is authoritative, dividing by their <em>mean</em>: |a &minus; b| &divide; ((a+b)&divide;2) &times; 100. Use it to compare two instruments against each other, not against a standard.</li>
+      <li><strong>Relative error</strong> is the same quantity as percent error without the &times;100 — expressed as a fraction, so 0.04 rather than 4%.</li>
+      <li><strong>Percent yield</strong>, in chemistry, is actual &divide; theoretical &times; 100. It is not an error measure at all: 95% yield means you recovered 95% of what was possible, and the corresponding "error" would be 5%.</li>
+    </ul>
+
+    <h2>What counts as good, and the case where this breaks</h2>
+    <p>There is no universal threshold — acceptable error is set by the field and the method, not by the arithmetic. In an introductory teaching lab, under 5% is usually a good result and under 10% acceptable. A gravimetric analysis in an analytical chemistry lab would be expected under 1%. Some biological and field measurements tolerate 20% or more, because the underlying variation is genuinely that large. Always check the tolerance for the method rather than assuming a number is fine because it looks small.</p>
+    <p>One case has no answer at all: <strong>when the true value is zero, percent error is undefined</strong>, because you would be dividing by zero. This is not a quirk of the formula but a real limitation — "how far off, proportionally, from nothing" has no meaning. The calculator flags it rather than returning something misleading. Where the accepted value is legitimately zero, report the absolute error with its units and say so explicitly.</p>
+    <p>Working with several trials rather than one? The <a href="standard-deviation-calculator.html">standard deviation calculator</a> quantifies the scatter, which is the other half of the picture — accuracy and precision are separate properties and a result can have one without the other.</p>
+
+    <h2>Common questions</h2>
     <h3>What is percent error?</h3>
     <p>Percent error measures how far an experimental or measured value is from a known, accepted true value, expressed as a percentage: <strong>|experimental − true| / |true| × 100</strong>. It's the standard way labs and classrooms report how accurate a measurement was against a known reference.</p>
     <h3>Why use absolute value in the formula?</h3>
