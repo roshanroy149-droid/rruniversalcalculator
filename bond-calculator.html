@@ -468,7 +468,14 @@ PERSONAL FINANCE · 206 TOOLS · 0 SIGN-UP
   </section>
 
   <section class="article">
-    <h3>Why does a bond's price move opposite to interest rates?</h3>
+        <h2>The par case: coupon rate equals market rate</h2>
+    <p>Set the market rate to match this page's own 5% coupon rate exactly, holding everything else the same, and the price lands on exactly $1,000.00 — the face value, to the cent. That is not a coincidence: when a bond's fixed coupon already matches what the market currently demands, there is no reason for its price to sit above or below face value at all. Every deviation from par traces back to a gap between those two rates, in one direction or the other.</p>
+    <h2>Current yield and yield to maturity are not the same number, even here</h2>
+    <p>This page's own default bond has a current yield of 5.40% — but its yield to maturity is exactly 6%, since that 6% market rate is what its $925.61 price was discounted at in the first place. Current yield only counts coupon income against today's price; it says nothing about the $74.39 capital gain still to come as the price rises to $1,000 at maturity. For a bond bought at a discount, current yield always understates the total return an investor actually earns by holding to maturity.</p>
+    <h2>The same present-value math run twice, then added</h2>
+    <p>This page's price is two present-value calculations added together: 20 semi-annual coupon payments treated as an annuity, plus the $1,000 face value treated as a single lump sum, both discounted at the same 3%-per-period market rate. The <a href="annuity-calculator.html">Annuity Calculator</a> models a growing payment stream on the way in; a bond's coupons are that same idea running in reverse, valuing a fixed payment stream on the way out instead. The <a href="present-value-calculator.html">Present Value Calculator</a> reproduces either half by hand, and the <a href="investment-calculator.html">Investment Calculator</a> covers lump-sum growth without a bond's periodic coupon structure at all.</p>
+
+<h3>Why does a bond's price move opposite to interest rates?</h3>
     <p>A bond's coupon payments are fixed at issuance, so when market interest rates rise, newly issued bonds offer better yields, making the older, lower-fixed-coupon bond less attractive by comparison — its price has to fall so its effective yield rises to match the new market rate. The reverse happens when market rates fall: the old bond's fixed coupon suddenly looks relatively better, so its price rises above face value.</p>
     <h3>What's the difference between coupon rate, current yield, and yield to maturity?</h3>
     <p>Coupon rate is the fixed annual rate stated on the bond at issuance, based on face value — it never changes. Current yield is annual coupon income divided by the bond's current market price, so it moves as the price moves. Yield to maturity (YTM) is the total return if held to maturity, factoring in price, all coupon income, and any gain or loss from buying at a premium or discount — it's the most complete measure of the three, though this calculator focuses on price and current yield.</p>

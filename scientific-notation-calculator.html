@@ -437,7 +437,16 @@ PERSONAL FINANCE · 206 TOOLS · 0 SIGN-UP
   </section>
 
   <section class="article">
-    <h3>The rule: one digit before the point</h3>
+        <h2>This page's own default, worked in full</h2>
+    <p>The speed of light, 299,792,458, becomes <strong>2.997925 × 10⁸</strong> in scientific notation, <strong>299.792458 × 10⁶</strong> in engineering notation, <strong>2.997925e8</strong> in e-notation, and sits at order of magnitude <strong>8</strong>. All four are the same number; only how the exponent is packaged changes.</p>
+    <h2>The input box reads scientific notation back, too</h2>
+    <p>Typing "2.998 x 10^8" directly into the input field parses to the same 299,800,000 this page would otherwise expect written out in full — the field accepts the notation it also produces, so a result from one calculation can be pasted straight into another without converting it back to plain digits first.</p>
+    <h2>A small-number example, since 10⁸ only shows one direction</h2>
+    <p>45 nanoseconds, written as a decimal, is 0.000000045 — scientific notation puts that at 4.5 × 10⁻⁸. Engineering notation instead rounds the exponent to the nearest multiple of three at or below it, −9, giving 45 × 10⁻⁹ — and "10⁻⁹" is exactly what "nano" means. That's the entire value of engineering notation in one example: the unit name and the exponent are the same fact, said two ways.</p>
+    <h2>Where the exponent itself becomes the calculation</h2>
+    <p>Raising 10 to a power is the one case where this page's own m × 10ⁿ form <em>is</em> the calculation, not just a display format — the <a href="exponent-calculator.html">Exponent Calculator</a> handles that operation directly for any base, and the <a href="root-calculator.html">Root Calculator</a> runs it in reverse. For a whole-number result too large for any floating-point mantissa to hold exactly — the situation scientific notation is built to approximate rather than solve — the <a href="big-number-calculator.html">Big Number Calculator</a> keeps every digit instead of rounding to a mantissa at all.</p>
+
+<h3>The rule: one digit before the point</h3>
     <p>Scientific notation writes a number as <strong>m × 10ⁿ</strong> where the mantissa m is at least 1 and less than 10. The speed of light, 299,792,458 m/s, becomes 2.99792458 × 10⁸. Move the point left and the exponent goes up; move it right and it goes down.</p>
     <p>Small numbers take negative exponents. 0.00045 is 4.5 × 10⁻⁴ — the exponent counts how many places the point moved, and its sign says which way.</p>
     <h3>Engineering notation, and why it exists</h3>

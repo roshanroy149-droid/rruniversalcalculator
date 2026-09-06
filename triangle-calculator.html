@@ -449,7 +449,14 @@ PERSONAL FINANCE · 206 TOOLS · 0 SIGN-UP
   </section>
 
   <section class="article">
-    <h3>Three laws do all the work</h3>
+        <h2>Three inputs, three modes, the same triangle</h2>
+    <p>This page's own default — sides 3, 4, 5 (SSS) — isn't the only way to describe that triangle. Entering it as SAS instead (side 3, included angle 90°, side 4) solves the missing side as exactly 5.000000. Entering it as ASA instead (angle 36.8699°, side 5, angle 53.1301°) solves the other two sides as 3.000000 and 4.000000. All three modes are different descriptions of one triangle, and the calculator reconstructs the identical shape from any of them.</p>
+    <h2>Heron's formula and the law of cosines agree, on purpose</h2>
+    <p>Heron's formula gives the 3-4-5 triangle's area as exactly 6 from the three sides alone. The more familiar ½ × base × height formula, using the two legs as base and height with the law-of-cosines-derived 90° angle between them, gives ½ × 3 × 4 × sin(90°) = 6 as well. Two genuinely different routes to area — one needing only side lengths, one needing an angle — landing on the same number is what confirms the angle computed from the sides is actually correct, not just a plausible-looking one.</p>
+    <h2>What "ambiguous" really looks like, with real numbers</h2>
+    <p>Side a = 7, angle A = 30°, side b = 10 — a side, a non-included angle, and a second side — genuinely describes two different triangles. The law of sines gives sin(B) = 10 × sin(30°) ÷ 7 ≈ 0.7143, and both B ≈ 45.58° and B ≈ 134.42° satisfy that equation while keeping every angle positive and under 180° combined with A. One resolves to a third side near 13.56 with an obtuse 104.42° angle at C; the other resolves to a third side near 3.76 with an acute 15.58° angle at C. Both are entirely valid triangles built from the exact same three starting numbers, which is precisely why this input combination is left out rather than silently picking one for you. For the special case where one angle is fixed at exactly 90°, the <a href="right-triangle-calculator.html">Right Triangle Calculator</a> and <a href="pythagorean-theorem-calculator.html">Pythagorean Theorem Calculator</a> both sidestep this ambiguity entirely, since a right angle plus one side and one more piece of information is always enough on its own. For the area of shapes that are not triangles at all, the <a href="area-calculator.html">Area Calculator</a> covers the rest of the common 2D shapes.</p>
+
+<h3>Three laws do all the work</h3>
     <ul>
       <li><strong>Law of cosines:</strong> c² = a² + b² − 2ab·cos(C). Finds a side from two sides and the included angle, or an angle from three sides.</li>
       <li><strong>Law of sines:</strong> a/sin(A) = b/sin(B) = c/sin(C). Finds sides when you know two angles and one side.</li>
