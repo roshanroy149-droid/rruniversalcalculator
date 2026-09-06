@@ -462,6 +462,36 @@ PERSONAL FINANCE · 206 TOOLS · 0 SIGN-UP
   </section>
 
   <section class="article">
+    <h2>Three questions, one equation</h2>
+    <p>Exponential decay is <strong>N = N&#8320; &times; 0.5<sup>t/T</sup></strong>, where N&#8320; is the starting amount, T is the half-life and t is elapsed time. This calculator solves it in whichever direction you need, and the values it opens with check out: 100 units with a half-life of 10, after 20 elapsed &mdash; two half-lives &mdash; leaves <strong>25.0000</strong>.</p>
+    <ul>
+      <li><strong>Remaining amount</strong> (the default): N = N&#8320; &times; 0.5<sup>t/T</sup></li>
+      <li><strong>Half-life</strong>, from a measured decay: T = t &times; ln(0.5) &divide; ln(N&#8725;N&#8320;)</li>
+      <li><strong>Elapsed time</strong>, from how much is left: t = T &times; ln(N&#8725;N&#8320;) &divide; ln(0.5)</li>
+    </ul>
+    <p>All three are the same relationship rearranged, which is why switching modes never changes the underlying answer &mdash; only which variable you are solving for.</p>
+
+    <h2>Worked example: radiocarbon dating</h2>
+    <p>Carbon-14 has a half-life of <strong>5,730 years</strong>. A sample that retains <strong>10% of its original carbon-14</strong> is, by the time formula:</p>
+    <p><strong>t = 5,730 &times; ln(0.10) &divide; ln(0.5) &approx; 19,035 years old.</strong></p>
+    <p>That is the actual arithmetic behind radiocarbon dating headlines, and it explains why the method gets imprecise past roughly 50,000 years: by then the remaining fraction is so small &mdash; under 0.2% &mdash; that ordinary measurement noise swamps the signal.</p>
+
+    <h2>Half-lives you meet outside a physics class</h2>
+    <p>The same formula runs a 200&nbsp;mg dose of caffeine (half-life roughly 5 hours) through your system:</p>
+    <div class="table-scroll">
+    <table class="data-table">
+      <thead><tr><th>Hours after</th><th>0</th><th>5</th><th>10</th><th>15</th><th>20</th></tr></thead>
+      <tbody><tr><td>Remaining</td><td>200&nbsp;mg</td><td>100&nbsp;mg</td><td>50&nbsp;mg</td><td>25&nbsp;mg</td><td>12.5&nbsp;mg</td></tr></tbody>
+    </table>
+    </div>
+    <p>Drug clearance, radioactive tracers in medical imaging, and capacitor discharge in electronics all follow the identical shape &mdash; only N&#8320; and T change.</p>
+
+    <h2>Solving backwards: what the half-life mode is for</h2>
+    <p>If you only have two measurements &mdash; say 100 units falling to 60 after 15 days &mdash; you can recover the half-life itself: T = 15 &times; ln(0.5) &divide; ln(0.6) &approx; <strong>20.35 days</strong>. This is how half-lives get measured in the first place: nobody watches a full decay to zero, because exponential decay never actually reaches it (see below) &mdash; they measure the drop over a known interval and solve backwards.</p>
+
+    <h2>Why the result never hits exactly zero</h2>
+    <p>Each half-life removes half of what remains, not a fixed amount, so N in the formula shrinks toward zero without ever arriving there mathematically. In reality a physical sample is made of a finite number of atoms or molecules, so it does empty out once the count reaches one and that last unit decays &mdash; the smooth curve is an approximation that holds as long as the numbers involved are large.</p>
+
     <h3>What is half-life?</h3>
     <p>Half-life is the time it takes for a quantity undergoing exponential decay to fall to exactly half its starting amount. It's a fixed property of the decaying substance or process, no matter how much you start with — after one more half-life passes, whatever remains gets cut in half again.</p>
     <h3>What's the formula for radioactive or exponential decay?</h3>

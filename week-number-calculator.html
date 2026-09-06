@@ -443,6 +443,20 @@ PERSONAL FINANCE · 206 TOOLS · 0 SIGN-UP
   </section>
 
   <section class="article">
+    <h2>The rule, and why it works</h2>
+    <p>ISO 8601 defines a week as running <strong>Monday to Sunday</strong>, and assigns week 1 as whichever week contains the year&#8217;s <strong>first Thursday</strong> &mdash; equivalently, the week containing 4 January. This calculator finds the Thursday of your date&#8217;s own week, then counts how many Mondays separate that from the first Thursday of its year, so a date and "its" year are decided by where the <em>middle</em> of the week falls, not by the calendar page it happens to sit on.</p>
+    <p>Worked example: <strong>15 June 2026</strong> is a Monday. Its own week runs to Sunday 21 June, its midweek Thursday is 18 June, and counting Thursdays back to the year&#8217;s first (8 January) gives <strong>week 25</strong> &mdash; also day 166 of 365.</p>
+
+    <h2>The edge case that actually happens this year</h2>
+    <p>Take <strong>1 January 2027</strong>. It is a Friday. Under a naive "week 1 starts on 1 January" rule you would call it week 1 of 2027. The ISO rule disagrees: that Friday's own Monday&ndash;Sunday week runs from 28 December 2026 to 3 January 2027, its Thursday is 31 December 2026, and that Thursday belongs to 2026 &mdash; so 1 January 2027 is <strong>week 53 of 2026</strong>, and the calculator correctly reports the ISO year as 2026, not 2027. ISO week 1 of 2027 does not begin until <strong>Monday 4 January 2027</strong>.</p>
+    <p>This is exactly why the calculator reports an <em>ISO year</em> separately from the calendar year of the date you entered &mdash; for the first days of January and the last days of December, the two frequently disagree.</p>
+
+    <h2>Why 2026 has a 53rd week at all</h2>
+    <p>Most years have 52 ISO weeks; a year gets a 53rd whenever <strong>1 January falls on a Thursday</strong>, or in a leap year, when it falls on a Wednesday. <strong>1 January 2026 is a Thursday</strong>, which is why 2026 runs long &mdash; its week 53 covers 28 December 2026 through 3 January 2027, spanning the New Year boundary shown above.</p>
+
+    <h2>Not every system counts the same way</h2>
+    <p>The United States commonly uses a Sunday-start week numbered from 1 January regardless of what day that lands on, which routinely disagrees with the ISO figure by one week and sometimes assigns week 1 to what ISO still calls the final week of the prior year. Software defaults vary too &mdash; spreadsheet WEEKNUM functions, for instance, default to the US convention unless told otherwise. If a week number from this tool does not match one you see elsewhere, mismatched conventions are the most likely reason, not an error in either source.</p>
+
     <h3>What is an ISO week number?</h3>
     <p>ISO 8601 defines week 1 of a year as the week containing that year's first Thursday, with weeks running Monday to Sunday. This means the ISO week-numbering year can differ from the calendar year for a few days at the very start or end of January/December — for example, 31 December can fall in week 1 of the following ISO year, and 1 January can fall in week 52 or 53 of the previous one.</p>
     <h3>Why doesn't week 1 always start on January 1st?</h3>

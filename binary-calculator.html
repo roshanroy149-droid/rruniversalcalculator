@@ -480,6 +480,24 @@ PERSONAL FINANCE · 206 TOOLS · 0 SIGN-UP
   </section>
 
   <section class="article">
+    <h2>What each digit is actually worth</h2>
+    <p>Decimal place values are powers of 10; binary place values are powers of 2. The default values on this page, <strong>1010</strong> and <strong>110</strong>, break down as:</p>
+    <ul>
+      <li><strong>1010</strong> = (1&times;8) + (0&times;4) + (1&times;2) + (0&times;1) = <strong>10</strong> in decimal</li>
+      <li><strong>110</strong> = (1&times;4) + (1&times;2) + (0&times;1) = <strong>6</strong> in decimal</li>
+    </ul>
+    <p>Every operation on this page runs the same way under the hood: convert both binary strings to the decimal numbers they represent, do ordinary arithmetic, then convert the answer back. <strong>10 + 6 = 16</strong>, and 16 in binary is <strong>10000</strong> &mdash; which is what this calculator returns for its own default inputs.</p>
+
+    <h2>The other two operations, worked</h2>
+    <ul>
+      <li><strong>Subtract:</strong> 1010 &minus; 110 = 10 &minus; 6 = <strong>4</strong> = <strong>100</strong> in binary.</li>
+      <li><strong>Multiply:</strong> 1010 &times; 110 = 10 &times; 6 = <strong>60</strong> = <strong>111100</strong> in binary.</li>
+    </ul>
+    <p>Doing this by hand instead follows the same column rules as decimal arithmetic, just with a carry that triggers at 2 instead of 10: 1+1=10 (write 0, carry 1), exactly like 9+1 carries in decimal. It is slower to do by hand precisely because there are only two digits to work with, so more columns are needed to represent the same value &mdash; ten in decimal is one digit, 1010 in binary is four.</p>
+
+    <h2>Why computers use base 2 at all</h2>
+    <p>A transistor is reliably read as one of two states &mdash; on or off, high voltage or low &mdash; and building hardware that reliably distinguishes ten distinct voltage levels for base-10 arithmetic is far harder than building one that distinguishes two. Base 2 is not a stylistic choice; it is the number system that matches what the physical hardware can actually do without error, and every other representation in computing (decimal displays, hexadecimal in web colours, binary in a network protocol) is binary underneath, formatted differently for whoever is reading it.</p>
+
     <h3>How does binary addition work?</h3>
     <p>Binary addition follows the same place-value carrying logic as decimal addition, but with only two digits available (0 and 1) — 1 + 1 = 10 in binary (write 0, carry 1). Adding 1010 (10 in decimal) + 0110 (6) column by column with carries gives 10000 (16). This tool handles the carrying for you by converting each number to decimal, doing the arithmetic, and converting the result back to binary.</p>
     <h3>How do I convert binary to decimal?</h3>

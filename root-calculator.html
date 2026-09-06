@@ -453,6 +453,18 @@ PERSONAL FINANCE · 206 TOOLS · 0 SIGN-UP
   </section>
 
   <section class="article">
+    <h2>What "nth root" means, and the default worked</h2>
+    <p>The nth root of x is the number that, raised to the power n, gives back x. This calculator computes it as <strong>x<sup>1&#8725;n</sup></strong>, which is why an nth root and an nth power undo each other &mdash; they are the same operation with the exponent flipped. Its own default, the square root (n=2) of 16, returns <strong>4</strong>, since 4&sup2; = 16.</p>
+
+    <h2>Negative numbers: sometimes fine, sometimes not</h2>
+    <p>A negative number has a real cube root because a negative number cubed is negative &mdash; (&minus;2)&sup3; = &minus;8, so the cube root of &minus;8 is <strong>&minus;2</strong>, which is what this calculator returns. Any odd root of a negative number works the same way. An <strong>even</strong> root cannot: raise any real number to an even power and the result is never negative, so no real number squared, to the 4th, or to any even power produces a negative x, and there is no real answer to return. The calculator flags this rather than guessing &mdash; the honest answer is that one does not exist within real numbers, not that the arithmetic failed.</p>
+
+    <h2>A rounding quirk worth knowing about, not worrying about</h2>
+    <p>Computing a root as x<sup>1&#8725;n</sup> runs into an unavoidable quirk of how computers store fractions: 1&#8725;3 cannot be represented exactly in binary floating point, so <strong>the cube root of 64 computes internally as 3.9999999999999996</strong>, not a clean 4, even though 4&sup3; is exactly 64. This is not a bug in this calculator &mdash; every calculator and programming language built on standard floating-point arithmetic hits the identical rounding. It only matters if you read out fifteen decimal places; rounded to six, as this page does, it correctly shows 4.000000.</p>
+
+    <h2>The inverse of the exponent calculator</h2>
+    <p>Roots and exponents are the same relationship read in opposite directions: the exponent calculator asks "what is x raised to the power n", and this one asks "what, raised to the power n, gives x". Fractional exponents make the connection explicit &mdash; raising a number to the power 1&#8725;2 <em>is</em> taking its square root, so the <a href="exponent-calculator.html">exponent calculator</a> can compute any root you need here simply by entering 1&#8725;n as the exponent, and the two tools will always agree.</p>
+
     <h3>What is an nth root?</h3>
     <p>The nth root of x is the number that, when raised to the power n, gives x back. The square root (n=2) of 16 is 4 because 4² = 16; the cube root (n=3) of 27 is 3 because 3³ = 27. Higher roots follow the same pattern with a larger index.</p>
     <h3>Why can't you take an even root of a negative number (in real numbers)?</h3>
