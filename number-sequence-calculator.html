@@ -445,7 +445,14 @@ PERSONAL FINANCE · 206 TOOLS · 0 SIGN-UP
   </section>
 
   <section class="article">
-    <h3>Arithmetic: a constant difference</h3>
+        <h2>Same seed, three different futures</h2>
+    <p>This page's default seed is 3, with a step value of 5. Run as arithmetic, that produces 3, 8, 13, 18… out to a 10th term of 48 and a sum of 255 — covered in full below. Feed the identical two numbers into the other two modes and the results diverge enormously: as geometric (the same 5 now read as a ratio), the sequence runs 3, 15, 75, 375…, and by the 10th term it has already reached <strong>5,859,375</strong>, with a sum of 7,324,218. As a Fibonacci-style sequence seeded from 3 (starting 3, 4, then each term the sum of the two before it), growth is far gentler: 3, 4, 7, 11, 18, 29, 47, 76, 123, 199 — a 10th term of just 199. Same starting number, same step, three completely different growth shapes.</p>
+    <h2>Why this page caps n at 200 terms</h2>
+    <p>Geometric sequences make that cap necessary fast. The default ratio of 5 raised to the 199th power is a number roughly 140 digits long — far beyond anything meaningful to display, and well past the point where floating-point arithmetic keeps every digit accurate. Arithmetic and Fibonacci sequences never approach this at 200 terms; only unchecked exponential growth does, which is worth remembering any time a "constant growth rate" gets quoted a long way into the future.</p>
+    <h2>Where each pattern actually shows up</h2>
+    <p>Arithmetic sequences describe anything adding the same fixed amount every period — a flat annual raise, or a loan under <a href="simple-interest-calculator.html">simple interest</a>, where the interest charged never itself earns interest. Geometric sequences describe anything multiplying by a fixed factor instead, which is exactly what <a href="compound-interest-calculator.html">compound interest</a> does every period, and why compound growth eventually dwarfs simple growth at the same headline rate — see the <a href="investment-calculator.html">Investment Calculator</a> for that same geometric growth applied to regular contributions rather than one lump sum. Fibonacci sits apart from both, defined by the two previous terms rather than a fixed step, which is why it needs its own term-by-term formula instead of either closed form above.</p>
+
+<h3>Arithmetic: a constant difference</h3>
     <p>Each term adds a fixed amount. Starting at 3 with a difference of 5: 3, 8, 13, 18, 23… The nth term is <strong>a + (n−1)d</strong>, so the 10th is 3 + 9×5 = 48 — no counting required.</p>
     <p>The sum has a closed form too: <strong>n/2 × (2a + (n−1)d)</strong>, giving 255 for those ten terms. The trick behind it is Gauss's: pair the first term with the last, the second with the second-last, and every pair has the same total.</p>
     <h3>Geometric: a constant ratio</h3>

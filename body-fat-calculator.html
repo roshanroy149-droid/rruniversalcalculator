@@ -495,7 +495,14 @@ PERSONAL FINANCE · 206 TOOLS · 0 SIGN-UP
   </section>
 
   <section class="article">
-    <h3>How accurate is the US Navy body fat method?</h3>
+        <h2>This page's own default, worked in full</h2>
+    <p>The pre-filled example — male, 170 cm tall, a 38 cm neck, and an 85 cm waist — runs through the same formula as the FAQ example below, just in metric: bodyFat% = 86.010 × log10(85−38) − 70.041 × log10(66.93) + 36.76 ≈ <strong>17.9%</strong>, landing in the "Fitness" category, just under the line into "Average." Converting the centimeter measurements to inches first (170 cm ≈ 66.93 in) is exactly what this calculator does internally — the formula itself always runs in inches, regardless of which unit is entered.</p>
+    <h2>Why the formula uses a logarithm at all</h2>
+    <p>Body fat does not scale in direct proportion to the waist-minus-neck gap — each additional inch around the waist matters slightly less than the one before it, which is the kind of diminishing relationship a logarithm captures naturally. That is also why the formula is fitted from real circumference and body-composition data (the US Navy's original validation study) rather than derived from first principles the way a geometric formula like area or volume would be — a statistical approximation tuned to fit a population, not an exact physical law.</p>
+    <h2>What a tape measure cannot see</h2>
+    <p>Two people with identical height, neck, and waist measurements can still carry meaningfully different amounts of visceral fat, muscle mass, or bone density, none of which this formula distinguishes — it only sees the outside shape. That is the trade-off for a method needing nothing more than a tape measure: convenience and reasonable trend-tracking accuracy, not laboratory precision. For the same measurements checked against military body-composition standards instead of general fitness categories, see the <a href="army-body-fat-calculator.html">Army Body Fat Calculator</a>; once a body fat percentage is known, the <a href="lean-body-mass-calculator.html">Lean Body Mass Calculator</a> converts it directly into pounds or kilograms of fat versus everything else.</p>
+
+<h3>How accurate is the US Navy body fat method?</h3>
     <p>Typically within about 3-4% of more precise clinical methods like DEXA scans or hydrostatic (underwater) weighing. That's more than accurate enough for tracking trends over time using nothing but a flexible tape measure, though it's not a substitute for a proper medical-grade body composition test if precision matters for your situation.</p>
     <h3>How do I measure my neck, waist, and hip correctly?</h3>
     <p>Measure your neck just below the larynx (Adam's apple), your waist level with the navel, and — for women — hips at their widest point. Use a flexible cloth or vinyl tape, keep it snug against the skin without pulling tight or compressing it, and measure standing normally rather than flexing muscles or sucking in your stomach, since either will throw the result off.</p>
