@@ -436,7 +436,14 @@ PERSONAL FINANCE · 206 TOOLS · 0 SIGN-UP
   </section>
 
   <section class="article">
-    <h3>How the GCF is actually found</h3>
+        <h2>This page's own default, worked in full</h2>
+    <p>48, 180, and 210 have a GCF of <strong>6</strong> and an LCM of 5,040. Their prime factorisations — 48 = 2⁴ × 3, 180 = 2² × 3² × 5, 210 = 2 × 3 × 5 × 7 — share only a single 2 and a single 3 across all three, which multiply to 6. They are not coprime as a set, since 6 is shared by all of them, though no pair among them shares everything the others do.</p>
+    <h2>The Euclidean algorithm, chained across three numbers</h2>
+    <p>The algorithm only works on two numbers at a time, so a third joins by feeding the running answer back in: GCF(48, 180) resolves in three division steps to 12, then GCF(12, 210) resolves in two more steps to <strong>6</strong> — the final answer for all three together. Each step only ever needs one division, which is exactly why the algorithm stays fast however many numbers (or however large they are) get chained through it.</p>
+    <h2>GCF and LCM, the same numbers, both ways</h2>
+    <p>The <a href="lcm-calculator.html">LCM Calculator</a> runs these same three numbers through the mirror-image rule — highest shared prime power instead of lowest — and reaches 5,040, the exact figure this page reports too. For two numbers specifically, GCF × LCM always equals their product; extended to three or more, as here, the two figures still both exist and still both mean something, but that clean multiplicative identity no longer holds. Reducing a fraction to lowest terms is dividing its numerator and denominator by exactly this number — the <a href="fraction-calculator.html">Fraction Calculator</a> does that step automatically on every result, and the <a href="factor-calculator.html">Factor Calculator</a> lays out the full prime factorisation behind any single one of these three numbers on its own.</p>
+
+<h3>How the GCF is actually found</h3>
     <p>Listing every factor of both numbers and picking the biggest shared one works, but it is slow. Two better methods:</p>
     <p><strong>Prime factorisation.</strong> Break each number into primes and take every prime they share, at the lowest power each appears. 48 = 2⁴ × 3 and 180 = 2² × 3² × 5. They share 2² and 3, so the GCF is 4 × 3 = <strong>12</strong>.</p>
     <p><strong>The Euclidean algorithm.</strong> Repeatedly replace the larger number with the remainder of dividing it by the smaller, until the remainder is zero. 180 ÷ 48 leaves 36; 48 ÷ 36 leaves 12; 36 ÷ 12 leaves 0, so the answer is 12. It is over two thousand years old, it is what this calculator uses, and it is still the fastest known method — it needs no factorisation at all, which matters enormously for large numbers.</p>

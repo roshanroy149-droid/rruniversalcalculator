@@ -436,7 +436,14 @@ PERSONAL FINANCE · 206 TOOLS · 0 SIGN-UP
   </section>
 
   <section class="article">
-    <h3>Why you should not multiply</h3>
+        <h2>This page's own default, worked in full</h2>
+    <p>4, 6, and 15 have an LCM of 60 — 60 is the smallest number every one of the three divides evenly. The GCF this page reports alongside it is <strong>1</strong>, meaning no single factor divides all three at once. That is a genuinely different statement from saying every <em>pair</em> is coprime: 4 and 6 share a factor of 2, and 6 and 15 share a factor of 3 — it is only across all three together that the overlap disappears. A GCF of 1 for a group says nothing about which pairs inside it might still share a factor.</p>
+    <h2>LCM and GCF, the same numbers, both directions</h2>
+    <p>Run 4, 6, and 15 through the <a href="gcf-calculator.html">GCF Calculator</a> and the relationship becomes visible from the other side: GCF takes the <em>lowest</em> power of each shared prime, LCM takes the <em>highest</em> power of every prime that appears anywhere. For a pair, the two figures are linked exactly — GCF × LCM = the product of the two numbers — but that identity, as the FAQ below notes, only holds for exactly two inputs at a time.</p>
+    <h2>Why the calculator divides before it multiplies</h2>
+    <p>Chaining a×b÷GCF(a,b) across a long list one pair at a time — dividing out the GCF at every step rather than multiplying everything together first — keeps the running numbers small. Multiplying a dozen large inputs together before dividing anything out risks a number far bigger than any of the intermediate LCMs actually needed, which matters once numbers get large even though it makes no difference to the final answer. That least common denominator is also exactly what the <a href="fraction-calculator.html">Fraction Calculator</a> needs to add or subtract two fractions with different denominators.</p>
+
+<h3>Why you should not multiply</h3>
     <p>Multiplying the numbers together always gives <em>a</em> common multiple, but rarely the <em>least</em> one. For 4 and 6 the product is 24, yet 12 works and is smaller. Multiplying only gives the right answer when the numbers are coprime.</p>
     <p>The efficient route is via the GCF: <strong>LCM(a, b) = a × b ÷ GCF(a, b)</strong>. For 4 and 6 that is 24 ÷ 2 = 12. This calculator chains that pairwise for longer lists, dividing before multiplying at each step so intermediate values stay small.</p>
     <h3>By prime factorisation</h3>
