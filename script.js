@@ -7787,24 +7787,25 @@ function tbMoney(n){
   const incomeAEl = document.getElementById('mtIncomeA');
   const incomeBEl = document.getElementById('mtIncomeB');
 
-  const SINGLE_BRACKETS_2024 = [
-    [0, 11600, 0.10],
-    [11600, 47150, 0.12],
-    [47150, 100525, 0.22],
-    [100525, 191950, 0.24],
-    [191950, 243725, 0.32],
-    [243725, 609350, 0.35],
-    [609350, null, 0.37]
+  // 2026 brackets per IRS Rev. Proc. 2025-32 (updated 2026-09-06)
+  const SINGLE_BRACKETS_2026 = [
+    [0, 12400, 0.10],
+    [12400, 50400, 0.12],
+    [50400, 105700, 0.22],
+    [105700, 201775, 0.24],
+    [201775, 256225, 0.32],
+    [256225, 640600, 0.35],
+    [640600, null, 0.37]
   ];
 
-  const MFJ_BRACKETS_2024 = [
-    [0, 23200, 0.10],
-    [23200, 94300, 0.12],
-    [94300, 201050, 0.22],
-    [201050, 383900, 0.24],
-    [383900, 487450, 0.32],
-    [487450, 731200, 0.35],
-    [731200, null, 0.37]
+  const MFJ_BRACKETS_2026 = [
+    [0, 24800, 0.10],
+    [24800, 100800, 0.12],
+    [100800, 211400, 0.22],
+    [211400, 403550, 0.24],
+    [403550, 512450, 0.32],
+    [512450, 768700, 0.35],
+    [768700, null, 0.37]
   ];
 
   function taxFor(income, brackets){
@@ -7825,8 +7826,8 @@ function tbMoney(n){
     const incomeA = Math.max(parseFloat(incomeAEl.value)||0, 0);
     const incomeB = Math.max(parseFloat(incomeBEl.value)||0, 0);
 
-    const combinedSingle = taxFor(incomeA, SINGLE_BRACKETS_2024) + taxFor(incomeB, SINGLE_BRACKETS_2024);
-    const taxMFJ = taxFor(incomeA+incomeB, MFJ_BRACKETS_2024);
+    const combinedSingle = taxFor(incomeA, SINGLE_BRACKETS_2026) + taxFor(incomeB, SINGLE_BRACKETS_2026);
+    const taxMFJ = taxFor(incomeA+incomeB, MFJ_BRACKETS_2026);
     const diff = taxMFJ - combinedSingle;
 
     document.getElementById('mtSingle').textContent = tbMoney(combinedSingle);
