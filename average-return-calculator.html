@@ -456,6 +456,24 @@ PERSONAL FINANCE · 206 TOOLS · 0 SIGN-UP
   </section>
 
   <section class="article">
+    <h2>Two averages, and only one matches what actually happened</h2>
+    <p>The page opens with five yearly returns: <strong>12%, &minus;5%, 18%, 7%, 10%</strong>. Add them and divide by five &mdash; the <strong>arithmetic mean</strong> &mdash; and you get <strong>8.40%</strong>. But compound those same five returns one after another and solve for the single steady rate that would have produced the identical result &mdash; the <strong>geometric mean</strong>, also called CAGR &mdash; and you get <strong>8.12%</strong>.</p>
+    <p>The gap is only 0.28 points here because none of the individual years was extreme. It is not always this small.</p>
+
+    <h2>Where the gap becomes impossible to ignore</h2>
+    <p>Take a portfolio that gains <strong>50%</strong> one year and loses <strong>50%</strong> the next. The arithmetic mean is exactly <strong>0%</strong> &mdash; it looks like breaking even. What actually happened: 00 grows to 50, then that 50 falls by half to <strong>5</strong>. A quarter of the money is gone, against an average that claimed nothing changed. The geometric mean reports this correctly, at <strong>&minus;13.40%</strong> &mdash; because losses and gains are not symmetric once they compound: a 50% loss needs a 100% gain just to get back to even, not another 50%.</p>
+    <p>This gap has a name &mdash; <strong>volatility drag</strong> &mdash; and it grows with how much a return sequence swings, not with how good or bad the returns are on average. Two portfolios can share an identical arithmetic mean and compound to very different ending balances if one of them is far more volatile.</p>
+
+    <h2>Which one answers which question</h2>
+    <ul>
+      <li><strong>Arithmetic mean</strong> answers "what did a typical single year look like" &mdash; useful for statistics about one period in isolation, and for very short-term estimates where compounding barely matters.</li>
+      <li><strong>Geometric mean</strong> answers "what single steady rate would have turned my starting amount into what I actually ended up with" &mdash; which is the question that matters for anything held over multiple years. On the page&#8217;s own five returns, 00 compounded through the actual sequence becomes <strong>47.77</strong> &mdash; exactly what compounding at the 8.12% geometric mean for five years also produces, and noticeably less than the 50 the arithmetic mean would suggest.</li>
+    </ul>
+    <p>The geometric mean is always less than or equal to the arithmetic mean for any series that is not perfectly constant, and the two only converge when volatility is zero. Any investment return you see advertised is worth checking against this distinction &mdash; an "average annual return" quoted without saying which kind is being described is easy to overstate.</p>
+
+    <h2>Order does not change either answer</h2>
+    <p>Multiplication does not care what order its factors come in, so 12%, then &minus;5%, then 18% compounds to the identical ending value as &minus;5%, then 18%, then 12%. Both the arithmetic and geometric means of a fixed set of returns are unaffected by the sequence they occurred in. What sequence <em>does</em> change is the outcome for someone adding or withdrawing money along the way &mdash; a large withdrawal right after a bad year does lasting damage that the same withdrawal after a good year would not, even though the average return across the whole period is identical either way. That is <a href="retirement-calculator.html">sequence-of-returns risk</a>, and it is a different concept from the averaging question this calculator answers.</p>
+
     <h3>Why are arithmetic and geometric average different?</h3>
     <p>The arithmetic average simply adds up each year's return and divides by the count, treating every year as an independent, unrelated number. The geometric mean instead compounds each year's return onto the last — exactly the way real investment growth works — then finds the single constant annual rate that would have produced the same ending value. Whenever returns vary from year to year, the geometric mean is always equal to or lower than the arithmetic average, and the gap widens the more the returns swing.</p>
     <h3>Which one should I use to estimate my actual investment growth?</h3>

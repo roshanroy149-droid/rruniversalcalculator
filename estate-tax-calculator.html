@@ -44,7 +44,7 @@
       "name": "What is the federal estate tax exemption?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "It's the amount an estate can pass to heirs before any federal estate tax applies. For 2024 the exemption is $13,610,000 per person, indexed for inflation each year — only the portion of an estate above this threshold is potentially taxable."
+        "text": "It's the amount an estate can pass to heirs before any federal estate tax applies. For 2026 the exemption is $15,000,000 per person ($30,000,000 for a married couple using both exemptions), made permanent by the One Big Beautiful Bill Act and indexed for inflation from 2027 onward — only the portion of an estate above this threshold is potentially taxable."
       }
     },
     {
@@ -438,12 +438,12 @@ PERSONAL FINANCE · 206 TOOLS · 0 SIGN-UP
 
   <section class="tool" id="estatetax">
     <div class="disclaimer">
-      <strong>Simplified estimate — not tax or legal advice.</strong> The federal estate tax exemption changes with legislation and is indexed for inflation (also scheduled to roughly halve after 2025 under current law absent Congressional action) — this uses an illustrative default; consult an estate planning attorney.
+      <strong>Simplified estimate — not tax or legal advice.</strong> The 2026 exemption of $15,000,000 per person was made permanent by the One Big Beautiful Bill Act, removing the sunset risk that applied to the prior exemption — but the figure still moves with inflation and future legislation, so this default should be checked before relying on it. Consult an estate planning attorney.
     </div>
     <div class="card">
       <div>
         <div class="field"><label>Gross estate value ($)</label><input type="number" id="etGross" value="20000000" step="10000" min="0"></div>
-        <div class="field"><label>Federal estate tax exemption ($)</label><input type="number" id="etExemption" value="13610000" step="10000" min="0"></div>
+        <div class="field"><label>Federal estate tax exemption ($)</label><input type="number" id="etExemption" value="15000000" step="10000" min="0"></div>
         <div class="field"><label>Estate tax rate above exemption (%)</label><input type="number" id="etRate" value="40" step="0.1" min="0" max="100"></div>
       </div>
       <div class="readout">
@@ -455,15 +455,25 @@ PERSONAL FINANCE · 206 TOOLS · 0 SIGN-UP
   </section>
 
   <section class="article">
+    <h2>The exemption, and why 2026 is a genuinely different year</h2>
+    <p>For 2026, an individual can pass <strong>$15,000,000</strong> to heirs before any federal estate tax applies &mdash; <strong>$30,000,000</strong> for a married couple, since a surviving spouse can claim any unused portion of the first spouse's exemption. Only the value above that line is ever taxed; the exemption itself is never touched.</p>
+    <p>What makes 2026 different from every prior year this decade: the <strong>One Big Beautiful Bill Act made this exemption permanent</strong>. Under the prior law, the exemption was scheduled to roughly halve at the start of 2026 when the 2017 Tax Cuts and Jobs Act's temporary doubling expired &mdash; a cliff that drove a wave of urgent lifetime-gifting in 2024 and 2025 to lock in the higher amount before it possibly vanished. That cliff no longer exists. The exemption stays at $15,000,000 going forward and will resume being indexed for inflation from 2027.</p>
+
+    <h2>Worked example with the current numbers</h2>
+    <p>A <strong>$20,000,000</strong> gross estate against the 2026 exemption of $15,000,000 leaves a <strong>$5,000,000</strong> taxable estate. At this calculator's flat 40% simplification, that is an estimated <strong>$2,000,000</strong> in federal estate tax, leaving <strong>$18,000,000</strong> to heirs &mdash; an effective rate of <strong>10%</strong> on the gross estate, even though the marginal rate on the taxable slice is 40%.</p>
+
+    <h2>Why a flat top rate is a good approximation, not a rough one</h2>
+    <p>Federal estate tax is genuinely graduated, from 18% up to 40% under IRC section 2001(c) &mdash; but the entire graduated table is compressed into the <strong>first $1,000,000</strong> of taxable amount, and every dollar of taxable estate above that is taxed at a flat 40% regardless. Since the exemption itself is $15,000,000, essentially every real taxable estate is many times larger than that $1,000,000 transition point, so the graduated brackets barely matter in practice.</p>
+    <p>The IRS's own rate table puts the tax on exactly $1,000,000 of taxable amount at <strong>$345,800</strong> &mdash; against $400,000 under a flat 40% assumption. That <strong>$54,200 gap is a fixed dollar amount</strong>, not a percentage: it is the maximum by which this calculator's flat-rate simplification can ever overstate the true federal liability, for a taxable estate of any size once it clears $1,000,000. On the $5,000,000 taxable estate above, the true graduated liability is $1,945,800 against this calculator's $2,000,000 &mdash; a difference of exactly that same $54,200, which is 2.7% of the estimate and shrinks in relative terms as the estate grows larger.</p>
+
     <h3>What is the federal estate tax exemption?</h3>
-    <p>The federal estate tax exemption is the amount an estate can pass to heirs before any federal estate tax applies at all. For 2024 that exemption is $13,610,000 per person, and it's indexed for inflation most years. Only the portion of an estate's value above the exemption is potentially subject to tax — the exemption itself is never taxed.</p>
+    <p>The federal estate tax exemption is the amount an estate can pass to heirs before any federal estate tax applies at all. For 2026 that exemption is $15,000,000 per person, made permanent by the One Big Beautiful Bill Act and indexed for inflation again from 2027. Only the portion of an estate's value above the exemption is potentially subject to tax &mdash; the exemption itself is never taxed.</p>
     <h3>Does my state also have an estate tax?</h3>
     <p>Several states levy their own estate or inheritance tax with exemption thresholds far below the federal level — in some states as low as $1 million. This calculator covers federal estate tax only. If you live in or own property in a state with its own estate or inheritance tax, check that state's specific rules separately, since they can apply even to estates well under the federal exemption.</p>
     <h3>How can estates reduce estate tax exposure?</h3>
     <p>Common planning strategies include making lifetime gifts under the annual gift tax exclusion, setting up irrevocable trusts, making charitable bequests, and holding life insurance outside the taxable estate. Which strategy makes sense — if any — depends heavily on individual family circumstances, so this is a general note rather than a recommendation: work with a qualified estate planning attorney or tax professional before acting.</p>
     <h3>Is inheritance taxed to the recipient too?</h3>
     <p>No — there is no federal inheritance tax paid by the person who receives assets from an estate. Any federal estate tax owed is paid by the estate itself, before assets are distributed to heirs. A handful of states impose a separate inheritance tax directly on recipients, which is a distinct tax from estate tax and follows its own rules.</p>
-    <p><strong>Worked example:</strong> a $20,000,000 gross estate against the 2024 federal exemption of $13,610,000 leaves a taxable estate of $6,390,000. At a flat 40% top-rate simplification, that's an estimated $2,556,000 in federal estate tax, leaving $17,444,000 to heirs. In reality, federal estate tax uses graduated brackets from 18% to 40%, but at estate sizes well above the exemption, the effective rate clusters close to the top bracket — which is why this calculator uses a flat top-rate simplification rather than modeling every bracket.</p>
   </section>
 
   <p style="font-size:13px;color:var(--ink-muted);margin:0 0 24px;">Planning your broader retirement and legacy picture? See the <a href="retirement-calculator.html">Retirement Calculator</a>.</p>
