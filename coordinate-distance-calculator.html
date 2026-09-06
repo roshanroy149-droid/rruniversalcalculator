@@ -446,7 +446,14 @@ PERSONAL FINANCE · 206 TOOLS · 0 SIGN-UP
   </section>
 
   <section class="article">
-    <h3>It is Pythagoras in disguise</h3>
+        <h2>This page's default, worked in full</h2>
+    <p>(0, 0) to (3, 4) gives Δx = 3, Δy = 4, distance = √(3² + 4²) = √25 = <strong>5</strong>, and a midpoint at (1.5, 2). That is the exact same 3-4-5 relationship as the <a href="right-triangle-calculator.html">Right Triangle Calculator</a>'s own default of legs 3 and 4 — this page just describes it as two points instead of two sides, and the <a href="pythagorean-theorem-calculator.html">Pythagorean Theorem Calculator</a> offers a third way in, working directly from side lengths.</p>
+    <h2>2D is a special case of 3D, not a different formula</h2>
+    <p>Switching this page's dimension toggle to 3D does not change the underlying formula, it just adds one more squared term under the root. In 2D, z is fixed at 0 for both points, so the Δz² term vanishes on its own — it is not a separate code path. Contrast that with slope, which genuinely breaks down (becomes undefined) for a vertical line; distance never has that problem, because a square root of a sum of squares is always defined and never negative.</p>
+    <h2>What "distance" means here — and what it does not</h2>
+    <p>This is straight-line distance through space, the length of a ruler laid between the two points. It is not the distance one would walk or drive (which follows paths, not straight lines), and it is not the distance between two map coordinates either — latitude and longitude sit on a curved surface, so that needs the haversine formula, not this one. For the angle this line makes and its equation in y = mx + b form, see the <a href="slope-calculator.html">Slope Calculator</a>.</p>
+
+<h3>It is Pythagoras in disguise</h3>
     <p>The distance formula, <strong>d = √((x₂−x₁)² + (y₂−y₁)²)</strong>, is nothing more than the Pythagorean theorem applied to the right triangle formed by the horizontal and vertical gaps between the two points. The horizontal difference is one leg, the vertical difference the other, and the distance is the hypotenuse.</p>
     <p>Seeing that makes the three-dimensional version obvious rather than a new thing to memorise: add a third squared term. <strong>d = √(Δx² + Δy² + Δz²)</strong>. The same idea extends to any number of dimensions.</p>
     <h3>Why the squares matter</h3>

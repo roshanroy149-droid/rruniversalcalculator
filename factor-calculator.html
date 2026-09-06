@@ -437,7 +437,14 @@ PERSONAL FINANCE · 206 TOOLS · 0 SIGN-UP
   </section>
 
   <section class="article">
-    <h3>Factors come in pairs</h3>
+        <h2>Why factoring matters beyond this page</h2>
+    <p>Two whole numbers' <strong>greatest common factor</strong> and <strong>least common multiple</strong> both fall straight out of their prime factorisations — compare the exponents and take the lower or higher of each. The <a href="lcm-calculator.html">LCM Calculator</a> handles that comparison directly; this page is the tool that produces the factorisation to compare in the first place. The same building blocks are also what exponent notation compresses — 60 = 2² × 3 × 5 is exactly the kind of expression the <a href="exponent-calculator.html">Exponent Calculator</a> works with in the other direction.</p>
+    <h2>Why the input is capped at one trillion</h2>
+    <p>This page finds factors by trial division, checking every candidate up to √n — for n = 60 that is only 7 checks, and even at the tool's one-trillion cap it is around a million checks, still instant for a browser. Cryptographic systems like RSA lean on the same method failing at a much larger scale: the numbers involved are typically 600-plus digits long, and even the fastest known factoring algorithms would take vastly longer than the age of the universe to break one apart, while multiplying the two source primes together in the first place takes a computer a fraction of a second. That one-way gap — trivial to multiply, computationally infeasible to un-multiply — is the basis of the encryption protecting most of the web.</p>
+    <h2>Perfect squares and perfect cubes read off the same way</h2>
+    <p>A number is a perfect square exactly when every exponent in its prime factorisation is even — 36 = 2² × 3² has two even exponents, so its square root is a whole number. It is a perfect cube when every exponent is divisible by 3 instead. The <a href="root-calculator.html">Root Calculator</a> extracts that root directly once the relevant factorisation is known.</p>
+
+<h3>Factors come in pairs</h3>
     <p>Every factor has a partner that multiplies with it to give the original number. For 60: 1×60, 2×30, 3×20, 4×15, 5×12, 6×10. That pairing is why you only need to test up to the <strong>square root</strong> — beyond it you are just meeting partners you have already found from the other side. It is what makes this fast even for large inputs.</p>
     <p>The one exception is a perfect square, where the middle factor is its own partner. 36 has 6×6, which is why perfect squares are the only numbers with an <em>odd</em> count of factors.</p>
     <h3>The prime factorisation is unique</h3>
