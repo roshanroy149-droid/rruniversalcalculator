@@ -494,6 +494,21 @@ PERSONAL FINANCE · 206 TOOLS · 0 SIGN-UP
   </section>
 
   <section class="article">
+    <h2>Pseudo-random, and what that word is doing there</h2>
+    <p>This tool draws numbers with JavaScript's built-in <code>Math.random()</code>, a <strong>pseudo-random number generator</strong>: a deterministic algorithm that produces a sequence which passes statistical tests for randomness &mdash; no visible pattern, roughly even distribution &mdash; without being truly unpredictable in the cryptographic sense. For picking a raffle winner, rolling dice for a board game, or breaking a tie, that distinction is invisible and irrelevant. For anything security-related, it matters a great deal, which is exactly why <a href="password-generator.html">this site's password generator</a> deliberately uses a different, cryptographic source (<code>crypto.getRandomValues</code>) instead of the one powering this page &mdash; a password generated with this tool's algorithm could, in principle, be more predictable to an attacker who has seen enough of its other output.</p>
+
+    <h2>"No repeats" is a shuffle, not a filter</h2>
+    <p>When uniqueness is requested, the calculator does not generate numbers one at a time and discard duplicates &mdash; that approach gets slower and slower as the available pool shrinks. Instead it builds the complete list of possible values once and shuffles it using the <strong>Fisher&ndash;Yates algorithm</strong>, then takes however many you asked for off the top. This is the standard correct way to produce an unbiased random ordering; naive alternatives (like sorting a list by a random key) are measurably less uniform. It also explains the one hard limit: asking for more unique numbers than the range actually contains &mdash; say, 10 unique values from a 1&ndash;5 range &mdash; is mathematically impossible, and the tool says so rather than returning duplicates or an incomplete list.</p>
+
+    <h2>This generator produces whole numbers by design</h2>
+    <p>The output is always an integer, because <code>Math.floor()</code> is applied to round the raw random value down before it is shown. There is no built-in decimal mode. A close approximation is to generate within a wider integer range and mentally shift the decimal point &mdash; asking for 100 to 999 and reading the result as 1.00 to 9.99 &mdash; though this only works cleanly for a fixed number of decimal places and is not the same as a true continuous random draw.</p>
+
+    <h2>The coin and the dice are the identical mechanism, relabelled</h2>
+    <p>A coin flip here is <code>Math.random() &lt; 0.5</code>, which is exactly as fair as pulling a single random number between 1 and 2 and checking which half it landed in &mdash; there is nothing structurally different about a coin flip from any other random draw with two equally likely outcomes. A die roll is the same random-integer routine as the main generator, constrained to 1 through however many sides you choose (4, 6, 8, 10, 12 or 20 here), which is why rolling multiple dice and summing them is offered as a single feature rather than something you would do by hand with repeated single rolls.</p>
+
+    <h2>What people actually use this for</h2>
+    <p>Beyond games and raffles: picking a random sample from a numbered list without bias, assigning participants to study groups, choosing which of several options to try first when there is no principled reason to prefer one, and generating test data for something you are building. None of these need cryptographic-grade randomness &mdash; they need an outcome nobody, including you, could have predicted in advance, which is precisely what a decent pseudo-random generator provides.</p>
+
     <h3>How random are these numbers, really?</h3>
     <p>This tool uses your browser's built-in random number generator (<code>Math.random</code>), which is more than sufficient for games, raffles, classroom sampling, and everyday decision-making. It is <strong>not</strong> cryptographically secure, so don't use it to generate passwords, encryption keys, or anything security-sensitive — use the <a href="password-generator.html">Password Generator</a> for that instead, which is built on the browser's cryptographic random source.</p>
     <h3>What does "no repeats" mean, and when can't it be used?</h3>

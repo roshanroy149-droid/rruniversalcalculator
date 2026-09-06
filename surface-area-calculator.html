@@ -445,6 +445,21 @@ PERSONAL FINANCE · 206 TOOLS · 0 SIGN-UP
   </section>
 
   <section class="article">
+    <h2>Wrapping paper versus a tin can's label</h2>
+    <p><strong>Total surface area</strong> is every face of a solid added together &mdash; how much wrapping paper it takes to cover the whole thing. <strong>Lateral surface area</strong> is only the curved or side faces, excluding the top and bottom &mdash; how much material makes just the label that wraps around a can, with no lid or base included. On this page&#8217;s own cylinder default (radius 3, height 4): lateral area is <strong>75.40</strong>, and adding the two circular ends (2 &times; &pi; &times; 3&sup2; = 56.55) brings the total to <strong>131.95</strong>.</p>
+
+    <h2>Why the cone asks for height but uses something else entirely</h2>
+    <p>You enter the cone's vertical height, but the formula needs the <strong>slant height</strong> &mdash; the distance along the sloped surface from the tip down to the base edge, which is always longer than the vertical height. The calculator recovers it with the Pythagorean theorem, treating the radius, the vertical height, and the slant as a right triangle: slant = &radic;(r&sup2; + h&sup2;). For radius 3 and height 4, that is &radic;(9+16) = &radic;25 = <strong>exactly 5</strong> &mdash; a 3-4-5 right triangle in disguise. The lateral area then follows as &pi;rl = &pi; &times; 3 &times; 5 = <strong>47.12</strong>, plus the circular base (&pi; &times; 3&sup2; = 28.27) for a total of <strong>75.40</strong>.</p>
+
+    <h2>A sphere is exactly four of its own great circles</h2>
+    <p>Slice a sphere through its centre and you get a flat circle the same radius as the sphere &mdash; a <em>great circle</em>. The sphere's entire surface area, 4&pi;r&sup2;, is precisely <strong>four times</strong> that one circle's area, &pi;r&sup2;. For radius 3: one great circle is <strong>28.27</strong>, and the full sphere is <strong>113.10</strong> &mdash; exactly 4 &times; 28.27. This is not a coincidence of these particular numbers; it holds for every sphere, and it is one of the more elegant facts in solid geometry &mdash; Archimedes considered its proof (that a sphere's surface equals the curved surface of the cylinder that exactly contains it) important enough to have it carved on his tomb.</p>
+
+    <h2>When you actually want lateral instead of total</h2>
+    <p>Reach for lateral area whenever the top and bottom are not really "surface" in the sense you care about &mdash; a label wrapping a can, paint on the outer wall of a cylindrical tank with no roof, or the fabric of a lampshade. Reach for total area whenever every face is real material &mdash; wrapping paper for a gift, sheet metal to fabricate a fully enclosed box, or the paint needed to coat a solid sphere completely. The cube and box shapes on this page only report total area for exactly this reason: a fully closed box has no meaningful "lateral-only" version, since every one of its six faces is equally a side.</p>
+
+    <h2>Going from volume back to surface area</h2>
+    <p>There is no shortcut that skips a dimension: knowing only a shape's volume is not enough to recover its surface area, because the same volume can be packaged into many different shapes with very different surface areas &mdash; a long thin box and a near-cube can enclose an identical volume while having very different amounts of surface. You need to first solve for the shape's defining measurement (a cube's edge from its volume is the cube root; a sphere's radius from V = &#8308;&frasl;&#8323;&pi;r&sup3; is &#179;&radic;(3V&divide;4&pi;)) using the <a href="volume-calculator.html">volume calculator</a>, then feed that measurement into this page.</p>
+
     <h3>Total versus lateral</h3>
     <p><strong>Total</strong> surface area counts every face. <strong>Lateral</strong> counts only the sides, leaving out the top and bottom. The distinction matters more often than it is taught: labelling a tin needs the lateral area, painting a room’s walls needs lateral, and a cylindrical tank standing on the ground needs lateral plus one end rather than both.</p>
     <div class="table-scroll">

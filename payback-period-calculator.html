@@ -466,6 +466,18 @@ PERSONAL FINANCE · 206 TOOLS · 0 SIGN-UP
   </section>
 
   <section class="article">
+    <h2>Reading the page's own numbers</h2>
+    <p>A $10,000 investment returning $2,000, $3,000, $4,000, $3,000 and $1,000 across five years &mdash; this page's defaults &mdash; builds a running total: $2,000, then $5,000, then $9,000, then <strong>$12,000</strong> at year four. The $10,000 mark is crossed somewhere inside that fourth year, not at its end, so the calculator does not simply report "4 years." It works out <em>where</em> inside the year: $1,000 was still owed going into year four ($10,000 &minus; $9,000), and year four delivers $3,000, so that $1,000 arrives <strong>1,000&divide;3,000 = 0.33</strong> of the way through it. Payback period: <strong>3.33 years</strong>.</p>
+
+    <h2>Why the metric ignores everything after it</h2>
+    <p>Payback period stops counting the instant the initial cost is recovered &mdash; the entire fifth year's $1,000 plays no role in the 3.33 figure at all. This is the metric's most-cited weakness: two projects can have an identical payback period while one dies immediately afterward and the other keeps paying out for a decade. Payback period answers "how long is my capital at risk," and deliberately does not attempt to answer "which project makes more money" &mdash; that second question belongs to net present value or internal rate of return instead, which discount and total every cash flow rather than stopping at the recovery point.</p>
+
+    <h2>The other blind spot: a dollar today versus a dollar later</h2>
+    <p>The version on this page is <strong>simple payback period</strong> &mdash; it adds raw cash flows with no adjustment for when they land. $1 received in year one and $1 received in year five count identically toward the $10,000 target, even though the year-one dollar could have been earning a return for the intervening four years. <strong>Discounted payback period</strong> fixes this by shrinking each future cash flow by a discount rate before summing &mdash; a $3,000 flow in year three might only count as roughly $2,381 once discounted at 8% a year &mdash; which pushes the payback point later and gives a more honest picture of capital tied up for a long time. Simple payback period is faster to compute and easier to explain; discounted payback period is the more defensible number whenever the discount rate is not close to zero.</p>
+
+    <h2>What counts as "good" depends entirely on what you are comparing to</h2>
+    <p>There is no universal threshold. A manufacturer evaluating a piece of equipment might treat 2&ndash;3 years as comfortable and 5+ as a hard pass; a real estate investment might reasonably run 7&ndash;10 years and still be considered strong. What makes a payback period good is entirely relative to the alternative uses of that same capital and how much uncertainty surrounds the later cash flows &mdash; a fast payback matters more in a volatile industry, where flows five years out are little better than a guess, than in a stable one where they can be forecast with real confidence.</p>
+
     <h3>What is payback period and why does it matter?</h3>
     <p>Payback period is how long it takes an investment's cumulative cash flows to add up to (recover) the original amount spent. It matters because it's a quick, intuitive gut-check on risk and liquidity — the sooner you get your money back, the less time it's exposed to things going wrong, even before considering how profitable the investment eventually turns out to be overall.</p>
     <h3>What's a limitation of payback period as a metric?</h3>

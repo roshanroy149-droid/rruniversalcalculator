@@ -472,6 +472,28 @@ PERSONAL FINANCE · 206 TOOLS · 0 SIGN-UP
   </section>
 
   <section class="article">
+    <h2>Same asset, two schedules, one ending point</h2>
+    <p>On this page&#8217;s defaults &mdash; a $50,000 asset, $5,000 salvage value, 5-year life &mdash; both methods write off the identical $45,000 total. They only disagree on the timing.</p>
+    <div class="table-scroll">
+    <table class="data-table">
+      <thead><tr><th>Year</th><th>Straight-line</th><th>Declining balance</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>$9,000</td><td><strong>$20,000</strong></td></tr>
+        <tr><td>2</td><td>$9,000</td><td>$12,000</td></tr>
+        <tr><td>3</td><td>$9,000</td><td>$7,200</td></tr>
+        <tr><td>4</td><td>$9,000</td><td>$4,320</td></tr>
+        <tr><td>5</td><td>$9,000</td><td><strong>$1,480</strong></td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p>Straight-line divides the depreciable amount evenly: $45,000 &divide; 5 = <strong>$9,000 every year</strong>, no exceptions. Declining balance applies a fixed rate &mdash; here 2&divide;5 = 40%, the "double" in double-declining balance &mdash; to whatever book value remains, so the write-off shrinks every year: 40% of $50,000, then 40% of the $30,000 left, then 40% of $18,000, and so on.</p>
+
+    <h2>Why year five breaks the pattern</h2>
+    <p>Following the 40% rule mechanically in year five would depreciate $6,480 &times; 40% = $2,592 &mdash; but that would carry the book value below the $5,000 salvage floor, which accounting rules do not allow. The calculator catches this and caps the final year's depreciation at whatever is left: $6,480 &minus; $5,000 = <strong>$1,480</strong>, landing exactly on salvage value rather than below it. Any declining-balance schedule needs this same check in its final year or two, once the shrinking write-off gets close to the floor.</p>
+
+    <h2>What accelerated depreciation is actually for</h2>
+    <p>Declining balance front-loads the same total deduction rather than creating a bigger one &mdash; $45,000 is written off either way. What changes is <em>when</em> the tax benefit lands: <strong>$20,000 in year one</strong> under declining balance against $9,000 under straight-line, more than double. For an asset that genuinely loses most of its usefulness early &mdash; a computer, a vehicle, most technology &mdash; this also tracks real economic value more honestly than a flat annual amount does. For a business managing taxable income, moving the deduction earlier is worth more today than the identical deduction spread evenly, because of the time value of money.</p>
+
     <h3>Straight-line vs. declining balance depreciation — what's the difference?</h3>
     <p>Straight-line depreciation spreads the exact same dollar amount evenly across every year of an asset's useful life — simple and predictable. Double-declining balance is an accelerated method that applies a fixed rate (double the straight-line rate) to the asset's shrinking book value each year, so it depreciates a much larger share early on and a smaller share later, tapering off but never dropping the book value below salvage value.</p>
     <h3>Why would a business choose accelerated depreciation?</h3>

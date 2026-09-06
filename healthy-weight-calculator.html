@@ -461,6 +461,17 @@ PERSONAL FINANCE · 206 TOOLS · 0 SIGN-UP
   </section>
 
   <section class="article">
+    <h2>A range, built by running BMI backwards</h2>
+    <p>Body mass index is normally weight &divide; height&sup2;. This tool solves it in the other direction: it takes the standard "normal" BMI band, <strong>18.5 to 24.9</strong>, and multiplies each end by your own height squared. At <strong>170&nbsp;cm</strong> (1.70&nbsp;m, height&sup2; = 2.89), that gives <strong>18.5 &times; 2.89 = 53.5&nbsp;kg</strong> at the low end and <strong>24.9 &times; 2.89 = 72.0&nbsp;kg</strong> at the high end &mdash; the same 53.5&ndash;72.0&nbsp;kg range this page shows for its own default height, or 117.9&ndash;158.6&nbsp;lb.</p>
+    <p>Because height is squared, the range widens quickly as height increases: a 150&nbsp;cm person&#8217;s range spans about 15&nbsp;kg, while a 190&nbsp;cm person&#8217;s spans nearly 24&nbsp;kg for the identical BMI band.</p>
+
+    <h2>What this cannot see</h2>
+    <p>BMI, and therefore this range, is calculated from height and weight alone &mdash; it has no way to distinguish two people of the same height and weight who carry that weight completely differently. A muscular athlete and a sedentary person at an identical BMI can have very different body fat percentages, and BMI cannot tell them apart because it was never given the information to. This is the method's single best-known limitation, not a flaw specific to this calculator: every BMI-based tool inherits it, including the standard <a href="bmi-calculator.html">BMI calculator</a> this range is built from.</p>
+    <p>The 18.5&ndash;24.9 band itself is a population-level standard, not a personalised one. It was derived from broad epidemiological data and does not adjust for frame size, ethnicity, age, or sex, even though research shows optimal ranges shift somewhat across these groups. Treat the output as a reasonable starting reference for most adults, not a precise personal target.</p>
+
+    <h2>Range versus single number</h2>
+    <p>This tool deliberately returns a <em>range</em> rather than one "ideal weight," which is the opposite design choice from the <a href="ideal-weight-calculator.html">ideal weight calculator</a> on this site &mdash; that one applies formulas like Devine or Robinson to produce a single figure. Neither approach is more correct; they answer different questions. A range communicates that health is not a single number to hit, while a point estimate is easier to use as a specific target. Use whichever framing is more useful for what you are actually trying to do, and treat both as estimates rather than clinical targets &mdash; not medical advice, and not a substitute for a conversation with a healthcare provider who can account for what a calculator cannot.</p>
+
     <h3>How is a healthy weight range determined?</h3>
     <p>This calculator rearranges the standard BMI formula for weight at the two boundaries of the healthy BMI band — 18.5 and 24.9 — giving a minimum and maximum weight for your height: <strong>minWeight = 18.5 × height(m)²</strong>, <strong>maxWeight = 24.9 × height(m)²</strong>. It's the same underlying formula as the <a href="bmi-calculator.html">BMI Calculator</a>, just solved for weight instead of solving for BMI from a known weight.</p>
     <h3>Does this account for muscle mass or body frame?</h3>
