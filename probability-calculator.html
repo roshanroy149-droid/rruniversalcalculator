@@ -439,7 +439,14 @@ PERSONAL FINANCE · 206 TOOLS · 0 SIGN-UP
   </section>
 
   <section class="article">
-    <h3>The rules</h3>
+        <h2>This page's own default, fully worked</h2>
+    <p>With P(A) = 0.5 and P(B) = 0.4, this page reports six figures at once, not just AND and OR: P(not A) = 0.5, P(A and B) = 0.2, P(A or B) = 0.7, P(neither) = 0.3, and P(A given B) = 0.5. Every one of them falls out of the same two starting numbers under independence — nothing else is assumed.</p>
+    <h2>The two rows the FAQ above doesn't mention</h2>
+    <p><strong>P(neither)</strong> is (1 − 0.5) × (1 − 0.4) = 0.3 — both events failing to happen, the direct complement of "at least one." <strong>P(A XOR B)</strong>, exactly one of the two but not both, is P(A) + P(B) − 2×P(A and B) = 0.5 + 0.4 − 0.4 = 0.5 here — the ordinary OR figure with the overlap subtracted twice instead of once, since XOR excludes the overlap entirely rather than counting it once. Add AND, XOR, and neither together — 0.2 + 0.5 + 0.3 — and the total is exactly 1: every outcome falls into exactly one of "both," "exactly one," or "neither," with nothing left over and nothing double-counted.</p>
+    <h2>Where this connects to counting problems</h2>
+    <p>Probability answers "how likely," while a closely related question is "how many ways" — dealing a hand, arranging a lineup, choosing a committee. The <a href="permutation-combination-calculator.html">Permutation and Combination Calculator</a> handles that counting side directly, and the two combine naturally: many classic probability problems are really a favorable-outcomes count divided by a total-outcomes count from exactly that kind of calculation. For summarizing real, messy data rather than clean theoretical probabilities, see the <a href="statistics-calculator.html">Statistics Calculator</a>. Every figure here is also just a percentage wearing a 0-to-1 disguise — the <a href="percentage-calculator.html">Percentage Calculator</a> works in the more familiar 0-to-100 notation for the identical arithmetic.</p>
+
+<h3>The rules</h3>
     <ul>
       <li><strong>Complement:</strong> P(not A) = 1 − P(A). The most useful rule there is — "at least one" problems are almost always easier solved as 1 minus "none".</li>
       <li><strong>AND (independent):</strong> P(A and B) = P(A) × P(B). Two coin flips both landing heads: ½ × ½ = ¼.</li>

@@ -459,7 +459,14 @@ PERSONAL FINANCE · 206 TOOLS · 0 SIGN-UP
   </section>
 
   <section class="article">
-    <h3>What is IRR and how is it used?</h3>
+        <h2>The same cash flows, two very different-looking percentages</h2>
+    <p>This page's own default — $10,000 in, then $3,000, $4,000, $4,000, $3,000, and $2,000 back over five years — nets $6,000 in profit, a simple ROI of 60%. Solved for IRR instead, the answer is <strong>19.25%</strong> a year. Neither number is wrong; they answer different questions. 60% is what came back relative to what went in, full stop. 19.25% is the annual rate that, compounded, explains the same result once <em>when</em> each dollar arrived is taken into account — and it is the more useful number for comparing this investment against any other option with its own annual rate.</p>
+    <h2>Why there is no formula to solve for IRR directly</h2>
+    <p>PV and FV problems with a single lump sum can be rearranged algebraically to isolate the rate. A multi-year, uneven cash flow stream cannot — the rate appears raised to a different power in every term, with no general way to untangle it. That is why this tool, like the <a href="finance-calculator.html">Finance Calculator</a>'s I/Y solver, searches for the answer instead: it tries a rate, checks whether the resulting net present value lands above or below zero, and narrows the range by half repeatedly until the two sides converge.</p>
+    <h2>Where the same time-weighting shows up elsewhere</h2>
+    <p>Any decision with money going out now and coming back on an uneven schedule benefits from the same treatment IRR gives this one. The <a href="real-estate-investment-calculator.html">Real Estate Investment Calculator</a> applies it to rental income and an eventual sale; discounting a single known future amount back to today at a chosen rate, without solving for the rate itself, is what the <a href="present-value-calculator.html">Present Value Calculator</a> does instead.</p>
+
+<h3>What is IRR and how is it used?</h3>
     <p>IRR (Internal Rate of Return) is the discount rate at which the net present value of a series of cash flows equals zero. In plain terms, it's the annualized rate of return an investment actually delivers, given its upfront cost and the cash it pays back over time. Investors and businesses use it to compare projects with very different cash flow patterns on one comparable percentage figure.</p>
     <h3>IRR vs. simple ROI — what's the difference?</h3>
     <p>Simple ROI compares total gain to total cost without regard to when the cash actually arrived, so it can't distinguish between getting your money back in year 1 versus year 5. IRR is time-aware — it explicitly accounts for the timing of each cash flow, so two investments with identical total ROI can post very different IRRs if their cash arrives on different schedules. See the <a href="roi-calculator.html">ROI Calculator</a> for the simpler, non-time-weighted comparison.</p>

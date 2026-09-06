@@ -446,7 +446,14 @@ PERSONAL FINANCE · 206 TOOLS · 0 SIGN-UP
   </section>
 
   <section class="article">
-    <h3>Why ordinary calculators go fuzzy</h3>
+        <h2>This page's own default, worked in full</h2>
+    <p>123,456,789,123,456,789 × 987,654,321,987,654,321 comes to exactly <strong style="word-break:break-all;">121,932,631,356,500,531,347,203,169,112,635,269</strong> — 36 digits. A normal calculator, limited to about 15–17 significant digits, would show roughly 1.219326×10³⁵: correct for the first several digits and silently wrong for the other twenty-plus.</p>
+    <h2>The 2,000-character display limit</h2>
+    <p>Results are shown in full up to 2,000 characters and truncated beyond that — not because BigInt stops being exact, but because a browser tab rendering tens of thousands of digits stops being useful to read. 10,000! is the clearest case: it comes to exactly 35,660 digits, computed exactly by this page, but far past what the display shows in full. The exactness is real even when the display isn't; it is a rendering limit, not a computation one.</p>
+    <h2>Where "close enough" genuinely isn't</h2>
+    <p>A credit card number's check digit, computed via the Luhn algorithm, depends on every digit being exactly right — a number one digit off in the trillions place fails validation exactly as completely as one off by 1. RSA encryption leans on the same all-or-nothing exactness at a much larger scale: the numbers involved run past 600 digits, and there is no such thing as an encryption key that is "approximately" correct — the <a href="factor-calculator.html">Factor Calculator</a> looks at the flip side of that same scale problem, where multiplying two large numbers together is instant but reversing the product back apart is not. For arithmetic that doesn't need this — everyday decimals, percentages, square roots — ordinary floating point is the right tool; see the <a href="basic-calculator.html">Basic Calculator</a> or <a href="scientific-calculator.html">Scientific Calculator</a>.</p>
+
+<h3>Why ordinary calculators go fuzzy</h3>
     <p>Most calculators store numbers as 64-bit floating point, which holds about <strong>15–17 significant digits</strong> exactly. Beyond that, digits are silently discarded.</p>
     <p>Ask a normal calculator for 2²⁰⁰ and you get <code>1.606938e+60</code> — correct to seven digits and wrong about the other fifty-four. The exact answer is 1606938044258990275541962092341162602522202993782792835301376, and this tool gives all of it.</p>
     <p>It is not a rounding preference. The information is genuinely gone: the format has nowhere to keep it.</p>
