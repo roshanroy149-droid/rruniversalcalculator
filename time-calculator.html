@@ -490,7 +490,14 @@ PERSONAL FINANCE · 206 TOOLS · 0 SIGN-UP
   </section>
 
   <section class="article">
-    <h3>How do I add or subtract times in hours, minutes, and seconds?</h3>
+        <h2>This page's own defaults, worked in full</h2>
+    <p>Adding 2:30:00 and 1:45:00 gives exactly <strong>4:15:00</strong> — 255 total minutes, or 4.25 hours. Separately, the hours-worked tool's own default — clock in 9:00, clock out 17:30, a 30-minute break — comes to exactly <strong>8:00</strong>, 8.00 in decimal. Both totals happen to land on clean numbers here; real shifts and clips rarely do.</p>
+    <h2>Two figures the FAQ above never mentions</h2>
+    <p>Alongside the h:mm:ss result, the duration tool also reports the same span as total minutes and total hours — 255 and 4.25 for the default above. Whichever unit a downstream calculation actually needs (a per-minute billing rate, an hourly pay rate) is right there without doing the division by hand.</p>
+    <h2>A clean break makes decimal hours easy — most breaks aren't clean</h2>
+    <p>A 30-minute break is exactly 0.5 hours, which is why the default above lands on a tidy 8.00. A 22-minute break instead gives 8 hours 30 minutes minus 22 minutes = 488 minutes, or <strong>8.1333...</strong> hours repeating — not a number anyone should try to compute by hand for a payroll entry. This is exactly the gap the <a href="rounding-calculator.html">Rounding Calculator</a> covers: how many decimal places to keep, and what to do with a figure that never terminates cleanly, before it goes into a pay calculation. For the span between two calendar dates rather than two clock times, see the <a href="age-calculator.html">Age Calculator</a>, which handles years and days the same way this page handles hours, minutes, and seconds.</p>
+
+<h3>How do I add or subtract times in hours, minutes, and seconds?</h3>
     <p>Convert each duration to total seconds (hours×3600 + minutes×60 + seconds), add or subtract the two totals, then convert back — carrying over at 60 seconds per minute and 60 minutes per hour, exactly like the calculator above does automatically. Subtracting a longer duration from a shorter one produces a negative result, shown with a minus sign.</p>
     <h3>How does the hours-worked calculator handle an overnight shift?</h3>
     <p>If the clock-out time is earlier than the clock-in time, the calculator assumes the shift crossed midnight and adds 24 hours to the end time before subtracting — so a 10:00 PM to 6:00 AM shift correctly comes out to 8 hours rather than a negative number.</p>

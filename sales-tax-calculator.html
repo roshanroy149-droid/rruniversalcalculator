@@ -478,7 +478,14 @@ PERSONAL FINANCE · 206 TOOLS · 0 SIGN-UP
   </section>
 
   <section class="article">
-    <h3>How is sales tax calculated?</h3>
+        <h2>This page's own default, worked in full</h2>
+    <p>A $100 item at a 7% rate adds exactly $7.00 in tax for a $107.00 total. Reversed — starting from that same $107.00 total at 7% — $107 ÷ 1.07 = $100.00 exactly, confirming the two modes are true inverses of each other rather than two separately-tuned approximations.</p>
+    <h2>Sales tax doesn't compound on itself — that's the actual difference from VAT</h2>
+    <p>The $7.00 above is 7% of the $100 pre-tax price, calculated once. It is never taxed again as it changes hands, because US-style sales tax applies only at the single final retail sale. A VAT or GST system instead applies its rate at every stage — manufacturer to wholesaler, wholesaler to retailer, retailer to customer — with each business reclaiming what it already paid on its own inputs, so only the value added at each step is taxed, not the whole price repeatedly. The end result on a receipt can look identical to a flat sales tax; the mechanism generating it is not.</p>
+    <h2>Why "just subtract the rate" undercharges every single time</h2>
+    <p>Subtracting 8.25% from a $270.63 total gives $248.30 — cheaper than the true pre-tax price of $250.00 by more than two dollars. The error compounds itself: subtracting a percentage of the <em>total</em> removes too much, because tax was only ever a percentage of the smaller, pre-tax figure in the first place. Dividing by 1 plus the rate is the only version of "reverse" that lands back on the exact original number, which is exactly what this page's default round-trips to confirm. The same forward/reverse pair shows up whenever a discount is layered in before tax — the <a href="discount-calculator.html">Discount Calculator</a> handles that combined case directly — and the underlying "X% of a number" arithmetic is the same idea the <a href="percentage-calculator.html">Percentage Calculator</a> covers on its own.</p>
+
+<h3>How is sales tax calculated?</h3>
     <p>Tax is the pre-tax price multiplied by the tax rate as a decimal: <strong>tax = price × (rate ÷ 100)</strong>, and the total is simply price + tax. A $50 item at 8% sales tax adds $4.00 in tax for a $54.00 total.</p>
     <h3>How do I back out the pre-tax price from a tax-included total?</h3>
     <p>Divide by 1 plus the rate, don't subtract the percentage: <strong>price = total ÷ (1 + rate ÷ 100)</strong>. A $54 receipt at 8% tax means the pre-tax price was 54 ÷ 1.08 = $50 — not 54 minus 8% (which would incorrectly give $49.68). This reverse calculation is the single most common place people make an error with tax math, and it's exactly what "Remove tax from total" mode above does for you.</p>

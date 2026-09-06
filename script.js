@@ -7618,7 +7618,9 @@ function tbMoney(n){
   function calc(){
     const benefit = Math.max(parseFloat(benefitEl.value)||0, 0);
     const fraAge = parseFloat(fraAgeEl.value)||67;
-    const claimAge = parseFloat(claimAgeEl.value)||67;
+    // SSA delayed retirement credits stop accruing at 70 — clamp so a
+    // directly-typed value past the field's own max doesn't overstate the benefit.
+    const claimAge = Math.min(parseFloat(claimAgeEl.value)||67, 70);
 
     let multiplier;
     if(claimAge < fraAge){

@@ -457,7 +457,31 @@ PERSONAL FINANCE · 206 TOOLS · 0 SIGN-UP
   </section>
 
   <section class="article">
-    <h3>How does claiming age affect my Social Security benefit?</h3>
+        <h2>The full curve, age by age</h2>
+    <p>On a $2,000 FRA benefit, every whole claiming age from 62 to 70 lands on its own multiplier:</p>
+    <div class="table-scroll">
+    <table class="data-table">
+      <thead><tr><th scope="col">Claim age</th><th scope="col">Multiplier</th><th scope="col">Monthly</th></tr></thead>
+      <tbody>
+        <tr><td>62</td><td>70.0%</td><td>$1,400.00</td></tr>
+        <tr><td>63</td><td>75.0%</td><td>$1,500.00</td></tr>
+        <tr><td>64</td><td>80.0%</td><td>$1,600.00</td></tr>
+        <tr><td>65</td><td>86.7%</td><td>$1,733.33</td></tr>
+        <tr><td>66</td><td>93.3%</td><td>$1,866.67</td></tr>
+        <tr><td>67 (FRA)</td><td>100.0%</td><td>$2,000.00</td></tr>
+        <tr><td>68</td><td>108.0%</td><td>$2,160.00</td></tr>
+        <tr><td>69</td><td>116.0%</td><td>$2,320.00</td></tr>
+        <tr><td>70</td><td>124.0%</td><td>$2,480.00</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p>The curve bends at exactly one point — age 64, three years (36 months) before FRA — where the reduction rate for any additional month early drops from 5/9% to the slower 5/12%. The three years closest to FRA (64 to 67) each cost about 6.7 percentage points; every year earlier than that (62 to 64) costs only 5 points, since those more-distant months are charged at the gentler rate.</p>
+    <h2>Why age 70 is a hard ceiling, not just a suggestion</h2>
+    <p>Social Security stops crediting any further delay once a claimant turns 70 — waiting to 71 or 75 pays exactly the same as waiting to 70, not more. This calculator enforces that ceiling in the math itself: typing 75 into the claiming-age field still resolves to age 70's own 124% multiplier and $2,480/month on this page's default benefit, rather than extrapolating the 2/3%-a-month credit indefinitely. That matters because the credit itself doesn't stop existing at 70 by any natural mathematical limit — the cutoff is a rule set by the Social Security Administration, not something that falls out of the formula on its own, so a calculator has to enforce it deliberately rather than assume the input will always stay in range.</p>
+    <h2>Why there's no universally "right" age</h2>
+    <p>The 30-point spread between claiming at 62 and 70 on the same $2,000 base — $1,400 versus $2,480 a month — is designed to roughly balance out over an average lifespan, not to reward patience outright. Someone who lives well past average benefits more from delaying; someone with a shorter life expectancy or an immediate income need comes out ahead claiming earlier. Neither the math nor this calculator can know which case applies — that part is a personal, not an actuarial, decision. See the <a href="pension-calculator.html">Pension Calculator</a> for how a separate employer pension stream fits alongside this benefit, and the <a href="annuity-payout-calculator.html">Annuity Payout Calculator</a> for a third guaranteed-income source built on the same idea but purchased individually rather than earned through work.</p>
+
+<h3>How does claiming age affect my Social Security benefit?</h3>
     <p>Claiming before your Full Retirement Age (FRA) permanently reduces your monthly benefit below 100%, while delaying past FRA (up to age 70, beyond which there's no further benefit to waiting) permanently increases it above 100%. The reduction for claiming early is 5/9 of 1% per month for the first 36 months early, then 5/12 of 1% per month for any additional months beyond that. The credit for delaying is 2/3 of 1% per month (8% per year) past FRA. These percentages are set by the Social Security Administration and apply on top of your FRA benefit amount.</p>
     <h3>What is Full Retirement Age (FRA)?</h3>
     <p>Full Retirement Age is the age at which you receive exactly 100% of your calculated benefit — no reduction for claiming early, no bonus for delaying. FRA is currently 66-67 depending on your birth year (67 for anyone born in 1960 or later), and is set by law under the Social Security Act. You can still claim as early as 62 or as late as 70, but your monthly amount is adjusted accordingly in either direction.</p>

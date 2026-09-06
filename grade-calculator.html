@@ -466,7 +466,14 @@ PERSONAL FINANCE · 206 TOOLS · 0 SIGN-UP
   </section>
 
   <section class="article">
-    <h3>How is a weighted grade calculated?</h3>
+        <h2>This page's own default, worked in full</h2>
+    <p>The three pre-filled categories — Homework 20% at 92%, Midterm 30% at 85%, Quizzes 15% at 88% — add up to 65% of total weight so far. Weighted grade = (20×92 + 30×85 + 15×88) ÷ 65 = 5,710 ÷ 65 ≈ <strong>87.8%</strong>, a B. The other 35% of the course — likely a final exam not yet entered — doesn't count as zero; it simply isn't part of the calculation until a row for it exists.</p>
+    <h2>The final-exam tool's own default: a target just out of reach</h2>
+    <p>Current grade 85%, target 90%, final worth 25%: needed = (90 − 85×0.75) ÷ 0.25 = (90 − 63.75) ÷ 0.25 = <strong>105%</strong> — not achievable, since no exam scores above 100. Even a flawless 100% final only pulls the overall grade up to 85×0.75 + 100×0.25 = <strong>88.75%</strong>, still short of the 90% target by more than a point. The gap between "close" and "achievable" can be smaller than it looks once the final's weight is factored in.</p>
+    <h2>Adding a category changes the denominator, not just the numerator</h2>
+    <p>Every time a row is added or removed, both the running total weight and the weighted score recompute from every row currently present — there is no running memory of a previous total. Entering a fourth category later doesn't add to the 87.8% above; it replaces the whole calculation with a fresh weighted average across all four rows, exactly the same formula run against a larger set of categories. For the separate question of combining final letter grades across multiple finished courses into one GPA, see the <a href="gpa-calculator.html">GPA Calculator</a>. A weighted average is really just the <a href="percentage-calculator.html">Percentage Calculator</a>'s "part of a whole" idea applied several times over and combined, and the <a href="statistics-calculator.html">Statistics Calculator</a> covers the plain (unweighted) average alongside it for comparison.</p>
+
+<h3>How is a weighted grade calculated?</h3>
     <p>Multiply each category's score by its weight, sum those, then divide by the total weight: <strong>weighted grade = Σ(score × weight) ÷ Σ(weight)</strong>. If homework is 20% at a 90% average and the midterm is 30% at 75%, and those are the only two categories entered so far, the running grade is (90×20 + 75×30) ÷ (20+30) = (1800+2250) ÷ 50 = 81%.</p>
     <h3>What if my category weights don't add up to 100%?</h3>
     <p>That's normal mid-semester — categories not yet graded simply aren't in the list yet. The calculator divides by whatever total weight you've actually entered, so it always reflects your correct grade for the portion of the course completed so far, not a distorted number assuming ungraded work counts as zero.</p>
