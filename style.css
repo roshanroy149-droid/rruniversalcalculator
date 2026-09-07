@@ -286,7 +286,11 @@ body.nav-open .nav-backdrop{display:block;}
   .sections{gap:var(--s3);}
   .npanel-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
   .npcol{border-right:0;padding:0 var(--s2);}
-  .npcol:first-child{padding-left:0;}
+  /* 2 columns per row now, not 4 — :first-child only ever catches column 1
+     of row 1. Every row's own left/right column needs the same treatment,
+     which is what nth-child(2n+1)/(2n) checks instead of position 1 alone. */
+  .npcol:nth-child(2n+1){padding-left:0;}
+  .npcol:nth-child(2n){padding-right:0;}
 }
 @media(max-width:640px){
   /* Mobile gets its own tightening rather than inheriting desktop's: most of
@@ -307,6 +311,15 @@ body.nav-open .nav-backdrop{display:block;}
   .searchline{padding:var(--s1) var(--s3);}
   .npanel-grid{grid-template-columns:minmax(0,1fr);}
   .npanel{padding:var(--s3) 0;max-height:70vh;overflow-y:auto;}
+  /* One column now — every group is the start AND end of its own row, so
+     none of them should carry the side gutter meant to separate columns
+     that no longer sit side by side. Without this, the inherited
+     nth-child(2n+1) rule above still zeroes only every OTHER group's left
+     padding, leaving alternating groups 16px out of line with each other.
+     Excludes .npanel-2 (Book): that panel keeps 2 real side-by-side columns
+     at every width via its own higher-specificity rule above, so its two
+     columns still need the normal gutter between them, not zero. */
+  .npanel:not(.npanel-2) .npcol{padding-left:0;padding-right:0;}
 }
 
 /* HERO — base fallback for any hero lacking both .home-hero and a
