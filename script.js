@@ -2088,7 +2088,7 @@ const payrollTaxLabels = { us:'Social Security + Medicare', in:'EPF contribution
 
     const splitEl = document.getElementById('gstSplit');
     if(splitEl){
-      const isIndiaFlat = ['5','12','18','28'].includes(presetEl.value);
+      const isIndiaFlat = ['5','18','40'].includes(presetEl.value);
       splitEl.textContent = isIndiaFlat
         ? (tax/2).toFixed(2)+' CGST + '+(tax/2).toFixed(2)+' SGST'
         : '—';

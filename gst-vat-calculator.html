@@ -454,11 +454,10 @@ PERSONAL FINANCE · 206 TOOLS · 0 SIGN-UP
         <div class="field"><label>Tax rate</label>
           <select id="gstPreset">
             <option value="5">India GST — 5%</option>
-            <option value="12">India GST — 12%</option>
             <option value="18" selected>India GST — 18%</option>
-            <option value="28">India GST — 28%</option>
+            <option value="40">India GST — 40% (luxury/sin goods)</option>
             <option value="20">UK VAT — 20%</option>
-            <option value="21">EU VAT (avg) — 21%</option>
+            <option value="22">EU VAT (avg) — 22%</option>
             <option value="19">Germany VAT — 19%</option>
             <option value="20fr">France VAT — 20%</option>
             <option value="10">Australia GST — 10%</option>
@@ -468,7 +467,7 @@ PERSONAL FINANCE · 206 TOOLS · 0 SIGN-UP
             <option value="10jp">Japan consumption tax — 10%</option>
             <option value="15za">South Africa VAT — 15%</option>
             <option value="5ae">UAE VAT — 5%</option>
-            <option value="7us">US average sales tax — 7% (varies by state)</option>
+            <option value="7.5us">US average sales tax — 7.5% (varies by state)</option>
             <option value="custom">Custom rate</option>
           </select>
         </div>
@@ -494,9 +493,9 @@ PERSONAL FINANCE · 206 TOOLS · 0 SIGN-UP
     <h3>What's the difference between the two modes?</h3>
     <p>"Add tax to amount" treats your entered amount as the pre-tax base and adds tax on top. "Amount already includes tax" treats your entered amount as the final, tax-inclusive price and works backward — dividing by (1 + rate) rather than multiplying — to show what the base price and tax portion were.</p>
     <h3>Why do the preset rates vary so much by country?</h3>
-    <p>GST and VAT rates and structures are set independently by each country or economic bloc, and many countries — India especially — use multiple slabs for different categories of goods and services rather than one flat rate (India's GST Council sets 5%, 12%, 18%, and 28% slabs across different product categories, plus a 0% exempt category for essentials). The EU sets a minimum standard VAT rate across member states but each country sets its own specific rate above that floor, which is why Germany (19%) and France (20%) differ despite both following the EU VAT directive framework. Pick the closest preset or enter a custom rate if yours isn't listed.</p>
+    <p>GST and VAT rates and structures are set independently by each country or economic bloc, and many countries — India especially — use multiple slabs for different categories of goods and services rather than one flat rate. Since the GST 2.0 rationalisation took effect on 22 September 2025, India's GST Council sets just 5% and 18% as the two main slabs plus a 40% rate for luxury and sin goods, replacing the earlier four-slab structure that also had 12% and 28% bands; a 0% exempt category still applies to essentials. The EU sets a minimum standard VAT rate across member states but each country sets its own specific rate above that floor, which is why Germany (19%) and France (20%) differ despite both following the EU VAT directive framework. Pick the closest preset or enter a custom rate if yours isn't listed.</p>
     <h3>Is this the same as sales tax in the US?</h3>
-    <p>Not quite, structurally — GST/VAT is typically applied at each stage of production with credits for tax already paid at earlier stages (so only the value added at each step is effectively taxed), while US sales tax is usually collected once at the final point of sale to the consumer and varies not just by state but often by city and county too, with combined rates commonly ranging from under 5% to over 10% depending on location. The "US average sales tax" preset here (7%) is a rough national blended average — for an accurate figure, check your specific state and local rate, since the real range is wide.</p>
+    <p>Not quite, structurally — GST/VAT is typically applied at each stage of production with credits for tax already paid at earlier stages (so only the value added at each step is effectively taxed), while US sales tax is usually collected once at the final point of sale to the consumer and varies not just by state but often by city and county too, with combined rates commonly ranging from under 5% to over 10% depending on location. The "US average sales tax" preset here (7.5%) is a rough national blended average — for an accurate figure, check your specific state and local rate, since the real range is wide.</p>
     <h3>How do I know if a price already includes tax?</h3>
     <p>In India, MRP (Maximum Retail Price) on packaged goods is required by law to be tax-inclusive — so if you're back-calculating GST from an MRP, use "Amount already includes tax." A quoted B2B price before invoicing is usually tax-exclusive. In the UK and EU, consumer-facing retail prices are legally required to be VAT-inclusive, while B2B quotes are frequently shown exclusive of VAT with the tax added at invoicing. In the US, sales tax is almost always added at checkout rather than baked into the displayed shelf price — a rare case where the "sticker price" genuinely is the pre-tax base.</p>
     <h3>Why does my invoice show CGST and SGST separately instead of one GST figure?</h3>
