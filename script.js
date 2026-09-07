@@ -1338,12 +1338,16 @@ window.__TB_EMBED__ = new URLSearchParams(window.location.search).get('embed') =
 // Hoisted out of the main calculator IIFE so the comparison-mode module below
 // can reuse the exact same numbers — one source of truth, not a duplicated copy.
 const taxFlatSchemes = {
-  ca: { symbol:'C$', brackets:[[57375,0.15],[114750,0.205],[177882,0.26],[253414,0.29],[Infinity,0.33]], dedLabel:'RRSP contributions & other deductions' },
+  // Basic Personal Amount modeled as a 0% band, like every other country
+  // here — legally it's a credit at the lowest rate, but that's mathematically
+  // identical to an exempt band up to the BPA phase-out zone ($181,440-$258,482),
+  // which this table (like the others) doesn't separately model.
+  ca: { symbol:'C$', brackets:[[16452,0],[58523,0.14],[117045,0.205],[181440,0.26],[258482,0.29],[Infinity,0.33]], dedLabel:'RRSP contributions & other deductions' },
   uk: { symbol:'£', brackets:[[12570,0],[50270,0.20],[125140,0.40],[Infinity,0.45]], dedLabel:'Pension contributions & Gift Aid' },
-  de: { symbol:'€', brackets:[[11604,0],[66760,0.30],[277825,0.42],[Infinity,0.45]], dedLabel:'Werbungskosten & other deductions (simplified)' },
-  fr: { symbol:'€', brackets:[[11497,0],[29315,0.11],[83823,0.30],[180294,0.41],[Infinity,0.45]], dedLabel:'Deductible expenses & abatements' },
-  au: { symbol:'A$', brackets:[[18200,0],[45000,0.16],[135000,0.30],[190000,0.37],[Infinity,0.45]], dedLabel:'Work-related & other deductions' },
-  sg: { symbol:'S$', brackets:[[20000,0],[30000,0.02],[40000,0.035],[80000,0.07],[120000,0.115],[160000,0.15],[200000,0.18],[240000,0.19],[280000,0.195],[320000,0.20],[Infinity,0.24]], dedLabel:'Reliefs (CPF, course fees, etc.)' },
+  de: { symbol:'€', brackets:[[12348,0],[69879,0.30],[277825,0.42],[Infinity,0.45]], dedLabel:'Werbungskosten & other deductions (simplified)' },
+  fr: { symbol:'€', brackets:[[11600,0],[29579,0.11],[84577,0.30],[181917,0.41],[Infinity,0.45]], dedLabel:'Deductible expenses & abatements' },
+  au: { symbol:'A$', brackets:[[18200,0],[45000,0.15],[135000,0.30],[190000,0.37],[Infinity,0.45]], dedLabel:'Work-related & other deductions' },
+  sg: { symbol:'S$', brackets:[[20000,0],[30000,0.02],[40000,0.035],[80000,0.07],[120000,0.115],[160000,0.15],[200000,0.18],[240000,0.19],[280000,0.195],[320000,0.20],[500000,0.22],[1000000,0.23],[Infinity,0.24]], dedLabel:'Reliefs (CPF, course fees, etc.)' },
   ae: { symbol:'AED ', brackets:[[Infinity,0]], dedLabel:'Not applicable' }
 };
 // Tax year 2026 (IRS Rev. Proc. inflation adjustments, incl. OBBB amendments).
@@ -1436,15 +1440,20 @@ const payrollTaxes = {
     return ni;
   },
   ca: (annualGross)=>{
-    const cppMax = 68500, eiMax = 63200;
-    return Math.min(annualGross, cppMax)*0.0595 + Math.min(annualGross, eiMax)*0.0164;
+    // 2026 CRA thresholds. CPP2 — 4% between the YMPE and the higher YAMPE
+    // ceiling — has applied since Jan 2024 and was previously unmodeled here.
+    const cppExempt = 3500, cppMax = 74600, cpp2Max = 85000, eiMax = 68900;
+    const cpp = Math.max(Math.min(annualGross, cppMax) - cppExempt, 0) * 0.0595;
+    const cpp2 = Math.max(Math.min(annualGross, cpp2Max) - cppMax, 0) * 0.04;
+    const ei = Math.min(annualGross, eiMax) * 0.0163;
+    return cpp + cpp2 + ei;
   }
 };
 function getPayrollTax(country, annualGross){
   const fn = payrollTaxes[country];
   return fn ? fn(annualGross) : 0;
 }
-const payrollTaxLabels = { us:'Social Security + Medicare', in:'EPF contribution (simplified)', uk:'National Insurance', ca:'CPP + EI' };
+const payrollTaxLabels = { us:'Social Security + Medicare', in:'EPF contribution (simplified)', uk:'National Insurance', ca:'CPP + CPP2 + EI' };
 
 // ---- Tax calculator ----
 (function(){
