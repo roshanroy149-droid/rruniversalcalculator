@@ -441,7 +441,14 @@ PERSONAL FINANCE · 206 TOOLS · 0 SIGN-UP
   </section>
 
   <section class="article">
-    <h3>What does a confidence interval actually tell you?</h3>
+        <h2>The second mode: a confidence interval for a proportion</h2>
+    <p>Alongside the mean-based interval above, this page also handles proportions — a poll, a conversion rate, a defect rate — with its own default: 60% measured across a sample of 30, at 95% confidence. The formula swaps in proportion-specific variance, p(1 − p), in place of a standard deviation: margin = z × √(p(1 − p) ÷ n). That comes to a margin of <strong>±17.53 percentage points</strong>, an interval of 42.47% to 77.53%.</p>
+    <h2>Why the same sample size gives such different-looking certainty</h2>
+    <p>This page's own mean-based default (mean 100, standard deviation 15, n = 30) produces a tight ±5.37 margin — about 5% of the mean. The proportion default, from the identical n = 30, produces a margin more than three times as wide in relative terms. Small samples are simply worse at pinning down a proportion than a mean tends to suggest, which is exactly why a "60% of 30 people surveyed said yes" headline carries far less certainty than the clean 60% figure implies on its own.</p>
+    <h2>Where the interval narrows fastest</h2>
+    <p>Proportion variance, p(1 − p), peaks at p = 0.5 and shrinks toward either extreme — a proportion near 0% or 100% produces a narrower interval than one near 50%, for the exact same sample size. That is why opinion polls near an even split are the hardest to call precisely, and why a lopsided result (5% or 95%) can be stated with more confidence from a smaller sample than a genuine toss-up ever can. For the raw sample statistics — mean, standard deviation, variance — behind the mean-based mode above, see the <a href="statistics-calculator.html">Statistics Calculator</a>, and for the underlying probability arithmetic a survey response rate is itself an estimate of, the <a href="probability-calculator.html">Probability Calculator</a>.</p>
+
+<h3>What does a confidence interval actually tell you?</h3>
     <p>A confidence interval gives a range that's likely to contain the true population parameter at the stated confidence level. A common misconception is that a 95% confidence interval means "there's a 95% chance the true value is in this specific interval" — technically, the 95% describes the long-run reliability of the method (if you repeated the sampling many times, about 95% of the resulting intervals would contain the true value), not a probability statement about this one result.</p>
     <h3>How does sample size affect the interval width?</h3>
     <p>Larger samples produce narrower, more precise intervals. The margin of error shrinks in proportion to the square root of the sample size, so quadrupling your sample size only halves the margin of error.</p>

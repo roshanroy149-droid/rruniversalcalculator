@@ -480,7 +480,14 @@ PERSONAL FINANCE · 206 TOOLS · 0 SIGN-UP
   </section>
 
   <section class="article">
-    <h3>Can I use my keyboard?</h3>
+        <h2>A quirk worth knowing: pressing an operator twice isn't a no-op</h2>
+    <p>Typing 7, then + twice in a row, doesn't leave the running total at 7 waiting for a number — it silently computes 7 + 7 = 14. The second + press re-uses whatever is already on screen as the right-hand side of the first one, the same way it would if a number had actually been retyped. A slow double-tap on an operator key is easy to do by accident, and its effect is invisible until the final answer looks wrong.</p>
+    <h2>Pressing = does not repeat the last operation</h2>
+    <p>Some calculators let you keep pressing = to repeat the same operation again — 5 + 3 =, then = again, adds another 3. This one doesn't: once an equals has been resolved, the pending operator is cleared, so a second = press with nothing queued does nothing at all. Pressing = with no operator entered yet is the same story — typing 5 then = just leaves 5 on screen, since there's nothing pending to resolve.</p>
+    <h2>Chained operations really do resolve one step at a time</h2>
+    <p>10 − 3 + 5 × 2 typed straight through resolves as ((10 − 3) + 5) × 2: 7, then 12, then <strong>24</strong> — each operator fires against the running total the moment the next one is pressed, exactly like the 2 + 3 × 4 = 20 example above, just carried one step further. There's no lookahead and no memory of "the multiplication should happen first"; the display after each step is genuinely the intermediate result, not a hidden formula waiting to be parsed.</p>
+
+<h3>Can I use my keyboard?</h3>
     <p>Yes, and it's faster than clicking. Number keys and the decimal point enter digits, <strong>+ &minus; * /</strong> apply operators, <strong>Enter</strong> or <strong>=</strong> calculates, <strong>Backspace</strong> deletes the last digit, <strong>Escape</strong> clears everything, and <strong>%</strong> converts the current entry. The numeric keypad works exactly like the top row.</p>
 
     <h3>Does it follow order of operations?</h3>
