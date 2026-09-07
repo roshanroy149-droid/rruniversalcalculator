@@ -1386,7 +1386,7 @@ function getStandardTaxScheme(country, filingStatus, indiaRegime){
   }
   if(country==='in'){
     const rg = taxIndiaRegimes[indiaRegime] || taxIndiaRegimes.new;
-    return { symbol:'₹', standardDeduction:rg.standardDeduction, brackets:rg.brackets, extraDed:0, rebateThreshold:rg.rebateThreshold, isIndia:true };
+    return { symbol:'₹', standardDeduction:rg.standardDeduction, brackets:rg.brackets, extraDed:0, rebateThreshold:rg.rebateThreshold, isIndia:true, isNewRegime:indiaRegime!=='old' };
   }
   const scheme = taxFlatSchemes[country] || taxFlatSchemes.uk;
   return { symbol:scheme.symbol, standardDeduction:0, brackets:scheme.brackets, extraDed:0, rebateThreshold:0 };
@@ -1401,6 +1401,11 @@ function computeTaxFromScheme(scheme, gross){
   if(scheme.rebateThreshold && taxable <= scheme.rebateThreshold){
     tax = 0;
   } else if(scheme.isIndia){
+    // Section 87A marginal relief, new regime only: income tax cannot exceed
+    // the amount by which taxable income exceeds the rebate threshold.
+    // Without this, taxable income of ₹12,10,000 shows ₹63,960 instead of
+    // ₹10,400. The old regime's ₹12,500 rebate carries no equivalent relief.
+    if(scheme.isNewRegime) tax = Math.min(tax, taxable - scheme.rebateThreshold);
     tax = tax*1.04; // 4% health & education cess
   }
   const takeHome = Math.max(gross-tax,0);
@@ -1510,7 +1515,7 @@ const payrollTaxLabels = { us:'Social Security + Medicare', in:'EPF contribution
         const hra = Math.max(parseFloat(document.getElementById('taxHRA').value)||0, 0);
         extraDed = c80+d80+home+hra;
       }
-      return { symbol:'₹', standardDeduction:rg.standardDeduction, brackets:rg.brackets, extraDed, rebateThreshold:rg.rebateThreshold, isIndia:true };
+      return { symbol:'₹', standardDeduction:rg.standardDeduction, brackets:rg.brackets, extraDed, rebateThreshold:rg.rebateThreshold, isIndia:true, isNewRegime:indiaRegime!=='old' };
     }
     const scheme = flatSchemes[country];
     const extraDed = Math.max(parseFloat(document.getElementById('taxGenericDed').value)||0, 0);
@@ -1555,6 +1560,8 @@ const payrollTaxLabels = { us:'Social Security + Medicare', in:'EPF contribution
     if(scheme.rebateThreshold && taxable <= scheme.rebateThreshold){
       tax = 0;
     } else if(scheme.isIndia){
+      // Section 87A marginal relief, new regime only — see computeTaxFromScheme.
+      if(scheme.isNewRegime) tax = Math.min(tax, taxable - scheme.rebateThreshold);
       tax = tax*1.04; // 4% health & education cess
     }
 
